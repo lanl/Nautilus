@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+
+# find required PUBLIC libraries
+find_dependency(Kokkos REQUIRED)
+#find_dependency(Eigen3 REQUIRED NO_MODULE)
+# find optional PUBLIC libraries
+#if(@FFTW3_FOUND@)
+#  find_dependency(FFTW3 REQUIRED)
+#endif()
+include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
+
+check_required_components("@PROJECT_NAME@")

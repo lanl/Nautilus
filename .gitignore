@@ -1,0 +1,17 @@
+# Automatically-generated documentation files.
+doc/html
+doc/latex
+
+# Temp files
+.*.swp
+
+# Unnamed executables (usually built for quick testing)
+*.out
+
+# *.x executables (an extension to help with clean up)
+*.x
+
+# Python stuff
+__pycache__
+
+build
