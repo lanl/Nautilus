@@ -11,8 +11,8 @@
 
 add_executable(dummy_test dummy.cpp)
 
-#target_link_libraries(dummy_test PRIVATE xcap-sample-repo Catch2::Catch2)
-target_link_libraries(dummy_test PRIVATE xcap-sample-repo)
+#target_link_libraries(dummy_test PRIVATE nautilus Catch2::Catch2)
+target_link_libraries(dummy_test PRIVATE nautilus)
 
 #include(Catch)
 #catch_discover_tests(dummy_test)

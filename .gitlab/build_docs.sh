@@ -1,6 +1,6 @@
 #!/bin/bash
 PARENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]:-$0}" )" >/dev/null 2>&1 && pwd )"
-PROJECT_NAME=xcap-sample-repo
+PROJECT_NAME=nautilus
 
 print_usage() {
   echo "usage: build_docs [-h] system"

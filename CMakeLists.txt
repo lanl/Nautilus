@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(xcap-sample-repo 
+project(nautilus
   VERSION 0.0.1
   LANGUAGES CXX
-  DESCRIPTION "XCAP-Sample-Repo"
-  HOMEPAGE_URL "https://re-git.lanl.gov/xcap/ec/xcap-sample-repo"
+  DESCRIPTION "Nautilus nuclear utilities library"
+  HOMEPAGE_URL "https://re-git.lanl.gov/xcap/ec/nautilus"
 )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -72,8 +72,8 @@ if(ENABLE_CLANG_FORMAT)
   find_package(ClangFormat 12.0.0 REQUIRED)
 
   set(GLOBS
-      ${PROJECT_SOURCE_DIR}/xcap-sample-repo/[^\.]*.cpp    ${PROJECT_SOURCE_DIR}/xcap-sample-repo/[^\.]*.hpp
-      ${PROJECT_SOURCE_DIR}/test/[^\.]*.cpp                ${PROJECT_SOURCE_DIR}/test/[^\.]*.hpp
+      ${PROJECT_SOURCE_DIR}/nautilus/[^\.]*.cpp ${PROJECT_SOURCE_DIR}/nautilus/[^\.]*.hpp
+      ${PROJECT_SOURCE_DIR}/test/[^\.]*.cpp     ${PROJECT_SOURCE_DIR}/test/[^\.]*.hpp
   )
 
   file(GLOB_RECURSE FORMAT_SOURCES CONFIGURE_DEPENDS ${GLOBS})

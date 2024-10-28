@@ -3,15 +3,11 @@ stages:
   - build_n_test
 
 variables:
-  PROJECT_NAME: xcap-sample-repo
+  PROJECT_NAME: nautilus
   ENABLE_CDASH: true
   ENABLED_CLUSTERS: "darwin,rocinante,venado,rzansel,rzvernal,rzadams"
-  VENADO_USERS:  "/rberger|ktsai|junghans/i"
-  RZANSEL_USERS: "/rberger|ktsai|junghans/i"
-  RZVERNAL_USERS: "/rberger|ktsai|junghans/i"
-  RZADAMS_USERS: "/rberger|ktsai|junghans/i"
   # use this variable if there is a xcap/deployment MR you want to use instead
-  # PROJECT_SPACK_ENV_VERSION: mr/51/2024-10-15
+  # PROJECT_SPACK_ENV_VERSION: mr/59/2024-10-15
 
 include:
  - .gitlab/common.yml
@@ -55,7 +51,7 @@ darwin_custom_gcc:
   needs: []
   variables:
     SPACK_ENV_NAME: custom-spec
-    SPACK_ENV_SPEC: "xcap-sample-repo@main%gcc +test build_type=Release ^[virtuals=mpi] openmpi"
+    SPACK_ENV_SPEC: "nautilus@main%gcc +test build_type=Release ^[virtuals=mpi] openmpi"
     # SUBMIT_TO_CDASH is false by default
 
 darwin_openmpi_gcc:

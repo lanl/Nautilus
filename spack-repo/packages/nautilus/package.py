@@ -6,11 +6,11 @@
 from spack import *
 
 
-class XcapSampleRepo(CMakePackage):
-    """XCAP-SAMPLE-REPO library."""
+class Nautilus(CMakePackage):
+    """Nautilus library."""
 
-    homepage = "https://re-git.lanl.gov/xcap/ec/project-templates/xcap-sample-repo"
-    git = "ssh://git@asc-git.lanl.gov:10022/xcap/ec/project-templates/xcap-sample-repo.git"
+    homepage = "https://re-git.lanl.gov/xcap/ec/nautilus"
+    git = "ssh://git@asc-git.lanl.gov:10022/xcap/ec/nautilus.git"
     #url = ""
 
     version("main", branch="main")

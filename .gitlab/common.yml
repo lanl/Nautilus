@@ -3,6 +3,7 @@ default:
   before_script:
    - unset CI_MERGE_REQUEST_DESCRIPTION
    - unset CI_MERGE_REQUEST_TITLE
+   - 'echo "User: $GITLAB_USER_LOGIN"'
 
 .ascgit_job:
   id_tokens:
@@ -80,7 +81,7 @@ default:
   allow_failure: true
   variables:
     CLUSTER: venado
-    SCHEDULER_PARAMETERS: "-N 1 -p standard --time=02:00:00"
+    SCHEDULER_PARAMETERS: "-N 1 -A lanl_ai_g -p gpu --time=02:00:00"
   tags:
     - venado
     - batch
