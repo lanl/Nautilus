@@ -45,7 +45,6 @@ If you are using `Spack`_ to provision dependencies, then follow the steps as su
    - spack env activate -d spack_env
    - spack repo add --scope env:spack_env spack-repo
    - spack repo list
-   - spack mirror add --scope env:spack_env unstable-mirror file://${XCAP_PROJECT_DIR}/spack-mirror
    - spack mirror list
    - spack add nautilus@main+doc%gcc@12.2.0
    - spack install -j $(nproc) --show-log-on-error --no-checksum --yes-to-all --include-build-deps --fresh -u cmake
@@ -68,12 +67,9 @@ How to Build .rst into .html
 
 After you have the dependencies in your environment, then simply build your documentation as the following:
 
-.. literalinclude:: ../../../.gitlab-ci.yml
-   :lineno-match:
-   :language: yaml
-   :lines: 442-447
+.. code-block::
 
-from :code:`.gitlab-ci.yml`
+   source .gitlab/build_docs.sh <cluster-name>
 
 .. note:: 
    You can view the documentation webpage locally on your web browser by passing in the URL as :code:`file:///path/to/nautilus/doc/sphinx/_build/html/index.html`
