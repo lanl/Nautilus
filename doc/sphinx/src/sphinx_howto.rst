@@ -45,9 +45,8 @@ If you are using `Spack`_ to provision dependencies, then follow the steps as su
    - spack env activate -d spack_env
    - spack repo add --scope env:spack_env spack-repo
    - spack repo list
-   - spack mirror add --scope env:spack_env unstable-mirror file://${XCAP_PROJECT_DIR}/spack-mirror
    - spack mirror list
-   - spack add xcap-sample-repo@main+doc%gcc@12.2.0
+   - spack add nautilus@main+doc%gcc@12.2.0
    - spack install -j $(nproc) --show-log-on-error --no-checksum --yes-to-all --include-build-deps --fresh -u cmake
 
 from :code:`.gitlab-ci.yml`
@@ -68,32 +67,29 @@ How to Build .rst into .html
 
 After you have the dependencies in your environment, then simply build your documentation as the following:
 
-.. literalinclude:: ../../../.gitlab-ci.yml
-   :lineno-match:
-   :language: yaml
-   :lines: 442-447
+.. code-block::
 
-from :code:`.gitlab-ci.yml`
+   source .gitlab/build_docs.sh <cluster-name>
 
 .. note:: 
-   You can view the documentation webpage locally on your web browser by passing in the URL as :code:`file:///path/to/xcap-sample-repo/doc/sphinx/_build/html/index.html`
+   You can view the documentation webpage locally on your web browser by passing in the URL as :code:`file:///path/to/nautilus/doc/sphinx/_build/html/index.html`
 
 How to Deploy
 -------------
 
-#. Submit a MR with your .rst changes for documentation on `Gitlab XCAP-SAMPLE-REPO`_
+#. Submit a MR with your .rst changes for documentation on `Gitlab Nautilus`_
 #. Get your MR reviewed and merged into `main`
 #. Make sure the :code:`pages` CI job passes in the Gitlab CI pipeline
 
-.. _Gitlab XCAP-SAMPLE-REPO: https://re-git.lanl.gov/xcap/ec/xcap-sample-repo
+.. _Gitlab Nautilus: https://re-git.lanl.gov/xcap/ec/nautilus
 
 As soon as the MR is merged into `main`, this will trigger the Gitlab Pages deployment automatically if the :code:`pages` CI job passes on the repo.
 
-As long as you have access to the `re-git XCAP-SAMPLE-REPO`_, then you can go and behold the beautiful, updated `XCAP-SAMPLE-REPO Documentation`_!
+As long as you have access to the `re-git Nautilus`_, then you can go and behold the beautiful, updated `Nautilus Documentation`_!
 
-.. _re-git XCAP-SAMPLE-REPO: https://re-git.lanl.gov/xcap/ec/xcap-sample-repo
+.. _re-git Nautilus: https://re-git.lanl.gov/xcap/ec/nautilus
 
-.. _XCAP-SAMPLE-REPO Documentation: http://xcap.re-pages.lanl.gov/ec/xcap-sample-repo
+.. _Nautilus Documentation: http://xcap.re-pages.lanl.gov/ec/nautilus
 
 More Info.
 ----------

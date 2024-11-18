@@ -19,9 +19,9 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-project = 'XCAP-SAMPLE-REPO'
+project = 'Nautilus'
 copyright = '2021-' + str(date.today().year) + ', Triad National Security, LLC. All Rights Reserved.'
-author = 'The XCAP-SAMPLE-REPO team'
+author = 'The Nautilus team'
 
 
 # -- General configuration ---------------------------------------------------

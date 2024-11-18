@@ -1,9 +1,9 @@
 #!/bin/bash
 ###############################################################################
-export PROJECT_NAME=xcap-sample-repo
+export PROJECT_NAME=nautilus
 export PROJECT_DEFAULT_BRANCH=main
 export PROJECT_TYPE=ec
-export PROJECT_GROUP=ec/project-templates
+export PROJECT_GROUP=ec
 ###############################################################################
 
 export BUILD_DIR=${BUILD_DIR:-build}
