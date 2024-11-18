@@ -38,7 +38,7 @@ class Nautilus(CMakePackage):
 
     def cmake_args(self):
         args = [
-            self.define("BUILD_TESTING", self.run_tests),
+            self.define("BUILD_TESTING", self.run_tests and self.spec.satisfies("+test")),
             self.define_from_variant("ENABLE_DOCUMENTATION", "doc"),
         ]
         if self.spec.satisfies("^kokkos+rocm"):
