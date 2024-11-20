@@ -13,6 +13,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 ## Library configuration
 ###############################################################################
 
+option(NAUTILUS_SILENCE_WARNINGS "Silence compiler warnings" OFF)
+
 include(GNUInstallDirs)
 
 # mostly standard cmake for header-only library
@@ -163,5 +165,31 @@ endif()
 include(CTest)  # this defines the BUILD_TESTING option
 
 if(BUILD_TESTING)
+  find_package(Catch2 REQUIRED)
   add_subdirectory(test)
+
+  add_subdirectory(nautilus)
 endif()
+
+###############################################################################
+## Configuration Summary
+###############################################################################
+
+include(config_summary)
+
+config_summary_header("Nautilus" "nautilus")
+
+config_summary_block("CMake Options")
+config_summary_variable("CMAKE_BUILD_TYPE")
+config_summary_variable("CMAKE_CXX_COMPILER")
+config_summary_variable("CMAKE_CXX_COMPILER_VERSION")
+config_summary_variable("CMAKE_CXX_FLAGS")
+
+config_summary_block("Dependencies")
+config_summary_dependency("Catch2" "Catch2")
+config_summary_dependency("Kokkos" "Kokkos")
+
+config_summary_block("User Options")
+config_summary_option("NAUTILUS_SILENCE_WARNINGS")
+
+config_summary_print()
