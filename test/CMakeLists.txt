@@ -18,6 +18,12 @@ target_link_libraries(nautilus_testing INTERFACE
     nautilus
 )
 
+if (${ports-of-call_VERSION} VERSION_GREATER_EQUAL 1.3)
+    if (NAUTILUS_ENABLE_KOKKOS)
+        target_compile_definitions(nautilus_testing INTERFACE PORTABILITY_STRATEGY_KOKKOS)
+    endif()
+endif()
+
 if(NOT NAUTILUS_SILENCE_WARNINGS)
     # turn on strict warnings and error
     # NOTE: The ROCm 6.2.1 installation on some machines (RZAdams and RZVernal at least) will

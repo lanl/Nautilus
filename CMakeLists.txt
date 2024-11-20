@@ -68,9 +68,9 @@ add_library(XCAP::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 ###############################################################################
 
 # enable clang-format support
-option(ENABLE_CLANG_FORMAT "Enable Clang-Format support" OFF)
+option(NAUTILUS_ENABLE_CLANG_FORMAT "Enable Clang-Format support" OFF)
 
-if(ENABLE_CLANG_FORMAT)
+if(NAUTILUS_ENABLE_CLANG_FORMAT)
   find_package(ClangFormat 12.0.0 REQUIRED)
 
   set(GLOBS
@@ -86,9 +86,9 @@ endif()
 
 ## Documentation
 
-option(ENABLE_DOCUMENTATION "Build documentation" OFF)
+option(NAUTILUS_ENABLE_DOCUMENTATION "Build documentation" OFF)
 
-if(ENABLE_DOCUMENTATION)
+if(NAUTILUS_ENABLE_DOCUMENTATION)
   set(PROJECT_LATEX_FILE latex_guide)
   set(DOCS_SOURCE_DIR ${CMAKE_SOURCE_DIR}/doc/sphinx)
   set(DOCS_BUILD_DIR ${CMAKE_BINARY_DIR}/doc/html)
@@ -124,9 +124,9 @@ endif()
 ## Coverage
 ###############################################################################
 
-option(ENABLE_COVERAGE "Enable Code-Coverage" OFF)
+option(NAUTILUS_ENABLE_COVERAGE "Enable Code-Coverage" OFF)
 
-if(ENABLE_COVERAGE)
+if(NAUTILUS_ENABLE_COVERAGE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -O0")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --coverage")
