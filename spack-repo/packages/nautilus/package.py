@@ -21,6 +21,7 @@ class Nautilus(CMakePackage):
     variant("coverage", default=False, description="Code Coverage Support")
     variant("doc",      default=False, description="Sphinx Documentation Support")
     variant("format",   default=False, description="Clang-Format Support")
+    variant("kokkos",   default=False, description="Enable Kokkos Support")
     variant("test",     default=False, description="Build tests")
 
     # TODO: Do I need to propagate GPU architecture to Kokkos?
