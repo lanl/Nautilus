@@ -145,6 +145,10 @@ prepare_env() {
     spack repo add ${SOURCE_DIR}/spack-repo
   fi
 
+  if [ -d ${SOURCE_DIR}/extern/ports-of-call.git ]; then
+    spack config add "packages:ports-of-call:package_attributes:git:'file://${SOURCE_DIR}/extern/ports-of-call.git'"
+  fi
+
   spack develop -b ${BUILD_DIR} -p ${SOURCE_DIR} --no-clone ${PROJECT_NAME}@${PROJECT_DEFAULT_BRANCH}
 
   if [[ "${SPACK_ENV_NAME}" == "custom-spec" ]]; then
@@ -245,6 +249,10 @@ if ${SHOW_HELP_MESSAGE}; then
     echo " "
     echo -e "${COLOR_BLUE}ssh ${CLUSTER}${COLOR_PLAIN}"
     echo -e "${COLOR_BLUE}cd /your/${PROJECT_NAME}/checkout${COLOR_PLAIN}"
+    if [ -d ${SOURCE_DIR}/extern/ports-of-call.git ]; then
+      echo -e "${COLOR_BLUE}mkdir extern${COLOR_PLAIN}"
+      echo -e "${COLOR_BLUE}git clone --bare ssh://git@re-git.lanl.gov:10022/xcap/oss/ports-of-call.git extern/ports-of-call.git${COLOR_PLAIN}"
+    fi
     if [[ ! -z "${LLNL_FLUX_SCHEDULER_PARAMETERS}" ]]; then
       echo -e "${COLOR_BLUE}flux alloc ${LLNL_FLUX_SCHEDULER_PARAMETERS}${COLOR_PLAIN}"
     elif [[ ! -z "${LLNL_LSF_SCHEDULER_PARAMETERS}" ]]; then
