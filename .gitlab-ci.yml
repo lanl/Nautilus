@@ -24,6 +24,24 @@ pages:
     paths:
       - public
 
+prereq_offline_deps:
+  stage: build_n_test
+  extends: [.ascgit_job]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs: []
+  script:
+    - mkdir extern
+    - git clone --bare https://gitlab-ci-token:${CI_JOB_TOKEN}@re-git.lanl.gov/xcap/oss/ports-of-call.git extern/ports-of-call.git
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - extern
+
 # Spack environments are defined in
 # https://re-git.lanl.gov/xcap/deployment/-/tree/xcap-spack-env/systems
 # for each system and for each XCAP project.
@@ -48,7 +66,8 @@ pages:
 # can therefore make relative includes to common configuration files.
 darwin_custom_gcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: custom-spec
     SPACK_ENV_SPEC: "nautilus@main%gcc +test build_type=Release ^[virtuals=mpi] openmpi"
@@ -56,14 +75,16 @@ darwin_custom_gcc:
 
 darwin_openmpi_gcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: openmpi-gcc
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
 darwin_mpich_cuda_volta_gcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: mpich-cuda-volta-gcc
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p volta-x86 -C cpu_family:haswell"
@@ -71,7 +92,8 @@ darwin_mpich_cuda_volta_gcc:
 
 darwin_mpich_cuda_ampere_gcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: mpich-cuda-ampere-gcc
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p shared-gpu-ampere"
@@ -79,7 +101,8 @@ darwin_mpich_cuda_ampere_gcc:
 
 darwin_mpich_rocm_mi250_gcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: mpich-rocm-gfx90a-gcc
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p shared-gpu-amd-mi250"
@@ -87,7 +110,8 @@ darwin_mpich_rocm_mi250_gcc:
 
 rocinante_craympich_gcc:
   extends: [.ascgit_job, .rocinante_job, .rocinante_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: craympich-gcc
     SUBMIT_TO_CDASH: false
@@ -97,7 +121,8 @@ rocinante_craympich_gcc:
 
 rocinante_craympich_intel:
   extends: [.ascgit_job, .rocinante_job, .rocinante_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: craympich-intel
     SUBMIT_TO_CDASH: false
@@ -107,7 +132,8 @@ rocinante_craympich_intel:
 
 venado_craympich_cuda_gracehopper_gcc:
   extends: [.ascgit_job, .venado_job, .venado_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: craympich-cuda-gracehopper-gcc
     SUBMIT_TO_CDASH: false
@@ -117,7 +143,8 @@ venado_craympich_cuda_gracehopper_gcc:
 
 rzansel_spectrummpi_cuda_volta_gcc:
   extends: [.ascgit_job, .rzansel_job, .rzansel_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: spectrummpi-cuda-volta-gcc
     SUBMIT_TO_CDASH: false              # disable CDash submission, since LLNL systems can't reach them
@@ -128,7 +155,8 @@ rzansel_spectrummpi_cuda_volta_gcc:
 
 rzansel_spectrummpi_cuda_volta_xl:
   extends: [.ascgit_job, .rzansel_job, .rzansel_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: spectrummpi-cuda-volta-xl
     SUBMIT_TO_CDASH: false              # disable CDash submission, since LLNL systems can't reach them
@@ -139,7 +167,8 @@ rzansel_spectrummpi_cuda_volta_xl:
 
 rzvernal_craympich_rocm_mi250_gcc:
   extends: [.ascgit_job, .rzvernal_job, .rzvernal_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: craympich-rocm-gfx90a-gcc
     SUBMIT_TO_CDASH: false              # disable CDash submission, since LLNL systems can't reach them
@@ -150,7 +179,8 @@ rzvernal_craympich_rocm_mi250_gcc:
 
 rzadams_craympich_rocm_mi300_gcc:
   extends: [.ascgit_job, .rzadams_job, .rzadams_regular_job, .build_and_test]
-  needs: []
+  needs:
+    - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: craympich-rocm-gfx942-gcc
     SUBMIT_TO_CDASH: false              # disable CDash submission, since LLNL systems can't reach them
