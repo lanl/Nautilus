@@ -18,18 +18,18 @@ class Nautilus(CMakePackage):
     # version("0.0.0", sha256="") # TODO: Release
 
     # Variants
-    variant("doc", default=False, description="Sphinx Documentation Support")
-    variant("format", default=False, description="Clang-Format Support")
     variant("coverage", default=False, description="Code Coverage Support")
-    variant('test', default=False, description='Enable test package installs')
-    
+    variant("doc",      default=False, description="Sphinx Documentation Support")
+    variant("format",   default=False, description="Clang-Format Support")
+    variant("test",     default=False, description="Build tests")
+
+    # TODO: Do I need to propagate GPU architecture to Kokkos?
 
     # Documentation
     depends_on("py-sphinx", when="+doc")
     depends_on("py-sphinx-multiversion", when="+doc")
     depends_on("py-sphinx-rtd-theme@0.4.3", when="+doc")
     depends_on("py-sphinx-rtd-dark-mode@1.2.4", when="+doc")
-    depends_on("texlive", when="+doc")
 
     # Formatting
     depends_on("llvm@12.0.0+clang", when="+format")
@@ -38,7 +38,7 @@ class Nautilus(CMakePackage):
     depends_on("py-gcovr", when="+coverage")
 
     # Building and testing
-    depends_on("catch2@3.0.1", when="+test")
+    depends_on("catch2@3.0.1:", when="+test")
     depends_on("cmake@3.19:")
     depends_on("kokkos@3.7.01:", when="+kokkos")
     depends_on("ports-of-call@1.5.2:")
@@ -46,13 +46,13 @@ class Nautilus(CMakePackage):
     def cmake_args(self):
         args = [
             self.define("NAUTILUS_BUILD_TESTING", self.run_tests and self.spec.satisfies("+test")),
+            self.define_from_variant("NAUTILUS_BUILD_DOCUMENTATION", "doc"),
             self.define_from_variant("NAUTILUS_ENABLE_COVERAGE", "coverage"),
-            self.define_from_variant("NAUTILUS_ENABLE_DOCUMENTATION", "doc"),
             self.define_from_variant("NAUTILUS_ENABLE_CLANG_FORMAT", "format"),
             self.define_from_variant("NAUTILUS_ENABLE_KOKKOS", "kokkos"),
         ]
-        if self.spec.satisfies("^kokkos+rocm"):
+        if self.spec.satisfies("+kokkos ^kokkos+rocm"):
             args.append(self.define("CMAKE_CXX_COMPILER", self.spec["hip"].hipcc))
-        else:
+        elif self.spec.satisfies("+kokkos"):
             args.append(self.define("CMAKE_CXX_COMPILER", self.spec["kokkos"].kokkos_cxx))
         return args
