@@ -46,7 +46,7 @@ class Nautilus(CMakePackage):
 
     def cmake_args(self):
         args = [
-            self.define("NAUTILUS_BUILD_TESTING", self.run_tests and self.spec.satisfies("+test")),
+            self.define("NAUTILUS_BUILD_TESTS", self.run_tests and self.spec.satisfies("+test")),
             self.define_from_variant("NAUTILUS_BUILD_DOCUMENTATION", "doc"),
             self.define_from_variant("NAUTILUS_ENABLE_COVERAGE", "coverage"),
             self.define_from_variant("NAUTILUS_ENABLE_CLANG_FORMAT", "format"),
