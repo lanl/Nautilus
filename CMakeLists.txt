@@ -143,6 +143,7 @@ if(BUILD_TESTING)
     find_package(Catch2 3.0.1 REQUIRED)
 
     function(add_test_target TEST_NAME)
+        add_library(${TEST_NAME} OBJECT ${ARGN})
         target_include_directories(${TEST_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
         target_link_libraries(${TEST_NAME} PRIVATE nautilus_testing)
         target_sources(${TEST_NAME} PRIVATE $<TARGET_OBJECTS:${TEST_NAME}> )

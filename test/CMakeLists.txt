@@ -70,8 +70,5 @@ catch_discover_tests(test_main)
 # -------------------------------------------------------------------------------------------------
 # test_general: very basic test (such as "Is Catch2 available?")
 
-add_library(test_general OBJECT
-    test_general.cpp
-)
-add_test_target(test_general)
+add_test_target(test_general test_general.cpp)
 
