@@ -101,7 +101,7 @@ endif()
 # Documentation
 ###################################################################################################
 
-if(NAUTILUS_ENABLE_DOCUMENTATION)
+if(NAUTILUS_BUILD_DOCUMENTATION)
     set(DOCS_SOURCE_DIR ${CMAKE_SOURCE_DIR}/doc/sphinx)
     set(DOCS_BUILD_DIR ${CMAKE_BINARY_DIR}/doc/html)
     add_custom_target(docs ALL
