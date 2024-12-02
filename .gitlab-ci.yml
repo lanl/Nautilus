@@ -82,12 +82,29 @@ darwin_openmpi_gcc:
     SPACK_ENV_NAME: openmpi-gcc
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
+darwin_openmpi_gcc_nokokkos:
+  extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
+  needs:
+    - prereq_offline_deps
+  variables:
+    SPACK_ENV_NAME: openmpi-gcc-nokokkos
+    SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
+
 darwin_mpich_cuda_volta_gcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
   needs:
     - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: mpich-cuda-volta-gcc
+    SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p volta-x86 -C cpu_family:haswell"
+    SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
+
+darwin_mpich_cuda_volta_gcc_nokokkos:
+  extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
+  needs:
+    - prereq_offline_deps
+  variables:
+    SPACK_ENV_NAME: mpich-cuda-volta-gcc-nokokkos
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p volta-x86 -C cpu_family:haswell"
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
@@ -106,6 +123,15 @@ darwin_mpich_rocm_mi250_gcc:
     - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: mpich-rocm-gfx90a-gcc
+    SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p shared-gpu-amd-mi250"
+    SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
+
+darwin_mpich_rocm_mi250_gcc_nokokkos:
+  extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
+  needs:
+    - prereq_offline_deps
+  variables:
+    SPACK_ENV_NAME: mpich-rocm-gfx90a-gcc-nokokkos
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p shared-gpu-amd-mi250"
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
