@@ -33,7 +33,7 @@ class Nautilus(CMakePackage):
     depends_on("py-sphinx-rtd-dark-mode@1.2.4", when="+doc")
 
     # Formatting
-    depends_on("llvm@12.0.0+clang", when="+format")
+    depends_on("llvm@17.0.6+clang", when="+format")
 
     # Coverage
     depends_on("py-gcovr", when="+coverage")
