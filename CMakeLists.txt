@@ -138,8 +138,7 @@ endif()
 
 include(CTest)  # this defines the BUILD_TESTING option
 
-# TODO: BUILD_TESTING or NAUTILUS_BUILD_TESTS?
-if(BUILD_TESTING)
+if(NAUTILUS_BUILD_TESTS)
     find_package(Catch2 3.0.1 REQUIRED)
 
     function(add_test_target TEST_NAME)
