@@ -141,6 +141,13 @@ include(CTest)  # this defines the BUILD_TESTING option
 # TODO: BUILD_TESTING or NAUTILUS_BUILD_TESTS?
 if(BUILD_TESTING)
     find_package(Catch2 3.0.1 REQUIRED)
+
+    function(add_test_target TEST_NAME)
+        target_include_directories(${TEST_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+        target_link_libraries(${TEST_NAME} PRIVATE nautilus_testing)
+        target_sources(${TEST_NAME} PRIVATE $<TARGET_OBJECTS:${TEST_NAME}> )
+    endfunction()
+
     add_subdirectory(test)
     add_subdirectory(examples)
     add_subdirectory(${PROJECT_NAME})

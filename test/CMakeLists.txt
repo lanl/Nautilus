@@ -73,7 +73,5 @@ catch_discover_tests(test_main)
 add_library(test_general OBJECT
     test_general.cpp
 )
-target_include_directories(test_general PRIVATE ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(test_general PRIVATE nautilus_testing)
-target_sources(test_main PRIVATE $<TARGET_OBJECTS:test_general> )
+add_test_target(test_general)
 
