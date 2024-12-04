@@ -8,10 +8,13 @@
 
 TEST_CASE("dummy", "[dummy]")
 {
-    printf("Hello World on Kokkos execution space %s\n", Kokkos::DefaultExecutionSpace::name());
-
-    Kokkos::parallel_for(
-        "HelloWorld", 15, KOKKOS_LAMBDA(const int i) {
-            Kokkos::printf("Hello from i = %i\n", i);
-        });
+    std::vector<int> v;
+    for (int n = 0; n < 15; ++n) {
+        v.push_back(n);
+    }
+    printf("v = {");
+    for (auto x : v) {
+        printf("  %d", x);
+    }
+    printf("  }\n");
 }
