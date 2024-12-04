@@ -14,7 +14,7 @@
 add_library(nautilus_testing INTERFACE)
 target_link_libraries(nautilus_testing INTERFACE
     Catch2::Catch2
-    Kokkos::kokkos
+    $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:Kokkos::kokkos>
     nautilus
 )
 
