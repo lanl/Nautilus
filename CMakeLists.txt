@@ -145,7 +145,7 @@ if(NAUTILUS_BUILD_TESTS)
         add_library(${TEST_NAME} OBJECT ${ARGN})
         target_include_directories(${TEST_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
         target_link_libraries(${TEST_NAME} PRIVATE nautilus_testing)
-        target_sources(${TEST_NAME} PRIVATE $<TARGET_OBJECTS:${TEST_NAME}> )
+        target_sources(test_main PRIVATE $<TARGET_OBJECTS:${TEST_NAME}> )
     endfunction()
 
     add_subdirectory(test)
