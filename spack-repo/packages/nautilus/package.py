@@ -5,7 +5,7 @@
 
 from spack import *
 
-class Nautilus(CMakePackage):
+class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     """Nautilus library."""
 
     # Info
@@ -42,6 +42,7 @@ class Nautilus(CMakePackage):
     depends_on("catch2@3.0.1:", when="+test")
     depends_on("cmake@3.19:")
     depends_on("kokkos@3.7.01:", when="+kokkos")
+    depends_on("kokkos+cuda+cuda_constexpr", when="+kokkos+cuda")
     depends_on("ports-of-call@1.5.2:")
 
     def cmake_args(self):
