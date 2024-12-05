@@ -45,6 +45,12 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("kokkos+cuda+cuda_constexpr", when="+kokkos+cuda")
     depends_on("ports-of-call@1.5.2:")
 
+    # Propagate cuda_arch or amdgpu_target requirement to dependencies
+    for _flag in CudaPackage.cuda_arch_values:
+        depends_on(f"kokkos cuda_arch={_flag}", when=f"+kokkos+cuda cuda_arch={_flag}")
+    for _flag in ROCmPackage.amdgpu_targets:
+        depends_on(f"kokkos amdgpu_target={_flag}", when=f"+kokkos +rocm amdgpu_target={_flag}")
+
     def cmake_args(self):
         args = [
             self.define("NAUTILUS_BUILD_TESTS", self.run_tests and self.spec.satisfies("+test")),
