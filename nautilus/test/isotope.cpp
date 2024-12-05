@@ -1,9 +1,5 @@
 #include "isotope.hpp"
 
-// TODO: Can I set CATCH_CONFIG_FAST_COMPILE somewhere globally?  Maybe add to nautilus_testing?
-#ifndef CATCH_CONFIG_FAST_COMPILE
-#define CATCH_CONFIG_FAST_COMPILE
-#endif
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 

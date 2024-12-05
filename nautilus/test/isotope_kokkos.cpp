@@ -1,8 +1,5 @@
 #include "isotope.hpp"
 
-#ifndef CATCH_CONFIG_FAST_COMPILE
-#define CATCH_CONFIG_FAST_COMPILE
-#endif
 #include <catch2/catch_test_macros.hpp>
 
 #include <Kokkos_Core.hpp>

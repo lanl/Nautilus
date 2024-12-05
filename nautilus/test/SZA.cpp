@@ -1,8 +1,5 @@
 #include "SZA.hpp"
 
-#ifndef CATCH_CONFIG_FAST_COMPILE
-#define CATCH_CONFIG_FAST_COMPILE
-#endif
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("SZA ctors & explicit conversion", "[SZA]")
