@@ -8,7 +8,7 @@ variables:
   ENABLED_CLUSTERS: "darwin,rocinante,venado,rzansel,rzvernal,rzadams"
   # Use this variable if there is a xcap/deployment MR you want to use instead
   # Note: only change the MR number, the date is effectively the "Spack version"
-  PROJECT_SPACK_ENV_VERSION: mr/68/2024-10-15
+  #PROJECT_SPACK_ENV_VERSION: mr/68/2024-10-15
 
 include:
  - .gitlab/common.yml
