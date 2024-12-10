@@ -113,24 +113,6 @@ if(NAUTILUS_BUILD_DOCUMENTATION)
         WORKING_DIRECTORY ${DOCS_SOURCE_DIR}
         COMMENT "Building Sphinx documentation..."
     )
-
-    # LaTeX
-    # technically this is a violation of src and build directory separation
-    # TODO avoid manipulating source directory
-    # TODO each version should be its own PDF
-    #set(LATEX_SOURCE_DIR ${CMAKE_SOURCE_DIR}/doc/latex)
-    #set(PROJECT_LATEX_FILE latex_guide)
-    #add_custom_target(latex ALL
-    #    COMMAND pdflatex ${PROJECT_LATEX_FILE}.tex
-    #    #COMMAND bibtex ${PROJECT_LATEX_FILE}.aux
-    #    COMMAND pdflatex ${PROJECT_LATEX_FILE}.tex
-    #    COMMAND pdflatex ${PROJECT_LATEX_FILE}.tex
-    #    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_LATEX_FILE}.pdf ${DOCS_SOURCE_DIR}/_static
-    #    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_LATEX_FILE}.pdf ${DOCS_SOURCE_DIR}/_templates
-    #    WORKING_DIRECTORY ${LATEX_SOURCE_DIR}
-    #    COMMENT "Building Latex document..."
-    #)
-    #add_dependencies(docs latex)
 endif()
 
 ###################################################################################################
