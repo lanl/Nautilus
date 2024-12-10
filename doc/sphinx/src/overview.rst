@@ -33,8 +33,7 @@ accessors:
 - ``A()`` -- the atomic mass number
 - ``S()`` -- the metastable index
 - ``Z()`` -- the atomic number
-
-(TODO: Add the N() accessor to the SZA and the documentation?)
+- ``N()`` -- the neutron number
 
 It also provides the following additional operations:
 
