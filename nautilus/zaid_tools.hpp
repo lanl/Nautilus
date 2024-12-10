@@ -7,7 +7,8 @@
 
 namespace nautilus {
 
-// TODO: There should be a corresponding zaid-to-chemsym conversion routine
+// There should be a corresponding zaid-to-chemsym conversion routine.  However, this will probably
+// be superseded by the new format and its associated translation routines.
 inline int chemsym_to_zaid(std::string const & chemsym)
 {
     if (chemsym == "g") {
