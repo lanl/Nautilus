@@ -65,7 +65,7 @@ source ${PARENT_DIR}/build_and_test.sh --until cmake ${SYSTEM_NAME} format
 section start "cmake_check_format[collapsed=false]" "Run Clang-Format"
 (
 source ${BUILD_ENV}
-cmake -DCMAKE_VERBOSE_MAKEFILE=off -DENABLE_CLANG_FORMAT=on -DNAUTILUS_BUILD_TESTS=off ${BUILD_DIR}
+cmake -DCMAKE_VERBOSE_MAKEFILE=off -DNAUTILUS_ENABLE_CLANG_FORMAT=on -DNAUTILUS_BUILD_TESTS=off ${BUILD_DIR}
 cmake --build ${BUILD_DIR} --target format
 git diff --exit-code --ignore-submodules
 )
