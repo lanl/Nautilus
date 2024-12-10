@@ -24,8 +24,6 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     variant("kokkos",   default=False, description="Enable Kokkos Support")
     variant("test",     default=False, description="Build tests")
 
-    # TODO: Do I need to propagate GPU architecture to Kokkos?
-
     # Documentation
     depends_on("py-sphinx", when="+doc")
     depends_on("py-sphinx-multiversion", when="+doc")
