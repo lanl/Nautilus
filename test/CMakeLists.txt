@@ -32,7 +32,6 @@ if(NOT NAUTILUS_SILENCE_WARNINGS)
     #       instances of that warning.  Then `-Werror` promotes those to errors.  We can turn these
     #       back to non-fatal warnings with `-Wno-error=unused-command-line-argument` or we can
     #       turn off that particular warning with `-Wno-unused-command-line-argument`.
-    # TODO: find comiler flags for non-GNU compatible compilers
     target_compile_options(nautilus_testing INTERFACE
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},GNU>:-Werror;-Wall;-pedantic-errors;-Wunused-parameter>
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},AppleClang>:-Werror;-Wall;-Wunused-parameter>
@@ -45,7 +44,6 @@ if(NOT NAUTILUS_SILENCE_WARNINGS)
     )
 else()
     # turn off warnings
-    # TODO: find comiler flags for non-GNU compatible compilers
     target_compile_options(nautilus_testing INTERFACE
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},GNU>:-w>
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},AppleClang>:>
