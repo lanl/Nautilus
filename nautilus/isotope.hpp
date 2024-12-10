@@ -124,13 +124,6 @@ public:
     }
 };
 
-// TODO: Get rid of this since C++17 gives us CTAD?
-template <typename DataType>
-PORTABLE_FUNCTION constexpr auto make_isotope(SZA sza, DataType mass)
-{
-    return Isotope<DataType>(sza, mass);
-}
-
 // Output streaming
 template <typename DataType>
 std::ostream & operator<<(std::ostream & out, Isotope<DataType> const & isotope)
