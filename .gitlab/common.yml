@@ -81,7 +81,7 @@ default:
   allow_failure: true
   variables:
     CLUSTER: venado
-    SCHEDULER_PARAMETERS: "-N 1 -A lanl_ai_g -p gpu --time=02:00:00"
+    SCHEDULER_PARAMETERS: "-N 1 -A asc-ci_g -p ci_g --qos ci_g --reservation ci_g --time=02:00:00"
   tags:
     - venado
     - batch
