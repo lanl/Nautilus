@@ -1,6 +1,6 @@
 #ifndef DUMMY_HPP_
 #define DUMMY_HPP_
 
-#include <Kokkos_Core.hpp>
+#include <vector>
 
 #endif // DUMMY_HPP_

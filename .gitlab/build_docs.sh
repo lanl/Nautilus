@@ -65,7 +65,7 @@ source ${PARENT_DIR}/build_and_test.sh --until cmake ${SYSTEM_NAME} doc
 section start "cmake_build_docs[collapsed=false]" "CMake Build Documentation"
 (
 source ${BUILD_ENV}
-cmake -DCMAKE_VERBOSE_MAKEFILE=off -DENABLE_DOCUMENTATION=on ${BUILD_DIR}
+cmake -DCMAKE_VERBOSE_MAKEFILE=off -DNAUTILUS_BUILD_DOCUMENTATION=on ${BUILD_DIR}
 cmake --build ${BUILD_DIR} --target docs
 )
 section end "cmake_build_docs"

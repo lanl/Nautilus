@@ -1,10 +1,14 @@
 #include "catch2/catch_session.hpp"
 
+#ifdef NAUTILUS_ENABLE_KOKKOS
 #include <Kokkos_Core.hpp>
+#endif
 
 int main(int argc, char * argv[])
 {
+#ifdef NAUTILUS_ENABLE_KOKKOS
     Kokkos::initialize();
+#endif
 
     int result;
     {
@@ -13,6 +17,8 @@ int main(int argc, char * argv[])
         result = Catch::Session().run(argc, argv);
     }
 
+#ifdef NAUTILUS_ENABLE_KOKKOS
     Kokkos::finalize();
+#endif
     return result;
 }

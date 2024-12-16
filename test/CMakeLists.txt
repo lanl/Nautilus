@@ -14,9 +14,15 @@
 add_library(nautilus_testing INTERFACE)
 target_link_libraries(nautilus_testing INTERFACE
     Catch2::Catch2
-    Kokkos::kokkos
+    $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:Kokkos::kokkos>
     nautilus
 )
+
+if (${ports-of-call_VERSION} VERSION_GREATER_EQUAL 1.3)
+    if (NAUTILUS_ENABLE_KOKKOS)
+        target_compile_definitions(nautilus_testing INTERFACE PORTABILITY_STRATEGY_KOKKOS)
+    endif()
+endif()
 
 if(NOT NAUTILUS_SILENCE_WARNINGS)
     # turn on strict warnings and error
@@ -26,7 +32,6 @@ if(NOT NAUTILUS_SILENCE_WARNINGS)
     #       instances of that warning.  Then `-Werror` promotes those to errors.  We can turn these
     #       back to non-fatal warnings with `-Wno-error=unused-command-line-argument` or we can
     #       turn off that particular warning with `-Wno-unused-command-line-argument`.
-    # TODO: find comiler flags for non-GNU compatible compilers
     target_compile_options(nautilus_testing INTERFACE
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},GNU>:-Werror;-Wall;-pedantic-errors;-Wunused-parameter>
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},AppleClang>:-Werror;-Wall;-Wunused-parameter>
@@ -39,7 +44,6 @@ if(NOT NAUTILUS_SILENCE_WARNINGS)
     )
 else()
     # turn off warnings
-    # TODO: find comiler flags for non-GNU compatible compilers
     target_compile_options(nautilus_testing INTERFACE
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},GNU>:-w>
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},AppleClang>:>
@@ -64,10 +68,5 @@ catch_discover_tests(test_main)
 # -------------------------------------------------------------------------------------------------
 # test_general: very basic test (such as "Is Catch2 available?")
 
-add_library(test_general OBJECT
-    test_general.cpp
-)
-target_include_directories(test_general PRIVATE ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(test_general PRIVATE nautilus_testing)
-target_sources(test_main PRIVATE $<TARGET_OBJECTS:test_general> )
+add_test_target(test_general test_general.cpp)
 
