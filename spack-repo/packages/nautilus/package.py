@@ -43,6 +43,10 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("kokkos+cuda+cuda_constexpr", when="+kokkos+cuda")
     depends_on("ports-of-call@1.5.2:")
 
+    # Require the architecture information when a GPU variant is active
+    conflicts("cuda_arch=none",     when="+cuda", msg="CUDA architecture is required")
+    conflicts("amdgpu_target=none", when="+rocm", msg="ROCm architecture is required")
+
     # Propagate cuda_arch or amdgpu_target requirement to dependencies
     for _flag in CudaPackage.cuda_arch_values:
         depends_on(f"kokkos cuda_arch={_flag}", when=f"+kokkos+cuda cuda_arch={_flag}")
