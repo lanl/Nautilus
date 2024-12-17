@@ -10,3 +10,5 @@
 - Add formatting criteria in `.clang-format` and enable `format` in `.gitlab-ci.yml` by taking out the `.` in front of the job name
   - Note: you may also want to change the `<PROJECT_NAME>_CLANG_FORMAT_VERSION` variable at the top of `.gitlab-ci.yml` to get the clang module version your project needs
 - ~~Replace all instances of `xcap-sample-repo` in file/folder name or in the files with your project name~~
+
+This software is released by Los Alamos National Laboratory as O4852.
