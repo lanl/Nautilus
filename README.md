@@ -11,4 +11,11 @@
   - Note: you may also want to change the `<PROJECT_NAME>_CLANG_FORMAT_VERSION` variable at the top of `.gitlab-ci.yml` to get the clang module version your project needs
 - ~~Replace all instances of `xcap-sample-repo` in file/folder name or in the files with your project name~~
 
-This software is released by Los Alamos National Laboratory as O4852.
+# Release
+
+This software has been approved for open source release and has been assigned O4852 by the Feynman
+Center for Innovation at Los Alamos National Laboratory.
+
+# Copyright
+
+Please see LICENSE file included in this repository.
