@@ -1,8 +1,17 @@
 # Nautilus
 
-Nautilus is the **N**uclear **A**pplication **UTIL**ities and **U**seful **S**tuff library (the
-acronym may change).  It provides useful tools for atomic and nuclear simulation applications in
-C++17.  Nautilus is currently still in progress, and as such does not yet have a 1.0 release.
+**Nautilus**: **N**uclear **A**pplication **UTILities and **U**seful Stuff (the acronym is up for
+debate)
+
+Nautilus is part of the Cross-Cutting Applications Project (XCAP) at LANL.  It is a collection of
+tools to support atomic and nuclear simulation codes, written in C++17.  The goal is to provide
+useful pieces of code that can be shared by a variety of other codes.
+
+If you need support or have a feature request, the best way to reach out to the team is to [open a
+user issue in the Nautilus repository](https://re-git.lanl.gov/xcap/ec/nautilus/-/issues) or email
+[xcap-support@lanl.gov](xcap-support@lanl.gov) using "Nautilus" in your subject line.  The XCAP
+project lead is [Bobby Philip](bphilip@lanl.gov), and the Nautilus library is primarily supported
+by [Brendan Krueger](bkkrueger@lanl.gov) and [Diego Lonardoni](lonardoni@lanl.gov).
 
 # Release
 
