@@ -9,8 +9,8 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     """Nautilus library."""
 
     # Info
-    homepage = "https://re-git.lanl.gov/xcap/ec/nautilus"
-    git = "ssh://git@asc-git.lanl.gov:10022/xcap/ec/nautilus.git"
+    homepage = "https://re-git.lanl.gov/xcap/oss/nautilus"
+    git = "ssh://git@asc-git.lanl.gov:10022/xcap/oss/nautilus.git"
     maintainers = ["bkkrueger"]
 
     # Versions

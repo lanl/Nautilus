@@ -81,15 +81,15 @@ How to Deploy
 #. Get your MR reviewed and merged into `main`
 #. Make sure the :code:`pages` CI job passes in the Gitlab CI pipeline
 
-.. _Gitlab Nautilus: https://re-git.lanl.gov/xcap/ec/nautilus
+.. _Gitlab Nautilus: https://re-git.lanl.gov/xcap/oss/nautilus
 
 As soon as the MR is merged into `main`, this will trigger the Gitlab Pages deployment automatically if the :code:`pages` CI job passes on the repo.
 
 As long as you have access to the `re-git Nautilus`_, then you can go and behold the beautiful, updated `Nautilus Documentation`_!
 
-.. _re-git Nautilus: https://re-git.lanl.gov/xcap/ec/nautilus
+.. _re-git Nautilus: https://re-git.lanl.gov/xcap/oss/nautilus
 
-.. _Nautilus Documentation: http://xcap.re-pages.lanl.gov/ec/nautilus
+.. _Nautilus Documentation: http://xcap.re-pages.lanl.gov/oss/nautilus
 
 More Info.
 ----------

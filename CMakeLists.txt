@@ -8,7 +8,7 @@ project(nautilus
     VERSION 0.0.1
     LANGUAGES CXX
     DESCRIPTION "Nautilus nuclear utilities library"
-    HOMEPAGE_URL "https://re-git.lanl.gov/xcap/ec/nautilus"
+    HOMEPAGE_URL "https://re-git.lanl.gov/xcap/oss/nautilus"
 )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
