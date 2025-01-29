@@ -40,7 +40,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("cmake@3.19:")
     depends_on("kokkos@3.7.01:", when="+kokkos")
     depends_on("kokkos+cuda+cuda_constexpr", when="+kokkos+cuda")
-    depends_on("ports-of-call@1.5.2:")
+    depends_on("ports-of-call@1.7.1:")
 
     # Require the architecture information when a GPU variant is active
     conflicts("cuda_arch=none",     when="+cuda", msg="CUDA architecture is required")
