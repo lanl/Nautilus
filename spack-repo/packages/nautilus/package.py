@@ -1,16 +1,15 @@
-# Copyright 2013-2022 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack import *
+from spack.package import *
 
 class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     """Nautilus library."""
 
     # Info
-    homepage = "https://re-git.lanl.gov/xcap/ec/nautilus"
-    git = "ssh://git@asc-git.lanl.gov:10022/xcap/ec/nautilus.git"
+    homepage = "https://re-git.lanl.gov/xcap/oss/nautilus"
+    git = "ssh://git@asc-git.lanl.gov:10022/xcap/oss/nautilus.git"
     maintainers = ["bkkrueger"]
 
     # Versions
