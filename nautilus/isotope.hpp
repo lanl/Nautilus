@@ -2,9 +2,9 @@
 #define NAUTILUS_ISOTOPE_HPP
 
 #include "nautilus/SZA.hpp"
-#include "nautilus/temporary.hpp"
 
 #include "ports-of-call/portability.hpp"
+#include "ports-of-call/robust_utils.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -155,7 +155,7 @@ public:
         , index_(index)
     {
         // What would a negative index even mean?
-        assert(check_nonnegative(index));
+        assert(PortsOfCall::Robust::check_nonnegative(index));
     }
 
     // Accessor to get the index
