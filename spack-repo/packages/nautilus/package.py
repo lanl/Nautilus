@@ -26,8 +26,8 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     # Documentation
     depends_on("py-sphinx", when="+doc")
     depends_on("py-sphinx-multiversion", when="+doc")
-    depends_on("py-sphinx-rtd-theme@0.4.3", when="+doc")
-    depends_on("py-sphinx-rtd-dark-mode@1.2.4", when="+doc")
+    depends_on("py-sphinx-rtd-theme", when="+doc")
+    depends_on("py-sphinx-rtd-dark-mode", when="+doc")
 
     # Formatting
     depends_on("llvm@17.0.6+clang", when="+format")
