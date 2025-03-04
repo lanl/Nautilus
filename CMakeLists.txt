@@ -33,7 +33,7 @@ option(NAUTILUS_ENABLE_KOKKOS       "Enable Kokkos support"       OFF)
 option(NAUTILUS_SILENCE_WARNINGS    "Silence compiler warnings"   OFF)
 
 # Dependencies ------------------------------------------------------------------------------------
-find_package(ports-of-call 1.5.2 REQUIRED)
+find_package(ports-of-call 1.7.1 REQUIRED)
 target_link_libraries(${PROJECT_NAME} INTERFACE ports-of-call::ports-of-call)
 
 if(NAUTILUS_ENABLE_KOKKOS)

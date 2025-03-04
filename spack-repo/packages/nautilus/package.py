@@ -26,8 +26,8 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     # Documentation
     depends_on("py-sphinx", when="+doc")
     depends_on("py-sphinx-multiversion", when="+doc")
-    depends_on("py-sphinx-rtd-theme@0.4.3", when="+doc")
-    depends_on("py-sphinx-rtd-dark-mode@1.2.4", when="+doc")
+    depends_on("py-sphinx-rtd-theme", when="+doc")
+    depends_on("py-sphinx-rtd-dark-mode", when="+doc")
 
     # Formatting
     depends_on("llvm@17.0.6+clang", when="+format")
@@ -40,7 +40,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("cmake@3.19:")
     depends_on("kokkos@3.7.01:", when="+kokkos")
     depends_on("kokkos+cuda+cuda_constexpr", when="+kokkos+cuda")
-    depends_on("ports-of-call@1.5.2:")
+    depends_on("ports-of-call@1.7.1:")
 
     # Require the architecture information when a GPU variant is active
     conflicts("cuda_arch=none",     when="+cuda", msg="CUDA architecture is required")
