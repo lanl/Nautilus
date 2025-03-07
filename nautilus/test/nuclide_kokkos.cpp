@@ -1,4 +1,4 @@
-#include "isotope.hpp"
+#include "nuclide.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
