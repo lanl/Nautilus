@@ -44,9 +44,9 @@ TEST_CASE("chemsym to zaid", "[zaid_tools]")
     CHECK(zaid_og294 == 118294);
 }
 
-TEST_CASE("isotope zaids from reaction zaid", "[zaid_tools]")
+TEST_CASE("nuclide zaids from reaction zaid", "[zaid_tools]")
 {
-    using nautilus::get_isotope_zaids;
+    using nautilus::get_nuclide_zaids;
     using nautilus::get_product_zaids;
     using nautilus::get_reactant_zaids;
 
@@ -61,13 +61,13 @@ TEST_CASE("isotope zaids from reaction zaid", "[zaid_tools]")
     CHECK(dtna_products.size() == 2);
     CHECK(dtna_products[0] == 1);
     CHECK(dtna_products[1] == 2004);
-    auto dtna_isotopes = get_isotope_zaids(dtna);
-    std::sort(dtna_isotopes.begin(), dtna_isotopes.end());
-    CHECK(dtna_isotopes.size() == 4);
-    CHECK(dtna_isotopes[0] == 1);
-    CHECK(dtna_isotopes[1] == 1002);
-    CHECK(dtna_isotopes[2] == 1003);
-    CHECK(dtna_isotopes[3] == 2004);
+    auto dtna_nuclides = get_nuclide_zaids(dtna);
+    std::sort(dtna_nuclides.begin(), dtna_nuclides.end());
+    CHECK(dtna_nuclides.size() == 4);
+    CHECK(dtna_nuclides[0] == 1);
+    CHECK(dtna_nuclides[1] == 1002);
+    CHECK(dtna_nuclides[2] == 1003);
+    CHECK(dtna_nuclides[3] == 2004);
 
     // three reactants
     std::string const nb10{"n+b10->a+li7+g"};
@@ -81,14 +81,14 @@ TEST_CASE("isotope zaids from reaction zaid", "[zaid_tools]")
     CHECK(nb10_products[0] == 2004);
     CHECK(nb10_products[1] == 3007);
     CHECK(nb10_products[2] == 0);
-    auto nb10_isotopes = get_isotope_zaids(nb10);
-    std::sort(nb10_isotopes.begin(), nb10_isotopes.end());
-    CHECK(nb10_isotopes.size() == 5);
-    CHECK(nb10_isotopes[0] == 0);
-    CHECK(nb10_isotopes[1] == 1);
-    CHECK(nb10_isotopes[2] == 2004);
-    CHECK(nb10_isotopes[3] == 3007);
-    CHECK(nb10_isotopes[4] == 5010);
+    auto nb10_nuclides = get_nuclide_zaids(nb10);
+    std::sort(nb10_nuclides.begin(), nb10_nuclides.end());
+    CHECK(nb10_nuclides.size() == 5);
+    CHECK(nb10_nuclides[0] == 0);
+    CHECK(nb10_nuclides[1] == 1);
+    CHECK(nb10_nuclides[2] == 2004);
+    CHECK(nb10_nuclides[3] == 3007);
+    CHECK(nb10_nuclides[4] == 5010);
 
     // multiplicity > 1 in both reactants and products
     std::string const tt2na{"t+t->2n+a"};
@@ -100,10 +100,10 @@ TEST_CASE("isotope zaids from reaction zaid", "[zaid_tools]")
     CHECK(tt2na_products.size() == 2);
     CHECK(tt2na_products[0] == 1);
     CHECK(tt2na_products[1] == 2004);
-    auto tt2na_isotopes = get_isotope_zaids(tt2na);
-    std::sort(tt2na_isotopes.begin(), tt2na_isotopes.end());
-    CHECK(tt2na_isotopes.size() == 3);
-    CHECK(tt2na_isotopes[0] == 1);
-    CHECK(tt2na_isotopes[1] == 1003);
-    CHECK(tt2na_isotopes[2] == 2004);
+    auto tt2na_nuclides = get_nuclide_zaids(tt2na);
+    std::sort(tt2na_nuclides.begin(), tt2na_nuclides.end());
+    CHECK(tt2na_nuclides.size() == 3);
+    CHECK(tt2na_nuclides[0] == 1);
+    CHECK(tt2na_nuclides[1] == 1003);
+    CHECK(tt2na_nuclides[2] == 2004);
 }

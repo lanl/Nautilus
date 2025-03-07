@@ -130,7 +130,7 @@ inline auto get_product_zaids(std::string const & rzaid)
     return zaid_list;
 }
 
-inline auto get_isotope_zaids(std::string const & rzaid)
+inline auto get_nuclide_zaids(std::string const & rzaid)
 {
     auto split_pos = rzaid.find("->");
     assert(split_pos != std::string::npos);
