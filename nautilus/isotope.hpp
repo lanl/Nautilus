@@ -94,8 +94,6 @@ public:
     }
 
     // Inequality
-    // TODO: Note in the documentation that the Isotope class is ordered, and that it's ordered by
-    //      SZA then mass.
     PORTABLE_FUNCTION constexpr bool operator<(Isotope<DataType> const & other) const
     {
         if (this->sza() == other.sza()) {
