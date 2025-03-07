@@ -42,7 +42,6 @@ Nuclide
 
 The ``Nuclide`` class is based on the ``Isotope`` class from Singe.  For compatibility there is an
 alias called ``Isotope`` in Nautilus, but it is deprecated.
-(TODO: Add and depcreate alias.)
 
 The ``Nuclide`` class consists of an SZA and a mass, providing a slightly more detailed description
 of the nuclide in question.  It provides the following accessors:
@@ -65,7 +64,6 @@ IndexedNuclide
 
 The ``IndexedNuclide`` class is based on the ``ReactionIsotope`` class from Singe.  For
 compatibility there is an alias called ``ReactionIsotope``, but it is deprecated.
-(TODO: Add and depcreate alias.)
 
 The ``IndexedNuclide`` class extends the ``Nuclide`` class, additionally adding an index so that
 information related to this nuclide can be accessed from arrays, so long as those arrays are
@@ -79,9 +77,7 @@ The ``zaid_tools.hpp`` header file provides some useful tools for parsing zaids,
 identifiers used by NDI.  This header is likely to be superceded by a more extensive family of
 tools in future versions of Nautilus.  Additionally, the names in this header are not always
 consistent and correct, as the names were in some cases chosen without a detailed understanding of
-the names and definitions for some formats.  (TODO: I need to put together a documentation page
-about the different formats discussed here: isotope/nuclide zaid, SZA, chemsym, reaction zaid,
-other?)
+the names and definitions for some formats.
 
 The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
 because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
