@@ -9,12 +9,12 @@ Nautilus.
 Atomic nuclei, also called *nuclides*, are composed of protons and neutrons (collectively called
 nucleons).  Those nucleons can be in their lowest-energy state or can be excited into higher-energy
 states.  Terminology and symbols used throughout Nautilus (based on common usage) are:
-* The number of protons is known as the *atomic number* and is represented by the symbol :math:`Z`.
-* The number of nucleons is known as the *atomic mass number* and is represented by the symbol
+- The number of protons is known as the *atomic number* and is represented by the symbol :math:`Z`.
+- The number of nucleons is known as the *atomic mass number* and is represented by the symbol
   :math:`A`.
-* The number of neutrons is represented by the symbol :math:`N`.  This is less commonly used than
+- The number of neutrons is represented by the symbol :math:`N`.  This is less commonly used than
   the atomic mass number, :math:`A`, but is sometimes called the *neutron number*.
-* The excited state terminology is more complicated and is discussed below.
+- The excited state terminology is more complicated and is discussed below.
 
 The term *element* refers to a nuclide with a particular proton count.  Two nuclides that are the
 same element may have different neutron counts and/or excited states.
