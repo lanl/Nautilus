@@ -8,16 +8,7 @@
 
 namespace nautilus {
 
-// TODO: Once I put together the documentation pages on different formats and different quantities
-//       defined for a nuclide, this comment block can either go away or simply point to that
-//       documentation.
 // SZA representation of a nuclide
-// S = metastable state number
-//    (note: this is not the same as the excitation level as not all excitation levels will be
-//    long-lived enough to be classified as metastable states.)
-// Z = atomic number
-// A = atomic mass number
-// N = neutron number = A - Z
 class SZA
 {
 public:
