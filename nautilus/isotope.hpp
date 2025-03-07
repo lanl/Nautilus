@@ -118,7 +118,7 @@ public:
     }
     PORTABLE_FUNCTION constexpr bool operator>(Isotope<DataType> const & other) const
     {
-        return !(*this <= other)
+        return !(*this <= other);
     }
 };
 
