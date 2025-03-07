@@ -33,7 +33,7 @@ elementals are typically the natural abundances; specifics can be found in vario
 and are beyond the scope of Nautilus.  In terms of representation in software, elemental mixtures
 are often stored as a "nuclide" with some special value to indicate an elemental mixture instead of
 a specific nuclide.  Typically the special value used to indicate an elemental mixture is setting
-:math:`A = 0`, but that can depend on how nuclide data in encoded in memory.
+:math:`A = 0`, but that can depend on how nuclide data is encoded in memory.
 
 Excited States and Metastable States
 ---------------------------------------------------------------------------------------------------
