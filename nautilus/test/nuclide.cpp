@@ -9,22 +9,22 @@ using Catch::Matchers::WithinRel;
 
 // ================================================================================================
 
-TEST_CASE("Isotope aggregate construction", "[isotope]")
+TEST_CASE("Nuclide aggregate construction", "[nuclide]")
 {
-    using nautilus::Isotope;
+    using nautilus::Nuclide;
     using nautilus::SZA;
 
     constexpr double mass_alpha = 6.644657230e-24;
 
-    // Build a double-precision Isotope
+    // Build a double-precision Nuclide
     // -- SZA, mass
-    Isotope<double> my_iso_1{SZA{2004}, mass_alpha};
+    Nuclide<double> my_iso_1{SZA{2004}, mass_alpha};
     // -- int(SZA), mass
-    Isotope<double> my_iso_2(2004, mass_alpha);
+    Nuclide<double> my_iso_2(2004, mass_alpha);
     // -- S, Z, A, mass
-    Isotope<double> my_iso_3(0, 2, 4, mass_alpha);
+    Nuclide<double> my_iso_3(0, 2, 4, mass_alpha);
     // -- Z, A, mass
-    Isotope<double> my_iso_4(2, 4, mass_alpha);
+    Nuclide<double> my_iso_4(2, 4, mass_alpha);
 
     // Verify data
     CHECK(my_iso_1.sza() == SZA{2004});
@@ -39,8 +39,8 @@ TEST_CASE("Isotope aggregate construction", "[isotope]")
     CHECK(my_iso_1 == my_iso_3);
     CHECK(my_iso_1 == my_iso_4);
 
-    // Build a single-precision Isotope
-    Isotope<float> my_iso_sp{2004, float{mass_alpha}};
+    // Build a single-precision Nuclide
+    Nuclide<float> my_iso_sp{2004, float{mass_alpha}};
 
     // Verify data
     CHECK(int(my_iso_sp.sza()) == 2004);
@@ -49,21 +49,21 @@ TEST_CASE("Isotope aggregate construction", "[isotope]")
 
 // ================================================================================================
 
-TEST_CASE("Isotope comparison", "[isotope]")
+TEST_CASE("Nuclide comparison", "[nuclide]")
 {
-    using nautilus::Isotope;
+    using nautilus::Nuclide;
     using nautilus::SZA;
 
     constexpr double mass_he2 = 2.015894;
     constexpr double mass_he3 = 3.016029321967;
     constexpr double mass_li3 = 3.03078;
 
-    Isotope<double> he3{SZA{2003}, mass_he3};
+    Nuclide<double> he3{SZA{2003}, mass_he3};
 
-    Isotope<double> he2{SZA{2002}, mass_he2};
-    Isotope<double> he3_alt{SZA{2003}, mass_li3};
-    Isotope<double> he3m1{SZA{2, 3, 1}, mass_he3};
-    Isotope<double> li3{SZA{3003}, mass_li3};
+    Nuclide<double> he2{SZA{2002}, mass_he2};
+    Nuclide<double> he3_alt{SZA{2003}, mass_li3};
+    Nuclide<double> he3m1{SZA{2, 3, 1}, mass_he3};
+    Nuclide<double> li3{SZA{3003}, mass_li3};
 
     // Self-consistency
     CHECK(he3 == he3);

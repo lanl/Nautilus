@@ -1,5 +1,5 @@
-#ifndef NAUTILUS_ISOTOPE_HPP
-#define NAUTILUS_ISOTOPE_HPP
+#ifndef NAUTILUS_NUCLIDE_HPP
+#define NAUTILUS_NUCLIDE_HPP
 
 #include "nautilus/SZA.hpp"
 
@@ -9,17 +9,12 @@
 #include <cassert>
 #include <iostream>
 
-// TODO: See notes elsewhere: it may be appropriate to change the terminology and call this a
-//       "nuclide".  That's a question that may be worth bringing up with Diego, Lauren, and
-//       Edward.
-
 namespace nautilus {
 
 // ================================================================================================
 
-// Type for specifying isotopes.
 template <typename DataType>
-struct Isotope {
+struct Nuclide {
 private:
     // The SZA value
     /*
@@ -28,36 +23,36 @@ private:
     */
     SZA sza_;
 
-    // The mass of the isotope
+    // The mass of the nuclide
     DataType mass_;
 
 public:
     // Default constructor: Needed by Kokkos < 4.0
-    PORTABLE_FUNCTION constexpr Isotope()
+    PORTABLE_FUNCTION constexpr Nuclide()
         : sza_(0)
         , mass_(0)
     {}
 
     // Constructor with SZA, mass
-    PORTABLE_FUNCTION constexpr Isotope(SZA const sza, DataType const m)
+    PORTABLE_FUNCTION constexpr Nuclide(SZA const sza, DataType const m)
         : sza_(sza)
         , mass_(m)
     {}
 
     // Constructor with int(SZA), mass
-    PORTABLE_FUNCTION constexpr Isotope(int const sza, DataType const m)
+    PORTABLE_FUNCTION constexpr Nuclide(int const sza, DataType const m)
         : sza_(sza)
         , mass_(m)
     {}
 
     // Constructor with Z, A, mass
-    PORTABLE_FUNCTION constexpr Isotope(int const Z, int const A, DataType const m)
+    PORTABLE_FUNCTION constexpr Nuclide(int const Z, int const A, DataType const m)
         : sza_(Z, A)
         , mass_(m)
     {}
 
     // Constructor with S, Z, A, mass
-    PORTABLE_FUNCTION constexpr Isotope(int const S, int const Z, int const A, DataType const m)
+    PORTABLE_FUNCTION constexpr Nuclide(int const S, int const Z, int const A, DataType const m)
         : sza_(Z, A, S)
         , mass_(m)
     {}
@@ -81,20 +76,20 @@ public:
     PORTABLE_FUNCTION constexpr auto mass() const { return mass_; }
 
     // Equality
-    PORTABLE_FUNCTION constexpr bool operator==(Isotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator==(Nuclide<DataType> const & other) const
     {
         bool equal = true;
         equal = equal && (this->sza_ == other.sza_);
         equal = equal && (this->mass_ == other.mass_);
         return equal;
     }
-    PORTABLE_FUNCTION constexpr bool operator!=(Isotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator!=(Nuclide<DataType> const & other) const
     {
         return !(*this == other);
     }
 
     // Inequality
-    PORTABLE_FUNCTION constexpr bool operator<(Isotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator<(Nuclide<DataType> const & other) const
     {
         if (this->sza() == other.sza()) {
             return this->mass() < other.mass();
@@ -102,11 +97,11 @@ public:
             return this->sza() < other.sza();
         }
     }
-    PORTABLE_FUNCTION constexpr bool operator>=(Isotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator>=(Nuclide<DataType> const & other) const
     {
         return !(*this < other);
     }
-    PORTABLE_FUNCTION constexpr bool operator<=(Isotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator<=(Nuclide<DataType> const & other) const
     {
         if (this->sza() == other.sza()) {
             return this->mass() <= other.mass();
@@ -114,42 +109,46 @@ public:
             return this->sza() <= other.sza();
         }
     }
-    PORTABLE_FUNCTION constexpr bool operator>(Isotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator>(Nuclide<DataType> const & other) const
     {
         return !(*this <= other);
     }
 };
 
+// **DEPRECATED**
+// Alias for compatibility with original Singe names
+template <typename DataType>
+using Isotope = Nuclide<DataType>;
+
 // Output streaming
 template <typename DataType>
-std::ostream & operator<<(std::ostream & out, Isotope<DataType> const & isotope)
+std::ostream & operator<<(std::ostream & out, Nuclide<DataType> const & nuclide)
 {
-    out << "Isotope(Z=" << isotope.Z() << ",A=" << isotope.A() << ")";
+    out << "Nuclide(Z=" << nuclide.Z() << ",A=" << nuclide.A() << ")";
     return out;
 }
 
 // ================================================================================================
 
-// The ReactionIsotope class is the base upon which Reactant and Product are built
-// TODO: Update the name and description (see TODO comments in documentation file).  Reactant and
-//       Product don't exist in Nautilus, but only in Singe.
+// The IndexedNuclide class extends Nuclide by adding an index, for accessing data in
+// consistently-ordered containers.
 template <typename DataType>
-class ReactionIsotope : public Isotope<DataType>
+class IndexedNuclide : public Nuclide<DataType>
 {
 private:
-    // What is the index for this isotope in the isotope list?
+    // What is the index for this nuclide in the nuclide list?
     int index_;
 
 public:
     // Default constructor: Needed by Kokkos < 4.0
-    PORTABLE_FUNCTION constexpr ReactionIsotope()
-        : Isotope<DataType>()
+    PORTABLE_FUNCTION constexpr IndexedNuclide()
+        : Nuclide<DataType>()
         , index_{0}
     {}
 
     // Constructor
-    PORTABLE_FUNCTION constexpr ReactionIsotope(Isotope<DataType> const & iso, int const & index)
-        : Isotope<DataType>(iso)
+    PORTABLE_FUNCTION constexpr IndexedNuclide(Nuclide<DataType> const & iso, int const & index)
+        : Nuclide<DataType>(iso)
         , index_(index)
     {
         assert(PortsOfCall::Robust::check_nonnegative(index));
@@ -159,19 +158,24 @@ public:
     PORTABLE_FUNCTION constexpr int index() const { return index_; }
 
     // Comparison for the base class, to make comparisons easier for the derived classes
-    PORTABLE_FUNCTION constexpr bool operator==(ReactionIsotope<DataType> const & other) const
+    PORTABLE_FUNCTION constexpr bool operator==(IndexedNuclide<DataType> const & other) const
     {
-        bool equal = Isotope<DataType>::operator==(other);
+        bool equal = Nuclide<DataType>::operator==(other);
         equal = equal && (this->index_ == other.index());
         return equal;
     }
 };
 
+// **DEPRECATED**
+// Alias for compatibility with original Singe names
+template <typename DataType>
+using ReactionIsotope = Nuclide<DataType>;
+
 // Output streaming
 template <typename DataType>
-std::ostream & operator<<(std::ostream & out, ReactionIsotope<DataType> const & isotope)
+std::ostream & operator<<(std::ostream & out, IndexedNuclide<DataType> const & nuclide)
 {
-    out << "ReactionIsotope(Z=" << isotope.Z() << ",A=" << isotope.A() << ")";
+    out << "IndexedNuclide(Z=" << nuclide.Z() << ",A=" << nuclide.A() << ")";
     return out;
 }
 
@@ -179,4 +183,4 @@ std::ostream & operator<<(std::ostream & out, ReactionIsotope<DataType> const & 
 
 } // end namespace nautilus
 
-#endif // #ifndef NAUTILUS_ISOTOPE_HPP
+#endif // #ifndef NAUTILUS_NUCLIDE_HPP

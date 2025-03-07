@@ -6,7 +6,7 @@
 
 // ================================================================================================
 
-TEST_CASE("Isotope types on GPUs", "[isotope][GPU]")
+TEST_CASE("Nuclide types on GPUs", "[nuclide][GPU]")
 {
     using DataType = double;
     constexpr size_t N{6};
@@ -53,12 +53,12 @@ TEST_CASE("Isotope types on GPUs", "[isotope][GPU]")
 
     // --------------------------------------------------------------------------------------------
 
-    // Test Isotope: SZA and mass
-    SECTION("Isotope")
+    // Test Nuclide: SZA and mass
+    SECTION("Nuclide")
     {
-        printf("Testing Isotope in execution space \"%s\".\n", ExecSpace::name());
-        using Object = nautilus::Isotope<DataType>;
-        // Create a vector of Isotope instance so that I can build them sequentially
+        printf("Testing Nuclide in execution space \"%s\".\n", ExecSpace::name());
+        using Object = nautilus::Nuclide<DataType>;
+        // Create a vector of Nuclide instance so that I can build them sequentially
         std::vector<Object> objects_v;
         for (size_t n{0}; n < N; ++n) {
             objects_v.emplace_back(Zc(n), Ac(n), massc(n));
@@ -77,31 +77,31 @@ TEST_CASE("Isotope types on GPUs", "[isotope][GPU]")
             N, KOKKOS_LAMBDA(int const n) {
                 printf("[%s|%d] start\n", ExecSpace::name(), n);
                 results_gpu(n) = 0;
-                printf("[%s|%d] Isotope::S()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::S()\n", ExecSpace::name(), n);
                 if (objects_gpu(n).S() == 0) {
                     results_gpu(n) += 1;
                 }
-                printf("[%s|%d] Isotope::Z()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::Z()\n", ExecSpace::name(), n);
                 if (objects_gpu(n).Z() == Zg(n)) {
                     results_gpu(n) += 2;
                 }
-                printf("[%s|%d] Isotope::N()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::N()\n", ExecSpace::name(), n);
                 if (objects_gpu(n).N() == Ag(n) - Zg(n)) {
                     results_gpu(n) += 4;
                 }
-                printf("[%s|%d] Isotope::A()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::A()\n", ExecSpace::name(), n);
                 if (objects_gpu(n).A() == Ag(n)) {
                     results_gpu(n) += 8;
                 }
-                printf("[%s|%d] Isotope::sza()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::sza()\n", ExecSpace::name(), n);
                 if (objects_gpu(n).sza() == nautilus::SZA(Zg(n), Ag(n))) {
                     results_gpu(n) += 16;
                 }
-                printf("[%s|%d] Isotope::mass()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::mass()\n", ExecSpace::name(), n);
                 if (objects_gpu(n).mass() == massg(n)) {
                     results_gpu(n) += 32;
                 }
-                printf("[%s|%d] Isotope::operator==()\n", ExecSpace::name(), n);
+                printf("[%s|%d] Nuclide::operator==()\n", ExecSpace::name(), n);
                 Object obj(Zg(n), Ag(n), massg(n));
                 if (objects_gpu(n) == obj) {
                     results_gpu(n) += 64;
