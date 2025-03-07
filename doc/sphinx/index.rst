@@ -21,14 +21,16 @@ supported by `Brendan Krueger`_ and `Diego Lonardoni`_.
 
 __ `repository issues`_
 
-.. _`repository issues`: https://re-git.lanl.gov/xcap/ec/singe/-/issues
+.. _`repository issues`: https://re-git.lanl.gov/xcap/oss/singe/-/issues
 
 .. _`xcap-support@lanl.gov`: xcap-support@lanl.gov
 .. _`Bobby Philip`: bphilip@lanl.gov
 .. _`Brendan Krueger`: bkkrueger@lanl.gov
 .. _`Diego Lonardoni`: lonardoni@lanl.gov
 
-Nautilus is currently export-controlled, but is in process to become open-source.
+Nautilus has been approved for open source release and has been assigned O4852 by the Feynman
+Center for Innovation at Los Alamos National Laboratory.  Please see the LICENSE file included in
+the repository for copyright information.
 
 Indices and tables
 ==================

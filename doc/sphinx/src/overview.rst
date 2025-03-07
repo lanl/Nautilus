@@ -8,8 +8,6 @@ were originally written for Singe but were identified as being potentially usefu
 goal is to further develop the capabilities of Nautilus and provide new features that will be more
 widely useful, while also supporting its shared code goal for atomic and nuclear applications.
 
-.. _`state variables`:
-
 SZA
 ---------------------------------------------------------------------------------------------------
 
@@ -18,7 +16,7 @@ the Nuclear Data Interface (NDI), the SZA is common in many codes.
 
 An SZA is an integer value, defined as
 
-.. math:: \text{SZA} = (S * 1000 + Z) * 1000 + A
+.. math:: \text{SZA} = S * 1,000,000 + Z * 1,000 + A
 
 where :math:`Z` is the atomic number of the nuclide, :math:`A` is the atomic mass number, and
 :math:`S` is the metastable index.
@@ -45,7 +43,13 @@ It also provides the following additional operations:
 Isotope
 ---------------------------------------------------------------------------------------------------
 
-The ``Isotope`` class consists of an SZA and a mass, providing a slight more detailed description
+(TODO: Right now it's called ``Isotope``, but would it make sense to change this to ``Nuclide`` in
+the future?  Similar for related types like ``ReactionIsotope``.  The argument for this would be to
+clarify terminology: an "element" has the same Z but may differ in N and S, and "isotope" has the
+same Z and N but may differ in S, and a "nuclide" has the same Z, N, and S.  Is that the correct
+terminology to apply?)
+
+The ``Isotope`` class consists of an SZA and a mass, providing a slightly more detailed description
 of the nuclide in question.  It provides the following accessors:
 
 - ``A()`` -- the atomic mass number
@@ -69,6 +73,9 @@ information related to this nuclide can be accessed from arrays, so long as thos
 ordered consistently.  In addition to the accessors and operators provided by ``Isotope``, the
 ``ReactionIsotope`` class adds the ``index()`` accessor, which returns the index.
 
+(TODO: ``ReactionIsotope`` vs ``ReactionNuclide`` vs ``IndexedNuclide`` vs ``IndexedIsotope`` vs
+...?)
+
 Zaid Tools
 ---------------------------------------------------------------------------------------------------
 
@@ -76,22 +83,24 @@ The ``zaid_tools.hpp`` header file provides some useful tools for parsing zaids,
 identifiers used by NDI.  This header is likely to be superceded by a more extensive family of
 tools in future versions of Nautilus.  Additionally, the names in this header are not always
 consistent and correct, as the names were in some cases chosen without a detailed understanding of
-the names and definitions for some formats.
+the names and definitions for some formats.  (TODO: I need to put together a documentation page
+about the different formats discussed here: isotope/nuclide zaid, SZA, chemsym, reaction zaid,
+other?)
 
 The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
 because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
 handles a subset of the full chemsym format.  Given a chemsym, it will return an integer with the
-corresponding SZA value.  The names zaid and SZA were incorrectly used interchangeably when this
-function was initially written.
+corresponding SZA value.  The names "zaid" and "SZA" were incorrectly used interchangeably when
+this function was initially written.
 
 The ``half_reaction_zaid_to_chemsym_list`` function accepts a string consisting of either the
 products or reactants of a reaction, written in the format expected for NDI reaction zaids.  It
-will parse the string and return a vector of strings in the chemsym format.  In practice, this is
-not fully consistent with the chemsym format, because there was some early confusion about the
-distinction between two related formats.
+will parse the string and return a ``std::vector`` of strings in the chemsym format.  In practice,
+this is not fully consistent with the chemsym format, because there was some early confusion about
+the distinction between two related formats.
 
 The ``append_zaids`` function combines the ``half_reaction_zaid_to_chemsym_list`` and
-``chemsym_to_zaid`` functions, taking a string listing the products or reactions of a reaction and
+``chemsym_to_zaid`` functions, taking a string listing the products or reactants of a reaction and
 returning a ``std::vector`` of SZA values, with repeated entries deduplicated.
 
 The ``get_reactant_zaids`` function accepts an NDI reaction zaid as a string, identifies the

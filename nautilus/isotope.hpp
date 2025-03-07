@@ -9,6 +9,10 @@
 #include <cassert>
 #include <iostream>
 
+// TODO: See notes elsewhere: it may be appropriate to change the terminology and call this a
+//       "nuclide".  That's a question that may be worth bringing up with Diego, Lauren, and
+//       Edward.
+
 namespace nautilus {
 
 // ================================================================================================
@@ -90,6 +94,8 @@ public:
     }
 
     // Inequality
+    // TODO: Note in the documentation that the Isotope class is ordered, and that it's ordered by
+    //      SZA then mass.
     PORTABLE_FUNCTION constexpr bool operator<(Isotope<DataType> const & other) const
     {
         if (this->sza() == other.sza()) {
@@ -100,11 +106,7 @@ public:
     }
     PORTABLE_FUNCTION constexpr bool operator>=(Isotope<DataType> const & other) const
     {
-        if (this->sza() == other.sza()) {
-            return this->mass() >= other.mass();
-        } else {
-            return this->sza() >= other.sza();
-        }
+        return !(*this < other);
     }
     PORTABLE_FUNCTION constexpr bool operator<=(Isotope<DataType> const & other) const
     {
@@ -116,11 +118,7 @@ public:
     }
     PORTABLE_FUNCTION constexpr bool operator>(Isotope<DataType> const & other) const
     {
-        if (this->sza() == other.sza()) {
-            return this->mass() > other.mass();
-        } else {
-            return this->sza() > other.sza();
-        }
+        return !(*this <= other)
     }
 };
 
@@ -135,6 +133,8 @@ std::ostream & operator<<(std::ostream & out, Isotope<DataType> const & isotope)
 // ================================================================================================
 
 // The ReactionIsotope class is the base upon which Reactant and Product are built
+// TODO: Update the name and description (see TODO comments in documentation file).  Reactant and
+//       Product don't exist in Nautilus, but only in Singe.
 template <typename DataType>
 class ReactionIsotope : public Isotope<DataType>
 {
@@ -154,7 +154,6 @@ public:
         : Isotope<DataType>(iso)
         , index_(index)
     {
-        // What would a negative index even mean?
         assert(PortsOfCall::Robust::check_nonnegative(index));
     }
 
