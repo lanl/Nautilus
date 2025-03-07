@@ -9,6 +9,7 @@ Nautilus.
 Atomic nuclei, also called *nuclides*, are composed of protons and neutrons (collectively called
 nucleons).  Those nucleons can be in their lowest-energy state or can be excited into higher-energy
 states.  Terminology and symbols used throughout Nautilus (based on common usage) are:
+
 - The number of protons is known as the *atomic number* and is represented by the symbol :math:`Z`.
 - The number of nucleons is known as the *atomic mass number* and is represented by the symbol
   :math:`A`.
