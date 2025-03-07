@@ -5,8 +5,8 @@ Welcome to Nautilus's Documentation!
    :maxdepth: 1
    :caption: Contents:
 
-   src/sphinx_howto
-   src/link_pdf
+   src/overview
+   src/nuclei
 
 Nautilus: Nuclear Application UTILities and Useful Stuff (the acronym is up for debate)
 
