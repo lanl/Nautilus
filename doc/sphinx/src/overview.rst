@@ -37,16 +37,14 @@ It also provides the following additional operations:
   first by :math:`Z`, then by :math:`A` for nuclides with the same :math:`Z` value, then by
   :math:`S` for nuclides with the same :math:`Z` and :math:`A` values
 
-Isotope
+Nuclide
 ---------------------------------------------------------------------------------------------------
 
-(TODO: Right now it's called ``Isotope``, but would it make sense to change this to ``Nuclide`` in
-the future?  Similar for related types like ``ReactionIsotope``.  The argument for this would be to
-clarify terminology: an "element" has the same Z but may differ in N and S, and "isotope" has the
-same Z and N but may differ in S, and a "nuclide" has the same Z, N, and S.  Is that the correct
-terminology to apply?)
+The ``Nuclide`` class is based on the ``Isotope`` class from Singe.  For compatibility there is an
+alias called ``Isotope`` in Nautilus, but it is deprecated.
+(TODO: Add and depcreate alias.)
 
-The ``Isotope`` class consists of an SZA and a mass, providing a slightly more detailed description
+The ``Nuclide`` class consists of an SZA and a mass, providing a slightly more detailed description
 of the nuclide in question.  It provides the following accessors:
 
 - ``A()`` -- the atomic mass number
@@ -56,22 +54,23 @@ of the nuclide in question.  It provides the following accessors:
 - ``sza()`` -- the ``SZA`` instance identifying the nuclide
 - ``mass()`` -- the mass of the nuclide
 
-The ``Isotope`` class also provides all comparison operators, ordered the same as the ``SZA``
+The ``Nuclide`` class also provides all comparison operators, ordered the same as the ``SZA``
 class.
 
-Nautilus also provides the streaming operator for an ``Isotope``, providing a simple way to print
+Nautilus also provides the streaming operator for a ``Nuclide``, providing a simple way to print
 values.
 
-ReactionIsotope
+IndexedNuclide
 ---------------------------------------------------------------------------------------------------
 
-The ``ReactionIsotope`` class extends the ``Isotope`` class, additionally adding an index so that
-information related to this nuclide can be accessed from arrays, so long as those arrays are
-ordered consistently.  In addition to the accessors and operators provided by ``Isotope``, the
-``ReactionIsotope`` class adds the ``index()`` accessor, which returns the index.
+The ``IndexedNuclide`` class is based on the ``ReactionIsotope`` class from Singe.  For
+compatibility there is an alias called ``ReactionIsotope``, but it is deprecated.
+(TODO: Add and depcreate alias.)
 
-(TODO: ``ReactionIsotope`` vs ``ReactionNuclide`` vs ``IndexedNuclide`` vs ``IndexedIsotope`` vs
-...?)
+The ``IndexedNuclide`` class extends the ``Nuclide`` class, additionally adding an index so that
+information related to this nuclide can be accessed from arrays, so long as those arrays are
+ordered consistently.  In addition to the accessors and operators provided by ``Nuclide``, the
+``IndexedNuclide`` class adds the ``index()`` accessor, which returns the index.
 
 Zaid Tools
 ---------------------------------------------------------------------------------------------------
