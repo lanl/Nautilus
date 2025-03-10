@@ -126,7 +126,7 @@ public:
         bs_data.set(data, tag_);
     }
 
-    PORTABLE_FUNCTION constexpr void set_user_nuclide(const Storage data)
+    PORTABLE_FUNCTION constexpr void set_user_particle(const Storage data)
     {
         bs_version.set(CURRENT_VERSION, tag_);
         bs_nuclide.set(PARTICLE, tag_);
