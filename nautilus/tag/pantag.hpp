@@ -1,6 +1,8 @@
 #ifndef NAUTILUS_PANTAG_HPP
 #define NAUTILUS_PANTAG_HPP
 
+#include "bitsegment.hpp"
+
 #include "ports-of-call/portability.hpp"
 
 #include <cassert>
