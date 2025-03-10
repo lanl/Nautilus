@@ -48,7 +48,7 @@ private:
 
 public:
     // Generate a mask for the bits in the segment
-    static constexpr auto mask()
+    PORTABLE_FUNCTION static constexpr auto mask()
     {
         // Pick an arbitrary initial value because we first force every bit to true
         Storage mask = 0;
@@ -58,7 +58,7 @@ public:
         return mask;
     }
     // Extract the value in the segment
-    static constexpr auto get(const T t)
+    PORTABLE_FUNCTION static constexpr auto get(const T t)
     {
         auto value = t & mask();
         value >>= RSKIP;
@@ -66,7 +66,7 @@ public:
     }
     // Insert the value in the segment
     template <typename V>
-    static constexpr auto set(const V value, const T t)
+    PORTABLE_FUNCTION static constexpr auto set(const V value, const T t)
     {
         static_assert(sizeof(V) == sizeof(Storage));
         const auto masked_t = t & ~mask();
