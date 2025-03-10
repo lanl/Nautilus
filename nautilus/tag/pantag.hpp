@@ -28,10 +28,10 @@ private:
     //      ||\_____________________________  5      25     data
     //      |\______________________________ 30       1     user flag
     //      \_______________________________ 31       1     nuclide flag
-    BitSegment<Storage, 31,  1> bs_nuclide;
-    BitSegment<Storage, 30,  1> bs_user;
-    BitSegment<Storage,  5, 25> bs_data;
-    BitSegment<Storage,  0,  5> bs_version;
+    BitSegment<Storage, 31, 1> bs_nuclide;
+    BitSegment<Storage, 30, 1> bs_user;
+    BitSegment<Storage, 5, 25> bs_data;
+    BitSegment<Storage, 0, 5> bs_version;
 
     // More detailed breakdown for standard nuclides
     //      10ZZZZZZZAAAAAAAAAMSSSSSSSSVVVVV
@@ -46,14 +46,13 @@ private:
     BitSegment<Storage, 23, 7> bs_Z;
     BitSegment<Storage, 14, 9> bs_A;
     BitSegment<Storage, 13, 1> bs_exc_meta;
-    BitSegment<Storage,  5, 8> bs_S;
+    BitSegment<Storage, 5, 8> bs_S;
 
     static constexpr Storage GROUND = 0b00000000;
 
     Storage tag_;
 
 public:
-
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
 
@@ -66,7 +65,7 @@ public:
     static constexpr Storage METASTABLE_INDEX = 0b1;
 
     PORTABLE_FUNCTION constexpr Pantag(Storage tag) 
-    : tag_{tag}
+        : tag_{tag}
     {
         assert(bs_version.get(tag_) == CURRENT_VERSION);
     }
@@ -76,9 +75,9 @@ public:
     //       constants above back to being private.
     //    -- Using typed enums might also allow me to write a variation of this that defaults to
     //       standard: Pantag(const Enum nuclide_flag, const Storage data1, const Args... args)
-    template <typename ...Args>
+    template <typename... Args>
     PORTABLE_FUNCTION constexpr Pantag(
-            const Storage nuclide_flag, const Storage user_flag, const Args... args)
+        const Storage nuclide_flag, const Storage user_flag, const Args... args)
     {
         set(nuclide_flag, user_flag, args...);
     }
@@ -98,7 +97,7 @@ public:
         bs_S.set(GROUND, tag_);
     }
     PORTABLE_FUNCTION constexpr void set_standard_nuclide(
-            const Storage Z, const Storage A, const Storage state_type, const Storage S)
+        const Storage Z, const Storage A, const Storage state_type, const Storage S)
     {
         bs_version.set(CURRENT_VERSION, tag_);
         bs_nuclide.set(NUCLIDE, tag_);
@@ -135,9 +134,7 @@ public:
 
     template <typename ...Args>
     PORTABLE_FUNCTION constexpr void set(
-            const Storage nuclide_flag,
-            const Storage user_flag,
-            const Args... args)
+        const Storage nuclide_flag, const Storage user_flag, const Args... args)
     {
         if (nuclide_flag == PARTICLE) {
             if (user_flag == STANDARD) {
@@ -160,46 +157,36 @@ public:
     {
         return bs_nuclide.get(tag_) == PARTICLE;
     }
-    PORTABLE_FUNCTION constexpr bool is_nuclide() const
-    {
-        return bs_nuclide.get(tag_) == NUCLIDE;
+    PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide.get(tag_) == NUCLIDE;
     }
 
-    PORTABLE_FUNCTION constexpr bool is_standard() const
-    {
-        return bs_user.get(tag_) == STANDARD;
-    }
-    PORTABLE_FUNCTION constexpr bool is_user() const
-    {
-        return bs_user.get(tag_) == USER;
-    }
+    PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
+    PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user.get(tag_) == USER; }
 
-    PORTABLE_FUNCTION constexpr auto get_data() const
-    {
-        return bs_data.get(tag_);
-    }
+    PORTABLE_FUNCTION constexpr auto get_data() const { return bs_data.get(tag_); }
 
-    PORTABLE_FUNCTION constexpr auto get_version() const
-    {
-        return bs_version.get(tag_);
-    }
+    PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
 
     // standard-Nuclide-specific accessors
 
-    PORTABLE_FUNCTION constexpr auto get_atomic_number() const {
+    PORTABLE_FUNCTION constexpr auto get_atomic_number() const
+    {
         assert(is_nuclide() && is_standard());
         return bs_Z.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr auto get_Z() const {
+    PORTABLE_FUNCTION constexpr auto get_Z() const
+    {
         assert(is_nuclide() && is_standard());
         return bs_Z.get(tag_);
     }
 
-    PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const {
+    PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
+    {
         assert(is_nuclide() && is_standard());
         return bs_A.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr auto get_A() const {
+    PORTABLE_FUNCTION constexpr auto get_A() const
+    {
         assert(is_nuclide() && is_standard());
         return bs_A.get(tag_);
     }
@@ -211,20 +198,24 @@ public:
     //       chooses either an excitation index or a metastable index.
     //    -- Alternately: version 0 only has a metastable index, and we only add excitation states
     //       later as needed.
-    PORTABLE_FUNCTION constexpr auto has_excitation_index() const {
+    PORTABLE_FUNCTION constexpr auto has_excitation_index() const
+    {
         assert(is_nuclide() && is_standard());
         return (bs_exc_meta.get(tag_) == EXCITATION_INDEX) || (bs_S.get(tag_) == GROUND);
     }
-    PORTABLE_FUNCTION constexpr auto has_metastable_index() const {
+    PORTABLE_FUNCTION constexpr auto has_metastable_index() const
+    {
         assert(is_nuclide() && is_standard());
         return (bs_exc_meta.get(tag_) == METASTABLE_INDEX) || (bs_S.get(tag_) == GROUND);
     }
 
-    PORTABLE_FUNCTION constexpr auto get_excitation_index() const {
+    PORTABLE_FUNCTION constexpr auto get_excitation_index() const
+    {
         assert(is_nuclide() && is_standard() && has_excitation_index());
         return bs_S.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr auto get_metastable_index() const {
+    PORTABLE_FUNCTION constexpr auto get_metastable_index() const
+    {
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
     }
