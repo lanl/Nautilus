@@ -2,7 +2,6 @@
 #define NAUTILUS_BITSEGMENT_HPP
 
 #include "ports-of-call/portability.hpp"
-#include "ports-of-call/robust_utils.hpp"
 
 #include <cassert>
 #include <climits>
