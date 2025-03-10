@@ -106,7 +106,7 @@ public:
         bs_user.set(STANDARD, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        bs_exc_meta(state_type, tag_);
+        bs_exc_meta.set(state_type, tag_);
         bs_S.set(S, tag_);
     }
 
