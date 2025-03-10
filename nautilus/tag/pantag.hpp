@@ -66,7 +66,7 @@ public:
     static constexpr Storage EXCITATION_INDEX = 0b0;
     static constexpr Storage METASTABLE_INDEX = 0b1;
 
-    PORTABLE_FUNCTION constexpr Pantag(Storage tag) 
+    PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
     {
         assert(bs_version.get(tag_) == CURRENT_VERSION);
@@ -134,7 +134,7 @@ public:
         bs_data.set(data, tag_);
     }
 
-    template <typename ...Args>
+    template <typename... Args>
     PORTABLE_FUNCTION constexpr void set(
         const Storage nuclide_flag, const Storage user_flag, const Args... args)
     {
@@ -159,8 +159,7 @@ public:
     {
         return bs_nuclide.get(tag_) == PARTICLE;
     }
-    PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide.get(tag_) == NUCLIDE;
-    }
+    PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide.get(tag_) == NUCLIDE; }
 
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
     PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user.get(tag_) == USER; }
