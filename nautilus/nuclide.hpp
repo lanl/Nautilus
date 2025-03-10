@@ -115,10 +115,9 @@ public:
     }
 };
 
-// **DEPRECATED**
 // Alias for compatibility with original Singe names
 template <typename DataType>
-using Isotope = Nuclide<DataType>;
+using Isotope [[deprecated]] = Nuclide<DataType>;
 
 // Output streaming
 template <typename DataType>
@@ -166,10 +165,9 @@ public:
     }
 };
 
-// **DEPRECATED**
 // Alias for compatibility with original Singe names
 template <typename DataType>
-using ReactionIsotope = Nuclide<DataType>;
+using ReactionIsotope [[deprecated]] = Nuclide<DataType>;
 
 // Output streaming
 template <typename DataType>
