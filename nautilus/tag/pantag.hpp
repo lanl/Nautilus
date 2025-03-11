@@ -77,7 +77,7 @@ public:
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
     {
-        assert(bs_version.get(tag_) == CURRENT_VERSION);
+        assert(bs_version(tag_) == CURRENT_VERSION);
     }
 
     template <typename... Args>
@@ -194,39 +194,39 @@ public:
 
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
-        return bs_nuclide.get(tag_) == PARTICLE;
+        return bs_nuclide(tag_) == PARTICLE;
     }
-    PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide.get(tag_) == NUCLIDE; }
+    PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide(tag_) == NUCLIDE; }
 
-    PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
-    PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user.get(tag_) == USER; }
+    PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user(tag_) == STANDARD; }
+    PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user(tag_) == USER; }
 
-    PORTABLE_FUNCTION constexpr auto get_data() const { return bs_data.get(tag_); }
+    PORTABLE_FUNCTION constexpr auto get_data() const { return bs_data(tag_); }
 
-    PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
+    PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version(tag_); }
 
     // standard-Nuclide-specific accessors
 
     PORTABLE_FUNCTION constexpr auto get_atomic_number() const
     {
         assert(is_nuclide() && is_standard());
-        return bs_Z.get(tag_);
+        return bs_Z(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_Z() const
     {
         assert(is_nuclide() && is_standard());
-        return bs_Z.get(tag_);
+        return bs_Z(tag_);
     }
 
     PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
     {
         assert(is_nuclide() && is_standard());
-        return bs_A.get(tag_);
+        return bs_A(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_A() const
     {
         assert(is_nuclide() && is_standard());
-        return bs_A.get(tag_);
+        return bs_A(tag_);
     }
 
     // TODO: The ground state has the same index (0) regardless of whether you are using excitation
@@ -239,23 +239,23 @@ public:
     PORTABLE_FUNCTION constexpr auto has_excitation_index() const
     {
         assert(is_nuclide() && is_standard());
-        return (bs_exc_meta.get(tag_) == EXCITATION_INDEX) || (bs_S.get(tag_) == GROUND);
+        return (bs_exc_meta(tag_) == EXCITATION_INDEX) || (bs_S(tag_) == GROUND);
     }
     PORTABLE_FUNCTION constexpr auto has_metastable_index() const
     {
         assert(is_nuclide() && is_standard());
-        return (bs_exc_meta.get(tag_) == METASTABLE_INDEX) || (bs_S.get(tag_) == GROUND);
+        return (bs_exc_meta(tag_) == METASTABLE_INDEX) || (bs_S(tag_) == GROUND);
     }
 
     PORTABLE_FUNCTION constexpr auto get_excitation_index() const
     {
         assert(is_nuclide() && is_standard() && has_excitation_index());
-        return bs_S.get(tag_);
+        return bs_S(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
         assert(is_nuclide() && is_standard() && has_metastable_index());
-        return bs_S.get(tag_);
+        return bs_S(tag_);
     }
 
     // Comparison operators
