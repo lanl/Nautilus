@@ -35,6 +35,14 @@ private:
     BitSegment<Storage, 5, 25> bs_data;
     BitSegment<Storage, 0, 5> bs_version;
 
+    static constexpr Storage PARTICLE = 0b0;
+    static constexpr Storage NUCLIDE = 0b1;
+
+    static constexpr Storage STANDARD = 0b0;
+    static constexpr Storage USER = 0b1;
+
+    static constexpr Storage CURRENT_VERSION = 0b00000;
+
     // More detailed breakdown for standard nuclides
     //      10ZZZZZZZAAAAAAAAAMSSSSSSSSVVVVV
     //      |||      |        ||       |     rskip   bits   description
@@ -50,23 +58,21 @@ private:
     BitSegment<Storage, 13, 1> bs_exc_meta;
     BitSegment<Storage, 5, 8> bs_S;
 
+    static constexpr Storage EXCITATION_INDEX = 0b0;
+    static constexpr Storage METASTABLE_INDEX = 0b1;
+
     static constexpr Storage GROUND = 0b00000000;
 
     Storage tag_;
 
 public:
-    static constexpr Storage PARTICLE = 0b0;
-    static constexpr Storage NUCLIDE = 0b1;
+    enum class PNType { particle, nuclide };
 
-    static constexpr Storage STANDARD = 0b0;
-    static constexpr Storage USER = 0b1;
+    enum class Mode { standard, user };
 
-    static constexpr Storage CURRENT_VERSION = 0b00000;
+    static constexpr Storage elemental = 0b000000000;
 
-    static constexpr Storage ELEMENTAL = 0b000000000;
-
-    static constexpr Storage EXCITATION_INDEX = 0b0;
-    static constexpr Storage METASTABLE_INDEX = 0b1;
+    enum class Index { excitation, metastable };
 
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
@@ -74,16 +80,17 @@ public:
         assert(bs_version.get(tag_) == CURRENT_VERSION);
     }
 
-    // TODO: For purposes of type checking, it _may_ make sense to create enumerators for
-    //       nuclide/particle, standard/user, excitation/metastable.  Then I would moved the named
-    //       constants above back to being private.
-    //    -- Using typed enums might also allow me to write a variation of this that defaults to
-    //       standard: Pantag(const Enum nuclide_flag, const Storage data1, const Args... args)
     template <typename... Args>
     PORTABLE_FUNCTION constexpr Pantag(
-        const Storage nuclide_flag, const Storage user_flag, const Args... args)
+        const PNType pntype, const Mode mode, const Args... args)
     {
-        set(nuclide_flag, user_flag, args...);
+        set(pntype, mode, args...);
+    }
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr Pantag(
+        const PNType pntype, const Storage s0, const Args... args)
+    {
+        set(pntype, Mode::standard, s0, args...);
     }
 
     // Build a Pantag
@@ -97,18 +104,26 @@ public:
         bs_A.set(A, tag_);
         // TODO: Should we default to an excitation index or a metastable index?
         //    -- See notes below: maybe the ground state will return true for both index queries?
-        bs_exc_meta.set(0b1, tag_); // TODO: ???
+        bs_exc_meta.set(METASTABLE_INDEX, tag_); // TODO: ???
         bs_S.set(GROUND, tag_);
     }
     PORTABLE_FUNCTION constexpr void set_standard_nuclide(
-        const Storage Z, const Storage A, const Storage state_type, const Storage S)
+        const Storage Z, const Storage A, const Index index, const Storage S)
     {
         bs_version.set(CURRENT_VERSION, tag_);
         bs_nuclide.set(NUCLIDE, tag_);
         bs_user.set(STANDARD, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        bs_exc_meta.set(state_type, tag_);
+        switch(index)
+        {
+        case Index::excitation:
+            bs_exc_meta.set(EXCITATION_INDEX, tag_);
+            break;
+        case Index::metastable:
+            bs_exc_meta.set(METASTABLE_INDEX, tag_);
+            break;
+        }
         bs_S.set(S, tag_);
     }
 
@@ -138,24 +153,44 @@ public:
 
     template <typename... Args>
     PORTABLE_FUNCTION constexpr void set(
-        const Storage nuclide_flag, const Storage user_flag, const Args... args)
+        const PNType pntype, const Mode mode, const Args... args)
     {
-        if (nuclide_flag == PARTICLE) {
-            if (user_flag == STANDARD) {
+        switch(pntype)
+        {
+        case PNType::particle:
+            switch(mode)
+            {
+            case Mode::standard:
                 set_standard_particle(args...);
-            } else {
+                break;
+            case Mode::user:
                 set_user_particle(args...);
+                break;
             }
-        } else {
-            if (user_flag == STANDARD) {
+            break;
+        case PNType::nuclide:
+            switch(mode)
+            {
+            case Mode::standard:
                 set_standard_nuclide(args...);
-            } else {
+                break;
+            case Mode::user:
                 set_user_nuclide(args...);
+                break;
             }
+            break;
         }
+    }
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set(
+        const PNType pntype, const Storage s0, const Args... args)
+    {
+        set(pntype, Mode::standard, s0, args...);
     }
 
     // Generic accessors
+
+    PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
 
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
