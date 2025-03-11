@@ -18,21 +18,32 @@ TEST_CASE("BitSegment on GPUs", "[tag][bitsegment][GPU]")
             results_gpu(n) = 0;
             using nautilus::tag::BitSegment;
             uint32_t num = 0x0000FFFF;
-            BitSegment<int32_t, 16, 16> bs;
-            if (bs.mask() == 0xFFFF0000) {
+            BitSegment<int32_t, 16, 16> bs0;
+            if (bs0.mask() == 0xFFFF0000) {
                 results_gpu(n) += 1;
             }
-            if (bs.get(num) == 0x0000) {
+            if (bs0.get(num) == 0x0000) {
                 results_gpu(n) += 2;
             }
-            num = bs.set(0xFFFF, num);
+            bs0.set(0xFFFF, num);
             if (num == 0xFFFFFFFF) {
                 results_gpu(n) += 4;
             }
-            printf("[%s|%d] end, diff = %d\n", ExecSpace::name(), n, 7 - results_gpu(n));
+            BitSegment<int32_t, 16, 10> bs1;
+            if (bs1.mask() == 0x0000FFFF) {
+                results_gpu(n) += 8;
+            }
+            if (bs1(num) == 0xFFFF) {
+                results_gpu(n) += 16;
+            }
+            bs1(0x0000, num);
+            if (num == 0xFFFF0000) {
+                results_gpu(n) += 32;
+            }
+            printf("[%s|%d] end, diff = %d\n", ExecSpace::name(), n, 63 - results_gpu(n));
         });
     auto results_cpu = Kokkos::create_mirror_view_and_copy(HostSpace(), results_gpu);
     for (size_t n{0}; n < N; ++n) {
-        CHECK(results_cpu(n) == 7);
+        CHECK(results_cpu(n) == 63);
     }
 }
