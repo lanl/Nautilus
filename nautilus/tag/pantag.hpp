@@ -81,14 +81,12 @@ public:
     }
 
     template <typename... Args>
-    PORTABLE_FUNCTION constexpr Pantag(
-        const PNType pntype, const Mode mode, const Args... args)
+    PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Mode mode, const Args... args)
     {
         set(pntype, mode, args...);
     }
     template <typename... Args>
-    PORTABLE_FUNCTION constexpr Pantag(
-        const PNType pntype, const Storage s0, const Args... args)
+    PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Storage s0, const Args... args)
     {
         set(pntype, Mode::standard, s0, args...);
     }
@@ -115,14 +113,9 @@ public:
         bs_user.set(STANDARD, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        switch(index)
-        {
-        case Index::excitation:
-            bs_exc_meta.set(EXCITATION_INDEX, tag_);
-            break;
-        case Index::metastable:
-            bs_exc_meta.set(METASTABLE_INDEX, tag_);
-            break;
+        switch(index) {
+        case Index::excitation: bs_exc_meta.set(EXCITATION_INDEX, tag_); break;
+        case Index::metastable: bs_exc_meta.set(METASTABLE_INDEX, tag_); break;
         }
         bs_S.set(S, tag_);
     }
@@ -152,38 +145,25 @@ public:
     }
 
     template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set(
-        const PNType pntype, const Mode mode, const Args... args)
+    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Mode mode, const Args... args)
     {
-        switch(pntype)
-        {
+        switch(pntype) {
         case PNType::particle:
-            switch(mode)
-            {
-            case Mode::standard:
-                set_standard_particle(args...);
-                break;
-            case Mode::user:
-                set_user_particle(args...);
-                break;
+            switch(mode) {
+            case Mode::standard: set_standard_particle(args...); break;
+            case Mode::user: set_user_particle(args...); break;
             }
             break;
         case PNType::nuclide:
-            switch(mode)
-            {
-            case Mode::standard:
-                set_standard_nuclide(args...);
-                break;
-            case Mode::user:
-                set_user_nuclide(args...);
-                break;
+            switch(mode) {
+            case Mode::standard: set_standard_nuclide(args...); break;
+            case Mode::user: set_user_nuclide(args...); break;
             }
             break;
         }
     }
     template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set(
-        const PNType pntype, const Storage s0, const Args... args)
+    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Storage s0, const Args... args)
     {
         set(pntype, Mode::standard, s0, args...);
     }
@@ -192,10 +172,7 @@ public:
 
     PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
 
-    PORTABLE_FUNCTION constexpr bool is_particle() const
-    {
-        return bs_nuclide(tag_) == PARTICLE;
-    }
+    PORTABLE_FUNCTION constexpr bool is_particle() const { return bs_nuclide(tag_) == PARTICLE; }
     PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide(tag_) == NUCLIDE; }
 
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user(tag_) == STANDARD; }
@@ -260,31 +237,12 @@ public:
 
     // Comparison operators
 
-    PORTABLE_FUNCTION constexpr bool operator==(const Pantag other)
-    {
-        return tag_ == other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator!=(const Pantag other)
-    {
-        return tag_ != other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator<=(const Pantag other)
-    {
-        return tag_ <= other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator>=(const Pantag other)
-    {
-        return tag_ >= other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator<(const Pantag other)
-    {
-        return tag_ < other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator>(const Pantag other)
-    {
-        return tag_ > other.tag_;
-    }
-
+    PORTABLE_FUNCTION constexpr bool operator==(const Pantag other) { return tag_ == other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator!=(const Pantag other) { return tag_ != other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator<=(const Pantag other) { return tag_ <= other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator>=(const Pantag other) { return tag_ >= other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator<(const Pantag other) { return tag_ < other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator>(const Pantag other) { return tag_ > other.tag_; }
 };
 
 // ================================================================================================
