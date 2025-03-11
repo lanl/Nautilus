@@ -66,7 +66,7 @@ public:
     PORTABLE_FUNCTION static constexpr auto operator()(const T t) { return get(t); }
     // Insert the value in the segment
     template <typename V>
-    PORTABLE_FUNCTION static constexpr void set(const V value, T& t)
+    PORTABLE_FUNCTION static constexpr void set(const V value, T & t)
     {
         static_assert(sizeof(V) == sizeof(Storage));
         const auto masked_t = t & ~mask();
@@ -76,7 +76,9 @@ public:
         t = masked_t | masked_value;
     }
     template <typename V>
-    PORTABLE_FUNCTION static constexpr void operator()(const V value, T& t) { set(V, t) }
+    PORTABLE_FUNCTION static constexpr void operator()(const V value, T & t) {
+        set(V, t)
+    }
 };
 
 // ================================================================================================
