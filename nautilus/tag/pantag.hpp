@@ -220,6 +220,34 @@ public:
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
     }
+
+    // Comparison operators
+
+    PORTABLE_FUNCTION constexpr bool operator==(const Pantag other)
+    {
+        return tag_ == other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator!=(const Pantag other)
+    {
+        return tag_ != other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator<=(const Pantag other)
+    {
+        return tag_ <= other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator>=(const Pantag other)
+    {
+        return tag_ >= other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator<(const Pantag other)
+    {
+        return tag_ < other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator>(const Pantag other)
+    {
+        return tag_ > other.tag_;
+    }
+
 };
 
 // ================================================================================================
