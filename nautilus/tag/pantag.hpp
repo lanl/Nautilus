@@ -63,6 +63,8 @@ public:
 
     static constexpr Storage CURRENT_VERSION = 0b00000;
 
+    static constexpr Storage ELEMENTAL = 0b000000000;
+
     static constexpr Storage EXCITATION_INDEX = 0b0;
     static constexpr Storage METASTABLE_INDEX = 0b1;
 
