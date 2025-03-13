@@ -172,7 +172,10 @@ public:
 
     PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
 
-    PORTABLE_FUNCTION constexpr bool is_particle() const { return bs_nuclide.get(tag_) == PARTICLE; }
+    PORTABLE_FUNCTION constexpr bool is_particle() const
+    {
+        return bs_nuclide.get(tag_) == PARTICLE;
+    }
     PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide.get(tag_) == NUCLIDE; }
 
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
