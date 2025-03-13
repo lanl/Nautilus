@@ -10,7 +10,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard particle")
     {
-        Pantag my_tag(Pantag::PARTICLE, Pantag::STANDARD, 1);
+        Pantag my_tag(Pantag::PNType::particle, Pantag::Mode::standard, 1);
         CHECK(!my_tag.is_nuclide());
         CHECK(my_tag.is_particle());
 
@@ -24,7 +24,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("user particle")
     {
-        Pantag my_tag(Pantag::PARTICLE, Pantag::USER, 10);
+        Pantag my_tag(PNType::particle, Pantag::Mode::user, 10);
         CHECK(!my_tag.is_nuclide());
         CHECK(my_tag.is_particle());
 
@@ -38,7 +38,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard nuclide (default index)")
     {
-        Pantag my_tag(Pantag::NUCLIDE, Pantag::STANDARD, 28, 56);
+        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 28, 56);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -64,7 +64,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard nuclide (excitation index)")
     {
-        Pantag my_tag(Pantag::NUCLIDE, Pantag::STANDARD, 2, 4 EXCITATION_INDEX, 10);
+        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 2, 4
+                Pantag::Index::excitation, 10);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -89,7 +90,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard nuclide(metastable index)")
     {
-        Pantag my_tag(Pantag::NUCLIDE, Pantag::STANDARD, 6, 12 METASTABLE_INDEX, 1);
+        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 6, 12
+                Pantag::Index::metastable, 1);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -114,7 +116,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("user nuclide")
     {
-        Pantag my_tag(Pantag::NUCLIDE, Pantag::USER, 100);
+        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::user, 100);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
