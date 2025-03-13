@@ -64,8 +64,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard nuclide (excitation index)")
     {
-        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 2, 4
-                Pantag::Index::excitation, 10);
+        Pantag my_tag(
+            Pantag::PNType::nuclide, Pantag::Mode::standard, 2, 4 Pantag::Index::excitation, 10);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -90,8 +90,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard nuclide(metastable index)")
     {
-        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 6, 12
-                Pantag::Index::metastable, 1);
+        Pantag my_tag(
+            Pantag::PNType::nuclide, Pantag::Mode::standard, 6, 12 Pantag::Index::metastable, 1);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
