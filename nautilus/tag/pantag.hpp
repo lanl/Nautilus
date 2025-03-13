@@ -219,23 +219,23 @@ public:
     PORTABLE_FUNCTION constexpr auto has_excitation_index() const
     {
         assert(is_nuclide() && is_standard());
-        return (bs_exc_meta.(tag_) == EXCITATION_INDEX) || (bs_S.get(tag_) == GROUND);
+        return (bs_exc_meta.get(tag_) == EXCITATION_INDEX) || (bs_S.get(tag_) == GROUND);
     }
     PORTABLE_FUNCTION constexpr auto has_metastable_index() const
     {
         assert(is_nuclide() && is_standard());
-        return (bs_exc_meta.(tag_) == METASTABLE_INDEX) || (bs_S.get(tag_) == GROUND);
+        return (bs_exc_meta.get(tag_) == METASTABLE_INDEX) || (bs_S.get(tag_) == GROUND);
     }
 
     PORTABLE_FUNCTION constexpr auto get_excitation_index() const
     {
         assert(is_nuclide() && is_standard() && has_excitation_index());
-        return bs_S.(tag_);
+        return bs_S.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
         assert(is_nuclide() && is_standard() && has_metastable_index());
-        return bs_S.(tag_);
+        return bs_S.get(tag_);
     }
 
     // Comparison operators
