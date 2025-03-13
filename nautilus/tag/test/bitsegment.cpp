@@ -8,7 +8,7 @@ TEST_CASE("BitSegment operations", "[tag][bitsegment]")
 {
     using nautilus::tag::BitSegment;
 
-    uint32_t num = 0b10000000010100000000101000000001;
+    int32_t num = 0b10000000010100000000101000000001;
 
     BitSegment<int32_t, 0, 10> bs0;
     CHECK(bs0.mask() == 0b00000000000000000000001111111111);
