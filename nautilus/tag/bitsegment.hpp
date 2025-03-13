@@ -76,7 +76,8 @@ public:
         t = masked_t | masked_value;
     }
     template <typename V>
-    PORTABLE_FUNCTION static constexpr void operator()(const V value, T & t) {
+    PORTABLE_FUNCTION static constexpr void operator()(const V value, T & t)
+    {
         set(V, t)
     }
 };

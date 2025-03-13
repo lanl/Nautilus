@@ -113,7 +113,7 @@ public:
         bs_user.set(STANDARD, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        switch(index) {
+        switch (index) {
         case Index::excitation: bs_exc_meta.set(EXCITATION_INDEX, tag_); break;
         case Index::metastable: bs_exc_meta.set(METASTABLE_INDEX, tag_); break;
         }
@@ -147,15 +147,15 @@ public:
     template <typename... Args>
     PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Mode mode, const Args... args)
     {
-        switch(pntype) {
+        switch (pntype) {
         case PNType::particle:
-            switch(mode) {
+            switch (mode) {
             case Mode::standard: set_standard_particle(args...); break;
             case Mode::user: set_user_particle(args...); break;
             }
             break;
         case PNType::nuclide:
-            switch(mode) {
+            switch (mode) {
             case Mode::standard: set_standard_nuclide(args...); break;
             case Mode::user: set_user_nuclide(args...); break;
             }
