@@ -63,7 +63,6 @@ public:
         value >>= RSKIP;
         return value;
     }
-    PORTABLE_FUNCTION static constexpr auto operator()(const T t) { return get(t); }
     // Insert the value in the segment
     template <typename V>
     PORTABLE_FUNCTION static constexpr void set(const V value, T & t)
@@ -74,11 +73,6 @@ public:
         const auto masked_value = shifted_value & mask();
         assert(masked_value == shifted_value);
         t = masked_t | masked_value;
-    }
-    template <typename V>
-    PORTABLE_FUNCTION static constexpr void operator()(const V value, T & t)
-    {
-        set(V, t)
     }
 };
 
