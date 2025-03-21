@@ -47,19 +47,19 @@ private:
 
 public:
     // Generate a mask for the bits in the segment
-    PORTABLE_FUNCTION static constexpr auto mask()
+    PORTABLE_FUNCTION static constexpr T mask()
     {
         // Pick an arbitrary initial value because we first force every bit to true
         Storage mask = 0;
         mask = mask | ~mask;
         mask >>= (Nb - COUNT);
         mask <<= RSKIP;
-        return mask;
+        return static_cast<T>(mask);
     }
     // Extract the value in the segment
-    PORTABLE_FUNCTION static constexpr auto get(const T t)
+    PORTABLE_FUNCTION static constexpr T get(const T t)
     {
-        auto value = t & mask();
+        T value = t & mask();
         value >>= RSKIP;
         return value;
     }
@@ -68,9 +68,9 @@ public:
     PORTABLE_FUNCTION static constexpr void set(const V value, T & t)
     {
         static_assert(sizeof(V) == sizeof(Storage));
-        const auto masked_t = t & ~mask();
-        const auto shifted_value = value << RSKIP;
-        const auto masked_value = shifted_value & mask();
+        const T masked_t = t & ~mask();
+        const T shifted_value = value << RSKIP;
+        const T masked_value = shifted_value & mask();
         assert(masked_value == shifted_value);
         t = masked_t | masked_value;
     }
