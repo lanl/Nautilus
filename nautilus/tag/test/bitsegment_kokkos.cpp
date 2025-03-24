@@ -30,7 +30,7 @@ TEST_CASE("BitSegment on GPUs", "[tag][bitsegment][GPU]")
             if (num == static_cast<T>(0xFFFFFFFF)) {
                 results_gpu(n) += 4;
             }
-            BitSegment<T, 16, 10> bs1;
+            BitSegment<T, 0, 16> bs1;
             if (bs1.mask() == 0x0000FFFF) {
                 results_gpu(n) += 8;
             }
