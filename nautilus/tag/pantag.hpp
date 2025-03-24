@@ -154,14 +154,39 @@ public:
         switch (pntype) {
         case PNType::particle:
             switch (mode) {
-            case Mode::standard: set_standard_particle(args...); break;
-            case Mode::user: set_user_particle(args...); break;
+            case Mode::standard: // set_standard_particle(args...); break;
+                // TODO: This works, but it's so brittle that I'm not comfortable with it.
+                if constexpr (sizeof...(args) == 1) {
+                    set_standard_particle(args...);
+                } else {
+                    assert(false);
+                }
+                break;
+            case Mode::user: // set_user_particle(args...); break;
+                if constexpr (sizeof...(args) == 1) {
+                    set_user_particle(args...);
+                } else {
+                    assert(false);
+                }
+                break;
             }
             break;
         case PNType::nuclide:
             switch (mode) {
-            case Mode::standard: set_standard_nuclide(args...); break;
-            case Mode::user: set_user_nuclide(args...); break;
+            case Mode::standard: // set_standard_nuclide(args...); break;
+                if constexpr ((sizeof...(args) >= 2) && (sizeof...(args) <= 4)) {
+                    set_standard_nuclide(args...);
+                } else {
+                    assert(false);
+                }
+                break;
+            case Mode::user: // set_user_nuclide(args...); break;
+                if constexpr (sizeof...(args) == 1) {
+                    set_user_nuclide(args...); break;
+                } else {
+                    assert(false);
+                }
+                break;
             }
             break;
         }
@@ -250,29 +275,6 @@ public:
     PORTABLE_FUNCTION constexpr bool operator>=(const Pantag other) { return tag_ >= other.tag_; }
     PORTABLE_FUNCTION constexpr bool operator<(const Pantag other) { return tag_ < other.tag_; }
     PORTABLE_FUNCTION constexpr bool operator>(const Pantag other) { return tag_ > other.tag_; }
-
-private:
-    // Helpers to manage the generic interfaces (constructor, set method)
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set_standard_nuclide(Args...)
-    {
-        assert(false);
-    }
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set_standard_particle(Args...)
-    {
-        assert(false);
-    }
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set_user_nuclide(Args...)
-    {
-        assert(false);
-    }
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set_user_particle(Args...)
-    {
-        assert(false);
-    }
 };
 
 // ================================================================================================
