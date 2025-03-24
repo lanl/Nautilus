@@ -82,6 +82,10 @@ public:
 
     template <typename... Args>
     PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Mode mode, const Args... args)
+        : tag_{0} // TODO: We're going to overwrite, but the compiler wants a starting value
+                  //       because we're overwriting a bit at a time.  Is this the right value?  Or
+                  //       maybe the value should be where tag_ is declared?  Or maybe we don't
+                  //       want to imply that we're giving a "valid" default?
     {
         set(pntype, mode, args...);
     }
@@ -119,6 +123,13 @@ public:
         }
         bs_S.set(S, tag_);
     }
+    // TODO: This should probably be private, because it's just to help the general constructors
+    //       above and/or set methods below.
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set_standard_nuclide(Args...)
+    {
+        static_assert("Incorrect number of arguments to set_standard_nuclide.");
+    }
 
     PORTABLE_FUNCTION constexpr void set_standard_particle(const Storage particle)
     {
@@ -126,6 +137,13 @@ public:
         bs_nuclide.set(PARTICLE, tag_);
         bs_user.set(STANDARD, tag_);
         bs_data.set(particle, tag_);
+    }
+    // TODO: This should probably be private, because it's just to help the general constructors
+    //       above and/or set methods below.
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set_standard_particle(Args...)
+    {
+        static_assert("Incorrect number of arguments to set_standard_particle.");
     }
 
     PORTABLE_FUNCTION constexpr void set_user_nuclide(const Storage data)
@@ -135,6 +153,13 @@ public:
         bs_user.set(USER, tag_);
         bs_data.set(data, tag_);
     }
+    // TODO: This should probably be private, because it's just to help the general constructors
+    //       above and/or set methods below.
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set_user_nuclide(Args...)
+    {
+        static_assert("Incorrect number of arguments to set_user_nuclide.");
+    }
 
     PORTABLE_FUNCTION constexpr void set_user_particle(const Storage data)
     {
@@ -143,7 +168,17 @@ public:
         bs_user.set(USER, tag_);
         bs_data.set(data, tag_);
     }
+    // TODO: This should probably be private, because it's just to help the general constructors
+    //       above and/or set methods below.
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set_user_particle(Args...)
+    {
+        static_assert("Incorrect number of arguments to set_user_particle.");
+    }
 
+    // TODO: This doesn't actually work, because the different routines have a different number of
+    //       arguments.  I would probably have to do something like pass pntype and mode as
+    //       template parameters in order to make something like this work.
     template <typename... Args>
     PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Mode mode, const Args... args)
     {

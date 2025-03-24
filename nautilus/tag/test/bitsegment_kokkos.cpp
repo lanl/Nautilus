@@ -16,20 +16,21 @@ TEST_CASE("BitSegment on GPUs", "[tag][bitsegment][GPU]")
     Kokkos::parallel_for(
         N, KOKKOS_LAMBDA(int const n) {
             results_gpu(n) = 0;
+            using T = int32_t;
             using nautilus::tag::BitSegment;
-            int32_t num = 0x0000FFFF;
-            BitSegment<int32_t, 16, 16> bs0;
-            if (bs0.mask() == static_cast<int32_t>(0xFFFF0000)) {
+            T num = 0x0000FFFF;
+            BitSegment<T, 16, 16> bs0;
+            if (bs0.mask() == static_cast<T>(0xFFFF0000)) {
                 results_gpu(n) += 1;
             }
             if (bs0.get(num) == 0x0000) {
                 results_gpu(n) += 2;
             }
             bs0.set(0xFFFF, num);
-            if (num == static_cast<int32_t>(0xFFFFFFFF)) {
+            if (num == static_cast<T>(0xFFFFFFFF)) {
                 results_gpu(n) += 4;
             }
-            BitSegment<int32_t, 16, 10> bs1;
+            BitSegment<T, 16, 10> bs1;
             if (bs1.mask() == 0x0000FFFF) {
                 results_gpu(n) += 8;
             }
@@ -37,7 +38,7 @@ TEST_CASE("BitSegment on GPUs", "[tag][bitsegment][GPU]")
                 results_gpu(n) += 16;
             }
             bs1.set(0x0000, num);
-            if (num == static_cast<int32_t>(0xFFFF0000)) {
+            if (num == static_cast<T>(0xFFFF0000)) {
                 results_gpu(n) += 32;
             }
             printf("[%s|%d] end, diff = %d\n", ExecSpace::name(), n, 63 - results_gpu(n));
