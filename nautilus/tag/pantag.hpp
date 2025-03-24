@@ -82,10 +82,6 @@ public:
 
     template <typename... Args>
     PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Mode mode, const Args... args)
-        : tag_{0} // TODO: We're going to overwrite, but the compiler wants a starting value
-                  //       because we're overwriting a bit at a time.  Is this the right value?  Or
-                  //       maybe the value should be where tag_ is declared?  Or maybe we don't
-                  //       want to imply that we're giving a "valid" default?
     {
         set(pntype, mode, args...);
     }
