@@ -45,23 +45,35 @@ private:
     // Ensure we don't have an empty segment
     static_assert(COUNT > 0);
 
-public:
-    // Generate a mask for the bits in the segment
-    PORTABLE_FUNCTION static constexpr T mask()
+    // Generate the mask for the bits in the segment
+    // -- Generates the mask as the unsigned Storage type instead of the input T type in order to
+    //    get logical shift-right (shift-right of signed values is implementation-defined, but
+    //    often arithmetic shift-right).
+    PORTABLE_FUNCTION static constexpr Storage unsigned_mask()
     {
         // Pick an arbitrary initial value because we first force every bit to true
         Storage mask = 0;
         mask = mask | ~mask;
         mask >>= (Nb - COUNT);
         mask <<= RSKIP;
-        return static_cast<T>(mask);
+        return mask;
+    }
+
+public:
+    // Generate a mask for the bits in the segment
+    PORTABLE_FUNCTION static constexpr T mask()
+    {
+        return static_cast<T>(unsigned_mask());
     }
     // Extract the value in the segment
     PORTABLE_FUNCTION static constexpr T get(const T t)
     {
-        T value = t & mask();
+        // Work in Storage instead of T because Storage is unsigned and that gets us logical
+        // shift-right (fill with zero) instead of arithmetic shift-right (fill with high bit).
+        Storage value = static_cast<Storage>(t);
+        value &= unsigned_mask();
         value >>= RSKIP;
-        return value;
+        return static_cast<T>(value);
     }
     // Insert the value in the segment
     template <typename V>
