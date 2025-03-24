@@ -45,7 +45,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
-        CHECK(my_tag.get_data() == 0b0011100000111000000000000);
+        //                           Z______A________MI_______
+        CHECK(my_tag.get_data() == 0b0011100000111000100000000);
 
         CHECK(my_tag.get_version() == 0b00000);
 
@@ -72,7 +73,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
-        CHECK(my_tag.get_data() == 0b0011100000111000000001010);
+        //                           Z______A________MI_______
+        CHECK(my_tag.get_data() == 0b0000010000000100000001010);
 
         CHECK(my_tag.get_version() == 0b00000);
 
@@ -98,7 +100,8 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
-        CHECK(my_tag.get_data() == 0b0011100000111000100000001);
+        //                           Z______A________MI_______
+        CHECK(my_tag.get_data() == 0b0000110000001100100000001);
 
         CHECK(my_tag.get_version() == 0b00000);
 
