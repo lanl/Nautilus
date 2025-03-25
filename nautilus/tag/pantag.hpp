@@ -17,6 +17,39 @@ namespace nautilus::tag {
 
 // TODO: Pantag doesn't strike me as a great name, but it'll do as a placeholder for now
 
+// TODO: I have a bunch of accessors/queries defined below for standard nuclides and standard
+//       particles, and I also thought about but rejected others.  I think it's not really clear
+//       what the "right" set of methods is, particularly for particles.
+//    -- With nuclides, you'll use the queries to translate to other formats.  For example, use the
+//       atomic number to look up the chemical symbol, add in the atomic mass number, and
+//       potentially append a qualification with the metastable state.
+//    -- With particles, you can't really use these to uniquely identify the particle.  Instead,
+//       you pretty much have to do some kind of if-else ladder.  If we only want the right methods
+//       to identify things, then we just need the enum and all other particle-specific methods
+//       should go away.  But maybe it's useful to ask things like, "Is this a hadron?" or, "Are
+//       these two particles a particle-antiparticle pair?" 
+//    -- I'm not even convinced that having the different segments of the standard particle format
+//       broken out into BigSegments is worth having.
+//    -- Note, I already deleted the are_antiparticles because the ambiguity around truly-neutral
+//       particles makes it hard to define that method until you do a better job of formulating the
+//       question that the method is answering.
+//    -- A similar ambiguity exists in whether the ground state is an excited state, a metastable
+//       state, or both.  I need to more clearly formulate the question that the method is
+//       answering, otherwise I don't really know what the answer should be in that case.
+//    -- I think I need to stop writing accessors, and instead back up and start working on the
+//       use-cases, starting with the translation routines.  Instead of saying, "Here is a question
+//       that someone _could_ ask, so I'll _try_ to implement the answer," I should be saying,
+//       "Here is a use-case where a question has come up, so I should write the method that
+//       provides the answer."
+//    -- While the particle queries don't uniquely identify the particle, it's possible that they
+//       may have some value in categorizing the particles in a way that makes the _average_
+//       runtime of the method shorter.  That is, for example, knowing you have a lepton means you
+//       only have to check a subset of the full list of particles.  But this would require
+//       checking the implementation details to see which (if any) methods can improve query time.
+//    -- I should start by implementing a detailed format that covers everything (even if it's one
+//       of the verbose "pretty-printing" formats) just so that I can see how the logic works out
+//       in as complete an example as possible.
+
 // Particle-and-Nuclide Tag
 class Pantag
 {
@@ -35,6 +68,12 @@ private:
     BitSegment<Storage, 5, 25> bs_data;
     BitSegment<Storage, 0, 5> bs_version;
 
+    // TODO: There may be some value in having these defined as they are.  But it may make sense to
+    //       instead use bs_nuclide.mask() (and similar below for standard/user) and compare
+    //       against a calibrated value that removes the need to shift and then compare.  Instead,
+    //       make it a mask-and-compare.  But that couples things (the values here would have to be
+    //       kept consistent with the BigSegment definitions above), and there may be other reasons
+    //       why keeping things like this makes sense.
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
 
@@ -63,6 +102,32 @@ private:
 
     static constexpr Storage GROUND = 0b00000000;
 
+    // TODO: Write tests for particles and their accessors.
+
+    // More detailed breakdown for standard particles
+    //      00???????????????????HCIIIAVVVVV
+    //      |||                  |||  ||     rskip   bits   description
+    //      |||                  |||  |\____  0       5     version
+    //      |||                  |||  \_____  5       1     antiparticle flag
+    //      |||                  ||\________  6       3     particle index
+    //      |||                  |\_________  9       1     category flag
+    //      |||                  \__________ 10       1     hadron flag
+    //      ||\_____________________________ 11      19     (unused)
+    //      |\______________________________ 30       1     user flag (standard: 0)
+    //      \_______________________________ 31       1     nuclide flag (nuclide: 1)
+    BitSegment<Storage, 10, 1> bs_hadron;
+    BitSegment<Storage, 9, 1> bs_category;
+    BitSegment<Storage, 6, 3> bs_pindex;
+    BitSegment<Storage, 5, 1> bs_anti;
+    
+    static constexpr Storage ELEMENTARY = 0b1;
+    static constexpr Storage COMPOSITE = 0b1;
+
+    static constexpr Storage BOSON = 0b0;
+    static constexpr Storage MESON = 0b0;
+    static constexpr Storage LEPTON = 0b1;
+    static constexpr Storage BARYON = 0b1;
+
     Storage tag_;
 
 public:
@@ -73,6 +138,50 @@ public:
     static constexpr Storage elemental = 0b000000000;
 
     enum class Index { excitation, metastable };
+
+    enum class Particles {
+        // elementary bosons
+        photon =                    0b000000,
+        // elementary leptons
+        electron =                  0b010000,
+        positron =                  0b010001,
+        electron_neutrino =         0b010010,
+        electron_antineutrino =     0b010011,
+        muon =                      0b010100,
+        antimuon =                  0b010101,
+        muon_neutrino =             0b010110,
+        muon_antineutrino =         0b010111,
+        // composite leptons
+        neutral_pion =              0b100000,
+        positive_pion =             0b100010,
+        negative_pion =             0b100011,
+        short_kaon =                0b100100,
+        long_kaon =                 0b100110,
+        positive_kaon =             0b101000,
+        negative_kaon =             0b101001,
+        // composite baryons
+        neutron =                   0b110000,
+        antineutron =               0b110001,
+        proton =                    0b110010,
+        antiproton =                0b110011,
+        neutral_lambda_baryon =     0b110100,
+        neutral_lambda_antibaryon = 0b110100,
+        positive_sigma_baryon =     0b110110,
+        negative_sigma_antibaryon = 0b110111,
+        negative_sigma_baryon =     0b111000,
+        positive_sigma_antibaryon = 0b111001,
+        neutral_xi_baryon =         0b111010,
+        neutral_xi_antibaryon =     0b111011,
+        negative_xi_baryon =        0b111100,
+        positive_xi_antibaryon =    0b111101,
+        negative_omega_baryon =     0b111110,
+        positive_omega_antibaryon = 0b111111,
+        // alternate baryon antiparticle convention
+        anti_positive_sigma_baryon = negative_sigma_antibaryon,
+        anti_negative_sigma_baryon = positive_sigma_antibaryon,
+        anti_negative_xi_baryon    = positive_xi_antibaryon,
+        anti_negative_omega_baryon = positive_omega_antibaryon,
+    };
 
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
@@ -210,7 +319,7 @@ public:
 
     PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
 
-    // standard-Nuclide-specific accessors
+    // standard-nuclide-specific accessors
 
     PORTABLE_FUNCTION constexpr auto get_atomic_number() const
     {
@@ -261,6 +370,45 @@ public:
     {
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
+    }
+
+    // standard-nuclide-specific accessors
+
+    PORTABLE_FUNCTION constexpr bool is_elementary() const
+    {
+        assert(is_particle() && is_standard());
+        return bs_hadron.get(tag_) == ELEMENTARY;
+    }
+    PORTABLE_FUNCTION constexpr bool is_composite() const
+    {
+        assert(is_particle() && is_standard());
+        return bs_hadron.get(tag_) == COMPOSITE;
+    }
+    PORTABLE_FUNCTION constexpr bool is_hadron() const
+    {
+        assert(is_particle() && is_standard());
+        return bs_hadron.get(tag_) == COMPOSITE;
+    }
+
+    PORTABLE_FUNCTION constexpr bool is_boson() const
+    {
+        assert(is_particle() && is_standard());
+        return is_elementary() && (bs_category.get(tag_) == BOSON);
+    }
+    PORTABLE_FUNCTION constexpr bool is_meson() const
+    {
+        assert(is_particle() && is_standard());
+        return is_composite() && (bs_category.get(tag_) == MESON);
+    }
+    PORTABLE_FUNCTION constexpr bool is_lepton() const
+    {
+        assert(is_particle() && is_standard());
+        return is_elementary() && (bs_category.get(tag_) == LEPTON);
+    }
+    PORTABLE_FUNCTION constexpr bool is_baryon() const
+    {
+        assert(is_particle() && is_standard());
+        return is_composite() && (bs_category.get(tag_) == BARYON);
     }
 
     // Comparison operators
