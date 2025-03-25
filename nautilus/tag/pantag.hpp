@@ -371,6 +371,11 @@ public:
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
     }
+    PORTABLE_FUNCTION constexpr auto get_index() const
+    {
+        assert(is_nuclide() && is_standard());
+        return bs_S.get(tag_);
+    }
 
     // standard-nuclide-specific accessors
 
