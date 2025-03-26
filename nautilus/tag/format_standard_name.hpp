@@ -30,9 +30,7 @@ namespace nautilus::tag {
 std::string to_short_iupac_name(const Pantag tag)
 {
     assert(tag.is_nuclide() && tag.is_standard());
-    auto ci_str = [](const char c, const auto n) {
-        return std::to_string(c) + std::to_string(n);
-    };
+    auto ci_str = [](const char c, const auto n) { return std::to_string(c) + std::to_string(n); };
     const std::string name = get_element(tag.get_atomic_number()).symbol;
     const std::string isotope = ci_str('-', tag.get_atomic_mass_number());
     const std::string suffix =
@@ -49,9 +47,7 @@ std::string to_short_iupac_name(const Pantag tag)
 std::string to_long_iupac_name(const Pantag tag)
 {
     assert(tag.is_nuclide() && tag.is_standard());
-    auto ci_str = [](const char c, const auto n) {
-        return std::to_string(c) + std::to_string(n);
-    };
+    auto ci_str = [](const char c, const auto n) { return std::to_string(c) + std::to_string(n); };
     const std::string name = get_element(tag.get_atomic_number()).name;
     const std::string isotope = ci_str('-', tag.get_atomic_mass_number());
     const std::string suffix =
@@ -77,7 +73,8 @@ std::string to_short_pdg_name(const Pantag tag)
 {
     using Pantag::Particle;
     assert(tag.is_particle() && tag.is_standard());
-    switch(tag.data()) {
+    // clang-format off
+    switch (tag.data()) {
     case(photon):                       return "\u03B3";             break;
     case(electron):                     return "e\u207B";            break;
     case(positron):                     return "e\u207A";            break;
@@ -112,6 +109,7 @@ std::string to_short_pdg_name(const Pantag tag)
     case(positive_omega_antibaryon):    return "\u03A9\u0304\u207A"; break;
     case default: assert(false);
     }
+    // clang-format on
 }
 
 // ================================================================================================
@@ -120,7 +118,8 @@ std::string to_long_pdg_name(const Pantag tag)
 {
     using Pantag::Particle;
     assert(tag.is_particle() && tag.is_standard());
-    switch(tag.data()) {             // return "1234567890123456789012345"; break;
+    // clang-format off
+    switch (tag.data()) {
     case(photon):                       return "photon";                    break;
     case(electron):                     return "electron";                  break;
     case(positron):                     return "positron";                  break;
@@ -155,6 +154,7 @@ std::string to_long_pdg_name(const Pantag tag)
     case(positive_omega_antibaryon):    return "positive omega antibaryon"; break;
     case default: assert(false);
     }
+    // clang-format on
 }
 
 // ================================================================================================
@@ -196,16 +196,12 @@ std::string to_long_standard_name(const Pantag tag)
 // ================================================================================================
 
 // TODO
-Pantag from_short_standard_name(std::string)
-{
-}
+Pantag from_short_standard_name(std::string) {}
 
 // ================================================================================================
 
 // TODO
-Pantag from_long_standard_string(std::string)
-{
-}
+Pantag from_long_standard_string(std::string) {}
 
 // ================================================================================================
 
