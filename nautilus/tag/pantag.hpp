@@ -27,7 +27,7 @@ namespace nautilus::tag {
 //       you pretty much have to do some kind of if-else ladder.  If we only want the right methods
 //       to identify things, then we just need the enum and all other particle-specific methods
 //       should go away.  But maybe it's useful to ask things like, "Is this a hadron?" or, "Are
-//       these two particles a particle-antiparticle pair?" 
+//       these two particles a particle-antiparticle pair?"
 //    -- I'm not even convinced that having the different segments of the standard particle format
 //       broken out into BigSegments is worth having.
 //    -- Note, I already deleted the are_antiparticles because the ambiguity around truly-neutral
@@ -119,7 +119,7 @@ private:
     BitSegment<Storage, 9, 1> bs_category;
     BitSegment<Storage, 6, 3> bs_pindex;
     BitSegment<Storage, 5, 1> bs_anti;
-    
+
     static constexpr Storage ELEMENTARY = 0b1;
     static constexpr Storage COMPOSITE = 0b1;
 
@@ -140,6 +140,7 @@ public:
     enum class Index { excitation, metastable };
 
     enum class Particles {
+        // clang-format off
         // elementary bosons
         photon =                    0b000000,
         // elementary leptons
@@ -181,6 +182,7 @@ public:
         anti_negative_sigma_baryon = positive_sigma_antibaryon,
         anti_negative_xi_baryon    = positive_xi_antibaryon,
         anti_negative_omega_baryon = positive_omega_antibaryon,
+        // clang-format on
     };
 
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
@@ -287,7 +289,8 @@ public:
                 break;
             case Mode::user: // set_user_nuclide(args...); break;
                 if constexpr (sizeof...(args) == 1) {
-                    set_user_nuclide(args...); break;
+                    set_user_nuclide(args...);
+                    break;
                 } else {
                     assert(false);
                 }
