@@ -61,10 +61,7 @@ private:
 
 public:
     // Generate a mask for the bits in the segment
-    PORTABLE_FUNCTION static constexpr T mask()
-    {
-        return static_cast<T>(unsigned_mask());
-    }
+    PORTABLE_FUNCTION static constexpr T mask() { return static_cast<T>(unsigned_mask()); }
     // Extract the value in the segment
     PORTABLE_FUNCTION static constexpr T get(const T t)
     {
