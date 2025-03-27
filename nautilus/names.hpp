@@ -80,20 +80,6 @@ public:
 
 // ================================================================================================
 
-struct Nuclide : public Identifiers<4>
-{
-    struct Standard {
-        static constexpr flag_t IUPAC = 0;
-        static constexpr flag_t American = 1;
-        static constexpr flag_t British = 2;
-        static constexpr flag_t Canadian = 3;
-    };
-    // Explicitly inherit constructors
-    using Identifiers::Identifiers;
-};
-
-// ================================================================================================
-
 class Nuclides {
 private:
     using Nuclide = Identifiers<4>;
