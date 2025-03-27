@@ -94,6 +94,175 @@ struct Nuclide : public Identifiers<4>
 
 // ================================================================================================
 
+class Nuclides {
+private:
+    using Nuclide = Identifiers<4>;
+public:
+    struct Standard {
+        static constexpr Nuclide::flag_t IUPAC = 0;
+        static constexpr Nuclide::flag_t American = 1;
+        static constexpr Nuclide::flag_t British = 2;
+        static constexpr Nuclide::flag_t Canadian = 3;
+    };
+private:
+    // This structure was chosen because global constexpr variables are not, in general, available
+    // on the GPU.  By turning this into a private method and combining the accessor methods into
+    // the class, we end up with a GPU-compatible structure.
+    PORTABLE_FUNCTION static constexpr auto get_identifiers(const std::size_t Z)
+    {
+        constexpr std::array<Nuclide, 118> nuclides{
+            Nuclide("H" , "hydrogen"    ), // Z = 1, index = 0
+            Nuclide("He", "helium"      ),
+            Nuclide("Li", "lithium"     ),
+            Nuclide("Be", "beryllium"   ),
+            Nuclide("B" , "boron"       ),
+            Nuclide("C" , "carbon"      ),
+            Nuclide("N" , "nitrogen"    ),
+            Nuclide("O" , "oxygen"      ),
+            Nuclide("F" , "fluorine"    ),
+            Nuclide("Ne", "neon"        ),
+            Nuclide("Na", "sodium"      ), // Z = 11, index = 10
+            Nuclide("Mg", "magnesium"   ),
+            Nuclide("Al", "aluminium",  "aluminum", Standard::American, Standard::Canadian),
+            Nuclide("Si", "silicon"     ),
+            Nuclide("P" , "phosphorus"  ),
+            Nuclide("S" , "sulfur",     "sulphur",  Standard::British),
+            Nuclide("Cl", "chlorine"    ),
+            Nuclide("Ar", "argon"       ),
+            Nuclide("K" , "potassium"   ),
+            Nuclide("Ca", "calcium"     ),
+            Nuclide("Sc", "scandium"    ), // Z = 21, index = 20
+            Nuclide("Ti", "titanium"    ),
+            Nuclide("V" , "vanadium"    ),
+            Nuclide("Cr", "chromium"    ),
+            Nuclide("Mn", "manganese"   ),
+            Nuclide("Fe", "iron"        ),
+            Nuclide("Co", "cobalt"      ),
+            Nuclide("Ni", "nickel"      ),
+            Nuclide("Cu", "copper"      ),
+            Nuclide("Zn", "zinc"        ),
+            Nuclide("Ga", "gallium"     ), // Z = 31, index = 30
+            Nuclide("Ge", "germanium"   ),
+            Nuclide("As", "arsenic"     ),
+            Nuclide("Se", "selenium"    ),
+            Nuclide("Br", "bromine"     ),
+            Nuclide("Kr", "krypton"     ),
+            Nuclide("Rb", "rubidium"    ),
+            Nuclide("Sr", "strontium"   ),
+            Nuclide("Y" , "yttrium"     ),
+            Nuclide("Zr", "zirconium"   ),
+            Nuclide("Nb", "niobium"     ), // Z = 41, index = 40
+            Nuclide("Mo", "molybdenum"  ),
+            Nuclide("Tc", "technetium"  ),
+            Nuclide("Ru", "ruthenium"   ),
+            Nuclide("Rh", "rhodium"     ),
+            Nuclide("Pd", "palladium"   ),
+            Nuclide("Ag", "silver"      ),
+            Nuclide("Cd", "cadmium"     ),
+            Nuclide("In", "indium"      ),
+            Nuclide("Sn", "tin"         ),
+            Nuclide("Sb", "antimony"    ), // Z = 51, index = 50
+            Nuclide("Te", "tellurium"   ),
+            Nuclide("I" , "iodine"      ),
+            Nuclide("Xe", "xenon"       ),
+            Nuclide("Cs", "caesium",    "cesium",   Standard::American),
+            Nuclide("Ba", "barium"      ),
+            Nuclide("La", "lanthanum"   ),
+            Nuclide("Ce", "cerium"      ),
+            Nuclide("Pr", "praseodymium"),
+            Nuclide("Nd", "neodymium"   ),
+            Nuclide("Pm", "promethium"  ), // Z = 61, index = 60
+            Nuclide("Sm", "samarium"    ),
+            Nuclide("Eu", "europium"    ),
+            Nuclide("Gd", "gadolinium"  ),
+            Nuclide("Tb", "terbium"     ),
+            Nuclide("Dy", "dysprosium"  ),
+            Nuclide("Ho", "holmium"     ),
+            Nuclide("Er", "erbium"      ),
+            Nuclide("Tm", "thulium"     ),
+            Nuclide("Yb", "ytterbium"   ),
+            Nuclide("Lu", "lutetium"    ), // Z = 71, index = 70
+            Nuclide("Hf", "hafnium"     ),
+            Nuclide("Ta", "tantalum"    ),
+            Nuclide("W" , "tungsten"    ),
+            Nuclide("Re", "rhenium"     ),
+            Nuclide("Os", "osmium"      ),
+            Nuclide("Ir", "iridium"     ),
+            Nuclide("Pt", "platinum"    ),
+            Nuclide("Au", "gold"        ),
+            Nuclide("Hg", "mercury"     ),
+            Nuclide("Tl", "thallium"    ), // Z = 81, index = 80
+            Nuclide("Pb", "lead"        ),
+            Nuclide("Bi", "bismuth"     ),
+            Nuclide("Po", "polonium"    ),
+            Nuclide("At", "astatine"    ),
+            Nuclide("Rn", "radon"       ),
+            Nuclide("Fr", "francium"    ),
+            Nuclide("Ra", "radium"      ),
+            Nuclide("Ac", "actinium"    ),
+            Nuclide("Th", "thorium"     ),
+            Nuclide("Pa", "protactinium"), // Z = 91, index = 90
+            Nuclide("U" , "uranium"     ),
+            Nuclide("Np", "neptunium"   ),
+            Nuclide("Pu", "plutonium"   ),
+            Nuclide("Am", "americium"   ),
+            Nuclide("Cm", "curium"      ),
+            Nuclide("Bk", "berkelium"   ),
+            Nuclide("Cf", "californium" ),
+            Nuclide("Es", "einsteinium" ),
+            Nuclide("Fm", "fermium"     ),
+            Nuclide("Md", "mendelevium" ), // Z = 101, index = 100
+            Nuclide("No", "nobelium"    ),
+            Nuclide("Lr", "lawrencium"  ),
+            Nuclide("Rf", "rutherforium"),
+            Nuclide("Db", "dubnium"     ),
+            Nuclide("Sg", "seaborgium"  ),
+            Nuclide("Bh", "bohrium"     ),
+            Nuclide("Hs", "hassium"     ),
+            Nuclide("Mt", "meitnerium"  ),
+            Nuclide("Ds", "darmstadtium"),
+            Nuclide("Rg", "roentgenium" ), // Z = 111, index = 110
+            Nuclide("Cn", "copernicium" ),
+            Nuclide("Nh", "nihonium"    ),
+            Nuclide("Fl", "flerovium"   ),
+            Nuclide("Mc", "moscovium"   ),
+            Nuclide("Lv", "livermorium" ),
+            Nuclide("Ts", "tennessine"  ),
+            Nuclide("Og", "oganesson"   ),
+        };
+        assert(Z > 0);
+        assert(Z <= nuclides.size());
+        return nuclides[Z-1];
+    }
+
+public:
+    PORTABLE_FUNCTION static constexpr std::size_t get_index(const std::string_view query)
+    {
+        // TODO: I don't like hard-coding 118 here, but would prefer there to be one variable that
+        //       defines the number of element names.
+        for (std::size_t Z = 1; Z <= 118; ++Z) {
+            const auto ids = get_identifiers(Z);
+            if (ids.match_symbol(query) || ids.match_name(query)) {
+                return Z;
+            }
+        }
+        assert(false);
+        return 0;
+    }
+    PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const std::size_t Z)
+    {
+        return get_identifiers(Z).get_symbol();
+    }
+
+    PORTABLE_FUNCTION static constexpr std::string_view get_name(
+        const std::size_t Z, const Nuclide::flag_t standard=Standard::IUPAC)
+    {
+        return get_identifiers(Z).get_name(standard);
+    }
+};
+
+// ================================================================================================
+
 struct Particle : public Identifiers<2>
 {
     struct Standard {
@@ -103,137 +272,6 @@ struct Particle : public Identifiers<2>
     // Explicitly inherit constructors
     using Identifiers::Identifiers;
 };
-
-// ================================================================================================
-
-// Shorter names to save typing
-namespace detail {
-constexpr auto Am = Nuclide::Standard::American;
-constexpr auto Br = Nuclide::Standard::British;
-constexpr auto Ca = Nuclide::Standard::Canadian;
-}
-// clang-format off
-constexpr inline std::array<Nuclide, 118> nuclides{
-    Nuclide("H" , "hydrogen"    ), // Z = 1, index = 0
-    Nuclide("He", "helium"      ),
-    Nuclide("Li", "lithium"     ),
-    Nuclide("Be", "beryllium"   ),
-    Nuclide("B" , "boron"       ),
-    Nuclide("C" , "carbon"      ),
-    Nuclide("N" , "nitrogen"    ),
-    Nuclide("O" , "oxygen"      ),
-    Nuclide("F" , "fluorine"    ),
-    Nuclide("Ne", "neon"        ),
-    Nuclide("Na", "sodium"      ), // Z = 11, index = 10
-    Nuclide("Mg", "magnesium"   ),
-    Nuclide("Al", "aluminium",  "aluminum", detail::Am, detail::Ca),
-    Nuclide("Si", "silicon"     ),
-    Nuclide("P" , "phosphorus"  ),
-    Nuclide("S" , "sulfur",     "sulphur",  detail::Br),
-    Nuclide("Cl", "chlorine"    ),
-    Nuclide("Ar", "argon"       ),
-    Nuclide("K" , "potassium"   ),
-    Nuclide("Ca", "calcium"     ),
-    Nuclide("Sc", "scandium"    ), // Z = 21, index = 20
-    Nuclide("Ti", "titanium"    ),
-    Nuclide("V" , "vanadium"    ),
-    Nuclide("Cr", "chromium"    ),
-    Nuclide("Mn", "manganese"   ),
-    Nuclide("Fe", "iron"        ),
-    Nuclide("Co", "cobalt"      ),
-    Nuclide("Ni", "nickel"      ),
-    Nuclide("Cu", "copper"      ),
-    Nuclide("Zn", "zinc"        ),
-    Nuclide("Ga", "gallium"     ), // Z = 31, index = 30
-    Nuclide("Ge", "germanium"   ),
-    Nuclide("As", "arsenic"     ),
-    Nuclide("Se", "selenium"    ),
-    Nuclide("Br", "bromine"     ),
-    Nuclide("Kr", "krypton"     ),
-    Nuclide("Rb", "rubidium"    ),
-    Nuclide("Sr", "strontium"   ),
-    Nuclide("Y" , "yttrium"     ),
-    Nuclide("Zr", "zirconium"   ),
-    Nuclide("Nb", "niobium"     ), // Z = 41, index = 40
-    Nuclide("Mo", "molybdenum"  ),
-    Nuclide("Tc", "technetium"  ),
-    Nuclide("Ru", "ruthenium"   ),
-    Nuclide("Rh", "rhodium"     ),
-    Nuclide("Pd", "palladium"   ),
-    Nuclide("Ag", "silver"      ),
-    Nuclide("Cd", "cadmium"     ),
-    Nuclide("In", "indium"      ),
-    Nuclide("Sn", "tin"         ),
-    Nuclide("Sb", "antimony"    ), // Z = 51, index = 50
-    Nuclide("Te", "tellurium"   ),
-    Nuclide("I" , "iodine"      ),
-    Nuclide("Xe", "xenon"       ),
-    Nuclide("Cs", "caesium",    "cesium",   detail::Am),
-    Nuclide("Ba", "barium"      ),
-    Nuclide("La", "lanthanum"   ),
-    Nuclide("Ce", "cerium"      ),
-    Nuclide("Pr", "praseodymium"),
-    Nuclide("Nd", "neodymium"   ),
-    Nuclide("Pm", "promethium"  ), // Z = 61, index = 60
-    Nuclide("Sm", "samarium"    ),
-    Nuclide("Eu", "europium"    ),
-    Nuclide("Gd", "gadolinium"  ),
-    Nuclide("Tb", "terbium"     ),
-    Nuclide("Dy", "dysprosium"  ),
-    Nuclide("Ho", "holmium"     ),
-    Nuclide("Er", "erbium"      ),
-    Nuclide("Tm", "thulium"     ),
-    Nuclide("Yb", "ytterbium"   ),
-    Nuclide("Lu", "lutetium"    ), // Z = 71, index = 70
-    Nuclide("Hf", "hafnium"     ),
-    Nuclide("Ta", "tantalum"    ),
-    Nuclide("W" , "tungsten"    ),
-    Nuclide("Re", "rhenium"     ),
-    Nuclide("Os", "osmium"      ),
-    Nuclide("Ir", "iridium"     ),
-    Nuclide("Pt", "platinum"    ),
-    Nuclide("Au", "gold"        ),
-    Nuclide("Hg", "mercury"     ),
-    Nuclide("Tl", "thallium"    ), // Z = 81, index = 80
-    Nuclide("Pb", "lead"        ),
-    Nuclide("Bi", "bismuth"     ),
-    Nuclide("Po", "polonium"    ),
-    Nuclide("At", "astatine"    ),
-    Nuclide("Rn", "radon"       ),
-    Nuclide("Fr", "francium"    ),
-    Nuclide("Ra", "radium"      ),
-    Nuclide("Ac", "actinium"    ),
-    Nuclide("Th", "thorium"     ),
-    Nuclide("Pa", "protactinium"), // Z = 91, index = 90
-    Nuclide("U" , "uranium"     ),
-    Nuclide("Np", "neptunium"   ),
-    Nuclide("Pu", "plutonium"   ),
-    Nuclide("Am", "americium"   ),
-    Nuclide("Cm", "curium"      ),
-    Nuclide("Bk", "berkelium"   ),
-    Nuclide("Cf", "californium" ),
-    Nuclide("Es", "einsteinium" ),
-    Nuclide("Fm", "fermium"     ),
-    Nuclide("Md", "mendelevium" ), // Z = 101, index = 100
-    Nuclide("No", "nobelium"    ),
-    Nuclide("Lr", "lawrencium"  ),
-    Nuclide("Rf", "rutherforium"),
-    Nuclide("Db", "dubnium"     ),
-    Nuclide("Sg", "seaborgium"  ),
-    Nuclide("Bh", "bohrium"     ),
-    Nuclide("Hs", "hassium"     ),
-    Nuclide("Mt", "meitnerium"  ),
-    Nuclide("Ds", "darmstadtium"),
-    Nuclide("Rg", "roentgenium" ), // Z = 111, index = 110
-    Nuclide("Cn", "copernicium" ),
-    Nuclide("Nh", "nihonium"    ),
-    Nuclide("Fl", "flerovium"   ),
-    Nuclide("Mc", "moscovium"   ),
-    Nuclide("Lv", "livermorium" ),
-    Nuclide("Ts", "tennessine"  ),
-    Nuclide("Og", "oganesson"   ),
-};
-// clang-format on
 
 // ================================================================================================
 
@@ -316,11 +354,6 @@ PORTABLE_FUNCTION constexpr std::size_t get_index(
 }
 } // namespace detail
 
-PORTABLE_FUNCTION constexpr std::size_t get_nuclide_index(const std::string_view name)
-{
-    return detail::get_index(nuclides, name) + 1;
-}
-
 PORTABLE_FUNCTION constexpr std::size_t get_particle_index(const std::string_view name)
 {
     return detail::get_index(particles, name);
@@ -367,19 +400,6 @@ PARTICLE_INDEX(negative_omega_baryon, "negative omega baryon");
 PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
 
 // ================================================================================================
-
-constexpr std::string_view get_nuclide_symbol(const std::size_t index)
-{
-    assert(index < nuclides.size());
-    return nuclides[index-1].get_symbol();
-}
-
-constexpr std::string_view get_nuclide_name(
-    const std::size_t index, const Nuclide::flag_t standard=Nuclide::Standard::IUPAC)
-{
-    assert(index < nuclides.size());
-    return nuclides[index-1].get_name(standard);
-}
 
 // The "alternate" convention cannot be represented in Unicode, so there is no flag to select
 // different versions of the symbol.  You always get the PDG format.
