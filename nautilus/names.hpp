@@ -318,7 +318,7 @@ PORTABLE_FUNCTION constexpr std::size_t get_index(
 
 PORTABLE_FUNCTION constexpr std::size_t get_nuclide_index(const std::string_view name)
 {
-    return detail::get_index(nuclides, name);
+    return detail::get_index(nuclides, name) + 1;
 }
 
 PORTABLE_FUNCTION constexpr std::size_t get_particle_index(const std::string_view name)
