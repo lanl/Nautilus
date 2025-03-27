@@ -96,6 +96,7 @@ private:
     // the class, we end up with a GPU-compatible structure.
     PORTABLE_FUNCTION static constexpr auto get_identifiers(const std::size_t Z)
     {
+        // clang-format off
         constexpr std::array<Nuclide, 118> nuclides{
             Nuclide("H" , "hydrogen"    ), // Z = 1, index = 0
             Nuclide("He", "helium"      ),
@@ -216,6 +217,7 @@ private:
             Nuclide("Ts", "tennessine"  ),
             Nuclide("Og", "oganesson"   ),
         };
+        // clang-format on
         assert(Z > 0);
         assert(Z <= nuclides.size());
         return nuclides[Z-1];
@@ -249,101 +251,107 @@ public:
 
 // ================================================================================================
 
-struct Particle : public Identifiers<2>
-{
+struct Particles {
+private:
+    using Particle = Identifiers<2>;
+public:
     struct Standard {
-        static constexpr flag_t PDG = 0;
-        static constexpr flag_t alternate = 1;
+        static constexpr Particle::flag_t PDG = 0;
+        static constexpr Particle::flag_t alternate = 1;
     };
-    // Explicitly inherit constructors
-    using Identifiers::Identifiers;
-};
-
-// ================================================================================================
-
-// Warning: These use UTF-8 code points, so the string may not behave as expected (for example,
-//          size may report a longer result than the actual number of printed characters).  Using
-//          something like wstring instead leads to different complications, so this was the
-//          compromise chosen by Nautilus.
-// Warning: Subscript mu does not appear to exist in Unicode at this time, so I had to substitute a
-//          subscript lowercase m.
-// Warning: Subscript uppercase L and S don't appear to exist in Unicode at this time, and they
-//          would be more standard for the long and short kaons.  Instead I had to substitute
-//          lowercase subscripts.
-// Warning: Unicode does not provide the ability to stack a subscript and a superscript vertically,
-//          but must place them side-by-side.  For the long and short kaons, we place the
-//          superscript first and the subscript after.
-
-// Shorter names to save typing
-namespace detail {
-constexpr auto alt = Particle::Standard::alternate;
-};
-// clang-format off
-constexpr inline std::array<Particle, 32> particles{
-    Particle("\u03B3",              "photon"),
-    Particle("e\u207B",             "electron"),
-    Particle("e\u207A",             "positron"),
-    Particle("\u03BD\u2091",        "electron neutrino"),
-    Particle("\u03BD\u0304\u2091",  "electron antineutrino"),
-    Particle("\u03Bc\u207B",        "muon"),
-    Particle("\u03BC\u0304\u207A",  "antimuon"),
-    Particle("\u03BD\u2098",        "muon neutrino"),
-    Particle("\u03BD\u0304\2098",   "muon antineutrino"),
-    Particle("\u03C0\u2070",        "neutral pion"),
-    Particle("\u03C0\u207A",        "positive pion"),
-    Particle("\u03C0\u207B",        "negative pion"),
-    Particle("K\u2070\u209B",       "short kaon"),
-    Particle("K\u2070\u2097",       "long kaon"),
-    Particle("K\u207A",             "positive kaon"),
-    Particle("K\u207B",             "negative kaon"),
-    Particle("n",                   "neutron"),
-    Particle("n\u0304",             "antineutron"),
-    Particle("p",                   "proton"),
-    Particle("p\u0304",             "antiproton"),
-    Particle("\u039B\u2070",        "neutral lambda baryon"),
-    Particle("\u039B\u0304\u2070",  "neutral lambda antibaryon",
-                                    "antiparticle of the neutral lambda baryon",    detail::alt),
-    Particle("\u03A3\u207A",        "positive sigma baryon"),
-    Particle("\u03A3\u0304\u207B",  "negative sigma antibaryon",
-                                    "antiparticle of the positive sigma baryon",    detail::alt),
-    Particle("\u03A3\u207B",        "negative sigma baryon"),
-    Particle("\u03A3\u0304\u207A",  "positive sigma antibaryon",
-                                    "antiparticle of the negative sigma baryon",    detail::alt),
-    Particle("\u039E\u2070",        "neutral xi baryon"),
-    Particle("\u039E\u0304\u2070",  "neutral xi antibaryon",
-                                    "antiparticle of the neutral xi baryon",        detail::alt),
-    Particle("\u039E\u207B",        "negative xi baryon"),
-    Particle("\u039E\u0304\u207A",  "positive xi antibaryon",
-                                    "antiparticle of the negative xi baryon",       detail::alt),
-    Particle("\u03A9\u207B",        "negative omega baryon"),
-    Particle("\u03A9\u0304\u207A",  "positive omega antibaryon",
-                                    "antiparticle of the negative omega baryon",    detail::alt),
-};
-// clang-format on
-
-// ================================================================================================
-
-namespace detail {
-template <typename T, std::size_t N>
-PORTABLE_FUNCTION constexpr std::size_t get_index(
-        const std::array<T, N> & items, const std::string_view name)
-{
-    std::size_t index = 0;
-    for (const auto & item : items) {
-        if (item.match_name(name)) {
-            return index;
-        }
-        ++index;
+private:
+    // This structure was chosen because global constexpr variables are not, in general, available
+    // on the GPU.  By turning this into a private method and combining the accessor methods into
+    // the class, we end up with a GPU-compatible structure.
+    PORTABLE_FUNCTION static constexpr auto get_identifiers(const std::size_t index)
+    {
+        // Warning: The symbols use UTF-8 code points, so the string may not behave as expected
+        //          (for example, size may report a longer result than the actual number of printed
+        //          characters).  Using something like wstring instead leads to different
+        //          complications, so this was the compromise chosen by Nautilus.
+        // Warning: Subscript mu does not appear to exist in Unicode at this time, so I had to
+        //          substitute a subscript lowercase m.
+        // Warning: Subscript uppercase L and S don't appear to exist in Unicode at this time, and
+        //          they would be more standard for the long and short kaons.  Instead I had to
+        //          substitute lowercase subscripts.
+        // Warning: Unicode does not provide the ability to stack a subscript and a superscript
+        //          vertically, but must place them side-by-side.  For the long and short kaons, we
+        //          place the superscript first and the subscript after.
+        // clang-format off
+        constexpr std::array<Particle, 32> particles{
+            Particle("\u03B3",              "photon"),
+            Particle("e\u207B",             "electron"),
+            Particle("e\u207A",             "positron"),
+            Particle("\u03BD\u2091",        "electron neutrino"),
+            Particle("\u03BD\u0304\u2091",  "electron antineutrino"),
+            Particle("\u03Bc\u207B",        "muon"),
+            Particle("\u03BC\u0304\u207A",  "antimuon"),
+            Particle("\u03BD\u2098",        "muon neutrino"),
+            Particle("\u03BD\u0304\2098",   "muon antineutrino"),
+            Particle("\u03C0\u2070",        "neutral pion"),
+            Particle("\u03C0\u207A",        "positive pion"),
+            Particle("\u03C0\u207B",        "negative pion"),
+            Particle("K\u2070\u209B",       "short kaon"),
+            Particle("K\u2070\u2097",       "long kaon"),
+            Particle("K\u207A",             "positive kaon"),
+            Particle("K\u207B",             "negative kaon"),
+            Particle("n",                   "neutron"),
+            Particle("n\u0304",             "antineutron"),
+            Particle("p",                   "proton"),
+            Particle("p\u0304",             "antiproton"),
+            Particle("\u039B\u2070",        "neutral lambda baryon"),
+            Particle("\u039B\u0304\u2070",  "neutral lambda antibaryon",
+                    "antiparticle of the neutral lambda baryon",    Standard::alternate),
+            Particle("\u03A3\u207A",        "positive sigma baryon"),
+            Particle("\u03A3\u0304\u207B",  "negative sigma antibaryon",
+                    "antiparticle of the positive sigma baryon",    Standard::alternate),
+            Particle("\u03A3\u207B",        "negative sigma baryon"),
+            Particle("\u03A3\u0304\u207A",  "positive sigma antibaryon",
+                    "antiparticle of the negative sigma baryon",    Standard::alternate),
+            Particle("\u039E\u2070",        "neutral xi baryon"),
+            Particle("\u039E\u0304\u2070",  "neutral xi antibaryon",
+                    "antiparticle of the neutral xi baryon",        Standard::alternate),
+            Particle("\u039E\u207B",        "negative xi baryon"),
+            Particle("\u039E\u0304\u207A",  "positive xi antibaryon",
+                    "antiparticle of the negative xi baryon",       Standard::alternate),
+            Particle("\u03A9\u207B",        "negative omega baryon"),
+            Particle("\u03A9\u0304\u207A",  "positive omega antibaryon",
+                    "antiparticle of the negative omega baryon",    Standard::alternate),
+        };
+        // clang-format on
+        assert(index < particles.size());
+        return particles[index];
     }
-    assert(false);
-    return items.size();
-}
-} // namespace detail
 
-PORTABLE_FUNCTION constexpr std::size_t get_particle_index(const std::string_view name)
-{
-    return detail::get_index(particles, name);
-}
+public:
+    PORTABLE_FUNCTION static constexpr std::size_t get_index(const std::string_view query)
+    {
+        // TODO: I don't like hard-coding 32 here, but would prefer there to be one variable that
+        //       defines the number of particle names.
+        for (std::size_t index = 0; index < 32; ++index) {
+            const auto ids = get_identifiers(index);
+            if (ids.match_symbol(query) || ids.match_name(query)) {
+                return index;
+            }
+        }
+        assert(false);
+        return 32; // TODO: Don't hard-code 32
+    }
+    // The "alternate" convention cannot be represented in Unicode, so there is no flag to select
+    // different versions of the symbol.  You always get the PDG format.
+    PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const std::size_t index)
+    {
+        return get_identifiers(index).get_symbol();
+    }
+
+    PORTABLE_FUNCTION static constexpr std::string_view get_name(
+        const std::size_t index, const Particle::flag_t standard=Standard::PDG)
+    {
+        return get_identifiers(index).get_name(standard);
+    }
+};
+
+// ================================================================================================
 
 // The values of these indices are meaningless.  It is simply the order they are found within the
 // above list, and that order may change at any point without being considered a break in
@@ -351,7 +359,7 @@ PORTABLE_FUNCTION constexpr std::size_t get_particle_index(const std::string_vie
 // guarantee is that the names are contiguous and start at zero, as they are the indices within a
 // std::array.
 #define PARTICLE_INDEX(var, str) \
-    static constexpr std::size_t var = get_particle_index(str);
+    static constexpr std::size_t var = Particles::get_index(str);
 PARTICLE_INDEX(photon, "photon");
 PARTICLE_INDEX(electron, "electron");
 PARTICLE_INDEX(positron, "positron");
@@ -384,23 +392,6 @@ PARTICLE_INDEX(negative_xi_baryon, "negative xi baryon");
 PARTICLE_INDEX(positive_xi_antibaryon, "positive xi antibaryon");
 PARTICLE_INDEX(negative_omega_baryon, "negative omega baryon");
 PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
-
-// ================================================================================================
-
-// The "alternate" convention cannot be represented in Unicode, so there is no flag to select
-// different versions of the symbol.  You always get the PDG format.
-constexpr std::string_view get_particle_symbol(const std::size_t index)
-{
-    assert(index < particles.size());
-    return particles[index].get_symbol();
-}
-
-constexpr std::string_view get_particle_name(
-    const std::size_t index, const Particle::flag_t standard=Particle::Standard::PDG)
-{
-    assert(index < particles.size());
-    return particles[index].get_name(standard);
-}
 
 // ================================================================================================
 
