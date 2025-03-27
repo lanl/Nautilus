@@ -6,6 +6,6 @@
 
 TEST_CASE("Name indices", "[names]")
 {
-    CHECK(Index::photon == 0);
+    CHECK(nautilus::Index::photon == 0);
 }
 

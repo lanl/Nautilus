@@ -1,6 +1,12 @@
 #include <array>
 #include <string_view>
 
+#include "ports-of-call/portability.hpp"
+
+// ================================================================================================
+
+namespace nautilus {
+
 // ================================================================================================
 
 template <std::size_t N>
@@ -74,7 +80,7 @@ public:
 
 // ================================================================================================
 
-class Nuclide : public Identifiers<4>
+struct Nuclide : public Identifiers<4>
 {
     struct Standard {
         static constexpr flag_t IUPAC = 0;
@@ -82,20 +88,25 @@ class Nuclide : public Identifiers<4>
         static constexpr flag_t British = 2;
         static constexpr flag_t Canadian = 3;
     };
+    // Explicitly inherit constructors
+    using Identifiers::Identifiers;
 };
 
 // ================================================================================================
 
-class Particle : public Identifiers<2>
+struct Particle : public Identifiers<2>
 {
     struct Standard {
         static constexpr flag_t PDG = 0;
         static constexpr flag_t alternate = 1;
     };
+    // Explicitly inherit constructors
+    using Identifiers::Identifiers;
 };
 
 // ================================================================================================
 
+// Shorter names to save typing
 namespace detail {
 constexpr auto Am = Nuclide::Standard::American;
 constexpr auto Br = Nuclide::Standard::British;
@@ -239,6 +250,7 @@ constexpr inline std::array<Nuclide, 118> nuclides{
 //          but must place them side-by-side.  For the long and short kaons, we place the
 //          superscript first and the subscript after.
 
+// Shorter names to save typing
 namespace detail {
 constexpr auto alt = Particle::Standard::alternate;
 };
@@ -287,36 +299,34 @@ constexpr inline std::array<Particle, 32> particles{
 
 // ================================================================================================
 
-class Index {
-
-private:
-    template <typename T, std::size_t N>
-    PORTABLE_FUNCTION static constexpr std::size_t get_index(
-            const std::array<T, N> & items, const std::string_view name)
-    {
-        std::size_t index = 0;
-        for (const auto & item : items) {
-            if (item.match_name(name)) {
-                return index;
-            }
-            ++index;
+namespace detail {
+template <typename T, std::size_t N>
+PORTABLE_FUNCTION constexpr std::size_t get_index(
+        const std::array<T, N> & items, const std::string_view name)
+{
+    std::size_t index = 0;
+    for (const auto & item : items) {
+        if (item.match_name(name)) {
+            return index;
         }
-        assert(false);
-        return items.size();
+        ++index;
     }
+    assert(false);
+    return items.size();
+}
+} // namespace detail
 
+PORTABLE_FUNCTION constexpr std::size_t get_nuclide_index(const std::string_view name)
+{
+    return detail::get_index(nuclides, name);
+}
 
-public:
-    PORTABLE_FUNCTION static constexpr std::size_t get_nuclide_index(const std::string_view name)
-    {
-        return get_index(nuclides, name);
-    }
+PORTABLE_FUNCTION constexpr std::size_t get_particle_index(const std::string_view name)
+{
+    return detail::get_index(particles, name);
+}
 
-    PORTABLE_FUNCTION static constexpr std::size_t get_particle_index(const std::string_view name)
-    {
-        return get_index(particles, name);
-    }
-
+struct Index {
     // The values of these indices are meaningless.  It is simply the order they are found within
     // the above list, and that order may change at any point without being considered a break in
     // compatibility.  This just gives names we can type to reference the particles.  The only
@@ -367,10 +377,10 @@ constexpr std::string_view get_nuclide_symbol(const std::size_t index)
 }
 
 constexpr std::string_view get_nuclide_name(
-    const std::size_t index, const Nuclide::Standard standard=Nuclide::Standard::IUPAC)
+    const std::size_t index, const Nuclide::flag_t standard=Nuclide::Standard::IUPAC)
 {
     assert(index < nuclides.size());
-    return nuclides[index-1].get__name(standard);
+    return nuclides[index-1].get_name(standard);
 }
 
 constexpr std::string_view get_particle_symbol(const std::size_t index)
@@ -383,7 +393,7 @@ constexpr std::string_view get_particle_symbol(const std::size_t index)
 }
 
 constexpr std::string_view get_particle_name(
-    const std::size_t index, const Particle::Standard standard=Particle::Standard::PDG)
+    const std::size_t index, const Particle::flag_t standard=Particle::Standard::PDG)
 {
     assert(index < particles.size());
     // TODO: What is the index in this context?  Perhaps the named constants should be renumbered
@@ -391,5 +401,9 @@ constexpr std::string_view get_particle_name(
     //       data value.
     return particles[index].get_name(standard);
 }
+
+// ================================================================================================
+
+} // namespace nautilus
 
 // ================================================================================================
