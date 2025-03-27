@@ -381,6 +381,8 @@ constexpr std::string_view get_nuclide_name(
     return nuclides[index-1].get_name(standard);
 }
 
+// The "alternate" convention cannot be represented in Unicode, so there is no flag to select
+// different versions of the symbol.  You always get the PDG format.
 constexpr std::string_view get_particle_symbol(const std::size_t index)
 {
     assert(index < particles.size());

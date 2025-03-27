@@ -154,3 +154,85 @@ TEST_CASE("Particle names", "[names]")
 }
 
 // ================================================================================================
+
+TEST_CASE("Particle symbols", "[names]")
+{
+    using namespace nautilus::names;
+
+    auto f1 = [](const std::size_t index, const std::string_view name) {
+        return particles[index].get_symbol() == name;
+    };
+    CHECK(f1(photon, "\u03B3"));
+    CHECK(f1(electron, "e\u207B"));
+    CHECK(f1(positron, "e\u207A"));
+    CHECK(f1(electron_neutrino, "\u03BD\u2091"));
+    CHECK(f1(electron_antineutrino, "\u03BD\u0304\u2091"));
+    CHECK(f1(muon, "\u03Bc\u207B"));
+    CHECK(f1(antimuon, "\u03BC\u0304\u207A"));
+    CHECK(f1(muon_neutrino, "\u03BD\u2098"));
+    CHECK(f1(muon_antineutrino, "\u03BD\u0304\2098"));
+    CHECK(f1(neutral_pion, "\u03C0\u2070"));
+    CHECK(f1(positive_pion, "\u03C0\u207A"));
+    CHECK(f1(negative_pion, "\u03C0\u207B"));
+    CHECK(f1(short_kaon, "K\u2070\u209B"));
+    CHECK(f1(long_kaon, "K\u2070\u2097"));
+    CHECK(f1(positive_kaon, "K\u207A"));
+    CHECK(f1(negative_kaon, "K\u207B"));
+    CHECK(f1(neutron, "n"));
+    CHECK(f1(antineutron, "n\u0304"));
+    CHECK(f1(proton, "p"));
+    CHECK(f1(antiproton, "p\u0304"));
+    CHECK(f1(neutral_lambda_baryon, "\u039B\u2070"));
+    CHECK(f1(neutral_lambda_antibaryon, "\u039B\u0304\u2070"));
+    CHECK(f1(positive_sigma_baryon, "\u03A3\u207A"));
+    CHECK(f1(negative_sigma_antibaryon, "\u03A3\u0304\u207B"));
+    CHECK(f1(negative_sigma_baryon, "\u03A3\u207B"));
+    CHECK(f1(positive_sigma_antibaryon, "\u03A3\u0304\u207A"));
+    CHECK(f1(neutral_xi_baryon, "\u039E\u2070"));
+    CHECK(f1(neutral_xi_antibaryon, "\u039E\u0304\u2070"));
+    CHECK(f1(negative_xi_baryon, "\u039E\u207B"));
+    CHECK(f1(positive_xi_antibaryon, "\u039E\u0304\u207A"));
+    CHECK(f1(negative_omega_baryon, "\u03A9\u207B"));
+    CHECK(f1(positive_omega_antibaryon, "\u03A9\u0304\u207A"));
+
+    auto f2 = [](const std::size_t index, const std::string_view name) {
+        return get_particle_symbol(index) == name;
+    };
+    CHECK(f2(photon, "\u03B3"));
+    CHECK(f2(electron, "e\u207B"));
+    CHECK(f2(positron, "e\u207A"));
+    CHECK(f2(electron_neutrino, "\u03BD\u2091"));
+    CHECK(f2(electron_antineutrino, "\u03BD\u0304\u2091"));
+    CHECK(f2(muon, "\u03Bc\u207B"));
+    CHECK(f2(antimuon, "\u03BC\u0304\u207A"));
+    CHECK(f2(muon_neutrino, "\u03BD\u2098"));
+    CHECK(f2(muon_antineutrino, "\u03BD\u0304\2098"));
+    CHECK(f2(neutral_pion, "\u03C0\u2070"));
+    CHECK(f2(positive_pion, "\u03C0\u207A"));
+    CHECK(f2(negative_pion, "\u03C0\u207B"));
+    CHECK(f2(short_kaon, "K\u2070\u209B"));
+    CHECK(f2(long_kaon, "K\u2070\u2097"));
+    CHECK(f2(positive_kaon, "K\u207A"));
+    CHECK(f2(negative_kaon, "K\u207B"));
+    CHECK(f2(neutron, "n"));
+    CHECK(f2(antineutron, "n\u0304"));
+    CHECK(f2(proton, "p"));
+    CHECK(f2(antiproton, "p\u0304"));
+    CHECK(f2(neutral_lambda_baryon, "\u039B\u2070"));
+    CHECK(f2(neutral_lambda_antibaryon, "\u039B\u0304\u2070"));
+    CHECK(f2(positive_sigma_baryon, "\u03A3\u207A"));
+    CHECK(f2(negative_sigma_antibaryon, "\u03A3\u0304\u207B"));
+    CHECK(f2(negative_sigma_baryon, "\u03A3\u207B"));
+    CHECK(f2(positive_sigma_antibaryon, "\u03A3\u0304\u207A"));
+    CHECK(f2(neutral_xi_baryon, "\u039E\u2070"));
+    CHECK(f2(neutral_xi_antibaryon, "\u039E\u0304\u2070"));
+    CHECK(f2(negative_xi_baryon, "\u039E\u207B"));
+    CHECK(f2(positive_xi_antibaryon, "\u039E\u0304\u207A"));
+    CHECK(f2(negative_omega_baryon, "\u03A9\u207B"));
+    CHECK(f2(positive_omega_antibaryon, "\u03A9\u0304\u207A"));
+
+    // Symbols are not available for the "alternate" format.
+}
+
+// ================================================================================================
+
