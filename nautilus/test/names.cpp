@@ -4,40 +4,153 @@
 
 // ================================================================================================
 
-TEST_CASE("Name indices", "[names]")
+TEST_CASE("Particle names", "[names]")
 {
     using namespace nautilus::names;
-    CHECK(particles[photon                      ].get_name() == "photon"                    );
-    CHECK(particles[electron                    ].get_name() == "electron"                  );
-    CHECK(particles[positron                    ].get_name() == "positron"                  );
-    CHECK(particles[electron_neutrino           ].get_name() == "electron neutrino"         );
-    CHECK(particles[electron_antineutrino       ].get_name() == "electron antineutrino"     );
-    CHECK(particles[muon                        ].get_name() == "muon"                      );
-    CHECK(particles[antimuon                    ].get_name() == "antimuon"                  );
-    CHECK(particles[muon_neutrino               ].get_name() == "muon neutrino"             );
-    CHECK(particles[muon_antineutrino           ].get_name() == "muon antineutrino"         );
-    CHECK(particles[neutral_pion                ].get_name() == "neutral pion"              );
-    CHECK(particles[positive_pion               ].get_name() == "positive pion"             );
-    CHECK(particles[negative_pion               ].get_name() == "negative pion"             );
-    CHECK(particles[short_kaon                  ].get_name() == "short kaon"                );
-    CHECK(particles[long_kaon                   ].get_name() == "long kaon"                 );
-    CHECK(particles[positive_kaon               ].get_name() == "positive kaon"             );
-    CHECK(particles[negative_kaon               ].get_name() == "negative kaon"             );
-    CHECK(particles[neutron                     ].get_name() == "neutron"                   );
-    CHECK(particles[antineutron                 ].get_name() == "antineutron"               );
-    CHECK(particles[proton                      ].get_name() == "proton"                    );
-    CHECK(particles[antiproton                  ].get_name() == "antiproton"                );
-    CHECK(particles[neutral_lambda_baryon       ].get_name() == "neutral lambda baryon"     );
-    CHECK(particles[neutral_lambda_antibaryon   ].get_name() == "neutral lambda antibaryon" );
-    CHECK(particles[positive_sigma_baryon       ].get_name() == "positive sigma baryon"     );
-    CHECK(particles[negative_sigma_antibaryon   ].get_name() == "negative sigma antibaryon" );
-    CHECK(particles[negative_sigma_baryon       ].get_name() == "negative sigma baryon"     );
-    CHECK(particles[positive_sigma_antibaryon   ].get_name() == "positive sigma antibaryon" );
-    CHECK(particles[neutral_xi_baryon           ].get_name() == "neutral xi baryon"         );
-    CHECK(particles[neutral_xi_antibaryon       ].get_name() == "neutral xi antibaryon"     );
-    CHECK(particles[negative_xi_baryon          ].get_name() == "negative xi baryon"        );
-    CHECK(particles[positive_xi_antibaryon      ].get_name() == "positive xi antibaryon"    );
-    CHECK(particles[negative_omega_baryon       ].get_name() == "negative omega baryon"     );
-    CHECK(particles[positive_omega_antibaryon   ].get_name() == "positive omega antibaryon" );
+
+    auto f1 = [](const std::size_t index, const std::string_view name) {
+        return particles[index].get_name() == name;
+    };
+    CHECK(f1(photon, "photon"));
+    CHECK(f1(electron, "electron"));
+    CHECK(f1(positron, "positron"));
+    CHECK(f1(electron_neutrino, "electron neutrino"));
+    CHECK(f1(electron_antineutrino, "electron antineutrino"));
+    CHECK(f1(muon, "muon"));
+    CHECK(f1(antimuon, "antimuon"));
+    CHECK(f1(muon_neutrino, "muon neutrino"));
+    CHECK(f1(muon_antineutrino, "muon antineutrino"));
+    CHECK(f1(neutral_pion, "neutral pion"));
+    CHECK(f1(positive_pion, "positive pion"));
+    CHECK(f1(negative_pion, "negative pion"));
+    CHECK(f1(short_kaon, "short kaon"));
+    CHECK(f1(long_kaon, "long kaon"));
+    CHECK(f1(positive_kaon, "positive kaon"));
+    CHECK(f1(negative_kaon, "negative kaon"));
+    CHECK(f1(neutron, "neutron"));
+    CHECK(f1(antineutron, "antineutron"));
+    CHECK(f1(proton, "proton"));
+    CHECK(f1(antiproton, "antiproton"));
+    CHECK(f1(neutral_lambda_baryon, "neutral lambda baryon"));
+    CHECK(f1(neutral_lambda_antibaryon, "neutral lambda antibaryon"));
+    CHECK(f1(positive_sigma_baryon, "positive sigma baryon"));
+    CHECK(f1(negative_sigma_antibaryon, "negative sigma antibaryon"));
+    CHECK(f1(negative_sigma_baryon, "negative sigma baryon"));
+    CHECK(f1(positive_sigma_antibaryon, "positive sigma antibaryon"));
+    CHECK(f1(neutral_xi_baryon, "neutral xi baryon"));
+    CHECK(f1(neutral_xi_antibaryon, "neutral xi antibaryon"));
+    CHECK(f1(negative_xi_baryon, "negative xi baryon"));
+    CHECK(f1(positive_xi_antibaryon, "positive xi antibaryon"));
+    CHECK(f1(negative_omega_baryon, "negative omega baryon"));
+    CHECK(f1(positive_omega_antibaryon, "positive omega antibaryon"));
+
+    auto f2 = [](const std::size_t index, const std::string_view name) {
+        return get_particle_name(index) == name;
+    };
+    CHECK(f2(photon, "photon"));
+    CHECK(f2(electron, "electron"));
+    CHECK(f2(positron, "positron"));
+    CHECK(f2(electron_neutrino, "electron neutrino"));
+    CHECK(f2(electron_antineutrino, "electron antineutrino"));
+    CHECK(f2(muon, "muon"));
+    CHECK(f2(antimuon, "antimuon"));
+    CHECK(f2(muon_neutrino, "muon neutrino"));
+    CHECK(f2(muon_antineutrino, "muon antineutrino"));
+    CHECK(f2(neutral_pion, "neutral pion"));
+    CHECK(f2(positive_pion, "positive pion"));
+    CHECK(f2(negative_pion, "negative pion"));
+    CHECK(f2(short_kaon, "short kaon"));
+    CHECK(f2(long_kaon, "long kaon"));
+    CHECK(f2(positive_kaon, "positive kaon"));
+    CHECK(f2(negative_kaon, "negative kaon"));
+    CHECK(f2(neutron, "neutron"));
+    CHECK(f2(antineutron, "antineutron"));
+    CHECK(f2(proton, "proton"));
+    CHECK(f2(antiproton, "antiproton"));
+    CHECK(f2(neutral_lambda_baryon, "neutral lambda baryon"));
+    CHECK(f2(neutral_lambda_antibaryon, "neutral lambda antibaryon"));
+    CHECK(f2(positive_sigma_baryon, "positive sigma baryon"));
+    CHECK(f2(negative_sigma_antibaryon, "negative sigma antibaryon"));
+    CHECK(f2(negative_sigma_baryon, "negative sigma baryon"));
+    CHECK(f2(positive_sigma_antibaryon, "positive sigma antibaryon"));
+    CHECK(f2(neutral_xi_baryon, "neutral xi baryon"));
+    CHECK(f2(neutral_xi_antibaryon, "neutral xi antibaryon"));
+    CHECK(f2(negative_xi_baryon, "negative xi baryon"));
+    CHECK(f2(positive_xi_antibaryon, "positive xi antibaryon"));
+    CHECK(f2(negative_omega_baryon, "negative omega baryon"));
+    CHECK(f2(positive_omega_antibaryon, "positive omega antibaryon"));
+
+    auto f3 = [](const std::size_t index, const std::string_view name) {
+        return particles[index].get_name(Particle::Standard::alternate) == name;
+    };
+    CHECK(f3(photon, "photon"));
+    CHECK(f3(electron, "electron"));
+    CHECK(f3(positron, "positron"));
+    CHECK(f3(electron_neutrino, "electron neutrino"));
+    CHECK(f3(electron_antineutrino, "electron antineutrino"));
+    CHECK(f3(muon, "muon"));
+    CHECK(f3(antimuon, "antimuon"));
+    CHECK(f3(muon_neutrino, "muon neutrino"));
+    CHECK(f3(muon_antineutrino, "muon antineutrino"));
+    CHECK(f3(neutral_pion, "neutral pion"));
+    CHECK(f3(positive_pion, "positive pion"));
+    CHECK(f3(negative_pion, "negative pion"));
+    CHECK(f3(short_kaon, "short kaon"));
+    CHECK(f3(long_kaon, "long kaon"));
+    CHECK(f3(positive_kaon, "positive kaon"));
+    CHECK(f3(negative_kaon, "negative kaon"));
+    CHECK(f3(neutron, "neutron"));
+    CHECK(f3(antineutron, "antineutron"));
+    CHECK(f3(proton, "proton"));
+    CHECK(f3(antiproton, "antiproton"));
+    CHECK(f3(neutral_lambda_baryon, "neutral lambda baryon"));
+    CHECK(f3(neutral_lambda_antibaryon, "antiparticle of the neutral lambda baryon"));
+    CHECK(f3(positive_sigma_baryon, "positive sigma baryon"));
+    CHECK(f3(negative_sigma_antibaryon, "antiparticle of the positive sigma baryon"));
+    CHECK(f3(negative_sigma_baryon, "negative sigma baryon"));
+    CHECK(f3(positive_sigma_antibaryon, "antiparticle of the negative sigma baryon"));
+    CHECK(f3(neutral_xi_baryon, "neutral xi baryon"));
+    CHECK(f3(neutral_xi_antibaryon, "antiparticle of the neutral xi baryon"));
+    CHECK(f3(negative_xi_baryon, "negative xi baryon"));
+    CHECK(f3(positive_xi_antibaryon, "antiparticle of the negative xi baryon"));
+    CHECK(f3(negative_omega_baryon, "negative omega baryon"));
+    CHECK(f3(positive_omega_antibaryon, "antiparticle of the negative omega baryon"));
+
+    auto f4 = [](const std::size_t index, const std::string_view name) {
+        return get_particle_name(index, Particle::Standard::alternate) == name;
+    };
+    CHECK(f4(photon, "photon"));
+    CHECK(f4(electron, "electron"));
+    CHECK(f4(positron, "positron"));
+    CHECK(f4(electron_neutrino, "electron neutrino"));
+    CHECK(f4(electron_antineutrino, "electron antineutrino"));
+    CHECK(f4(muon, "muon"));
+    CHECK(f4(antimuon, "antimuon"));
+    CHECK(f4(muon_neutrino, "muon neutrino"));
+    CHECK(f4(muon_antineutrino, "muon antineutrino"));
+    CHECK(f4(neutral_pion, "neutral pion"));
+    CHECK(f4(positive_pion, "positive pion"));
+    CHECK(f4(negative_pion, "negative pion"));
+    CHECK(f4(short_kaon, "short kaon"));
+    CHECK(f4(long_kaon, "long kaon"));
+    CHECK(f4(positive_kaon, "positive kaon"));
+    CHECK(f4(negative_kaon, "negative kaon"));
+    CHECK(f4(neutron, "neutron"));
+    CHECK(f4(antineutron, "antineutron"));
+    CHECK(f4(proton, "proton"));
+    CHECK(f4(antiproton, "antiproton"));
+    CHECK(f4(neutral_lambda_baryon, "neutral lambda baryon"));
+    CHECK(f4(neutral_lambda_antibaryon, "antiparticle of the neutral lambda baryon"));
+    CHECK(f4(positive_sigma_baryon, "positive sigma baryon"));
+    CHECK(f4(negative_sigma_antibaryon, "antiparticle of the positive sigma baryon"));
+    CHECK(f4(negative_sigma_baryon, "negative sigma baryon"));
+    CHECK(f4(positive_sigma_antibaryon, "antiparticle of the negative sigma baryon"));
+    CHECK(f4(neutral_xi_baryon, "neutral xi baryon"));
+    CHECK(f4(neutral_xi_antibaryon, "antiparticle of the neutral xi baryon"));
+    CHECK(f4(negative_xi_baryon, "negative xi baryon"));
+    CHECK(f4(positive_xi_antibaryon, "antiparticle of the negative xi baryon"));
+    CHECK(f4(negative_omega_baryon, "negative omega baryon"));
+    CHECK(f4(positive_omega_antibaryon, "antiparticle of the negative omega baryon"));
 }
 
+// ================================================================================================

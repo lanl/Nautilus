@@ -278,7 +278,7 @@ constexpr inline std::array<Particle, 32> particles{
     Particle("p\u0304",             "antiproton"),
     Particle("\u039B\u2070",        "neutral lambda baryon"),
     Particle("\u039B\u0304\u2070",  "neutral lambda antibaryon",
-                                    "antiparticle of the neutral labmda baryon",    detail::alt),
+                                    "antiparticle of the neutral lambda baryon",    detail::alt),
     Particle("\u03A3\u207A",        "positive sigma baryon"),
     Particle("\u03A3\u0304\u207B",  "negative sigma antibaryon",
                                     "antiparticle of the positive sigma baryon",    detail::alt),
@@ -384,9 +384,6 @@ constexpr std::string_view get_nuclide_name(
 constexpr std::string_view get_particle_symbol(const std::size_t index)
 {
     assert(index < particles.size());
-    // TODO: What is the index in this context?  Perhaps the named constants should be renumbered
-    //       from 0 to N, and then I can add a lookup table to get from the index to the correct
-    //       data value.
     return particles[index].get_symbol();
 }
 
@@ -394,9 +391,6 @@ constexpr std::string_view get_particle_name(
     const std::size_t index, const Particle::flag_t standard=Particle::Standard::PDG)
 {
     assert(index < particles.size());
-    // TODO: What is the index in this context?  Perhaps the named constants should be renumbered
-    //       from 0 to N, and then I can add a lookup table to get from the index to the correct
-    //       data value.
     return particles[index].get_name(standard);
 }
 
