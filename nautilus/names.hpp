@@ -5,7 +5,7 @@
 
 // ================================================================================================
 
-namespace nautilus {
+namespace nautilus::names {
 
 // ================================================================================================
 
@@ -326,47 +326,45 @@ PORTABLE_FUNCTION constexpr std::size_t get_particle_index(const std::string_vie
     return detail::get_index(particles, name);
 }
 
-struct Index {
-    // The values of these indices are meaningless.  It is simply the order they are found within
-    // the above list, and that order may change at any point without being considered a break in
-    // compatibility.  This just gives names we can type to reference the particles.  The only
-    // guarantee is that the names are contiguous and start at zero, as they are the indices within
-    // a std::array.
+// The values of these indices are meaningless.  It is simply the order they are found within the
+// above list, and that order may change at any point without being considered a break in
+// compatibility.  This just gives names we can type to reference the particles.  The only
+// guarantee is that the names are contiguous and start at zero, as they are the indices within a
+// std::array.
 #define PARTICLE_INDEX(var, str) \
     static constexpr std::size_t var = get_particle_index(str);
-    PARTICLE_INDEX(photon, "photon");
-    PARTICLE_INDEX(electron, "electron");
-    PARTICLE_INDEX(positron, "positron");
-    PARTICLE_INDEX(electron_neutrino, "electron neutrino");
-    PARTICLE_INDEX(electron_antineutrino, "electron antineutrino");
-    PARTICLE_INDEX(muon, "muon");
-    PARTICLE_INDEX(antimuon, "antimuon");
-    PARTICLE_INDEX(muon_neutrino, "muon neutrino");
-    PARTICLE_INDEX(muon_antineutrino, "muon antineutrino");
-    PARTICLE_INDEX(neutral_pion, "neutral pion");
-    PARTICLE_INDEX(positive_pion, "positive pion");
-    PARTICLE_INDEX(negative_pion, "negative pion");
-    PARTICLE_INDEX(short_kaon, "short kaon");
-    PARTICLE_INDEX(long_kaon, "long kaon");
-    PARTICLE_INDEX(positive_kaon, "positive kaon");
-    PARTICLE_INDEX(negative_kaon, "negative kaon");
-    PARTICLE_INDEX(neutron, "neutron");
-    PARTICLE_INDEX(antineutron, "antineutron");
-    PARTICLE_INDEX(proton, "proton");
-    PARTICLE_INDEX(antiproton, "antiproton");
-    PARTICLE_INDEX(neutral_lambda_baryon, "neutral lambda baryon");
-    PARTICLE_INDEX(neutral_lambda_antibaryon, "neutral lambda antibaryon");
-    PARTICLE_INDEX(positive_sigma_baryon, "positive sigma baryon");
-    PARTICLE_INDEX(negative_sigma_antibaryon, "negative sigma antibaryon");
-    PARTICLE_INDEX(negative_sigma_baryon, "negative sigma baryon");
-    PARTICLE_INDEX(positive_sigma_antibaryon, "positive sigma antibaryon");
-    PARTICLE_INDEX(neutral_xi_baryon, "neutral xi baryon");
-    PARTICLE_INDEX(neutral_xi_antibaryon, "neutral xi antibaryon");
-    PARTICLE_INDEX(negative_xi_baryon, "negative xi baryon");
-    PARTICLE_INDEX(positive_xi_antibaryon, "positive xi antibaryon");
-    PARTICLE_INDEX(negative_omega_baryon, "negative omega baryon");
-    PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
-};
+PARTICLE_INDEX(photon, "photon");
+PARTICLE_INDEX(electron, "electron");
+PARTICLE_INDEX(positron, "positron");
+PARTICLE_INDEX(electron_neutrino, "electron neutrino");
+PARTICLE_INDEX(electron_antineutrino, "electron antineutrino");
+PARTICLE_INDEX(muon, "muon");
+PARTICLE_INDEX(antimuon, "antimuon");
+PARTICLE_INDEX(muon_neutrino, "muon neutrino");
+PARTICLE_INDEX(muon_antineutrino, "muon antineutrino");
+PARTICLE_INDEX(neutral_pion, "neutral pion");
+PARTICLE_INDEX(positive_pion, "positive pion");
+PARTICLE_INDEX(negative_pion, "negative pion");
+PARTICLE_INDEX(short_kaon, "short kaon");
+PARTICLE_INDEX(long_kaon, "long kaon");
+PARTICLE_INDEX(positive_kaon, "positive kaon");
+PARTICLE_INDEX(negative_kaon, "negative kaon");
+PARTICLE_INDEX(neutron, "neutron");
+PARTICLE_INDEX(antineutron, "antineutron");
+PARTICLE_INDEX(proton, "proton");
+PARTICLE_INDEX(antiproton, "antiproton");
+PARTICLE_INDEX(neutral_lambda_baryon, "neutral lambda baryon");
+PARTICLE_INDEX(neutral_lambda_antibaryon, "neutral lambda antibaryon");
+PARTICLE_INDEX(positive_sigma_baryon, "positive sigma baryon");
+PARTICLE_INDEX(negative_sigma_antibaryon, "negative sigma antibaryon");
+PARTICLE_INDEX(negative_sigma_baryon, "negative sigma baryon");
+PARTICLE_INDEX(positive_sigma_antibaryon, "positive sigma antibaryon");
+PARTICLE_INDEX(neutral_xi_baryon, "neutral xi baryon");
+PARTICLE_INDEX(neutral_xi_antibaryon, "neutral xi antibaryon");
+PARTICLE_INDEX(negative_xi_baryon, "negative xi baryon");
+PARTICLE_INDEX(positive_xi_antibaryon, "positive xi antibaryon");
+PARTICLE_INDEX(negative_omega_baryon, "negative omega baryon");
+PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
 
 // ================================================================================================
 
@@ -404,6 +402,6 @@ constexpr std::string_view get_particle_name(
 
 // ================================================================================================
 
-} // namespace nautilus
+} // namespace nautilus::names
 
 // ================================================================================================
