@@ -18,11 +18,25 @@ private:
     std::string_view symbol_;
     std::array<std::string_view, N> names_;
 
+#define ENUMERATION(E) typename E, std::enable_if_t<std::is_enum<E>::value>* = nullptr
+
+    template <ENUMERATION(E)>
+    PORTABLE_FUNCTION constexpr void set(
+        const std::string_view alternate_name, const E alt_standard)
+    {
+        const std::size_t alt_index = static_cast<std::size_t>(alt_standard);
+        assert(alt_index < names_.size());
+        names_[alt_index] = alternate_name;
+    }
+    template <ENUMERATION(E)>
+    PORTABLE_FUNCTION constexpr std::string_view get(const E alt_standard) const
+    {
+        const std::size_t alt_index = static_cast<std::size_t>(alt_standard);
+        assert(alt_index < names_.size());
+        return names_[alt_index];
+    }
+
 public:
-    // name standard
-
-    using flag_t = unsigned int;
-
     // Constructor
     PORTABLE_FUNCTION constexpr Identifiers(
         const std::string_view symbol, const std::string_view standard_name)
@@ -32,36 +46,35 @@ public:
             name = standard_name;
         }
     }
+    template <ENUMERATION(E)>
     PORTABLE_FUNCTION constexpr Identifiers(
         const std::string_view symbol,
         const std::string_view standard_name,
         const std::string_view alternate_name,
-        const flag_t alt_standard)
+        const E alt_standard)
         : Identifiers(symbol, standard_name)
     {
-        assert(alt_standard < names_.size());
-        names_[alt_standard] = alternate_name;
+        set(alternate_name, alt_standard);
     }
+    template <ENUMERATION(E)>
     PORTABLE_FUNCTION constexpr Identifiers(
         const std::string_view symbol,
         const std::string_view standard_name,
         const std::string_view alternate_name,
-        const flag_t alt_standard1,
-        const flag_t alt_standard2)
+        const E alt_standard1,
+        const E alt_standard2)
         : Identifiers(symbol, standard_name)
     {
-        assert(alt_standard1 < names_.size());
-        names_[alt_standard1] = alternate_name;
-        assert(alt_standard2 < names_.size());
-        names_[alt_standard2] = alternate_name;
+        set(alternate_name, alt_standard1);
+        set(alternate_name, alt_standard2);
     }
 
     // Fetch
     PORTABLE_FUNCTION constexpr std::string_view get_symbol() const { return symbol_; }
-    PORTABLE_FUNCTION constexpr std::string_view get_name(const flag_t standard = 0) const
+    template <ENUMERATION(E)>
+    PORTABLE_FUNCTION constexpr std::string_view get_name(const E standard = E(0)) const
     {
-        assert(standard < names_.size());
-        return names_[standard];
+        return get(standard);
     }
 
     // Match
@@ -87,12 +100,7 @@ private:
     using Nuclide = Identifiers<4>;
     static constexpr std::size_t count = 118;
 public:
-    struct Standard {
-        static constexpr Nuclide::flag_t IUPAC = 0;
-        static constexpr Nuclide::flag_t American = 1;
-        static constexpr Nuclide::flag_t British = 2;
-        static constexpr Nuclide::flag_t Canadian = 3;
-    };
+    enum class Standard : std::size_t { IUPAC, American, British, Canadian };
 private:
     // This structure was chosen because global constexpr variables are not, in general, available
     // on the GPU.  By turning this into a private method and combining the accessor methods into
@@ -244,7 +252,7 @@ public:
     }
 
     PORTABLE_FUNCTION static constexpr std::string_view get_name(
-        const std::size_t Z, const Nuclide::flag_t standard=Standard::IUPAC)
+        const std::size_t Z, const Standard standard=Standard::IUPAC)
     {
         return get_identifiers(Z).get_name(standard);
     }
@@ -257,10 +265,9 @@ private:
     using Particle = Identifiers<2>;
     static constexpr std::size_t count = 32;
 public:
-    struct Standard {
-        static constexpr Particle::flag_t PDG = 0;
-        static constexpr Particle::flag_t alternate = 1;
-    };
+    // TODO: I don't really care for the name "alternate", because it's not descriptive of what
+    //       this format actually is.
+    enum class Standard : std::size_t { PDG, alternate };
 private:
     // This structure was chosen because global constexpr variables are not, in general, available
     // on the GPU.  By turning this into a private method and combining the accessor methods into
@@ -345,7 +352,7 @@ public:
     }
 
     PORTABLE_FUNCTION static constexpr std::string_view get_name(
-        const std::size_t index, const Particle::flag_t standard=Standard::PDG)
+        const std::size_t index, const Standard standard=Standard::PDG)
     {
         return get_identifiers(index).get_name(standard);
     }
