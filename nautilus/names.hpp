@@ -71,6 +71,7 @@ public:
 
     // Fetch
     PORTABLE_FUNCTION constexpr std::string_view get_symbol() const { return symbol_; }
+    // It's assumed that E(0) will be the default value.
     template <ENUMERATION(E)>
     PORTABLE_FUNCTION constexpr std::string_view get_name(const E standard = E(0)) const
     {
@@ -98,8 +99,9 @@ public:
 class Nuclides {
 private:
     using Nuclide = Identifiers<4>;
-    static constexpr std::size_t count = 118;
 public:
+    static constexpr std::size_t count = 118;
+    // It's assumed that Standard(0) will be the default value.
     enum class Standard : std::size_t { IUPAC, American, British, Canadian };
 private:
     // This structure was chosen because global constexpr variables are not, in general, available
@@ -263,8 +265,9 @@ public:
 struct Particles {
 private:
     using Particle = Identifiers<2>;
-    static constexpr std::size_t count = 32;
 public:
+    static constexpr std::size_t count = 32;
+    // It's assumed that Standard(0) will be the default value.
     // TODO: I don't really care for the name "alternate", because it's not descriptive of what
     //       this format actually is.
     enum class Standard : std::size_t { PDG, alternate };
@@ -296,7 +299,7 @@ private:
             Particle("\u03Bc\u207B",        "muon"),
             Particle("\u03BC\u0304\u207A",  "antimuon"),
             Particle("\u03BD\u2098",        "muon neutrino"),
-            Particle("\u03BD\u0304\2098",   "muon antineutrino"),
+            Particle("\u03BD\u0304\u2098",   "muon antineutrino"),
             Particle("\u03C0\u2070",        "neutral pion"),
             Particle("\u03C0\u207A",        "positive pion"),
             Particle("\u03C0\u207B",        "negative pion"),

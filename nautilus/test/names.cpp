@@ -99,7 +99,7 @@ TEST_CASE("particle symbols", "[names]")
     CHECK(f_pdg(muon, "\u03Bc\u207B"));
     CHECK(f_pdg(antimuon, "\u03BC\u0304\u207A"));
     CHECK(f_pdg(muon_neutrino, "\u03BD\u2098"));
-    CHECK(f_pdg(muon_antineutrino, "\u03BD\u0304\2098"));
+    CHECK(f_pdg(muon_antineutrino, "\u03BD\u0304\u2098"));
     CHECK(f_pdg(neutral_pion, "\u03C0\u2070"));
     CHECK(f_pdg(positive_pion, "\u03C0\u207A"));
     CHECK(f_pdg(negative_pion, "\u03C0\u207B"));
@@ -123,6 +123,35 @@ TEST_CASE("particle symbols", "[names]")
     CHECK(f_pdg(positive_xi_antibaryon, "\u039E\u0304\u207A"));
     CHECK(f_pdg(negative_omega_baryon, "\u03A9\u207B"));
     CHECK(f_pdg(positive_omega_antibaryon, "\u03A9\u0304\u207A"));
+
+    std::size_t max_size;
+    printf("particle names (PDG):\n");
+    max_size = 0;
+    for (std::size_t n = 0; n < Particles::count; ++n) {
+        const auto name = Particles::get_name(n);
+        const auto size = name.size();
+        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, &*name.begin());
+        max_size = std::max(size, max_size);
+    }
+    printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
+    printf("particle names (alternate):\n");
+    max_size = 0;
+    for (std::size_t n = 0; n < Particles::count; ++n) {
+        const auto name = Particles::get_name(n, Particles::Standard::alternate);
+        const auto size = name.size();
+        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, &*name.begin());
+        max_size = std::max(size, max_size);
+    }
+    printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
+    printf("particle symbols:\n");
+    max_size = 0;
+    for (std::size_t n = 0; n < Particles::count; ++n) {
+        const auto symbol = Particles::get_symbol(n);
+        const auto size = symbol.size();
+        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, &*symbol.begin());
+        max_size = std::max(size, max_size);
+    }
+    printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
 }
 
 // ================================================================================================
