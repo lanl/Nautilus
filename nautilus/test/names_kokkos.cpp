@@ -1,4 +1,4 @@
-#include "bitsegment.hpp"
+#include "names.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -6,5 +6,7 @@
 
 // ================================================================================================
 
-// TODO: Write a pantag kokkos test
-TEST_CASE("Pantag on GPUs", "[tag][pantag][GPU]") { CHECK(false); }
+TEST_CASE("names and symbols on GPUs", "[names][GPU]")
+{
+    CHECK(false);
+}
