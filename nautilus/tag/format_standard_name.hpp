@@ -1,8 +1,8 @@
 #ifndef NAUTILUS_FORMAT_STANDARD_HPP
 #define NAUTILUS_FORMAT_STANDARD_HPP
 
-#include <names.hpp>
-#include "pantag.hpp"
+#include "nautilus/names.hpp"
+#include "nautilus/tag/pantag.hpp"
 
 #include "ports-of-call/portability.hpp" // TODO: Add PORTABLE_FUNCTION annotations
 

@@ -1,3 +1,5 @@
+// TODO: Should this be in the tag/ subdirectory?
+
 #include <array>
 #include <string_view>
 
@@ -83,6 +85,7 @@ public:
 class Nuclides {
 private:
     using Nuclide = Identifiers<4>;
+    static constexpr std::size_t count = 118;
 public:
     struct Standard {
         static constexpr Nuclide::flag_t IUPAC = 0;
@@ -97,7 +100,7 @@ private:
     PORTABLE_FUNCTION static constexpr auto get_identifiers(const std::size_t Z)
     {
         // clang-format off
-        constexpr std::array<Nuclide, 118> nuclides{
+        constexpr std::array<Nuclide, count> nuclides{
             Nuclide("H" , "hydrogen"    ), // Z = 1, index = 0
             Nuclide("He", "helium"      ),
             Nuclide("Li", "lithium"     ),
@@ -226,16 +229,14 @@ private:
 public:
     PORTABLE_FUNCTION static constexpr std::size_t get_index(const std::string_view query)
     {
-        // TODO: I don't like hard-coding 118 here, but would prefer there to be one variable that
-        //       defines the number of element names.
-        for (std::size_t Z = 1; Z <= 118; ++Z) {
+        for (std::size_t Z = 1; Z <= count; ++Z) {
             const auto ids = get_identifiers(Z);
             if (ids.match_symbol(query) || ids.match_name(query)) {
                 return Z;
             }
         }
         assert(false);
-        return 0;
+        return count + 1;
     }
     PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const std::size_t Z)
     {
@@ -254,6 +255,7 @@ public:
 struct Particles {
 private:
     using Particle = Identifiers<2>;
+    static constexpr std::size_t count = 32;
 public:
     struct Standard {
         static constexpr Particle::flag_t PDG = 0;
@@ -278,7 +280,7 @@ private:
         //          vertically, but must place them side-by-side.  For the long and short kaons, we
         //          place the superscript first and the subscript after.
         // clang-format off
-        constexpr std::array<Particle, 32> particles{
+        constexpr std::array<Particle, count> particles{
             Particle("\u03B3",              "photon"),
             Particle("e\u207B",             "electron"),
             Particle("e\u207A",             "positron"),
@@ -326,16 +328,14 @@ private:
 public:
     PORTABLE_FUNCTION static constexpr std::size_t get_index(const std::string_view query)
     {
-        // TODO: I don't like hard-coding 32 here, but would prefer there to be one variable that
-        //       defines the number of particle names.
-        for (std::size_t index = 0; index < 32; ++index) {
+        for (std::size_t index = 0; index < count; ++index) {
             const auto ids = get_identifiers(index);
             if (ids.match_symbol(query) || ids.match_name(query)) {
                 return index;
             }
         }
         assert(false);
-        return 32; // TODO: Don't hard-code 32
+        return count;
     }
     // The "alternate" convention cannot be represented in Unicode, so there is no flag to select
     // different versions of the symbol.  You always get the PDG format.
