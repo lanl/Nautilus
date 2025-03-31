@@ -8,5 +8,6 @@
 
 TEST_CASE("names and symbols on GPUs", "[names][GPU]")
 {
+    // TODO: Write some tests here.
     CHECK(false);
 }
