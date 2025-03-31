@@ -23,6 +23,11 @@ namespace nautilus::tag {
 
 // ================================================================================================
 
+// 123456789
+// elemental
+
+// longest element: 12 characters
+
 // short nuclides can be up to 10 characters
 // short particles can be up to 7 characters
 // need to pad with one extra character for a null terminator
@@ -76,7 +81,20 @@ PORTABLE_FUNCTION constexpr void reverse(char* lo, char* hi) {
     }
 }
 
-PORTABLE_FUNCTION constexpr void append(char*& buf, std::size_t n) {
+PORTABLE_FUNCTION constexpr void append(char*& buf, uint32_t n) {
+    if (n == 0) {
+        append(buf, '0');
+    } else {
+        char* buf0 = buf;
+        while (n > 0) {
+            append(buf, digit(n % 10));
+            n /= 10;
+        }
+        reverse(buf0, buf);
+    }
+}
+
+PORTABLE_FUNCTION constexpr void append(char*& buf, uint64_t n) {
     if (n == 0) {
         append(buf, '0');
     } else {
@@ -111,14 +129,16 @@ PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_iupac_name_port
     const Pantag tag)
 {
     assert(tag.is_nuclide() && tag.is_standard());
-    auto name = null_array<SHORT_LEN>();
+    auto name = detail::null_array<SHORT_LEN>();
     char* ptr = name.data();
-    detail::append(ptr, Nuclides::get_symbol(tag.get_atomic_number()));
-    detail::append(ptr, '-');
-    detail::append(ptr, tag.get_atomic_mass_number());
-    if (!tag.is_ground()) {
-        detail::append(ptr, tag.has_metastable_index() ? 'm', 'e');
-        detail::append(ptr, tag.get_index());
+    detail::append(ptr, names::Nuclides::get_symbol(tag.get_atomic_number()));
+    if (!tag.is_elemental()) {
+        detail::append(ptr, '-');
+        detail::append(ptr, tag.get_atomic_mass_number());
+        if (!tag.is_ground()) {
+            detail::append(ptr, tag.has_metastable_index() ? 'm' : 'e');
+            detail::append(ptr, tag.get_index()); // TODO: is get_index a good name?
+        }
     }
     return name;
 }
@@ -130,22 +150,27 @@ std::string to_short_iupac_name(const Pantag tag)
 // ================================================================================================
 
 PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_iupac_name_portable(
-    const Pantag tag, const Nuclides::Standard standard = Nuclides::Standard(0))
+    const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
 {
     assert(tag.is_nuclide() && tag.is_standard());
-    auto name = null_array<LONG_LEN>();
+    auto name = detail::null_array<LONG_LEN>();
     char* ptr = name.data();
-    detail::append(ptr, Nuclides::get_name(tag.get_atomic_number(), standard));
-    detail::append(ptr, '-');
-    detail::append(ptr, tag.get_atomic_mass_number());
-    if (!tag.is_ground()) {
-        detail::append(ptr, tag.has_metastable_index() ? 'm' : 'e');
-        detail::append(ptr, tag.get_index());
+    if (tag.is_elemental()) {
+        detail::append(ptr, "elemental ");
+    }
+    detail::append(ptr, names::Nuclides::get_name(tag.get_atomic_number(), standard));
+    if (!tag.is_elemental()) {
+        detail::append(ptr, '-');
+        detail::append(ptr, tag.get_atomic_mass_number());
+        if (!tag.is_ground()) {
+            detail::append(ptr, tag.has_metastable_index() ? 'm' : 'e');
+            detail::append(ptr, tag.get_index());
+        }
     }
     return name;
 }
 std::string to_long_iupac_name(
-    const Pantag tag, const Nuclides::Standard standard = Nuclides::Standard(0))
+    const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
 {
     return to_long_iupac_name_portable(tag, standard).data();
 }
@@ -155,30 +180,30 @@ std::string to_long_iupac_name(
 PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_pdg_name_portable(const Pantag tag)
 {
     assert(tag.is_particle() && tag.is_standard());
-    auto name = null_array<SHORT_LEN>();
+    auto name = detail::null_array<SHORT_LEN>();
     char* ptr = name.data();
-    detail::append(ptr, Particle::get_symbol());
+    detail::append(ptr, names::Particles::get_symbol(tag.get_atomic_number()));
     return name;
 }
 std::string to_short_pdg_name(const Pantag tag)
 {
-    return to_short_pdg_name_portable(tag);
+    return to_short_pdg_name_portable(tag).data();
 }
 
 // ================================================================================================
 
 PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_pdg_name_portable(
-    const Pantag tag, const Particles::Standard standard = Particles::Standard(0))
+    const Pantag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
 {
     assert(tag.is_particle() && tag.is_standard());
-    auto name = null_array<LONG_LEN>();
+    auto name = detail::null_array<LONG_LEN>();
     char* ptr = name.data();
-    detail::append(ptr, Particle::get_name(standard));
+    detail::append(ptr, names::Particles::get_name(tag.get_particle_index(), standard));
     return name;
 }
-std::string to_long_pdg_name(const Pantag tag, const Particles::Standard standard)
+std::string to_long_pdg_name(const Pantag tag, const names::Particles::Standard standard)
 {
-    return to_long_pdg_name_portable(tag, standard);
+    return to_long_pdg_name_portable(tag, standard).data();
 }
 
 // ================================================================================================
@@ -204,18 +229,18 @@ std::string to_short_standard_name(const Pantag tag)
 // standard, and if they specify both then the order is irrelevant.
 std::array<char, LONG_LEN> to_long_standard_name_portable(
     const Pantag tag,
-    const Nuclides::Standard nuclide_standards,
-    const Particles::Standard particle_standard = Particles::Standard(0))
+    const names::Nuclides::Standard nuclide_standard,
+    const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
     if (tag.is_nuclide())   return to_long_iupac_name_portable(tag, nuclide_standard);
     else                    return to_long_pdg_name_portable(tag, particle_standard);
 }
 std::array<char, LONG_LEN> to_long_standard_name_portable(
     const Pantag tag,
-    const Particles::Standard particle_standard = Particles::Standard(0),
-    const Nuclides::Standard nuclide_standards = Nuclides::Standard(0))
+    const names::Particles::Standard particle_standard = names::Particles::Standard(0),
+    const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
 {
-    return to_long_standard_name_portable(nuclide_standard, particle_standard);
+    return to_long_standard_name_portable(tag, nuclide_standard, particle_standard);
 }
 
 // ================================================================================================
@@ -224,24 +249,92 @@ std::array<char, LONG_LEN> to_long_standard_name_portable(
 // standard, and if they specify both then the order is irrelevant.
 std::string to_long_standard_name(
     const Pantag tag,
-    const Nuclides::Standard nuclide_standards,
-    const Particles::Standard particle_standard = Particles::Standard(0))
+    const names::Nuclides::Standard nuclide_standard,
+    const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
     if (tag.is_nuclide())   return to_long_iupac_name(tag, nuclide_standard);
     else                    return to_long_pdg_name(tag, particle_standard);
 }
 std::string to_long_standard_name(
     const Pantag tag,
-    const Particles::Standard particle_standard = Particles::Standard(0),
-    const Nuclides::Standard nuclide_standards = Nuclides::Standard(0))
+    const names::Particles::Standard particle_standard = names::Particles::Standard(0),
+    const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
 {
-    return to_long_standard_name(nuclide_standard, particle_standard);
+    return to_long_standard_name(tag, nuclide_standard, particle_standard);
 }
 
 // ================================================================================================
 
 // TODO
-Pantag from_short_standard_name(std::string) {}
+// nuclides:
+// -- elementals: just the atomic symbol
+// -- non-elementals: <atomic symbol>-<atomic mass number>[[m|e]<index>]
+// particles:
+// -- try matching the list: scan over names::Particles::count and compare against get_symbol
+
+PORTABLE_FUNCTION constexpr std::size_t read_number(const char* &ptr) {
+    std::size_t num = 0; 
+    while(true) {
+        switch(*ptr) {
+        case '0': num = 10 * num;     break; 
+        case '1': num = 10 * num + 1; break;
+        case '2': num = 10 * num + 2; break;
+        case '3': num = 10 * num + 3; break;
+        case '4': num = 10 * num + 4; break;
+        case '5': num = 10 * num + 5; break;
+        case '6': num = 10 * num + 6; break;
+        case '7': num = 10 * num + 7; break;
+        case '8': num = 10 * num + 8; break;
+        case '9': num = 10 * num + 9; break;
+        default: return num;
+        }
+        ++ptr; 
+    } 
+} 
+
+PORTABLE_FUNCTION constexpr Pantag parse parse_short_nuclide(
+    const std::string_view short_name, const std::size_t hyphen_index)
+{
+    const auto Z = match_nuclide_symbol(short_name.substr(0, n));
+    // TODO: What if there's an invalid nuclide symbol?
+    const char * ptr = short_name.data() + n + 1;
+    const std::size_t A = read_number(ptr);
+    const char c = *(ptr++);
+    const std::size_t S = (c != '\0' ? read_number(ptr) : 0);
+    assert(*ptr == '\0');
+    switch(c) {
+    case 'm':
+        return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, A, Pantag::Index::metastable, S);
+    case 'e':
+        return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, A, Pantag::Index::excitation, S);
+    default:
+        return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, A);
+    };
+}
+
+PORTABLE_FUNCTION constexpr Pantag from_short_standard_name(const std::string_view short_name)
+{
+    // Test particles
+    const auto pindex = match_particle_symbol(short_name);
+    if (/*TODO: How to tell if pindex matched correctly?*/) {
+        return Pantag(Pantag::PNType::particle, Pantag::Mode::standard, pindex);
+    }
+    for (std::size_t index = 0; index < names::Particles::count; ++index) {
+        if (names::Particles::get_symbol(index) == short_name) {
+            // TODO: Return the Pantag for the particle
+        }
+    }
+    // No particles matched, so assume a nuclide
+    // std::find not constexpr until C++20
+    for (std::size_t n = 0; n < short_name.size(); ++n) {
+        if (short_name[n] == '-') {
+            return parse_short_nuclide(short_name, n);
+        }
+    }
+    // Did not find '-', so assume an elemental
+    const auto Z = match_nuclide_symbol(short_name);
+    return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, Pantag::elemental);
+}
 
 // ================================================================================================
 

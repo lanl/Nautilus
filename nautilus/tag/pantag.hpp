@@ -1,7 +1,8 @@
 #ifndef NAUTILUS_PANTAG_HPP
 #define NAUTILUS_PANTAG_HPP
 
-#include "bitsegment.hpp"
+#include "nautilus/names.hpp"
+#include "nautilus/tag/bitsegment.hpp"
 
 #include "ports-of-call/portability.hpp"
 
@@ -130,6 +131,87 @@ private:
 
     Storage tag_;
 
+    PORTABLE_FUNCTION static constexpr Storage index_to_code(const std::size_t index)
+    {
+        switch(index) {
+        case names::photon:                    return 0b000000; break;
+        case names::electron:                  return 0b010000; break;
+        case names::positron:                  return 0b010001; break;
+        case names::electron_neutrino:         return 0b010010; break;
+        case names::electron_antineutrino:     return 0b010011; break;
+        case names::muon:                      return 0b010100; break;
+        case names::antimuon:                  return 0b010101; break;
+        case names::muon_neutrino:             return 0b010110; break;
+        case names::muon_antineutrino:         return 0b010111; break;
+        case names::neutral_pion:              return 0b100000; break;
+        case names::positive_pion:             return 0b100010; break;
+        case names::negative_pion:             return 0b100011; break;
+        case names::short_kaon:                return 0b100100; break;
+        case names::long_kaon:                 return 0b100110; break;
+        case names::positive_kaon:             return 0b101000; break;
+        case names::negative_kaon:             return 0b101001; break;
+        case names::neutron:                   return 0b110000; break;
+        case names::antineutron:               return 0b110001; break;
+        case names::proton:                    return 0b110010; break;
+        case names::antiproton:                return 0b110011; break;
+        case names::neutral_lambda_baryon:     return 0b110100; break;
+        case names::neutral_lambda_antibaryon: return 0b110101; break;
+        case names::positive_sigma_baryon:     return 0b110110; break;
+        case names::negative_sigma_antibaryon: return 0b110111; break;
+        case names::negative_sigma_baryon:     return 0b111000; break;
+        case names::positive_sigma_antibaryon: return 0b111001; break;
+        case names::neutral_xi_baryon:         return 0b111010; break;
+        case names::neutral_xi_antibaryon:     return 0b111011; break;
+        case names::negative_xi_baryon:        return 0b111100; break;
+        case names::positive_xi_antibaryon:    return 0b111101; break;
+        case names::negative_omega_baryon:     return 0b111110; break;
+        case names::positive_omega_antibaryon: return 0b111111; break;
+        default:
+            assert(false);
+            return 0b000000;
+        };
+    }
+    PORTABLE_FUNCTION static constexpr std::size_t code_to_index(Storage code)
+    {
+        switch(code) {
+        case index_to_code(names::photon):                    return names::photon; break;
+        case index_to_code(names::electron):                  return names::electron; break;
+        case index_to_code(names::positron):                  return names::positron; break;
+        case index_to_code(names::electron_neutrino):         return names::electron_neutrino; break;
+        case index_to_code(names::electron_antineutrino):     return names::electron_antineutrino; break;
+        case index_to_code(names::muon):                      return names::muon; break;
+        case index_to_code(names::antimuon):                  return names::antimuon; break;
+        case index_to_code(names::muon_neutrino):             return names::muon_neutrino; break;
+        case index_to_code(names::muon_antineutrino):         return names::muon_antineutrino; break;
+        case index_to_code(names::neutral_pion):              return names::neutral_pion; break;
+        case index_to_code(names::positive_pion):             return names::positive_pion; break;
+        case index_to_code(names::negative_pion):             return names::negative_pion; break;
+        case index_to_code(names::short_kaon):                return names::short_kaon; break;
+        case index_to_code(names::long_kaon):                 return names::long_kaon; break;
+        case index_to_code(names::positive_kaon):             return names::positive_kaon; break;
+        case index_to_code(names::negative_kaon):             return names::negative_kaon; break;
+        case index_to_code(names::neutron):                   return names::neutron; break;
+        case index_to_code(names::antineutron):               return names::antineutron; break;
+        case index_to_code(names::proton):                    return names::proton; break;
+        case index_to_code(names::antiproton):                return names::antiproton; break;
+        case index_to_code(names::neutral_lambda_baryon):     return names::neutral_lambda_baryon; break;
+        case index_to_code(names::neutral_lambda_antibaryon): return names::neutral_lambda_antibaryon; break;
+        case index_to_code(names::positive_sigma_baryon):     return names::positive_sigma_baryon; break;
+        case index_to_code(names::negative_sigma_antibaryon): return names::negative_sigma_antibaryon; break;
+        case index_to_code(names::negative_sigma_baryon):     return names::negative_sigma_baryon; break;
+        case index_to_code(names::positive_sigma_antibaryon): return names::positive_sigma_antibaryon; break;
+        case index_to_code(names::neutral_xi_baryon):         return names::neutral_xi_baryon; break;
+        case index_to_code(names::neutral_xi_antibaryon):     return names::neutral_xi_antibaryon; break;
+        case index_to_code(names::negative_xi_baryon):        return names::negative_xi_baryon; break;
+        case index_to_code(names::positive_xi_antibaryon):    return names::positive_xi_antibaryon; break;
+        case index_to_code(names::negative_omega_baryon):     return names::negative_omega_baryon; break;
+        case index_to_code(names::positive_omega_antibaryon): return names::positive_omega_antibaryon; break;
+        default:
+            assert(false);
+            return names::Particles::count;
+        };
+    }
+
 public:
     enum class PNType { particle, nuclide };
 
@@ -224,6 +306,7 @@ public:
         bs_user.set(STANDARD, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
+        assert(A == 0 ? S == 0 : true); // elementals don't have excited/metastable state
         switch (index) {
         case Index::excitation: bs_exc_meta.set(EXCITATION_INDEX, tag_); break;
         case Index::metastable: bs_exc_meta.set(METASTABLE_INDEX, tag_); break;
@@ -236,7 +319,7 @@ public:
         bs_version.set(CURRENT_VERSION, tag_);
         bs_nuclide.set(PARTICLE, tag_);
         bs_user.set(STANDARD, tag_);
-        bs_data.set(particle, tag_);
+        bs_pindex.set(index_to_code(particle), tag_);
     }
 
     PORTABLE_FUNCTION constexpr void set_user_nuclide(const Storage data)
@@ -335,6 +418,11 @@ public:
         return bs_Z.get(tag_);
     }
 
+    PORTABLE_FUNCTION constexpr bool is_elemental() const {
+        assert(is_nuclide() && is_standard());
+        return bs_A.get(tag_) == elemental;
+    }
+
     PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
     {
         assert(is_nuclide() && is_standard());
@@ -374,13 +462,17 @@ public:
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
     }
+    PORTABLE_FUNCTION constexpr bool is_ground() const
+    {
+        return bs_S.get(tag_) == GROUND;
+    }
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
         assert(is_nuclide() && is_standard());
         return bs_S.get(tag_);
     }
 
-    // standard-nuclide-specific accessors
+    // standard-particle-specific accessors
 
     PORTABLE_FUNCTION constexpr bool is_elementary() const
     {
@@ -417,6 +509,11 @@ public:
     {
         assert(is_particle() && is_standard());
         return is_composite() && (bs_category.get(tag_) == BARYON);
+    }
+    PORTABLE_FUNCTION constexpr auto get_particle_index() const
+    {
+        assert(is_particle() && is_standard());
+        return code_to_index(bs_pindex.get(tag_));
     }
 
     // Comparison operators

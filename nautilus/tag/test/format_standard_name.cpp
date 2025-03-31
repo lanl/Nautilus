@@ -1,4 +1,4 @@
-#include "nautilus/tag/foramt_standard_name.hpp"
+#include "nautilus/tag/format_standard_name.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 

@@ -1,5 +1,8 @@
 // TODO: Should this be in the tag/ subdirectory?
 
+#ifndef NAUTILUS_NAMES_HPP
+#define NAUTILUS_NAMES_HPP
+
 #include <array>
 #include <string_view>
 
@@ -407,4 +410,4 @@ PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
 
 } // namespace nautilus::names
 
-// ================================================================================================
+#endif // NAUTILUS_NAMES_HPP
