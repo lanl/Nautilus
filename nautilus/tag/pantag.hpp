@@ -169,7 +169,7 @@ private:
         case names::positive_omega_antibaryon: return 0b111111; break;
         default:
             assert(false);
-            return 0b000000;
+            return 0b000001;
         };
         // clang-format on
     }
@@ -212,7 +212,7 @@ private:
         case index_to_code(positive_omega_antibaryon): return positive_omega_antibaryon; break;
         default:
             assert(false);
-            return Particles::count;
+            return names::Particles::count;
         };
         // clang-format off
     }
@@ -280,11 +280,13 @@ public:
 
     template <typename... Args>
     PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Mode mode, const Args... args)
+    : tag_{0} // An arbitrary value to avoid uninitialized errors (TODO: Sign of a bad design?)
     {
         set(pntype, mode, args...);
     }
     template <typename... Args>
     PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Storage s0, const Args... args)
+    : tag_{0} // An arbitrary value to avoid uninitialized errors (TODO: Sign of a bad design?)
     {
         set(pntype, Mode::standard, s0, args...);
     }

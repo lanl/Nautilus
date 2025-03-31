@@ -6,7 +6,7 @@
 
 TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
 {
-    using nautilus::tag::Pantag;
+    using namespace nautilus::tag;
 
     SECTION("standard particle")
     {

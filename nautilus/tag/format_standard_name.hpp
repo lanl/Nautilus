@@ -319,7 +319,7 @@ PORTABLE_FUNCTION constexpr Pantag from_standard_name(const std::string_view sho
     for (std::size_t n = 0; n < short_name.size(); ++n) {
         if (short_name[n] == '-') {
             // A hyphen means we have a specific nuclide and not an elemental
-            return parse_nuclide(short_name, n);
+            return detail::parse_nuclide(short_name, n);
         }
     }
     // Did not find '-', so assume an elemental
