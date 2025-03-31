@@ -11,6 +11,8 @@
 #include <string>
 #include <string_view>
 
+// TODO: Should I make my free functions inline or should I create cpp files for implementations?
+
 // Note: There are versions with and without the suffix "_portable" on the function name.  The
 //       versions without the suffix are designed for ease-of-use and assume that the code is
 //       running on a CPU.  For that reason, std::string is the output type as that would typically
@@ -155,16 +157,7 @@ PORTABLE_FUNCTION constexpr Pantag parse_nuclide(
     };
 }
 
-} // namespace detail
-
-// ================================================================================================
-
-// TODO: Should to_\(short\|long)_standard_\(nuclide\|particle\)[_portable] be in detail?
-//    -- If so, then I can reduce the implementations by getting rid of the variations without the
-//       "_portable" suffix, because they won't be user-facing (except the root methods that don't
-//       specify nuclide or particle).
-
-PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_nuclide_name_portable(
+PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_nuclide_name(
     const Pantag tag)
 {
     assert(tag.is_nuclide() && tag.is_standard());
@@ -181,14 +174,8 @@ PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_nuclid
     }
     return name;
 }
-std::string to_short_standard_nuclide_name(const Pantag tag)
-{
-    return to_short_standard_nuclide_name_portable(tag).data();
-}
 
-// ================================================================================================
-
-PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_nuclide_name_portable(
+PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_nuclide_name(
     const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
 {
     assert(tag.is_nuclide() && tag.is_standard());
@@ -208,15 +195,8 @@ PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_nuclide_
     }
     return name;
 }
-std::string to_long_standard_nuclide_name(
-    const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
-{
-    return to_long_standard_nuclide_name_portable(tag, standard).data();
-}
 
-// ================================================================================================
-
-PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_particle_name_portable(
+PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_particle_name(
     const Pantag tag)
 {
     assert(tag.is_particle() && tag.is_standard());
@@ -225,14 +205,8 @@ PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_partic
     detail::append(ptr, names::Particles::get_symbol(tag.get_atomic_number()));
     return name;
 }
-std::string to_short_standard_particle_name(const Pantag tag)
-{
-    return to_short_standard_particle_name_portable(tag).data();
-}
 
-// ================================================================================================
-
-PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_particle_name_portable(
+PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_particle_name(
     const Pantag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
 {
     assert(tag.is_particle() && tag.is_standard());
@@ -241,11 +215,8 @@ PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_particle
     detail::append(ptr, names::Particles::get_name(tag.get_particle_index(), standard));
     return name;
 }
-std::string to_long_standard_particle_name(
-    const Pantag tag, const names::Particles::Standard standard)
-{
-    return to_long_standard_particle_name_portable(tag, standard).data();
-}
+
+} // namespace detail
 
 // ================================================================================================
 
