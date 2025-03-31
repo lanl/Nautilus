@@ -14,6 +14,9 @@ namespace nautilus::names {
 
 // ================================================================================================
 
+// TODO: Should Identifiers be moved to a separate file to clarify the user interface in this file?
+namespace detail {
+
 template <std::size_t N>
 class Identifiers
 {
@@ -97,12 +100,14 @@ public:
     }
 };
 
+} // namespace detail
+
 // ================================================================================================
 
 class Nuclides
 {
 private:
-    using Nuclide = Identifiers<4>;
+    using Nuclide = detail::Identifiers<4>;
 
 public:
     static constexpr std::size_t count = 118;
@@ -270,7 +275,7 @@ public:
 
 struct Particles {
 private:
-    using Particle = Identifiers<2>;
+    using Particle = detail::Identifiers<2>;
 
 public:
     static constexpr std::size_t count = 32;
@@ -370,6 +375,9 @@ public:
 };
 
 // ================================================================================================
+
+// TODO: Make these inline to deal with multiple definition issues (`constexpr` does not
+//       automatically imply `inline` for variables).
 
 // The values of these indices are meaningless.  It is simply the order they are found within the
 // above list, and that order may change at any point without being considered a break in

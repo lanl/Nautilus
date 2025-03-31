@@ -227,9 +227,9 @@ PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_particle
 std::array<char, SHORT_LEN> to_short_standard_name_portable(const Pantag tag)
 {
     if (tag.is_nuclide())
-        return to_short_standard_nuclide_name_portable(tag);
+        return detail::to_short_standard_nuclide_name(tag);
     else
-        return to_short_standard_particle_name_portable(tag);
+        return detail::to_short_standard_particle_name(tag);
 }
 std::string to_short_standard_name(const Pantag tag)
 {
@@ -246,9 +246,9 @@ std::array<char, LONG_LEN> to_long_standard_name_portable(
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
     if (tag.is_nuclide())
-        return to_long_standard_nuclide_name_portable(tag, nuclide_standard);
+        return detail::to_long_standard_nuclide_name(tag, nuclide_standard);
     else
-        return to_long_standard_particle_name_portable(tag, particle_standard);
+        return detail::to_long_standard_particle_name(tag, particle_standard);
 }
 std::array<char, LONG_LEN> to_long_standard_name_portable(
     const Pantag tag,
