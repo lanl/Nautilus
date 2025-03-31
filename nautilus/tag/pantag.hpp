@@ -133,7 +133,8 @@ private:
 
     PORTABLE_FUNCTION static constexpr Storage index_to_code(const std::size_t index)
     {
-        switch(index) {
+        // clang-format off
+        switch (index) {
         case names::photon:                    return 0b000000; break;
         case names::electron:                  return 0b010000; break;
         case names::positron:                  return 0b010001; break;
@@ -170,46 +171,50 @@ private:
             assert(false);
             return 0b000000;
         };
+        // clang-format on
     }
     PORTABLE_FUNCTION static constexpr std::size_t code_to_index(Storage code)
     {
-        switch(code) {
-        case index_to_code(names::photon):                    return names::photon; break;
-        case index_to_code(names::electron):                  return names::electron; break;
-        case index_to_code(names::positron):                  return names::positron; break;
-        case index_to_code(names::electron_neutrino):         return names::electron_neutrino; break;
-        case index_to_code(names::electron_antineutrino):     return names::electron_antineutrino; break;
-        case index_to_code(names::muon):                      return names::muon; break;
-        case index_to_code(names::antimuon):                  return names::antimuon; break;
-        case index_to_code(names::muon_neutrino):             return names::muon_neutrino; break;
-        case index_to_code(names::muon_antineutrino):         return names::muon_antineutrino; break;
-        case index_to_code(names::neutral_pion):              return names::neutral_pion; break;
-        case index_to_code(names::positive_pion):             return names::positive_pion; break;
-        case index_to_code(names::negative_pion):             return names::negative_pion; break;
-        case index_to_code(names::short_kaon):                return names::short_kaon; break;
-        case index_to_code(names::long_kaon):                 return names::long_kaon; break;
-        case index_to_code(names::positive_kaon):             return names::positive_kaon; break;
-        case index_to_code(names::negative_kaon):             return names::negative_kaon; break;
-        case index_to_code(names::neutron):                   return names::neutron; break;
-        case index_to_code(names::antineutron):               return names::antineutron; break;
-        case index_to_code(names::proton):                    return names::proton; break;
-        case index_to_code(names::antiproton):                return names::antiproton; break;
-        case index_to_code(names::neutral_lambda_baryon):     return names::neutral_lambda_baryon; break;
-        case index_to_code(names::neutral_lambda_antibaryon): return names::neutral_lambda_antibaryon; break;
-        case index_to_code(names::positive_sigma_baryon):     return names::positive_sigma_baryon; break;
-        case index_to_code(names::negative_sigma_antibaryon): return names::negative_sigma_antibaryon; break;
-        case index_to_code(names::negative_sigma_baryon):     return names::negative_sigma_baryon; break;
-        case index_to_code(names::positive_sigma_antibaryon): return names::positive_sigma_antibaryon; break;
-        case index_to_code(names::neutral_xi_baryon):         return names::neutral_xi_baryon; break;
-        case index_to_code(names::neutral_xi_antibaryon):     return names::neutral_xi_antibaryon; break;
-        case index_to_code(names::negative_xi_baryon):        return names::negative_xi_baryon; break;
-        case index_to_code(names::positive_xi_antibaryon):    return names::positive_xi_antibaryon; break;
-        case index_to_code(names::negative_omega_baryon):     return names::negative_omega_baryon; break;
-        case index_to_code(names::positive_omega_antibaryon): return names::positive_omega_antibaryon; break;
+        using namespace names;
+        // clang-format off
+        switch (code) {
+        case index_to_code(photon):                    return photon; break;
+        case index_to_code(electron):                  return electron; break;
+        case index_to_code(positron):                  return positron; break;
+        case index_to_code(electron_neutrino):         return electron_neutrino; break;
+        case index_to_code(electron_antineutrino):     return electron_antineutrino; break;
+        case index_to_code(muon):                      return muon; break;
+        case index_to_code(antimuon):                  return antimuon; break;
+        case index_to_code(muon_neutrino):             return muon_neutrino; break;
+        case index_to_code(muon_antineutrino):         return muon_antineutrino; break;
+        case index_to_code(neutral_pion):              return neutral_pion; break;
+        case index_to_code(positive_pion):             return positive_pion; break;
+        case index_to_code(negative_pion):             return negative_pion; break;
+        case index_to_code(short_kaon):                return short_kaon; break;
+        case index_to_code(long_kaon):                 return long_kaon; break;
+        case index_to_code(positive_kaon):             return positive_kaon; break;
+        case index_to_code(negative_kaon):             return negative_kaon; break;
+        case index_to_code(neutron):                   return neutron; break;
+        case index_to_code(antineutron):               return antineutron; break;
+        case index_to_code(proton):                    return proton; break;
+        case index_to_code(antiproton):                return antiproton; break;
+        case index_to_code(neutral_lambda_baryon):     return neutral_lambda_baryon; break;
+        case index_to_code(neutral_lambda_antibaryon): return neutral_lambda_antibaryon; break;
+        case index_to_code(positive_sigma_baryon):     return positive_sigma_baryon; break;
+        case index_to_code(negative_sigma_antibaryon): return negative_sigma_antibaryon; break;
+        case index_to_code(negative_sigma_baryon):     return negative_sigma_baryon; break;
+        case index_to_code(positive_sigma_antibaryon): return positive_sigma_antibaryon; break;
+        case index_to_code(neutral_xi_baryon):         return neutral_xi_baryon; break;
+        case index_to_code(neutral_xi_antibaryon):     return neutral_xi_antibaryon; break;
+        case index_to_code(negative_xi_baryon):        return negative_xi_baryon; break;
+        case index_to_code(positive_xi_antibaryon):    return positive_xi_antibaryon; break;
+        case index_to_code(negative_omega_baryon):     return negative_omega_baryon; break;
+        case index_to_code(positive_omega_antibaryon): return positive_omega_antibaryon; break;
         default:
             assert(false);
-            return names::Particles::count;
+            return Particles::count;
         };
+        // clang-format off
     }
 
 public:
@@ -418,7 +423,8 @@ public:
         return bs_Z.get(tag_);
     }
 
-    PORTABLE_FUNCTION constexpr bool is_elemental() const {
+    PORTABLE_FUNCTION constexpr bool is_elemental() const
+    {
         assert(is_nuclide() && is_standard());
         return bs_A.get(tag_) == elemental;
     }
@@ -462,10 +468,7 @@ public:
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr bool is_ground() const
-    {
-        return bs_S.get(tag_) == GROUND;
-    }
+    PORTABLE_FUNCTION constexpr bool is_ground() const { return bs_S.get(tag_) == GROUND; }
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
         assert(is_nuclide() && is_standard());

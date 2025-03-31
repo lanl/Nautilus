@@ -163,8 +163,8 @@ TEST_CASE("nuclide names and symbols", "[names]")
     CHECK(Nuclides::get_name(1) == "hydrogen");
 
     constexpr std::size_t He_Z = 2;
-    CHECK(Nuclides::get_index("He") == He_Z);
-    CHECK(Nuclides::get_index("helium") == He_Z);
+    CHECK(Nuclides::find_index("He") == He_Z);
+    CHECK(Nuclides::find_index("helium") == He_Z);
     CHECK(Nuclides::get_name(He_Z) == "helium");
     CHECK(Nuclides::get_name(He_Z, Nuclides::Standard::IUPAC) == "helium");
     CHECK(Nuclides::get_name(He_Z, Nuclides::Standard::American) == "helium");
@@ -173,9 +173,9 @@ TEST_CASE("nuclide names and symbols", "[names]")
     CHECK(Nuclides::get_symbol(He_Z) == "He");
 
     constexpr std::size_t Al_Z = 13;
-    CHECK(Nuclides::get_index("Al") == Al_Z);
-    CHECK(Nuclides::get_index("aluminium") == Al_Z);
-    CHECK(Nuclides::get_index("aluminum") == Al_Z);
+    CHECK(Nuclides::find_index("Al") == Al_Z);
+    CHECK(Nuclides::find_index("aluminium") == Al_Z);
+    CHECK(Nuclides::find_index("aluminum") == Al_Z);
     CHECK(Nuclides::get_name(Al_Z) == "aluminium");
     CHECK(Nuclides::get_name(Al_Z, Nuclides::Standard::American) == "aluminum");
     CHECK(Nuclides::get_name(Al_Z, Nuclides::Standard::British) == "aluminium");
@@ -183,9 +183,9 @@ TEST_CASE("nuclide names and symbols", "[names]")
     CHECK(Nuclides::get_symbol(Al_Z) == "Al");
 
     constexpr std::size_t S_Z = 16;
-    CHECK(Nuclides::get_index("S") == S_Z);
-    CHECK(Nuclides::get_index("sulfur") == S_Z);
-    CHECK(Nuclides::get_index("sulphur") == S_Z);
+    CHECK(Nuclides::find_index("S") == S_Z);
+    CHECK(Nuclides::find_index("sulfur") == S_Z);
+    CHECK(Nuclides::find_index("sulphur") == S_Z);
     CHECK(Nuclides::get_name(S_Z) == "sulfur");
     CHECK(Nuclides::get_name(S_Z, Nuclides::Standard::IUPAC) == "sulfur");
     CHECK(Nuclides::get_name(S_Z, Nuclides::Standard::American) == "sulfur");
@@ -194,9 +194,9 @@ TEST_CASE("nuclide names and symbols", "[names]")
     CHECK(Nuclides::get_symbol(S_Z) == "S");
 
     constexpr std::size_t Cs_Z = 55;
-    CHECK(Nuclides::get_index("Cs") == Cs_Z);
-    CHECK(Nuclides::get_index("caesium") == Cs_Z);
-    CHECK(Nuclides::get_index("cesium") == Cs_Z);
+    CHECK(Nuclides::find_index("Cs") == Cs_Z);
+    CHECK(Nuclides::find_index("caesium") == Cs_Z);
+    CHECK(Nuclides::find_index("cesium") == Cs_Z);
     CHECK(Nuclides::get_name(Cs_Z) == "caesium");
     CHECK(Nuclides::get_name(Cs_Z, Nuclides::Standard::IUPAC) == "caesium");
     CHECK(Nuclides::get_name(Cs_Z, Nuclides::Standard::American) == "cesium");

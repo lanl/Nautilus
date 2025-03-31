@@ -21,7 +21,7 @@ private:
     std::string_view symbol_;
     std::array<std::string_view, N> names_;
 
-#define ENUMERATION(E) typename E, std::enable_if_t<std::is_enum<E>::value>* = nullptr
+#define ENUMERATION(E) typename E, std::enable_if_t<std::is_enum<E>::value> * = nullptr
 
     template <ENUMERATION(E)>
     PORTABLE_FUNCTION constexpr void set(
@@ -99,13 +99,17 @@ public:
 
 // ================================================================================================
 
-class Nuclides {
+class Nuclides
+{
 private:
     using Nuclide = Identifiers<4>;
+
 public:
     static constexpr std::size_t count = 118;
+    static constexpr std::size_t not_found = count + 1;
     // It's assumed that Standard(0) will be the default value.
     enum class Standard : std::size_t { IUPAC, American, British, Canadian };
+
 private:
     // This structure was chosen because global constexpr variables are not, in general, available
     // on the GPU.  By turning this into a private method and combining the accessor methods into
@@ -236,11 +240,11 @@ private:
         // clang-format on
         assert(Z > 0);
         assert(Z <= nuclides.size());
-        return nuclides[Z-1];
+        return nuclides[Z - 1];
     }
 
 public:
-    PORTABLE_FUNCTION static constexpr std::size_t get_index(const std::string_view query)
+    PORTABLE_FUNCTION static constexpr std::size_t find_index(const std::string_view query)
     {
         for (std::size_t Z = 1; Z <= count; ++Z) {
             const auto ids = get_identifiers(Z);
@@ -248,8 +252,7 @@ public:
                 return Z;
             }
         }
-        assert(false);
-        return count + 1;
+        return not_found;
     }
     PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const std::size_t Z)
     {
@@ -257,7 +260,7 @@ public:
     }
 
     PORTABLE_FUNCTION static constexpr std::string_view get_name(
-        const std::size_t Z, const Standard standard=Standard::IUPAC)
+        const std::size_t Z, const Standard standard = Standard::IUPAC)
     {
         return get_identifiers(Z).get_name(standard);
     }
@@ -268,12 +271,15 @@ public:
 struct Particles {
 private:
     using Particle = Identifiers<2>;
+
 public:
     static constexpr std::size_t count = 32;
+    static constexpr std::size_t not_found = count;
     // It's assumed that Standard(0) will be the default value.
     // TODO: I don't really care for the name "alternate", because it's not descriptive of what
     //       this format actually is.
     enum class Standard : std::size_t { PDG, alternate };
+
 private:
     // This structure was chosen because global constexpr variables are not, in general, available
     // on the GPU.  By turning this into a private method and combining the accessor methods into
@@ -339,7 +345,7 @@ private:
     }
 
 public:
-    PORTABLE_FUNCTION static constexpr std::size_t get_index(const std::string_view query)
+    PORTABLE_FUNCTION static constexpr std::size_t find_index(const std::string_view query)
     {
         for (std::size_t index = 0; index < count; ++index) {
             const auto ids = get_identifiers(index);
@@ -347,8 +353,7 @@ public:
                 return index;
             }
         }
-        assert(false);
-        return count;
+        return not_found;
     }
     // The "alternate" convention cannot be represented in Unicode, so there is no flag to select
     // different versions of the symbol.  You always get the PDG format.
@@ -358,7 +363,7 @@ public:
     }
 
     PORTABLE_FUNCTION static constexpr std::string_view get_name(
-        const std::size_t index, const Standard standard=Standard::PDG)
+        const std::size_t index, const Standard standard = Standard::PDG)
     {
         return get_identifiers(index).get_name(standard);
     }
@@ -371,8 +376,9 @@ public:
 // compatibility.  This just gives names we can type to reference the particles.  The only
 // guarantee is that the names are contiguous and start at zero, as they are the indices within a
 // std::array.
-#define PARTICLE_INDEX(var, str) \
-    static constexpr std::size_t var = Particles::get_index(str);
+#define PARTICLE_INDEX(var, str)                                                                  \
+    static constexpr std::size_t var = Particles::find_index(str);                                \
+    static_assert(var != Particles::not_found);
 PARTICLE_INDEX(photon, "photon");
 PARTICLE_INDEX(electron, "electron");
 PARTICLE_INDEX(positron, "positron");
