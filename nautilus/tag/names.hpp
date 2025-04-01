@@ -1,6 +1,8 @@
 #ifndef NAUTILUS_NAMES_HPP
 #define NAUTILUS_NAMES_HPP
 
+#include "nautilus/tag/identifiers.hpp"
+
 #include <array>
 #include <string_view>
 
@@ -8,104 +10,15 @@
 
 // ================================================================================================
 
-namespace nautilus::names {
-
-// ================================================================================================
-
-// TODO: Should Identifiers be moved to a separate file to clarify the user interface in this file?
-namespace detail {
-
-template <std::size_t N>
-class Identifiers
-{
-private:
-    std::string_view symbol_;
-    std::array<std::string_view, N> names_;
-
-#define ENUMERATION(E) typename E, std::enable_if_t<std::is_enum<E>::value> * = nullptr
-
-    template <ENUMERATION(E)>
-    PORTABLE_FUNCTION constexpr void set(
-        const std::string_view alternate_name, const E alt_standard)
-    {
-        const std::size_t alt_index = static_cast<std::size_t>(alt_standard);
-        assert(alt_index < names_.size());
-        names_[alt_index] = alternate_name;
-    }
-    template <ENUMERATION(E)>
-    PORTABLE_FUNCTION constexpr std::string_view get(const E alt_standard) const
-    {
-        const std::size_t alt_index = static_cast<std::size_t>(alt_standard);
-        assert(alt_index < names_.size());
-        return names_[alt_index];
-    }
-
-public:
-    // Constructor
-    PORTABLE_FUNCTION constexpr Identifiers(
-        const std::string_view symbol, const std::string_view standard_name)
-        : symbol_{symbol}
-    {
-        for (auto & name : names_) {
-            name = standard_name;
-        }
-    }
-    template <ENUMERATION(E)>
-    PORTABLE_FUNCTION constexpr Identifiers(
-        const std::string_view symbol,
-        const std::string_view standard_name,
-        const std::string_view alternate_name,
-        const E alt_standard)
-        : Identifiers(symbol, standard_name)
-    {
-        set(alternate_name, alt_standard);
-    }
-    template <ENUMERATION(E)>
-    PORTABLE_FUNCTION constexpr Identifiers(
-        const std::string_view symbol,
-        const std::string_view standard_name,
-        const std::string_view alternate_name,
-        const E alt_standard1,
-        const E alt_standard2)
-        : Identifiers(symbol, standard_name)
-    {
-        set(alternate_name, alt_standard1);
-        set(alternate_name, alt_standard2);
-    }
-
-    // Fetch
-    PORTABLE_FUNCTION constexpr std::string_view get_symbol() const { return symbol_; }
-    // It's assumed that E(0) will be the default value.
-    template <ENUMERATION(E)>
-    PORTABLE_FUNCTION constexpr std::string_view get_name(const E standard = E(0)) const
-    {
-        return get(standard);
-    }
-
-    // Match
-    PORTABLE_FUNCTION constexpr bool match_symbol(const std::string_view symbol) const
-    {
-        return symbol == symbol_;
-    }
-    PORTABLE_FUNCTION constexpr bool match_name(const std::string_view name) const
-    {
-        for (const auto & name0 : names_) {
-            if (name0 == name) {
-                return true;
-            }
-        }
-        return false;
-    }
-};
-
-} // namespace detail
+// TODO: Should be nautilus::tag::names?
+namespace nautilus::tag::names {
 
 // ================================================================================================
 
 class Nuclides
 {
 private:
-    using Nuclide = detail::Identifiers<4>;
+    using Nuclide = Identifiers<4>;
 
 public:
     static constexpr std::size_t count = 118;
@@ -273,7 +186,7 @@ public:
 
 struct Particles {
 private:
-    using Particle = detail::Identifiers<2>;
+    using Particle = Identifiers<2>;
 
 public:
     static constexpr std::size_t count = 32;
