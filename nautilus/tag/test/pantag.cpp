@@ -38,6 +38,10 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard nuclide (default index)")
     {
+        // TODO: These lines _should_ fail to compile
+        Pantag my_tag0(Pantag::PNType::nuclide, Pantag::Mode::standard, 28, 56, 1);
+        CHECK(my_tag0.is_nuclide());
+
         Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 28, 56);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());

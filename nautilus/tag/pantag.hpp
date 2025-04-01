@@ -18,39 +18,6 @@ namespace nautilus::tag {
 
 // TODO: Pantag doesn't strike me as a great name, but it'll do as a placeholder for now
 
-// TODO: I have a bunch of accessors/queries defined below for standard nuclides and standard
-//       particles, and I also thought about but rejected others.  I think it's not really clear
-//       what the "right" set of methods is, particularly for particles.
-//    -- With nuclides, you'll use the queries to translate to other formats.  For example, use the
-//       atomic number to look up the chemical symbol, add in the atomic mass number, and
-//       potentially append a qualification with the metastable state.
-//    -- With particles, you can't really use these to uniquely identify the particle.  Instead,
-//       you pretty much have to do some kind of if-else ladder.  If we only want the right methods
-//       to identify things, then we just need the enum and all other particle-specific methods
-//       should go away.  But maybe it's useful to ask things like, "Is this a hadron?" or, "Are
-//       these two particles a particle-antiparticle pair?"
-//    -- I'm not even convinced that having the different segments of the standard particle format
-//       broken out into BigSegments is worth having.
-//    -- Note, I already deleted the are_antiparticles because the ambiguity around truly-neutral
-//       particles makes it hard to define that method until you do a better job of formulating the
-//       question that the method is answering.
-//    -- A similar ambiguity exists in whether the ground state is an excited state, a metastable
-//       state, or both.  I need to more clearly formulate the question that the method is
-//       answering, otherwise I don't really know what the answer should be in that case.
-//    -- I think I need to stop writing accessors, and instead back up and start working on the
-//       use-cases, starting with the translation routines.  Instead of saying, "Here is a question
-//       that someone _could_ ask, so I'll _try_ to implement the answer," I should be saying,
-//       "Here is a use-case where a question has come up, so I should write the method that
-//       provides the answer."
-//    -- While the particle queries don't uniquely identify the particle, it's possible that they
-//       may have some value in categorizing the particles in a way that makes the _average_
-//       runtime of the method shorter.  That is, for example, knowing you have a lepton means you
-//       only have to check a subset of the full list of particles.  But this would require
-//       checking the implementation details to see which (if any) methods can improve query time.
-//    -- I should start by implementing a detailed format that covers everything (even if it's one
-//       of the verbose "pretty-printing" formats) just so that I can see how the logic works out
-//       in as complete an example as possible.
-
 // Particle-and-Nuclide Tag
 class Pantag
 {
@@ -69,12 +36,6 @@ private:
     BitSegment<Storage, 5, 25> bs_data;
     BitSegment<Storage, 0, 5> bs_version;
 
-    // TODO: There may be some value in having these defined as they are.  But it may make sense to
-    //       instead use bs_nuclide.mask() (and similar below for standard/user) and compare
-    //       against a calibrated value that removes the need to shift and then compare.  Instead,
-    //       make it a mask-and-compare.  But that couples things (the values here would have to be
-    //       kept consistent with the BigSegment definitions above), and there may be other reasons
-    //       why keeping things like this makes sense.
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
 
@@ -102,8 +63,6 @@ private:
     static constexpr Storage METASTABLE_INDEX = 0b1;
 
     static constexpr Storage GROUND = 0b00000000;
-
-    // TODO: Write tests for particles and their accessors.
 
     // More detailed breakdown for standard particles
     //      00???????????????????HCIIIAVVVVV
@@ -221,6 +180,49 @@ public:
     // ____________________________________________________________________________________________
     // Constructors
 
+    // TODO: I need to think about the right interface(s) to construct and modify a Pantag.
+    //    -- What I currently have:
+    //       -- constructors and set use the same argument lists (constructors just defer to set)
+    //       -- set(nuclide, standard, Z, A, index_type, S)
+    //       -- set(nuclide, Z, A, index_type, S)
+    //       -- set(nuclide, standard, Z, A)
+    //       -- set(nuclide, Z, A)
+    //       -- set(nuclide, user, data)
+    //       -- set(particle, standard, pindex)
+    //       -- set(particle, pindex)
+    //       -- set(particle, user, data)
+    //    -- defaults
+    //       -- Is it useful to allow users to default to "standard"?
+    //       -- Is it useful to allow users to default to ground state for nuclides?
+    //       -- Getting rid of both default options means users would always have to use the
+    //          most-verbose form of set(nuclide, standard, Z, A, index_type, S) to build a
+    //          standard nuclide.
+    //    -- How often will users directly construct a Pantag vs construct one of the other formats
+    //       and the convert that to a Pantag?
+    //       -- Initial usage is expected to focus on Pantag as a vehicle for translating between
+    //          formats.  In that case, users will build something in format A, then write a
+    //          conversion routine that converts from format A to Pantag to format B, then returns
+    //          format B.  Pantag will only exist as a temporary between the conversions and users
+    //          won't actually ever construct a Pantag directly.
+    //       -- If users adopt Pantag as their internal format (e.g., if xRAGE were to replace
+    //          NDI's zaid with Pantag), then the use case would look something more like
+    //          -- Read in user input.  User input comes in a text format, so there's some
+    //             translation routine that will need to be used.  This might be something like
+    //             "from_standard_name" (or another format that Nautilus already implements).
+    //          -- Add in any non-user-specified isotopes, such as some kind of standard reaction
+    //             chain, or commonly-used nuclides, etc.  These could be constructed directly as a
+    //             Pantag (which would be the logical choice if Pantag were the internal format for
+    //             the code) or it could be a conversion from a zaid or other format such as
+    //                my_tag = from_ndi_zaid(zaid(Z, A, S))
+    //             This would be a slightly odd workflow to build in a different format just to
+    //             immediately convert to Pantag.  That would suggest that Pantag's
+    //             constructors/setters aren't up to the task and users had to work around them to
+    //             get what they wanted by using another format as a shortcut.
+    //    -- Given the current concept for Pantag, where things are split between nuclides and
+    //       particles, particles are identified by an index, and nuclides are identified by Z, A,
+    //       and S, there may not be much improvement to be had to the general concept of the
+    //       interface (to say nothing of the particular implementation).
+
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
     {
@@ -243,6 +245,61 @@ public:
     // ____________________________________________________________________________________________
     // Build a Pantag
 
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Mode mode, const Args... args)
+    {
+        switch (pntype) {
+        case PNType::particle:
+            switch (mode) {
+            case Mode::standard: // set_standard_particle(args...); break;
+                // TODO: This works, but it's so brittle that I'm not comfortable with it.
+                if constexpr (sizeof...(args) == 1) {
+                    set_standard_particle(args...);
+                } else {
+                    assert(false);
+                }
+                break;
+            case Mode::user: // set_user_particle(args...); break;
+                if constexpr (sizeof...(args) == 1) {
+                    set_user_particle(args...);
+                } else {
+                    assert(false);
+                }
+                break;
+            }
+            break;
+        case PNType::nuclide:
+            switch (mode) {
+            case Mode::standard: // set_standard_nuclide(args...); break;
+                if constexpr ((sizeof...(args) == 2) || (sizeof...(args) == 4)) {
+                    set_standard_nuclide(args...);
+                } else {
+                    // TODO: This isn't sufficient.  If you build without debug, then the assertion
+                    //       becomes a no-op and nothing happens if you pass in the wrong number of
+                    //       arguments.  But we can't use static_assert, because the switches
+                    //       wrapping this block are runtime, so you'll have to build this branch
+                    //       even if it never gets called.
+                    assert(false);
+                }
+                break;
+            case Mode::user: // set_user_nuclide(args...); break;
+                if constexpr (sizeof...(args) == 1) {
+                    set_user_nuclide(args...);
+                    break;
+                } else {
+                    assert(false);
+                }
+                break;
+            }
+            break;
+        }
+    }
+    template <typename... Args>
+    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Storage s0, const Args... args)
+    {
+        set(pntype, Mode::standard, s0, args...);
+    }
+
     PORTABLE_FUNCTION constexpr void set_standard_nuclide(const Storage Z, const Storage A)
     {
         bs_version.set(CURRENT_VERSION, tag_);
@@ -252,6 +309,11 @@ public:
         bs_A.set(A, tag_);
         // TODO: Should we default to an excitation index or a metastable index?
         //    -- See notes below: maybe the ground state will return true for both index queries?
+        //    -- Or maybe having a default on the index is just a bad idea?
+        //    -- Another option: Maybe we don't add excitation states at all and just stick with
+        //       metastable states?  Wim is planning to use excitation states in NJOY, but it's not
+        //       clear if any current codes use excitation states.  Adding excitation states could
+        //       be a future addition.
         bs_exc_meta.set(METASTABLE_INDEX, tag_);
         bs_S.set(GROUND, tag_);
     }
@@ -297,56 +359,6 @@ public:
         bs_nuclide.set(PARTICLE, tag_);
         bs_user.set(USER, tag_);
         bs_data.set(data, tag_);
-    }
-
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Mode mode, const Args... args)
-    {
-        switch (pntype) {
-        case PNType::particle:
-            switch (mode) {
-            case Mode::standard: // set_standard_particle(args...); break;
-                // TODO: This works, but it's so brittle that I'm not comfortable with it.
-                if constexpr (sizeof...(args) == 1) {
-                    set_standard_particle(args...);
-                } else {
-                    assert(false);
-                }
-                break;
-            case Mode::user: // set_user_particle(args...); break;
-                if constexpr (sizeof...(args) == 1) {
-                    set_user_particle(args...);
-                } else {
-                    assert(false);
-                }
-                break;
-            }
-            break;
-        case PNType::nuclide:
-            switch (mode) {
-            case Mode::standard: // set_standard_nuclide(args...); break;
-                if constexpr ((sizeof...(args) >= 2) && (sizeof...(args) <= 4)) {
-                    set_standard_nuclide(args...);
-                } else {
-                    assert(false);
-                }
-                break;
-            case Mode::user: // set_user_nuclide(args...); break;
-                if constexpr (sizeof...(args) == 1) {
-                    set_user_nuclide(args...);
-                    break;
-                } else {
-                    assert(false);
-                }
-                break;
-            }
-            break;
-        }
-    }
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Storage s0, const Args... args)
-    {
-        set(pntype, Mode::standard, s0, args...);
     }
 
     // ____________________________________________________________________________________________
@@ -429,6 +441,7 @@ public:
         return bs_S.get(tag_) == GROUND;
     }
     // TODO: get_index doesn't seem like a good name
+    //    -- maybe `get_energy_level_index`?
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
         assert(is_nuclide() && is_standard());

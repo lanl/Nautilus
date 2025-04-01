@@ -39,6 +39,10 @@ constexpr std::size_t LONG_LEN = 64;
 
 // ================================================================================================
 
+// TODO: This is a lot of stuff sitting in a `detail` namespace.  Additionally, some of this may be
+//       more generally useful.  Think about where to put this: another unrelated file (e.g., a
+//       file about string manipulation), a format_standard_name_detail.hpp file, leave it here,
+//       etc.
 namespace detail {
 
 PORTABLE_FUNCTION constexpr inline char digit(int n)
