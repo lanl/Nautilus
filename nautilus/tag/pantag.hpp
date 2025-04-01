@@ -1,8 +1,8 @@
 #ifndef NAUTILUS_PANTAG_HPP
 #define NAUTILUS_PANTAG_HPP
 
-#include "nautilus/names.hpp"
 #include "nautilus/tag/bitsegment.hpp"
+#include "nautilus/tag/names.hpp"
 
 #include "ports-of-call/portability.hpp"
 
