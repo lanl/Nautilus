@@ -11,8 +11,6 @@
 #include <string>
 #include <string_view>
 
-// TODO: Should I make my free functions inline or should I create cpp files for implementations?
-
 // Note: There are versions with and without the suffix "_portable" on the function name.  The
 //       versions without the suffix are designed for ease-of-use and assume that the code is
 //       running on a CPU.  For that reason, std::string is the output type as that would typically
@@ -43,7 +41,7 @@ constexpr std::size_t LONG_LEN = 64;
 
 namespace detail {
 
-PORTABLE_FUNCTION constexpr char digit(int n)
+PORTABLE_FUNCTION constexpr inline char digit(int n)
 {
     switch (n) {
     case 0: return '0';
@@ -61,7 +59,7 @@ PORTABLE_FUNCTION constexpr char digit(int n)
 }
 
 // std::reverse is constexpr in C++20
-PORTABLE_FUNCTION constexpr void reverse(char * lo, char * hi)
+PORTABLE_FUNCTION constexpr inline void reverse(char * lo, char * hi)
 {
     --hi;
     for (; hi > lo; ++lo, --hi) {
@@ -71,14 +69,14 @@ PORTABLE_FUNCTION constexpr void reverse(char * lo, char * hi)
     }
 }
 
-PORTABLE_FUNCTION constexpr void append(char *& buf, char c) { *(buf++) = c; }
-PORTABLE_FUNCTION constexpr void append(char *& buf, std::string_view sv)
+PORTABLE_FUNCTION constexpr inline void append(char *& buf, char c) { *(buf++) = c; }
+PORTABLE_FUNCTION constexpr inline void append(char *& buf, std::string_view sv)
 {
     for (char c : sv) {
         append(buf, c);
     }
 }
-PORTABLE_FUNCTION constexpr void append(char *& buf, uint32_t n)
+PORTABLE_FUNCTION constexpr inline void append(char *& buf, uint32_t n)
 {
     if (n == 0) {
         append(buf, '0');
@@ -91,7 +89,7 @@ PORTABLE_FUNCTION constexpr void append(char *& buf, uint32_t n)
         reverse(buf0, buf);
     }
 }
-PORTABLE_FUNCTION constexpr void append(char *& buf, uint64_t n)
+PORTABLE_FUNCTION constexpr inline void append(char *& buf, uint64_t n)
 {
     if (n == 0) {
         append(buf, '0');
@@ -106,7 +104,7 @@ PORTABLE_FUNCTION constexpr void append(char *& buf, uint64_t n)
 }
 
 template <std::size_t N>
-PORTABLE_FUNCTION constexpr std::array<char, N> null_array()
+PORTABLE_FUNCTION constexpr inline std::array<char, N> null_array()
 {
     std::array<char, N> name;
     for (auto & c : name) {
@@ -115,7 +113,7 @@ PORTABLE_FUNCTION constexpr std::array<char, N> null_array()
     return name;
 }
 
-PORTABLE_FUNCTION constexpr std::size_t read_number(const char *& ptr)
+PORTABLE_FUNCTION constexpr inline std::size_t read_number(const char *& ptr)
 {
     std::size_t num = 0;
     while (true) {
@@ -136,7 +134,7 @@ PORTABLE_FUNCTION constexpr std::size_t read_number(const char *& ptr)
     }
 }
 
-PORTABLE_FUNCTION constexpr Pantag parse_nuclide(
+PORTABLE_FUNCTION constexpr inline Pantag parse_nuclide(
     const std::string_view short_name, const std::size_t hyphen_index)
 {
     const auto Z = names::Nuclides::find_index(short_name.substr(0, hyphen_index));
@@ -157,7 +155,7 @@ PORTABLE_FUNCTION constexpr Pantag parse_nuclide(
     };
 }
 
-PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_nuclide_name(
+PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard_nuclide_name(
     const Pantag tag)
 {
     assert(tag.is_nuclide() && tag.is_standard());
@@ -175,7 +173,7 @@ PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_nuclid
     return name;
 }
 
-PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_nuclide_name(
+PORTABLE_FUNCTION constexpr inline std::array<char, LONG_LEN> to_long_standard_nuclide_name(
     const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
 {
     assert(tag.is_nuclide() && tag.is_standard());
@@ -196,7 +194,7 @@ PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_nuclide_
     return name;
 }
 
-PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_particle_name(
+PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard_particle_name(
     const Pantag tag)
 {
     assert(tag.is_particle() && tag.is_standard());
@@ -206,7 +204,7 @@ PORTABLE_FUNCTION constexpr std::array<char, SHORT_LEN> to_short_standard_partic
     return name;
 }
 
-PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_particle_name(
+PORTABLE_FUNCTION constexpr inline std::array<char, LONG_LEN> to_long_standard_particle_name(
     const Pantag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
 {
     assert(tag.is_particle() && tag.is_standard());
@@ -224,14 +222,14 @@ PORTABLE_FUNCTION constexpr std::array<char, LONG_LEN> to_long_standard_particle
 // -- nuclides only have a single standard
 // -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
 //    you always get the PDG symbol
-std::array<char, SHORT_LEN> to_short_standard_name_portable(const Pantag tag)
+PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard_name_portable(const Pantag tag)
 {
     if (tag.is_nuclide())
         return detail::to_short_standard_nuclide_name(tag);
     else
         return detail::to_short_standard_particle_name(tag);
 }
-std::string to_short_standard_name(const Pantag tag)
+inline std::string to_short_standard_name(const Pantag tag)
 {
     return to_short_standard_name_portable(tag).data();
 }
@@ -240,7 +238,7 @@ std::string to_short_standard_name(const Pantag tag)
 
 // Variations of the same thing so that the user can specify a nuclide standard and/or a particle
 // standard, and if they specify both then the order is irrelevant.
-std::array<char, LONG_LEN> to_long_standard_name_portable(
+PORTABLE_FUNCTION constexpr inline std::array<char, LONG_LEN> to_long_standard_name_portable(
     const Pantag tag,
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
@@ -250,7 +248,7 @@ std::array<char, LONG_LEN> to_long_standard_name_portable(
     else
         return detail::to_long_standard_particle_name(tag, particle_standard);
 }
-std::array<char, LONG_LEN> to_long_standard_name_portable(
+PORTABLE_FUNCTION constexpr inline std::array<char, LONG_LEN> to_long_standard_name_portable(
     const Pantag tag,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0),
     const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
@@ -258,14 +256,14 @@ std::array<char, LONG_LEN> to_long_standard_name_portable(
     return to_long_standard_name_portable(tag, nuclide_standard, particle_standard);
 }
 
-std::string to_long_standard_name(
+inline std::string to_long_standard_name(
     const Pantag tag,
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
     return to_long_standard_name_portable(tag, nuclide_standard, particle_standard).data();
 }
-std::string to_long_standard_name(
+inline std::string to_long_standard_name(
     const Pantag tag,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0),
     const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
@@ -279,7 +277,7 @@ std::string to_long_standard_name(
 // and Particles::find_index are implemented, having from_short_standard_name and
 // from_long_standard_name would be redundant because they would be identical and both would work
 // for both short and long names.
-PORTABLE_FUNCTION constexpr Pantag from_standard_name(const std::string_view short_name)
+PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::string_view short_name)
 {
     // Check if we have a known particle
     const auto pindex = names::Particles::find_index(short_name);
@@ -299,7 +297,7 @@ PORTABLE_FUNCTION constexpr Pantag from_standard_name(const std::string_view sho
     return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, Pantag::elemental);
 }
 template <std::size_t N>
-PORTABLE_FUNCTION constexpr Pantag from_standard_name(const std::array<char, N> & short_name)
+PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::array<char, N> & short_name)
 {
     assert(short_name[short_name.size() - 1] == '\0');
     return from_standard_name(short_name.data());
