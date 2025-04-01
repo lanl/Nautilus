@@ -10,7 +10,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("standard particle")
     {
-        Pantag my_tag(Pantag::PNType::particle, Pantag::Mode::standard, nautilus::names::electron);
+        Pantag my_tag(Pantag::PNType::particle, Pantag::Mode::standard, nautilus::tag::names::electron);
         CHECK(!my_tag.is_nuclide());
         CHECK(my_tag.is_particle());
 

@@ -6,7 +6,7 @@
 
 TEST_CASE("particle names", "[names]")
 {
-    using namespace nautilus::names;
+    using namespace nautilus::tag::names;
 
     auto f_pdg = [](const std::size_t index, const std::string_view name) {
         return Particles::get_name(index) == name;
@@ -85,7 +85,7 @@ TEST_CASE("particle names", "[names]")
 
 TEST_CASE("particle symbols", "[names]")
 {
-    using namespace nautilus::names;
+    using namespace nautilus::tag::names;
 
     // Symbols are not available for the "alternate" format.
     auto f_pdg = [](const std::size_t index, const std::string_view name) {
@@ -158,7 +158,7 @@ TEST_CASE("particle symbols", "[names]")
 
 TEST_CASE("nuclide names and symbols", "[names]")
 {
-    using namespace nautilus::names;
+    using namespace nautilus::tag::names;
 
     CHECK(Nuclides::get_name(1) == "hydrogen");
 
