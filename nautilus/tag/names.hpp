@@ -1,5 +1,3 @@
-// TODO: Should this be in the tag/ subdirectory?
-
 #ifndef NAUTILUS_NAMES_HPP
 #define NAUTILUS_NAMES_HPP
 
