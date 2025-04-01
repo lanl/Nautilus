@@ -104,13 +104,13 @@ TEST_CASE("nuclide names on GPU", "[names][GPU]")
             N, KOKKOS_LAMBDA(int n) {
                 using namespace nautilus::names;
                 results_g(n) = 0;
-                if (Nuclides::get_name(2, Nuclides::Standard::IUPAC) == "helium") {
+                if (my_strcmp(Nuclides::get_name(2, Nuclides::Standard::IUPAC), "helium")) {
                     results_g(n) += 1;
                 }
-                if (Nuclides::get_name(13, Nuclides::Standard::American) == "aluminum") {
+                if (my_strcmp(Nuclides::get_name(13, Nuclides::Standard::American), "aluminum")) {
                     results_g(n) += 2;
                 }
-                if (Nuclides::get_name(13, Nuclides::Standard::British) == "aluminium") {
+                if (my_strcmp(Nuclides::get_name(13, Nuclides::Standard::British), "aluminium")) {
                     results_g(n) += 4;
                 }
             }
@@ -131,13 +131,13 @@ TEST_CASE("nuclide names on GPU", "[names][GPU]")
             N, KOKKOS_LAMBDA(int n) {
                 using namespace nautilus::names;
                 results_g(n) = 0;
-                if (Nuclides::get_symbol(1) == "H") {
+                if (my_strcmp(Nuclides::get_symbol(1), "H")) {
                     results_g(n) += 1;
                 }
-                if (Nuclides::get_symbol(55) == "Cs") {
+                if (my_strcmp(Nuclides::get_symbol(55), "Cs")) {
                     results_g(n) += 2;
                 }
-                if (Nuclides::get_symbol(118) == "Og") {
+                if (my_strcmp(Nuclides::get_symbol(118), "Og")) {
                     results_g(n) += 4;
                 }
             }
