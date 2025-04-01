@@ -169,7 +169,7 @@ private:
         case names::positive_omega_antibaryon: return 0b111111; break;
         default:
             assert(false);
-            return 0b000001;
+            return 0b000001; // Doesn't match any particles above
         };
         // clang-format on
     }
@@ -226,52 +226,6 @@ public:
 
     enum class Index { excitation, metastable };
 
-    enum class Particles {
-        // clang-format off
-        // elementary bosons
-        photon =                    0b000000,
-        // elementary leptons
-        electron =                  0b010000,
-        positron =                  0b010001,
-        electron_neutrino =         0b010010,
-        electron_antineutrino =     0b010011,
-        muon =                      0b010100,
-        antimuon =                  0b010101,
-        muon_neutrino =             0b010110,
-        muon_antineutrino =         0b010111,
-        // composite leptons
-        neutral_pion =              0b100000,
-        positive_pion =             0b100010,
-        negative_pion =             0b100011,
-        short_kaon =                0b100100,
-        long_kaon =                 0b100110,
-        positive_kaon =             0b101000,
-        negative_kaon =             0b101001,
-        // composite baryons
-        neutron =                   0b110000,
-        antineutron =               0b110001,
-        proton =                    0b110010,
-        antiproton =                0b110011,
-        neutral_lambda_baryon =     0b110100,
-        neutral_lambda_antibaryon = 0b110100,
-        positive_sigma_baryon =     0b110110,
-        negative_sigma_antibaryon = 0b110111,
-        negative_sigma_baryon =     0b111000,
-        positive_sigma_antibaryon = 0b111001,
-        neutral_xi_baryon =         0b111010,
-        neutral_xi_antibaryon =     0b111011,
-        negative_xi_baryon =        0b111100,
-        positive_xi_antibaryon =    0b111101,
-        negative_omega_baryon =     0b111110,
-        positive_omega_antibaryon = 0b111111,
-        // alternate baryon antiparticle convention
-        anti_positive_sigma_baryon = negative_sigma_antibaryon,
-        anti_negative_sigma_baryon = positive_sigma_antibaryon,
-        anti_negative_xi_baryon    = positive_xi_antibaryon,
-        anti_negative_omega_baryon = positive_omega_antibaryon,
-        // clang-format on
-    };
-
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
     {
@@ -326,7 +280,11 @@ public:
         bs_version.set(CURRENT_VERSION, tag_);
         bs_nuclide.set(PARTICLE, tag_);
         bs_user.set(STANDARD, tag_);
-        bs_pindex.set(index_to_code(particle), tag_);
+        // We set bs_data because:
+        // (a) this will zero out the unused section, and
+        // (b) this will set all of the particle data bits at once, instead of having to set each
+        //     individually.
+        bs_data.set(index_to_code(particle), tag_);
     }
 
     PORTABLE_FUNCTION constexpr void set_user_nuclide(const Storage data)
