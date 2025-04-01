@@ -167,7 +167,7 @@ PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard
         detail::append(ptr, tag.get_atomic_mass_number());
         if (!tag.is_ground()) {
             detail::append(ptr, tag.has_metastable_index() ? 'm' : 'e');
-            detail::append(ptr, tag.get_index()); // TODO: is get_index a good name?
+            detail::append(ptr, tag.get_index());
         }
     }
     return name;

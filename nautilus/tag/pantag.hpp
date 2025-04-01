@@ -256,7 +256,7 @@ public:
         bs_A.set(A, tag_);
         // TODO: Should we default to an excitation index or a metastable index?
         //    -- See notes below: maybe the ground state will return true for both index queries?
-        bs_exc_meta.set(METASTABLE_INDEX, tag_); // TODO: ???
+        bs_exc_meta.set(METASTABLE_INDEX, tag_);
         bs_S.set(GROUND, tag_);
     }
     PORTABLE_FUNCTION constexpr void set_standard_nuclide(
@@ -429,6 +429,7 @@ public:
         return bs_S.get(tag_);
     }
     PORTABLE_FUNCTION constexpr bool is_ground() const { return bs_S.get(tag_) == GROUND; }
+    // TODO: get_index doesn't seem like a good name
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
         assert(is_nuclide() && is_standard());
