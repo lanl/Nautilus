@@ -121,14 +121,6 @@ private:
     BitSegment<Storage, 6, 3> bs_pindex;
     BitSegment<Storage, 5, 1> bs_anti;
 
-    static constexpr Storage ELEMENTARY = 0b1;
-    static constexpr Storage COMPOSITE = 0b1;
-
-    static constexpr Storage BOSON = 0b0;
-    static constexpr Storage MESON = 0b0;
-    static constexpr Storage LEPTON = 0b1;
-    static constexpr Storage BARYON = 0b1;
-
     Storage tag_;
 
     PORTABLE_FUNCTION static constexpr Storage index_to_code(const std::size_t index)
@@ -226,6 +218,9 @@ public:
 
     enum class Index { excitation, metastable };
 
+    // ____________________________________________________________________________________________
+    // Constructors
+
     PORTABLE_FUNCTION constexpr Pantag(Storage tag)
         : tag_{tag}
     {
@@ -245,6 +240,7 @@ public:
         set(pntype, Mode::standard, s0, args...);
     }
 
+    // ____________________________________________________________________________________________
     // Build a Pantag
 
     PORTABLE_FUNCTION constexpr void set_standard_nuclide(const Storage Z, const Storage A)
@@ -353,6 +349,7 @@ public:
         set(pntype, Mode::standard, s0, args...);
     }
 
+    // ____________________________________________________________________________________________
     // Generic accessors
 
     PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
@@ -366,22 +363,22 @@ public:
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
     PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user.get(tag_) == USER; }
 
+    // Primarily intended for user tags.  For standard tags, the more-specific accessors are
+    // preferred, as there may be translations between values the users sees and values actually
+    // stored in memory, or the internal layout of data block may be changed.
     PORTABLE_FUNCTION constexpr auto get_data() const { return bs_data.get(tag_); }
 
     PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
 
+    // ____________________________________________________________________________________________
     // standard-nuclide-specific accessors
 
-    PORTABLE_FUNCTION constexpr auto get_atomic_number() const
-    {
-        assert(is_nuclide() && is_standard());
-        return bs_Z.get(tag_);
-    }
     PORTABLE_FUNCTION constexpr auto get_Z() const
     {
         assert(is_nuclide() && is_standard());
         return bs_Z.get(tag_);
     }
+    PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
 
     PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
@@ -389,16 +386,15 @@ public:
         return bs_A.get(tag_) == elemental;
     }
 
-    PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
-    {
-        assert(is_nuclide() && is_standard());
-        return bs_A.get(tag_);
-    }
     PORTABLE_FUNCTION constexpr auto get_A() const
     {
         assert(is_nuclide() && is_standard());
         return bs_A.get(tag_);
     }
+    PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
+
+    PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
+    PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
 
     // TODO: The ground state has the same index (0) regardless of whether you are using excitation
     //       or metastable indices.  Should an index of zero be considered to have both an
@@ -428,7 +424,10 @@ public:
         assert(is_nuclide() && is_standard() && has_metastable_index());
         return bs_S.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr bool is_ground() const { return bs_S.get(tag_) == GROUND; }
+    PORTABLE_FUNCTION constexpr bool is_ground() const {
+        assert(is_nuclide() && is_standard());
+        return bs_S.get(tag_) == GROUND;
+    }
     // TODO: get_index doesn't seem like a good name
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
@@ -436,50 +435,16 @@ public:
         return bs_S.get(tag_);
     }
 
+    // ____________________________________________________________________________________________
     // standard-particle-specific accessors
 
-    PORTABLE_FUNCTION constexpr bool is_elementary() const
-    {
-        assert(is_particle() && is_standard());
-        return bs_hadron.get(tag_) == ELEMENTARY;
-    }
-    PORTABLE_FUNCTION constexpr bool is_composite() const
-    {
-        assert(is_particle() && is_standard());
-        return bs_hadron.get(tag_) == COMPOSITE;
-    }
-    PORTABLE_FUNCTION constexpr bool is_hadron() const
-    {
-        assert(is_particle() && is_standard());
-        return bs_hadron.get(tag_) == COMPOSITE;
-    }
-
-    PORTABLE_FUNCTION constexpr bool is_boson() const
-    {
-        assert(is_particle() && is_standard());
-        return is_elementary() && (bs_category.get(tag_) == BOSON);
-    }
-    PORTABLE_FUNCTION constexpr bool is_meson() const
-    {
-        assert(is_particle() && is_standard());
-        return is_composite() && (bs_category.get(tag_) == MESON);
-    }
-    PORTABLE_FUNCTION constexpr bool is_lepton() const
-    {
-        assert(is_particle() && is_standard());
-        return is_elementary() && (bs_category.get(tag_) == LEPTON);
-    }
-    PORTABLE_FUNCTION constexpr bool is_baryon() const
-    {
-        assert(is_particle() && is_standard());
-        return is_composite() && (bs_category.get(tag_) == BARYON);
-    }
     PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         assert(is_particle() && is_standard());
         return code_to_index(bs_pindex.get(tag_));
     }
 
+    // ____________________________________________________________________________________________
     // Comparison operators
 
     PORTABLE_FUNCTION constexpr bool operator==(const Pantag other) { return tag_ == other.tag_; }
