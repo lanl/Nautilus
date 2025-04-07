@@ -83,10 +83,12 @@ private:
     //      ||\_____________________________ 11      19     (unused, set to all zero)
     //      |\______________________________ 30       1     nuclide flag (particle: 0)
     //      \_______________________________ 31       1     user flag (standard: 0)
-    BitSegment<Storage, 10, 1> bs_hadron;
-    BitSegment<Storage, 9, 1> bs_category;
-    BitSegment<Storage, 6, 3> bs_pcode;
-    BitSegment<Storage, 5, 1> bs_anti;
+    // TODO: Do we want to keep the sub-component accessors of the particle format?
+    //BitSegment<Storage, 10, 1> bs_hadron;
+    //BitSegment<Storage, 9, 1> bs_category;
+    //BitSegment<Storage, 6, 3> bs_pindex;
+    //BitSegment<Storage, 5, 1> bs_anti;
+    BitSegment<Storage, 5, 6> bs_pcode;
 
     Storage tag_;
 
@@ -229,7 +231,7 @@ public:
         // We set bs_sdata because:
         // (a) this will zero out the unused section, and
         // (b) this will set all of the particle data bits at once, instead of having to set each
-        //     individually.
+        //     individually. TODO: Are we even keeping the separate pieces of the particle code?
         bs_sdata.set(index_to_code(particle), tag_);
     }
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A)
