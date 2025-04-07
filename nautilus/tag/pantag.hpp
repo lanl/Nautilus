@@ -73,115 +73,18 @@ private:
     static constexpr Storage GROUND = 0b00000000;
 
     // More detailed breakdown for standard particles
-    //      000000000000000000000HCIIIAVVVVV
-    //      |||                  |||  ||     rskip   bits   description
-    //      |||                  |||  |\____  0       5     version
-    //      |||                  |||  \_____  5       1     antiparticle flag
-    //      |||                  ||\________  6       3     particle index
-    //      |||                  |\_________  9       1     category flag
-    //      |||                  \__________ 10       1     hadron flag
-    //      ||\_____________________________ 11      19     (unused, set to all zero)
+    //      00IIIIIIIIIIIIIIIIIIIIIIIIIVVVVV
+    //      |||                        |     rskip   bits   description
+    //      |||                        \____  0       5     version
+    //      ||\_____________________________ 11      25     particle index
     //      |\______________________________ 30       1     nuclide flag (particle: 0)
     //      \_______________________________ 31       1     user flag (standard: 0)
-    // TODO: Do we want to keep the sub-component accessors of the particle format?
-    //BitSegment<Storage, 10, 1> bs_hadron;
-    //BitSegment<Storage, 9, 1> bs_category;
-    //BitSegment<Storage, 6, 3> bs_pindex;
-    //BitSegment<Storage, 5, 1> bs_anti;
-    BitSegment<Storage, 5, 6> bs_pcode;
+    // Note that the particle index is a genuine index (see the implementation in names.hpp), so
+    // unless we add over 33 million more particles then we know the index is guaranteed to fit
+    // within the particle index segment.
+    BitSegment<Storage, 5, 6> bs_pindex;
 
     Storage tag_;
-
-    // TODO: These codes were chosen to make it easier to answer certain questions about particles
-    //       (for example: is this a hadron?  is this a second-generation lepton?).  I took out
-    //       those accessors for now.  If those accessors are not re-added, is the additional
-    //       compilcation of translating between particle indices and particle codes worth
-    //       maintaining?
-    PORTABLE_FUNCTION static constexpr Storage index_to_code(const std::size_t index)
-    {
-        // clang-format off
-        switch (index) {
-        case names::photon:                    return 0b000000; break;
-        case names::electron:                  return 0b010000; break;
-        case names::positron:                  return 0b010001; break;
-        case names::electron_neutrino:         return 0b010010; break;
-        case names::electron_antineutrino:     return 0b010011; break;
-        case names::muon:                      return 0b010100; break;
-        case names::antimuon:                  return 0b010101; break;
-        case names::muon_neutrino:             return 0b010110; break;
-        case names::muon_antineutrino:         return 0b010111; break;
-        case names::neutral_pion:              return 0b100000; break;
-        case names::positive_pion:             return 0b100010; break;
-        case names::negative_pion:             return 0b100011; break;
-        case names::short_kaon:                return 0b100100; break;
-        case names::long_kaon:                 return 0b100110; break;
-        case names::positive_kaon:             return 0b101000; break;
-        case names::negative_kaon:             return 0b101001; break;
-        case names::neutron:                   return 0b110000; break;
-        case names::antineutron:               return 0b110001; break;
-        case names::proton:                    return 0b110010; break;
-        case names::antiproton:                return 0b110011; break;
-        case names::neutral_lambda_baryon:     return 0b110100; break;
-        case names::neutral_lambda_antibaryon: return 0b110101; break;
-        case names::positive_sigma_baryon:     return 0b110110; break;
-        case names::negative_sigma_antibaryon: return 0b110111; break;
-        case names::negative_sigma_baryon:     return 0b111000; break;
-        case names::positive_sigma_antibaryon: return 0b111001; break;
-        case names::neutral_xi_baryon:         return 0b111010; break;
-        case names::neutral_xi_antibaryon:     return 0b111011; break;
-        case names::negative_xi_baryon:        return 0b111100; break;
-        case names::positive_xi_antibaryon:    return 0b111101; break;
-        case names::negative_omega_baryon:     return 0b111110; break;
-        case names::positive_omega_antibaryon: return 0b111111; break;
-        default:
-            assert(false);
-            return 0b000001; // Doesn't match any particles above
-        };
-        // clang-format on
-    }
-    PORTABLE_FUNCTION static constexpr std::size_t code_to_index(Storage code)
-    {
-        using namespace names;
-        // clang-format off
-        switch (code) {
-        case index_to_code(photon):                    return photon; break;
-        case index_to_code(electron):                  return electron; break;
-        case index_to_code(positron):                  return positron; break;
-        case index_to_code(electron_neutrino):         return electron_neutrino; break;
-        case index_to_code(electron_antineutrino):     return electron_antineutrino; break;
-        case index_to_code(muon):                      return muon; break;
-        case index_to_code(antimuon):                  return antimuon; break;
-        case index_to_code(muon_neutrino):             return muon_neutrino; break;
-        case index_to_code(muon_antineutrino):         return muon_antineutrino; break;
-        case index_to_code(neutral_pion):              return neutral_pion; break;
-        case index_to_code(positive_pion):             return positive_pion; break;
-        case index_to_code(negative_pion):             return negative_pion; break;
-        case index_to_code(short_kaon):                return short_kaon; break;
-        case index_to_code(long_kaon):                 return long_kaon; break;
-        case index_to_code(positive_kaon):             return positive_kaon; break;
-        case index_to_code(negative_kaon):             return negative_kaon; break;
-        case index_to_code(neutron):                   return neutron; break;
-        case index_to_code(antineutron):               return antineutron; break;
-        case index_to_code(proton):                    return proton; break;
-        case index_to_code(antiproton):                return antiproton; break;
-        case index_to_code(neutral_lambda_baryon):     return neutral_lambda_baryon; break;
-        case index_to_code(neutral_lambda_antibaryon): return neutral_lambda_antibaryon; break;
-        case index_to_code(positive_sigma_baryon):     return positive_sigma_baryon; break;
-        case index_to_code(negative_sigma_antibaryon): return negative_sigma_antibaryon; break;
-        case index_to_code(negative_sigma_baryon):     return negative_sigma_baryon; break;
-        case index_to_code(positive_sigma_antibaryon): return positive_sigma_antibaryon; break;
-        case index_to_code(neutral_xi_baryon):         return neutral_xi_baryon; break;
-        case index_to_code(neutral_xi_antibaryon):     return neutral_xi_antibaryon; break;
-        case index_to_code(negative_xi_baryon):        return negative_xi_baryon; break;
-        case index_to_code(positive_xi_antibaryon):    return positive_xi_antibaryon; break;
-        case index_to_code(negative_omega_baryon):     return negative_omega_baryon; break;
-        case index_to_code(positive_omega_antibaryon): return positive_omega_antibaryon; break;
-        default:
-            assert(false);
-            return names::Particles::count;
-        };
-        // clang-format off
-    }
 
     struct User {};
 
@@ -228,11 +131,7 @@ public:
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(STANDARD, tag_);
         bs_nuclide.set(PARTICLE, tag_);
-        // We set bs_sdata because:
-        // (a) this will zero out the unused section, and
-        // (b) this will set all of the particle data bits at once, instead of having to set each
-        //     individually. TODO: Are we even keeping the separate pieces of the particle code?
-        bs_sdata.set(index_to_code(particle), tag_);
+        bs_pindex.set(particle, tag_);
     }
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A)
     {
@@ -387,7 +286,7 @@ public:
     PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         assert(is_particle());
-        return code_to_index(bs_pcode.get(tag_));
+        return bs_pindex.get(tag_);
     }
 
     // ____________________________________________________________________________________________
