@@ -21,6 +21,19 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
         CHECK(my_tag.get_particle_index() == nautilus::tag::names::electron);
         CHECK(my_tag.get_particle_index() != nautilus::tag::names::positron);
+
+        my_tag.set(nautilus::tag::names::positron);
+        CHECK(my_tag.is_standard());
+        CHECK(!my_tag.is_user());
+
+        CHECK(!my_tag.is_nuclide());
+        CHECK(my_tag.is_particle());
+
+        CHECK(my_tag.get_version() == 0b00000);
+
+        CHECK(my_tag.get_particle_index() == nautilus::tag::names::positron);
+        CHECK(my_tag.get_particle_index() != nautilus::tag::names::electron);
+
     }
 
     SECTION("nuclide tag (elemental)")
