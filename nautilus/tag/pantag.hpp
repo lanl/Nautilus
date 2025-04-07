@@ -25,19 +25,24 @@ private:
     using Storage = uint32_t;
 
     // Basic breakdown for all tags
-    //      NUDDDDDDDDDDDDDDDDDDDDDDDDDVVVVV
+    //      NDDDDDDDDDDDDDDDDDDDDDDDDDDVVVVV
+    //      ||                         |     rskip   bits   description
+    //      ||                         \____  0       5     version
+    //      |\______________________________  5      26     data
+    //      \_______________________________ 31       1     user flag
+    BitSegment<Storage, 31, 1> bs_user;
+    BitSegment<Storage, 5, 26> bs_data;
+    BitSegment<Storage, 0, 5> bs_version;
+
+    // Breakdown for standard tags
+    //      0NDDDDDDDDDDDDDDDDDDDDDDDDDVVVVV
     //      |||                        |     rskip   bits   description
     //      |||                        \____  0       5     version
-    //      ||\_____________________________  5      25     data
-    //      |\______________________________ 30       1     user flag
-    //      \_______________________________ 31       1     nuclide flag
-    BitSegment<Storage, 31, 1> bs_nuclide;
-    // TODO: Nuclide vs particle is not inherent to Nautilus, only to the “standard format”.
-    //       Switch user bit to be first, and user format has no nuclide/particle bit (unless the
-    //       user chooses to encode it that way, which Nautilus wouldn’t know about)
-    BitSegment<Storage, 30, 1> bs_user;
-    BitSegment<Storage, 5, 25> bs_data;
-    BitSegment<Storage, 0, 5> bs_version;
+    //      ||\_____________________________  5      25     standard data
+    //      |\______________________________ 30       1     nuclide flag
+    //      \_______________________________ 31       1     user flag
+    BitSegment<Storage, 30, 1> bs_nuclide;
+    BitSegment<Storage, 5, 25> bs_sdata; // sdata = standard (non-user) tags
 
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
@@ -48,15 +53,15 @@ private:
     static constexpr Storage CURRENT_VERSION = 0b00000;
 
     // More detailed breakdown for standard nuclides
-    //      10ZZZZZZZAAAAAAAAAMSSSSSSSSVVVVV
+    //      01ZZZZZZZAAAAAAAAAMSSSSSSSSVVVVV
     //      |||      |        ||       |     rskip   bits   description
     //      |||      |        ||       \____  0       5     version
     //      |||      |        |\____________  5       8     excitation/metastable index
     //      |||      |        \_____________ 13       1     metastable flag
     //      |||      \______________________ 14       9     atomic mass number
     //      ||\_____________________________ 23       7     atomic number
-    //      |\______________________________ 30       1     user flag (standard: 0)
-    //      \_______________________________ 31       1     nuclide flag (nuclide: 1)
+    //      |\______________________________ 30       1     nuclide flag (nuclide: 1)
+    //      \_______________________________ 31       1     user flag (standard: 0)
     BitSegment<Storage, 23, 7> bs_Z;
     BitSegment<Storage, 14, 9> bs_A;
     BitSegment<Storage, 13, 1> bs_exc_meta;
@@ -68,16 +73,16 @@ private:
     static constexpr Storage GROUND = 0b00000000;
 
     // More detailed breakdown for standard particles
-    //      00???????????????????HCIIIAVVVVV
+    //      000000000000000000000HCIIIAVVVVV
     //      |||                  |||  ||     rskip   bits   description
     //      |||                  |||  |\____  0       5     version
     //      |||                  |||  \_____  5       1     antiparticle flag
     //      |||                  ||\________  6       3     particle index
     //      |||                  |\_________  9       1     category flag
     //      |||                  \__________ 10       1     hadron flag
-    //      ||\_____________________________ 11      19     (unused)
-    //      |\______________________________ 30       1     user flag (standard: 0)
-    //      \_______________________________ 31       1     nuclide flag (nuclide: 1)
+    //      ||\_____________________________ 11      19     (unused, set to all zero)
+    //      |\______________________________ 30       1     nuclide flag (particle: 0)
+    //      \_______________________________ 31       1     user flag (standard: 0)
     BitSegment<Storage, 10, 1> bs_hadron;
     BitSegment<Storage, 9, 1> bs_category;
     BitSegment<Storage, 6, 3> bs_pindex;
@@ -85,6 +90,11 @@ private:
 
     Storage tag_;
 
+    // TODO: These codes were chosen to make it easier to answer certain questions about particles
+    //       (for example: is this a hadron?  is this a second-generation lepton?).  I took out
+    //       those accessors for now.  If those accessors are not re-added, is the additional
+    //       compilcation of translating between particle indices and particle codes worth
+    //       maintaining?
     PORTABLE_FUNCTION static constexpr Storage index_to_code(const std::size_t index)
     {
         // clang-format off
@@ -281,11 +291,11 @@ public:
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(STANDARD, tag_);
         bs_nuclide.set(PARTICLE, tag_);
-        // We set bs_data because:
+        // We set bs_sdata because:
         // (a) this will zero out the unused section, and
         // (b) this will set all of the particle data bits at once, instead of having to set each
         //     individually.
-        bs_data.set(index_to_code(particle), tag_);
+        bs_sdata.set(index_to_code(particle), tag_);
     }
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A)
     {
@@ -330,18 +340,24 @@ public:
 
     PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
 
-    PORTABLE_FUNCTION constexpr bool is_particle() const
-    {
-        return bs_nuclide.get(tag_) == PARTICLE;
-    }
-    PORTABLE_FUNCTION constexpr bool is_nuclide() const { return bs_nuclide.get(tag_) == NUCLIDE; }
-
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
     PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user.get(tag_) == USER; }
 
+    PORTABLE_FUNCTION constexpr bool is_particle() const
+    {
+        assert(is_standard());
+        return bs_nuclide.get(tag_) == PARTICLE;
+    }
+    PORTABLE_FUNCTION constexpr bool is_nuclide() const {
+        assert(is_standard());
+        return bs_nuclide.get(tag_) == NUCLIDE;
+    }
+
     // Primarily intended for user tags.  For standard tags, the more-specific accessors are
     // preferred, as there may be translations between values the users sees and values actually
-    // stored in memory, or the internal layout of data block may be changed.
+    // stored in memory, or the internal layout of the data block may be changed.
+    // TODO: I can ensure this is only used for user tags with an assertion, but there may be uses
+    //       in test code, and possible in production code.  Should I add an assertion?
     PORTABLE_FUNCTION constexpr auto get_data() const { return bs_data.get(tag_); }
 
     PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
@@ -351,6 +367,14 @@ public:
 
     PORTABLE_FUNCTION constexpr auto get_Z() const
     {
+        // TODO: The nuclide-specific and particle-specific accessors currently check that the tag
+        //       is both a (particle|nuclide) _and_ that it is standard.  That is still the right
+        //       set of checks to make except it should change in one way or another:
+        //       (a) is_nuclide and is_particle now check is_standard.  If this is sufficient, then
+        //           the assertion in these accessors should just be is_nuclide or is_particle.
+        //       (b) If that check is not sufficient, then these assertions should be reversed
+        //           because only standard tags can meaningfully answer the is_nuclide /
+        //           is_particle question.
         assert(is_nuclide() && is_standard());
         return bs_Z.get(tag_);
     }
