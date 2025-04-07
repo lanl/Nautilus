@@ -193,65 +193,6 @@ public:
     // ____________________________________________________________________________________________
     // Constructors
 
-    // TODO: I need to think about the right interface(s) to construct and modify a Pantag.
-    //    -- What I currently have:
-    //       -- constructors and set use the same argument lists (constructors just defer to set)
-    //       -- set(nuclide, standard, Z, A, index_type, S)
-    //       -- set(nuclide, Z, A, index_type, S)
-    //       -- set(nuclide, standard, Z, A)
-    //       -- set(nuclide, Z, A)
-    //       -- set(nuclide, user, data)
-    //       -- set(particle, standard, pindex)
-    //       -- set(particle, pindex)
-    //       -- set(particle, user, data)
-    //    -- defaults
-    //       -- Is it useful to allow users to default to "standard"?
-    //       -- Is it useful to allow users to default to ground state for nuclides?
-    //       -- Getting rid of both default options means users would always have to use the
-    //          most-verbose form of set(nuclide, standard, Z, A, index_type, S) to build a
-    //          standard nuclide.
-    //    -- How often will users directly construct a Pantag vs construct one of the other formats
-    //       and the convert that to a Pantag?
-    //       -- Initial usage is expected to focus on Pantag as a vehicle for translating between
-    //          formats.  In that case, users will build something in format A, then write a
-    //          conversion routine that converts from format A to Pantag to format B, then returns
-    //          format B.  Pantag will only exist as a temporary between the conversions and users
-    //          won't actually ever construct a Pantag directly.
-    //       -- If users adopt Pantag as their internal format (e.g., if xRAGE were to replace
-    //          NDI's zaid with Pantag), then the use case would look something more like
-    //          -- Read in user input.  User input comes in a text format, so there's some
-    //             translation routine that will need to be used.  This might be something like
-    //             "from_standard_name" (or another format that Nautilus already implements).
-    //          -- Add in any non-user-specified isotopes, such as some kind of standard reaction
-    //             chain, or commonly-used nuclides, etc.  These could be constructed directly as a
-    //             Pantag (which would be the logical choice if Pantag were the internal format for
-    //             the code) or it could be a conversion from a zaid or other format such as
-    //                my_tag = from_ndi_zaid(zaid(Z, A, S))
-    //             This would be a slightly odd workflow to build in a different format just to
-    //             immediately convert to Pantag.  That would suggest that Pantag's
-    //             constructors/setters aren't up to the task and users had to work around them to
-    //             get what they wanted by using another format as a shortcut.
-    //    -- Given the current concept for Pantag, where things are split between nuclides and
-    //       particles, particles are identified by an index, and nuclides are identified by Z, A,
-    //       and S, there may not be much improvement to be had to the general concept of the
-    //       interface (to say nothing of the particular implementation).
-    //    -- What if we drop the particle/nuclide type and the mode entirely, and have three
-    //       constructors:
-    //       -- (Z, A): nuclide
-    //       -- (Z, A, i, S): nuclide
-    //       -- (index): particle
-    //       Particles have no multi-argument constructors, because you simply identify them by the
-    //       index.  Nuclides have no single-argument constructors, because at the very least you
-    //       need to specify the Z and A value.  There are also elementals, but you still need
-    //       multiple arguments: Z and an elemental flag (implementation-wise, that will probably
-    //       just run through the (Z,A) constructor).  Because of this split, there's no need to
-    //       specify that you have a nuclide or a particle, because it's trivial to distinguish
-    //       between them.  That would also simplify the interface by eliminating the need to
-    //       explicitly tag as a nuclide or particle.
-    //    -- But under this new idea, how would a user tag work?  Presumably, there would be a
-    //       named constant (possibly a tag type?) that would be the first argument, and then a
-    //       data argument that simply gets packed into the tag.
-
     PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
     : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
