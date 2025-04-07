@@ -184,12 +184,6 @@ private:
     struct User {};
 
 public:
-    // TODO: Do we need this anymore?
-    enum class PNType { particle, nuclide };
-
-    // TODO: Do we need this anymore?
-    enum class Mode { standard, user };
-
     static constexpr User user;
 
     static constexpr Storage elemental = 0b000000000;
