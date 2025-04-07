@@ -302,28 +302,20 @@ public:
 
     PORTABLE_FUNCTION constexpr auto get_Z() const
     {
-        // TODO: The nuclide-specific and particle-specific accessors currently check that the tag
-        //       is both a (particle|nuclide) _and_ that it is standard.  That is still the right
-        //       set of checks to make except it should change in one way or another:
-        //       (a) is_nuclide and is_particle now check is_standard.  If this is sufficient, then
-        //           the assertion in these accessors should just be is_nuclide or is_particle.
-        //       (b) If that check is not sufficient, then these assertions should be reversed
-        //           because only standard tags can meaningfully answer the is_nuclide /
-        //           is_particle question.
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return bs_Z.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
 
     PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return bs_A.get(tag_) == elemental;
     }
 
     PORTABLE_FUNCTION constexpr auto get_A() const
     {
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return bs_A.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
@@ -340,34 +332,34 @@ public:
     //       later as needed.
     PORTABLE_FUNCTION constexpr auto has_excitation_index() const
     {
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return (bs_exc_meta.get(tag_) == EXCITATION_INDEX) || (bs_S.get(tag_) == GROUND);
     }
     PORTABLE_FUNCTION constexpr auto has_metastable_index() const
     {
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return (bs_exc_meta.get(tag_) == METASTABLE_INDEX) || (bs_S.get(tag_) == GROUND);
     }
 
     PORTABLE_FUNCTION constexpr auto get_excitation_index() const
     {
-        assert(is_nuclide() && is_standard() && has_excitation_index());
+        assert(is_nuclide() && has_excitation_index());
         return bs_S.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
-        assert(is_nuclide() && is_standard() && has_metastable_index());
+        assert(is_nuclide() && has_metastable_index());
         return bs_S.get(tag_);
     }
     PORTABLE_FUNCTION constexpr bool is_ground() const {
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return bs_S.get(tag_) == GROUND;
     }
     // TODO: get_index doesn't seem like a good name
     //    -- maybe `get_energy_level_index`?
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
-        assert(is_nuclide() && is_standard());
+        assert(is_nuclide());
         return bs_S.get(tag_);
     }
 
@@ -376,7 +368,7 @@ public:
 
     PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
-        assert(is_particle() && is_standard());
+        assert(is_particle());
         return code_to_index(bs_pindex.get(tag_));
     }
 
