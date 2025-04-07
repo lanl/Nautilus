@@ -85,7 +85,7 @@ private:
     //      \_______________________________ 31       1     user flag (standard: 0)
     BitSegment<Storage, 10, 1> bs_hadron;
     BitSegment<Storage, 9, 1> bs_category;
-    BitSegment<Storage, 6, 3> bs_pindex;
+    BitSegment<Storage, 6, 3> bs_pcode;
     BitSegment<Storage, 5, 1> bs_anti;
 
     Storage tag_;
@@ -288,12 +288,13 @@ public:
         return bs_nuclide.get(tag_) == NUCLIDE;
     }
 
-    // Primarily intended for user tags.  For standard tags, the more-specific accessors are
-    // preferred, as there may be translations between values the users sees and values actually
-    // stored in memory, or the internal layout of the data block may be changed.
-    // TODO: I can ensure this is only used for user tags with an assertion, but there may be uses
-    //       in test code, and possible in production code.  Should I add an assertion?
-    PORTABLE_FUNCTION constexpr auto get_data() const { return bs_data.get(tag_); }
+    // Only for user tags.  For standard tags, the more-specific accessors are preferred, as there
+    // may be translations between values the users sees and values actually stored in memory, or
+    // the internal layout of the data block may be changed.
+    PORTABLE_FUNCTION constexpr auto get_data() const {
+        assert(is_user());
+        return bs_data.get(tag_);
+    }
 
     PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
 
@@ -316,6 +317,7 @@ public:
     PORTABLE_FUNCTION constexpr auto get_A() const
     {
         assert(is_nuclide());
+        assert(!is_elemental());
         return bs_A.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
@@ -333,12 +335,24 @@ public:
     PORTABLE_FUNCTION constexpr auto has_excitation_index() const
     {
         assert(is_nuclide());
-        return (bs_exc_meta.get(tag_) == EXCITATION_INDEX) || (bs_S.get(tag_) == GROUND);
+        if (is_elemental()) {
+            return false;
+        } else if (bs_S.get(tag_) == GROUND) {
+            return true;
+        } else {
+            return bs_exc_meta.get(tag_) == EXCITATION_INDEX;
+        }
     }
     PORTABLE_FUNCTION constexpr auto has_metastable_index() const
     {
         assert(is_nuclide());
-        return (bs_exc_meta.get(tag_) == METASTABLE_INDEX) || (bs_S.get(tag_) == GROUND);
+        if (is_elemental()) {
+            return false;
+        } else if (bs_S.get(tag_) == GROUND) {
+            return true;
+        } else {
+            return bs_exc_meta.get(tag_) == METASTABLE_INDEX;
+        }
     }
 
     PORTABLE_FUNCTION constexpr auto get_excitation_index() const
@@ -353,6 +367,7 @@ public:
     }
     PORTABLE_FUNCTION constexpr bool is_ground() const {
         assert(is_nuclide());
+        assert(!is_elemental());
         return bs_S.get(tag_) == GROUND;
     }
     // TODO: get_index doesn't seem like a good name
@@ -360,6 +375,7 @@ public:
     PORTABLE_FUNCTION constexpr auto get_index() const
     {
         assert(is_nuclide());
+        assert(!is_elemental());
         return bs_S.get(tag_);
     }
 
@@ -369,7 +385,7 @@ public:
     PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         assert(is_particle());
-        return code_to_index(bs_pindex.get(tag_));
+        return code_to_index(bs_pcode.get(tag_));
     }
 
     // ____________________________________________________________________________________________
