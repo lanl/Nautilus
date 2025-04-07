@@ -150,12 +150,10 @@ PORTABLE_FUNCTION constexpr inline Pantag parse_nuclide(
     assert(*ptr == '\0');
     switch (c) {
     case 'm':
-        return Pantag(
-            Pantag::PNType::nuclide, Pantag::Mode::standard, Z, A, Pantag::Index::metastable, S);
+        return Pantag(Z, A, Pantag::Index::metastable, S);
     case 'e':
-        return Pantag(
-            Pantag::PNType::nuclide, Pantag::Mode::standard, Z, A, Pantag::Index::excitation, S);
-    default: return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, A);
+        return Pantag(Z, A, Pantag::Index::excitation, S);
+    default: return Pantag(Z, A);
     };
 }
 
@@ -286,7 +284,7 @@ PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::string_v
     // Check if we have a known particle
     const auto pindex = names::Particles::find_index(short_name);
     if (pindex != names::Particles::not_found) {
-        return Pantag(Pantag::PNType::particle, Pantag::Mode::standard, pindex);
+        return Pantag(pindex);
     }
     // Not a particle, so assume a nuclide
     for (std::size_t n = 0; n < short_name.size(); ++n) {
@@ -298,7 +296,7 @@ PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::string_v
     // Did not find '-', so assume an elemental
     const auto Z = names::Nuclides::find_index(short_name);
     assert(Z != names::Nuclides::not_found);
-    return Pantag(Pantag::PNType::nuclide, Pantag::Mode::standard, Z, Pantag::elemental);
+    return Pantag(Z, Pantag::elemental);
 }
 template <std::size_t N>
 PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::array<char, N> & short_name)

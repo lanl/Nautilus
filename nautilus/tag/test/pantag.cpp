@@ -8,9 +8,9 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 {
     using nautilus::tag::Pantag;
 
-    SECTION("standard particle")
+    SECTION("particle tag")
     {
-        Pantag my_tag(Pantag::PNType::particle, Pantag::Mode::standard, nautilus::tag::names::electron);
+        Pantag my_tag(nautilus::tag::names::electron);
         CHECK(!my_tag.is_nuclide());
         CHECK(my_tag.is_particle());
 
@@ -22,27 +22,9 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.get_version() == 0b00000);
     }
 
-    SECTION("user particle")
+    SECTION("nuclide tag (default index)")
     {
-        Pantag my_tag(Pantag::PNType::particle, Pantag::Mode::user, 10);
-        CHECK(!my_tag.is_nuclide());
-        CHECK(my_tag.is_particle());
-
-        CHECK(!my_tag.is_standard());
-        CHECK(my_tag.is_user());
-
-        CHECK(my_tag.get_data() == 0b0000000000000000000001010);
-
-        CHECK(my_tag.get_version() == 0b00000);
-    }
-
-    SECTION("standard nuclide (default index)")
-    {
-        // TODO: These lines _should_ fail to compile
-        Pantag my_tag0(Pantag::PNType::nuclide, Pantag::Mode::standard, 28, 56, 1);
-        CHECK(my_tag0.is_nuclide());
-
-        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::standard, 28, 56);
+        Pantag my_tag(28, 56);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -67,10 +49,9 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.get_metastable_index() == 0);
     }
 
-    SECTION("standard nuclide (excitation index)")
+    SECTION("nuclide tag (excitation index)")
     {
-        Pantag my_tag(
-            Pantag::PNType::nuclide, Pantag::Mode::standard, 2, 4, Pantag::Index::excitation, 10);
+        Pantag my_tag(2, 4, Pantag::Index::excitation, 10);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -94,10 +75,9 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(!my_tag.has_metastable_index());
     }
 
-    SECTION("standard nuclide(metastable index)")
+    SECTION("nuclide tag (metastable index)")
     {
-        Pantag my_tag(
-            Pantag::PNType::nuclide, Pantag::Mode::standard, 6, 12, Pantag::Index::metastable, 1);
+        Pantag my_tag(6, 12, Pantag::Index::metastable, 1);
         CHECK(my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
@@ -121,10 +101,10 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.get_metastable_index() == 1);
     }
 
-    SECTION("user nuclide")
+    SECTION("user tag")
     {
-        Pantag my_tag(Pantag::PNType::nuclide, Pantag::Mode::user, 100);
-        CHECK(my_tag.is_nuclide());
+        Pantag my_tag(Pantag::user, 100);
+        CHECK(!my_tag.is_nuclide());
         CHECK(!my_tag.is_particle());
 
         CHECK(!my_tag.is_standard());

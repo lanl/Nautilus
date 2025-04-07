@@ -32,6 +32,9 @@ private:
     //      |\______________________________ 30       1     user flag
     //      \_______________________________ 31       1     nuclide flag
     BitSegment<Storage, 31, 1> bs_nuclide;
+    // TODO: Nuclide vs particle is not inherent to Nautilus, only to the “standard format”.
+    //       Switch user bit to be first, and user format has no nuclide/particle bit (unless the
+    //       user chooses to encode it that way, which Nautilus wouldn’t know about)
     BitSegment<Storage, 30, 1> bs_user;
     BitSegment<Storage, 5, 25> bs_data;
     BitSegment<Storage, 0, 5> bs_version;
@@ -168,10 +171,16 @@ private:
         // clang-format off
     }
 
+    struct User {};
+
 public:
+    // TODO: Do we need this anymore?
     enum class PNType { particle, nuclide };
 
+    // TODO: Do we need this anymore?
     enum class Mode { standard, user };
+
+    static constexpr User user;
 
     static constexpr Storage elemental = 0b000000000;
 
@@ -222,89 +231,67 @@ public:
     //       particles, particles are identified by an index, and nuclides are identified by Z, A,
     //       and S, there may not be much improvement to be had to the general concept of the
     //       interface (to say nothing of the particular implementation).
+    //    -- What if we drop the particle/nuclide type and the mode entirely, and have three
+    //       constructors:
+    //       -- (Z, A): nuclide
+    //       -- (Z, A, i, S): nuclide
+    //       -- (index): particle
+    //       Particles have no multi-argument constructors, because you simply identify them by the
+    //       index.  Nuclides have no single-argument constructors, because at the very least you
+    //       need to specify the Z and A value.  There are also elementals, but you still need
+    //       multiple arguments: Z and an elemental flag (implementation-wise, that will probably
+    //       just run through the (Z,A) constructor).  Because of this split, there's no need to
+    //       specify that you have a nuclide or a particle, because it's trivial to distinguish
+    //       between them.  That would also simplify the interface by eliminating the need to
+    //       explicitly tag as a nuclide or particle.
+    //    -- But under this new idea, how would a user tag work?  Presumably, there would be a
+    //       named constant (possibly a tag type?) that would be the first argument, and then a
+    //       data argument that simply gets packed into the tag.
 
-    PORTABLE_FUNCTION constexpr Pantag(Storage tag)
-        : tag_{tag}
+    PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
+    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
-        assert(bs_version.get(tag_) == CURRENT_VERSION);
+        set(particle);
+    }
+    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A)
+    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    {
+        set(Z, A);
+    }
+    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Index index, const Storage S)
+    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    {
+        set(Z, A, index, S);
+    }
+    PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
+    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    {
+        set(user, data);
     }
 
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Mode mode, const Args... args)
-    : tag_{0} // An arbitrary value to avoid uninitialized errors (TODO: Sign of a bad design?)
-    {
-        set(pntype, mode, args...);
-    }
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr Pantag(const PNType pntype, const Storage s0, const Args... args)
-    : tag_{0} // An arbitrary value to avoid uninitialized errors (TODO: Sign of a bad design?)
-    {
-        set(pntype, Mode::standard, s0, args...);
-    }
+    // TODO: Do I need explicit copy/move/assignment that checks the version and updates if there's
+    //       a version mismatch?  Or do we assume that copy/move/assignment are already working
+    //       with an updated version, and it's only other methods that have to handle old versions?
 
     // ____________________________________________________________________________________________
     // Build a Pantag
 
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Mode mode, const Args... args)
-    {
-        switch (pntype) {
-        case PNType::particle:
-            switch (mode) {
-            case Mode::standard: // set_standard_particle(args...); break;
-                // TODO: This works, but it's so brittle that I'm not comfortable with it.
-                if constexpr (sizeof...(args) == 1) {
-                    set_standard_particle(args...);
-                } else {
-                    assert(false);
-                }
-                break;
-            case Mode::user: // set_user_particle(args...); break;
-                if constexpr (sizeof...(args) == 1) {
-                    set_user_particle(args...);
-                } else {
-                    assert(false);
-                }
-                break;
-            }
-            break;
-        case PNType::nuclide:
-            switch (mode) {
-            case Mode::standard: // set_standard_nuclide(args...); break;
-                if constexpr ((sizeof...(args) == 2) || (sizeof...(args) == 4)) {
-                    set_standard_nuclide(args...);
-                } else {
-                    // TODO: This isn't sufficient.  If you build without debug, then the assertion
-                    //       becomes a no-op and nothing happens if you pass in the wrong number of
-                    //       arguments.  But we can't use static_assert, because the switches
-                    //       wrapping this block are runtime, so you'll have to build this branch
-                    //       even if it never gets called.
-                    assert(false);
-                }
-                break;
-            case Mode::user: // set_user_nuclide(args...); break;
-                if constexpr (sizeof...(args) == 1) {
-                    set_user_nuclide(args...);
-                    break;
-                } else {
-                    assert(false);
-                }
-                break;
-            }
-            break;
-        }
-    }
-    template <typename... Args>
-    PORTABLE_FUNCTION constexpr void set(const PNType pntype, const Storage s0, const Args... args)
-    {
-        set(pntype, Mode::standard, s0, args...);
-    }
-
-    PORTABLE_FUNCTION constexpr void set_standard_nuclide(const Storage Z, const Storage A)
+    PORTABLE_FUNCTION constexpr void set(const Storage particle)
     {
         bs_version.set(CURRENT_VERSION, tag_);
-        bs_nuclide.set(NUCLIDE, tag_);
         bs_user.set(STANDARD, tag_);
+        bs_nuclide.set(PARTICLE, tag_);
+        // We set bs_data because:
+        // (a) this will zero out the unused section, and
+        // (b) this will set all of the particle data bits at once, instead of having to set each
+        //     individually.
+        bs_data.set(index_to_code(particle), tag_);
+    }
+    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A)
+    {
+        bs_version.set(CURRENT_VERSION, tag_);
+        bs_user.set(STANDARD, tag_);
+        bs_nuclide.set(NUCLIDE, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
         // TODO: Should we default to an excitation index or a metastable index?
@@ -317,46 +304,23 @@ public:
         bs_exc_meta.set(METASTABLE_INDEX, tag_);
         bs_S.set(GROUND, tag_);
     }
-    PORTABLE_FUNCTION constexpr void set_standard_nuclide(
-        const Storage Z, const Storage A, const Index index, const Storage S)
+    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Index index, const Storage S)
     {
         bs_version.set(CURRENT_VERSION, tag_);
-        bs_nuclide.set(NUCLIDE, tag_);
         bs_user.set(STANDARD, tag_);
+        bs_nuclide.set(NUCLIDE, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        assert(A == 0 ? S == 0 : true); // elementals don't have excited/metastable state
+        assert(A == elemental ? S == 0 : true); // elementals don't have excited/metastable state
         switch (index) {
         case Index::excitation: bs_exc_meta.set(EXCITATION_INDEX, tag_); break;
         case Index::metastable: bs_exc_meta.set(METASTABLE_INDEX, tag_); break;
         }
         bs_S.set(S, tag_);
     }
-
-    PORTABLE_FUNCTION constexpr void set_standard_particle(const Storage particle)
+    PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
     {
         bs_version.set(CURRENT_VERSION, tag_);
-        bs_nuclide.set(PARTICLE, tag_);
-        bs_user.set(STANDARD, tag_);
-        // We set bs_data because:
-        // (a) this will zero out the unused section, and
-        // (b) this will set all of the particle data bits at once, instead of having to set each
-        //     individually.
-        bs_data.set(index_to_code(particle), tag_);
-    }
-
-    PORTABLE_FUNCTION constexpr void set_user_nuclide(const Storage data)
-    {
-        bs_version.set(CURRENT_VERSION, tag_);
-        bs_nuclide.set(NUCLIDE, tag_);
-        bs_user.set(USER, tag_);
-        bs_data.set(data, tag_);
-    }
-
-    PORTABLE_FUNCTION constexpr void set_user_particle(const Storage data)
-    {
-        bs_version.set(CURRENT_VERSION, tag_);
-        bs_nuclide.set(PARTICLE, tag_);
         bs_user.set(USER, tag_);
         bs_data.set(data, tag_);
     }
