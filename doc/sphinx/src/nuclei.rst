@@ -50,5 +50,6 @@ index :math:`S`, with higher-energy metastable states have higher indices.  When
 metastable state indices, Nautilus will simply respect the index convention provided without
 attempting to map to another convention.  Many codes at LANL have an accepted metastable state
 convention, and tend to prefer metastable states over excited states, so this is typically
-sufficient to identify different isomers of the same isotope.
+sufficient to identify different isomers of the same isotope.  Future work on Nautilus will provide
+better support for excited states other than metastable states.
 
