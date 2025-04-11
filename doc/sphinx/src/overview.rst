@@ -79,8 +79,9 @@ Zaid Tools
 The ``zaid_tools.hpp`` header file provides some useful tools for parsing zaids, which are
 identifiers used by NDI.  This header is likely to be superceded by a more extensive family of
 tools in future versions of Nautilus.  Additionally, the names in this header are not always
-consistent and correct, as the names were in some cases chosen without a detailed understanding of
-the names and definitions for some formats.
+consistent and correct, as names were in some cases chosen for compatibility with legacy codes
+rather than based on a detailed understanding of the naming conventions and motivations behind
+certain formats.
 
 The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
 because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
