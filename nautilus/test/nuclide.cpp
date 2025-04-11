@@ -3,6 +3,11 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
+#include <algorithm>
+#include <array>
+#include <sstream>
+#include <string>
+
 // ================================================================================================
 
 using Catch::Matchers::WithinRel;
@@ -113,4 +118,14 @@ TEST_CASE("Nuclide comparison", "[nuclide]")
     CHECK(!(li3 <= he3m1));
     CHECK(li3 >= he3m1);
     CHECK(li3 > he3m1);
+
+    std::array<Nuclide, 4> nuclides{li3, he3, he3m1, he2};
+    std::sort(nuclides.begin(), nuclides.end());
+    std::stringstream sout;
+    for (auto & nuclide : nuclides) {
+        sout << nuclide << '\n';
+    }
+    std::string s_expected =
+        "Nuclide(Z=2,A=2)\nNuclide(Z=2,A=3)\nNuclide(Z=2,A=3)\nNuclide(Z=3,A=3)\n";
+    CHECK(sout.str() == s_expected);
 }
