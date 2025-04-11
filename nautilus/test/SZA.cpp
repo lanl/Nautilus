@@ -40,7 +40,7 @@ TEST_CASE("SZA accessors", "[SZA]")
         CHECK(pa234m1.Z() == 91);
     }
 
-    SECTION("test a-number accessoro")
+    SECTION("test a-number accessor")
     {
         CHECK(he4.A() == 4);
         CHECK(pa234m1.A() == 234);
