@@ -6,13 +6,15 @@
 
 TEST_CASE("SZA ctors & explicit conversion on GPUs", "[SZA][GPU]")
 {
+    using namespace nautilus;
+
     using HostSpace = Kokkos::HostSpace;
     using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
 
     SECTION("explicit single argument")
     {
         constexpr int N{10};
-        constexpr nautilus::SZA he4{2004};
+        constexpr SZA he4{2004};
 
         // Create Kokkos Views to pass CPU variables to GPU
         Kokkos::View<int *, ExecSpace> results_g("results", N);
@@ -37,7 +39,7 @@ TEST_CASE("SZA ctors & explicit conversion on GPUs", "[SZA][GPU]")
     SECTION("multi-argument (z, a, s)")
     {
         constexpr int N{10};
-        constexpr nautilus::SZA pa234m1{91, 234, 1};
+        constexpr SZA pa234m1{91, 234, 1};
 
         // Create Kokkos Views to pass CPU variables to GPU
         Kokkos::View<int *, ExecSpace> results_g("results", N);
@@ -62,11 +64,13 @@ TEST_CASE("SZA ctors & explicit conversion on GPUs", "[SZA][GPU]")
 
 TEST_CASE("SZA accessors on GPUs", "[SZA][GPU]")
 {
+    using namespace nautilus;
+
     using HostSpace = Kokkos::HostSpace;
     using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
 
-    constexpr nautilus::SZA he4{2, 4};
-    constexpr nautilus::SZA pa234m1{91, 234, 1};
+    constexpr SZA he4{2, 4};
+    constexpr SZA pa234m1{91, 234, 1};
 
     SECTION("test s-number accessor")
     {
@@ -152,12 +156,14 @@ TEST_CASE("SZA accessors on GPUs", "[SZA][GPU]")
 
 TEST_CASE("SZA equality comparison on GPUs")
 {
+    using namespace nautilus;
+
     using HostSpace = Kokkos::HostSpace;
     using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
 
-    constexpr nautilus::SZA he4{2004};
-    constexpr nautilus::SZA helium{he4};
-    constexpr nautilus::SZA pa234m1{91, 234, 1};
+    constexpr SZA he4{2004};
+    constexpr SZA helium{he4};
+    constexpr SZA pa234m1{91, 234, 1};
 
     constexpr int N{10};
 
@@ -186,13 +192,15 @@ TEST_CASE("SZA equality comparison on GPUs")
 
 TEST_CASE("SZA inequality comparison on GPUs")
 {
+    using namespace nautilus;
+
     using HostSpace = Kokkos::HostSpace;
     using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
 
-    constexpr nautilus::SZA he4{2004};
-    constexpr nautilus::SZA he4m1{2, 4, 1};
-    constexpr nautilus::SZA pa234{91, 234};
-    constexpr nautilus::SZA pa234m1{91, 234, 1};
+    constexpr SZA he4{2004};
+    constexpr SZA he4m1{2, 4, 1};
+    constexpr SZA pa234{91, 234};
+    constexpr SZA pa234m1{91, 234, 1};
 
     constexpr int N{10};
 
