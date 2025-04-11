@@ -4,9 +4,12 @@ Overview
 ===================================================================================================
 
 Currently Nautilus provides only a very minimal set of shared utilities, essentially pieces that
-were originally written for Singe but were identified as being potentially useful to SuNRe.  The
-goal is to further develop the capabilities of Nautilus and provide new features that will be more
-widely useful, while also supporting its shared code goal for atomic and nuclear applications.
+were originally written for `Singe`_ but were identified as being potentially useful to `SuNRe`_.
+The goal is to further develop the capabilities of Nautilus and provide new features that will be
+more widely useful, while also supporting its shared code goal for atomic and nuclear applications.
+
+.. _Singe: https://xcap.re-pages.lanl.gov/ec/singe
+.. _SuNRe: https://xcap.re-pages.lanl.gov/ec/sunre
 
 Nautilus makes use of common terms and symbols for atomic nuclei, which are summarized `here`_.
 
