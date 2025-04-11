@@ -3,9 +3,6 @@
 
 #include "ports-of-call/portability.hpp"
 
-#include <string>
-#include <type_traits>
-
 namespace nautilus {
 
 // SZA representation of a nuclide
