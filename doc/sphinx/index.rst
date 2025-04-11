@@ -8,7 +8,12 @@ Welcome to Nautilus's Documentation!
    src/overview
    src/nuclei
 
-Nautilus: Nuclear Application UTILities and Useful Stuff (the acronym is up for debate)
+Nautilus: Nuclear Application UTILities Under the Sea
+
+(Yes, `the acronym`_ is a little silly.  Go read some `Jules Verne`_.)
+
+.. _`the acronym`: https://en.wikipedia.org/wiki/Nautilus_(fictional_submarine)
+.. _`Jules Verne`: https://www.gutenberg.org/ebooks/164
 
 Nautilus is part of the Cross-Cutting Applications Project (XCAP) at LANL.  It is a collection of
 tools to support atomic and nuclear simulation codes, written in C++17.  The goal is to provide

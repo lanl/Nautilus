@@ -1,7 +1,6 @@
 # Nautilus
 
-**Nautilus**: **N**uclear **A**pplication **UTIL**ities and **U**seful **S**tuff (the acronym is up
-for debate)
+**Nautilus**
 
 Nautilus is part of the Cross-Cutting Applications Project (XCAP) at LANL.  It is a collection of
 tools to support atomic and nuclear simulation codes, written in C++17.  The goal is to provide
