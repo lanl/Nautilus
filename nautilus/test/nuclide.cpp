@@ -119,7 +119,7 @@ TEST_CASE("Nuclide comparison", "[nuclide]")
     CHECK(li3 >= he3m1);
     CHECK(li3 > he3m1);
 
-    std::array<Nuclide, 4> nuclides{li3, he3, he3m1, he2};
+    std::array<Nuclide<double>, 4> nuclides{li3, he3, he3m1, he2};
     std::sort(nuclides.begin(), nuclides.end());
     std::stringstream sout;
     for (auto & nuclide : nuclides) {
