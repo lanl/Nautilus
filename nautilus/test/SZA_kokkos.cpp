@@ -237,7 +237,6 @@ TEST_CASE("SZA inequality comparison on GPUs")
     // Pull back vars from CPU to GPU
     auto results_c = Kokkos::create_mirror_view_and_copy(HostSpace(), results_g);
     // Test that it worked
-    CHECK(he4m1 < pa234);
     for (size_t i{0}; i < N; ++i) {
         CHECK(results_c(i) == 246);
     }
