@@ -52,13 +52,10 @@ TEST_CASE("SZA equality comparison")
     using namespace nautilus;
 
     SZA const he4{2004};
-
     SZA const helium{he4};
-
     SZA const pa234m1{91, 234, 1};
 
     CHECK(he4 == helium);
-
     CHECK(not(he4 == pa234m1));
 }
 
