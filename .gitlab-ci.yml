@@ -36,7 +36,6 @@ prereq_offline_deps:
   needs: []
   script:
     - mkdir extern
-    - git clone --bare https://gitlab-ci-token:${CI_JOB_TOKEN}@re-git.lanl.gov/xcap/oss/ports-of-call.git extern/ports-of-call.git
   artifacts:
     expire_in: 2 days
     paths:
