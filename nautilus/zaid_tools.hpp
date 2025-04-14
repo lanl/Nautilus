@@ -7,8 +7,13 @@
 
 namespace nautilus {
 
-// There should be a corresponding zaid-to-chemsym conversion routine.  However, this will probably
-// be superseded by the new format and its associated translation routines.
+// The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
+// because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
+// handles a subset of the full chemsym format.  Given a chemsym, it will return an integer with
+// the corresponding SZA value.  The names "zaid" and "SZA" were incorrectly used interchangeably
+// when this function was initially written.
+//    There should be a corresponding zaid-to-chemsym conversion routine.  However, this will
+// probably be superseded by the new format and its associated translation routines.
 inline int chemsym_to_zaid(std::string const & chemsym)
 {
     if (chemsym == "g") {
@@ -67,6 +72,11 @@ inline int chemsym_to_zaid(std::string const & chemsym)
     }
 }
 
+// The ``half_reaction_zaid_to_chemsym_list`` function accepts a string consisting of either the
+// products or reactants of a reaction, written in the format expected for NDI reaction zaids.  It
+// will parse the string and return a ``std::vector`` of strings in the chemsym format.  In
+// practice, this is not fully consistent with the chemsym format, because there was some early
+// confusion about the distinction between two related formats.
 inline std::vector<std::string> half_reaction_zaid_to_chemsym_list(std::string const & half_rzaid)
 {
     // notes on std::string::npos:
@@ -92,6 +102,9 @@ inline std::vector<std::string> half_reaction_zaid_to_chemsym_list(std::string c
     return chemsym_list;
 }
 
+// The ``append_zaids`` function combines the ``half_reaction_zaid_to_chemsym_list`` and
+// ``chemsym_to_zaid`` functions, taking a string listing the products or reactants of a reaction
+// and returning a ``std::vector`` of SZA values, with repeated entries deduplicated.
 inline void append_zaids(std::vector<int> & zaid_list, std::string const & half_rzaid)
 {
     auto const chemsym_list = half_reaction_zaid_to_chemsym_list(half_rzaid);
@@ -112,6 +125,11 @@ inline void append_zaids(std::vector<int> & zaid_list, std::string const & half_
     }
 }
 
+// The ``get_reactant_zaids`` function accepts an NDI reaction zaid as a string, identifies the
+// substring with the reactants, then calls ``append_zaids`` and returns the resulting list of
+// integer SZA values.  The ``get_product_zaids`` function is the same, but it will extract and
+// parse the list of reaction products instead of the reactants.  The ``get_nuclide_zaids``
+// function is similar, but it returns the list of all reactants and reaction products.
 inline auto get_reactant_zaids(std::string const & rzaid)
 {
     auto split_pos = rzaid.find("->");
@@ -120,7 +138,6 @@ inline auto get_reactant_zaids(std::string const & rzaid)
     append_zaids(zaid_list, rzaid.substr(0, split_pos));
     return zaid_list;
 }
-
 inline auto get_product_zaids(std::string const & rzaid)
 {
     auto split_pos = rzaid.find("->");
@@ -129,7 +146,6 @@ inline auto get_product_zaids(std::string const & rzaid)
     append_zaids(zaid_list, rzaid.substr(split_pos + 2));
     return zaid_list;
 }
-
 inline auto get_nuclide_zaids(std::string const & rzaid)
 {
     auto split_pos = rzaid.find("->");

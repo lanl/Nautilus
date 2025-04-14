@@ -102,6 +102,6 @@ returning a ``std::vector`` of SZA values, with repeated entries deduplicated.
 The ``get_reactant_zaids`` function accepts an NDI reaction zaid as a string, identifies the
 substring with the reactants, then calls ``append_zaids`` and returns the resulting list of integer
 SZA values.  The ``get_product_zaids`` function is the same, but it will extract and parse the list
-of reaction products instead of the reactants.  The ``get_isotope_zaids`` function is similar, but
+of reaction products instead of the reactants.  The ``get_nuclide_zaids`` function is similar, but
 it returns the list of all reactants and reaction products.
 
