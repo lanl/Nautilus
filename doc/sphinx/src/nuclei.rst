@@ -20,12 +20,16 @@ states.  Terminology and symbols used throughout Nautilus (based on common usage
 The term *element* refers to a nuclide with a particular proton count.  Two nuclides that are the
 same element may have different neutron counts and/or excited states.
 
-The term *isotope* refers to a nuclide with a particular proton count and neutron count.  Two
-nuclides that are the same isotope may have different excited states.
+The term *isotope* refers to a nuclide with a particular proton count and neutron count.  For
+example, helium-3 (two protons and one neutron) and helium-4 (two protons and two neutrons) are
+different isotopes of the same element (helium).  Two nuclides that are the same isotope may have
+different excited states.
 
 The term *isomer* refers to a nuclide with a particular proton count, neutron count, and excited
-state.  Since these are the three quantities used to indicate a specific nuclide, the term "isomer"
-is not as common as "isotope" or "element", so we sometimes simply use the term nuclide.
+state.  For example, the ground state of carbon-14 and the first metastable state of carbon-14 are
+the same element and the same isotope, but different isomers.  Since these are the same three
+quantities used to indicate a specific nuclide, the term "isomer" is not as common as "isotope" or
+"element", so we sometimes simply use the term nuclide.
 
 In many codes, there is also the concept of an *elemental* (for example, "elemental carbon").  This
 is a specific mixture of different nuclides of the same element.  The exact mixtures used for
