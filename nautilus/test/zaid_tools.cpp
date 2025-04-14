@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string>
 
 TEST_CASE("chemsym to zaid", "[zaid_tools]")
 {
