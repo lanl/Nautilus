@@ -1,15 +1,16 @@
 # Nautilus
 
-## TODO
+**Nautilus**
 
-- Add source codes in `xcap-sample-repo` (renamed to your project name)
-- Add tests in `test` and modify `test/CMakeLists.txt`
-- ~~Add dependencies in `spack-repo/packages/xcap-sample-repo/package.py` and needed `CMakeLists.txt` and `cmake/*-config.cmake.in`~~
-  - ~~Note: Remember to change `xcap-sample-repo` folder name and `XcapSampleRepo` class name in `package.py` to `your-project-name` and `YourProjectName`, respectively~~
-- Add documentations in `doc/sphinx` and enable `pages_check` and `pages` in `.gitlab-ci.yml` by taking out the `.` in front of the job name
-- Add formatting criteria in `.clang-format` and enable `format` in `.gitlab-ci.yml` by taking out the `.` in front of the job name
-  - Note: you may also want to change the `<PROJECT_NAME>_CLANG_FORMAT_VERSION` variable at the top of `.gitlab-ci.yml` to get the clang module version your project needs
-- ~~Replace all instances of `xcap-sample-repo` in file/folder name or in the files with your project name~~
+Nautilus is part of the Cross-Cutting Applications Project (XCAP) at LANL.  It is a collection of
+tools to support atomic and nuclear simulation codes, written in C++17.  The goal is to provide
+useful pieces of code that can be shared by a variety of other codes.
+
+If you need support or have a feature request, the best way to reach out to the team is to [open a
+user issue in the Nautilus repository](https://re-git.lanl.gov/xcap/oss/nautilus/-/issues) or email
+[xcap-support@lanl.gov](xcap-support@lanl.gov) using "Nautilus" in your subject line.  The XCAP
+project lead is [Bobby Philip](bphilip@lanl.gov), and the Nautilus library is primarily supported
+by [Brendan Krueger](bkkrueger@lanl.gov) and [Diego Lonardoni](lonardoni@lanl.gov).
 
 # Release
 
@@ -18,4 +19,4 @@ Center for Innovation at Los Alamos National Laboratory.
 
 # Copyright
 
-Please see LICENSE file included in this repository.
+Please see the LICENSE file included in this repository.

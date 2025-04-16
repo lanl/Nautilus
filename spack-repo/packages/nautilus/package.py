@@ -14,7 +14,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
 
     # Versions
     version("main", branch="main")
-    # version("0.0.0", sha256="") # TODO: Release
+    # version("0.0.0", sha256="")
 
     # Variants
     variant("coverage", default=False, description="Code Coverage Support")

@@ -17,11 +17,11 @@ target_link_libraries(nautilus_testing INTERFACE
     $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:Kokkos::kokkos>
     nautilus
 )
+target_compile_definitions(nautilus_testing INTERFACE CATCH_CONFIG_FAST_COMPILE)
 
-if (${ports-of-call_VERSION} VERSION_GREATER_EQUAL 1.3)
-    if (NAUTILUS_ENABLE_KOKKOS)
-        target_compile_definitions(nautilus_testing INTERFACE PORTABILITY_STRATEGY_KOKKOS)
-    endif()
+# Set the Ports-of-Call portability strategy
+if (NAUTILUS_ENABLE_KOKKOS)
+    target_compile_definitions(nautilus_testing INTERFACE PORTABILITY_STRATEGY_KOKKOS)
 endif()
 
 if(NOT NAUTILUS_SILENCE_WARNINGS)
