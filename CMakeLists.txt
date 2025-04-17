@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.19)
 
 project(nautilus
-    VERSION 0.0.1
+    VERSION 1.0.1.0
     LANGUAGES CXX
     DESCRIPTION "Nautilus nuclear utilities library"
     HOMEPAGE_URL "https://re-git.lanl.gov/xcap/oss/nautilus"
@@ -49,7 +49,7 @@ endif()
 ###################################################################################################
 
 if(NAUTILUS_ENABLE_CLANG_FORMAT)
-    find_package(ClangFormat 12.0.0 REQUIRED)
+    find_package(ClangFormat 17.0.6 REQUIRED)
 
     set(GLOBS
         ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/[^\.]*.cpp ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/[^\.]*.hpp
