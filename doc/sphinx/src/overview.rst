@@ -13,7 +13,7 @@ more widely useful, while also supporting its shared code goal for atomic and nu
 
 Nautilus makes use of common terms and symbols for atomic nuclei, which are summarized `here`_.
 
-.. _`here`: `Atomic Nuclei`_
+.. _`here`: src/nuclei.html
 
 SZA
 ---------------------------------------------------------------------------------------------------
@@ -23,15 +23,15 @@ the Nuclear Data Interface (NDI), the SZA is common in many codes.
 
 An SZA is an integer value, defined as
 
-.. math:: \text{SZA} = S * 1,000,000 + Z * 1,000 + A
+.. math:: \text{SZA} = S * 1{,}000{,}000 + Z * 1{,}000 + A
 
 Nautilus provides the ``SZA`` class, which stores the SZA value and provides the following
 accessors:
 
 - ``A()`` -- the atomic mass number
+- ``N()`` -- the neutron number
 - ``S()`` -- the metastable index
 - ``Z()`` -- the atomic number
-- ``N()`` -- the neutron number
 
 It also provides the following additional operations:
 

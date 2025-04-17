@@ -28,8 +28,8 @@ different excited states.
 The term *isomer* refers to a nuclide with a particular proton count, neutron count, and excited
 state.  For example, the ground state of carbon-14 and the first metastable state of carbon-14 are
 the same element and the same isotope, but different isomers.  Since these are the same three
-quantities used to indicate a specific nuclide, the term "isomer" is not as common as "isotope" or
-"element", so we sometimes simply use the term nuclide.
+quantities used to indicate a specific nuclide, and the term "isomer" is not as common as "isotope"
+or "element", we sometimes simply use the term nuclide.
 
 In many codes, there is also the concept of an *elemental* (for example, "elemental carbon").  This
 is a specific mixture of different nuclides of the same element.  The exact mixtures used for
