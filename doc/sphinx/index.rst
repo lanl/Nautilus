@@ -26,7 +26,7 @@ supported by `Brendan Krueger`_ and `Diego Lonardoni`_.
 
 __ `repository issues`_
 
-.. _`repository issues`: https://re-git.lanl.gov/xcap/oss/singe/-/issues
+.. _`repository issues`: https://re-git.lanl.gov/xcap/oss/nautilus/-/issues
 
 .. _`xcap-support@lanl.gov`: xcap-support@lanl.gov
 .. _`Bobby Philip`: bphilip@lanl.gov
@@ -35,7 +35,7 @@ __ `repository issues`_
 
 The `current version`_ of Nautilus is 1.0.0.0.
 
-.. _`current version`: `Versioning`_
+.. _`current version`: src/versioning.html
 
 Nautilus has been approved for open source release and has been assigned O4852 by the Feynman
 Center for Innovation at Los Alamos National Laboratory.  Please see the LICENSE file included in
