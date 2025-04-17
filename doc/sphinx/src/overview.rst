@@ -13,7 +13,7 @@ more widely useful, while also supporting its shared code goal for atomic and nu
 
 Nautilus makes use of common terms and symbols for atomic nuclei, which are summarized `here`_.
 
-.. _`here`: src/nuclei.html
+.. _`here`: nuclei.html
 
 SZA
 ---------------------------------------------------------------------------------------------------
