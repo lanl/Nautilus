@@ -33,6 +33,10 @@ __ `repository issues`_
 .. _`Brendan Krueger`: bkkrueger@lanl.gov
 .. _`Diego Lonardoni`: lonardoni@lanl.gov
 
+The `current version`_ of Nautilus is 1.0.0.0.
+
+.. _`current version`: `Versioning`_
+
 Nautilus has been approved for open source release and has been assigned O4852 by the Feynman
 Center for Innovation at Los Alamos National Laboratory.  Please see the LICENSE file included in
 the repository for copyright information.
