@@ -24,7 +24,7 @@ if (NAUTILUS_ENABLE_KOKKOS)
     target_compile_definitions(nautilus_testing INTERFACE PORTABILITY_STRATEGY_KOKKOS)
 endif()
 
-if(NOT NAUTILUS_SILENCE_WARNINGS)
+if(NAUTILUS_WARNINGS STREQUAL "fatal")
     # turn on strict warnings and error
     # NOTE: The ROCm 6.2.1 installation on some machines (RZAdams and RZVernal at least) will
     #       inject a `--gcc-toolchain` command-line argument into Clang, which is a deprecated
@@ -42,7 +42,7 @@ if(NOT NAUTILUS_SILENCE_WARNINGS)
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},MSVC>:/permissive->
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},XL>:>
     )
-else()
+elseif(NAUTILUS_WARNINGS STREQUAL "silent")
     # turn off warnings
     target_compile_options(nautilus_testing INTERFACE
         $<$<IN_LIST:${CMAKE_CXX_COMPILER_ID},GNU>:-w>

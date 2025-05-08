@@ -22,6 +22,8 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     variant("format",   default=False, description="Clang-Format Support")
     variant("kokkos",   default=False, description="Enable Kokkos Support")
     variant("test",     default=False, description="Build tests")
+    variant("warnings", default="silent", description="Control compiler warnings",
+            values=("silent", "nonfatal", "fatal"), multi=False)
 
     # Documentation
     depends_on("py-sphinx", when="+doc")
@@ -59,6 +61,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
             self.define_from_variant("NAUTILUS_ENABLE_COVERAGE", "coverage"),
             self.define_from_variant("NAUTILUS_ENABLE_CLANG_FORMAT", "format"),
             self.define_from_variant("NAUTILUS_ENABLE_KOKKOS", "kokkos"),
+            self.define_from_variant("NAUTILUS_WARNINGS", "warnings"),
         ]
         if self.spec.satisfies("+kokkos ^kokkos+rocm"):
             args.append(self.define("CMAKE_CXX_COMPILER", self.spec["hip"].hipcc))

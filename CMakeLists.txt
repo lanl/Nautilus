@@ -30,7 +30,8 @@ option(NAUTILUS_BUILD_TESTS         "Build tests and examples"    ON)
 option(NAUTILUS_ENABLE_CLANG_FORMAT "Enable Clang-Format support" OFF)
 option(NAUTILUS_ENABLE_COVERAGE     "Enable Code-Coverage"        OFF)
 option(NAUTILUS_ENABLE_KOKKOS       "Enable Kokkos support"       OFF)
-option(NAUTILUS_SILENCE_WARNINGS    "Silence compiler warnings"   OFF)
+set(NAUTILUS_WARNINGS "silent" CACHE STRING "Control compiler warnings: silent (no warnings), nonfatal (standard warnings), fatal (warnings promoted to errors)")
+set_property(CACHE NAUTILUS_WARNINGS PROPERTY STRINGS "fatal" "nonfatal" "silent")
 
 # Dependencies ------------------------------------------------------------------------------------
 find_package(ports-of-call 1.7.1 REQUIRED)
@@ -202,6 +203,6 @@ config_summary_option("NAUTILUS_BUILD_TESTS")
 config_summary_option("NAUTILUS_ENABLE_CLANG_FORMAT")
 config_summary_option("NAUTILUS_ENABLE_COVERAGE")
 config_summary_option("NAUTILUS_ENABLE_KOKKOS")
-config_summary_option("NAUTILUS_SILENCE_WARNINGS")
+config_summary_option("NAUTILUS_WARNINGS" "nonfatal" "fatal")
 
 config_summary_print()
