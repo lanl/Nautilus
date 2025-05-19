@@ -2,15 +2,26 @@
 
 include(CMakeFindDependencyMacro)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+# -------------------------------------------------------------------------------------------------
+# Find required PUBLIC libraries
+find_dependency(ports-of-call)
+# -------------------------------------------------------------------------------------------------
 
-# find required PUBLIC libraries
-find_dependency(Kokkos REQUIRED)
-#find_dependency(Eigen3 REQUIRED NO_MODULE)
-# find optional PUBLIC libraries
-#if(@FFTW3_FOUND@)
-#  find_dependency(FFTW3 REQUIRED)
-#endif()
+# -------------------------------------------------------------------------------------------------
+# Find optional PUBLIC libraries
+if(@NAUTILUS_ENABLE_CLANG_FORMAT@)
+  find_dependency(ClangFormat)
+endif()
+
+if(@NAUTILUS_ENABLE_KOKKOS@)
+  find_dependency(Kokkos)
+endif()
+
+if(@NAUTILUS_BUILD_TESTS@)
+  find_dependency(Catch2)
+endif()
+# -------------------------------------------------------------------------------------------------
+
 include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
 
 check_required_components("@PROJECT_NAME@")
