@@ -14,6 +14,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
 
     # Versions
     version("main", branch="main")
+    version("1.0.1.1", tag="v1.0.1.1", commit="2bbf18757291b165b34d30773dd50105b998db8d")
     version("1.0.1.0", tag="v1.0.1.0", commit="19857081d7fb49a39f4fda0b000ff84b69fd20fa")
 
     # Variants
