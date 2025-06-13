@@ -14,7 +14,7 @@ project(nautilus
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_library(${PROJECT_NAME} INTERFACE)
-add_library(XCAP::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_library(nautilus::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME}
     INTERFACE
@@ -157,7 +157,7 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}_Targets
 )
 
 install(EXPORT ${PROJECT_NAME}_Targets FILE ${PROJECT_NAME}-targets.cmake
-        NAMESPACE XCAP:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+        NAMESPACE nautilus:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 configure_package_config_file(
