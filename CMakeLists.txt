@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.19)
 
 project(nautilus
-    VERSION 1.0.1.1
+    VERSION 1.0.1.2
     LANGUAGES CXX
     DESCRIPTION "Nautilus nuclear utilities library"
     HOMEPAGE_URL "https://re-git.lanl.gov/xcap/oss/nautilus"
