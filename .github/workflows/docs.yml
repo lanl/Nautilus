@@ -1,0 +1,40 @@
+name: Build and Deploy docs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types:
+      - created
+
+jobs:
+    docs:
+      name: build and deploy docs
+      runs-on: ubuntu-latest
+
+      steps:      
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+        - name: Set system to non-interactive mode
+          run: export DEBIAN_FRONTEND=noninteractive
+        - name: install dependencies
+          run: |
+            pip install sphinx
+            pip install sphinx-rtd-theme
+            pip install sphinx-multiversion
+            pip install sphinx-rtd-dark-mode
+        - name: build docs
+          run: |
+            cmake -S . -B build -DNAUTILUS_BUILD_DOCUMENTATION=ON -DNAUTILUS_ENABLE_LIBRARY=OFF
+            cmake --build build --target docs
+        - name: Deploy
+          uses: peaceiris/actions-gh-pages@v3.7.3
+          if: ${{ github.repository_owner == 'lanl' && github.ref == 'refs/heads/main' }}
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./build/doc/html
+            force_orphan: true
