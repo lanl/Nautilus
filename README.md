@@ -7,7 +7,7 @@ tools to support atomic and nuclear simulation codes, written in C++17.  The goa
 useful pieces of code that can be shared by a variety of other codes.
 
 If you need support or have a feature request, the best way to reach out to the team is to [open a
-user issue in the Nautilus repository](https://re-git.lanl.gov/xcap/oss/nautilus/-/issues) or email
+user issue in the Nautilus repository](https://github.com/lanl/Nautilus/issues) or email
 [xcap-support@lanl.gov](xcap-support@lanl.gov) using "Nautilus" in your subject line.  The XCAP
 project lead is [Bobby Philip](bphilip@lanl.gov), and the Nautilus library is primarily supported
 by [Brendan Krueger](bkkrueger@lanl.gov) and [Diego Lonardoni](lonardoni@lanl.gov).

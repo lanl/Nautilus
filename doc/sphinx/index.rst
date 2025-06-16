@@ -26,7 +26,7 @@ supported by `Brendan Krueger`_ and `Diego Lonardoni`_.
 
 __ `repository issues`_
 
-.. _`repository issues`: https://re-git.lanl.gov/xcap/oss/nautilus/-/issues
+.. _`repository issues`: https://github.com/lanl/Nautilus/issues
 
 .. _`xcap-support@lanl.gov`: xcap-support@lanl.gov
 .. _`Bobby Philip`: bphilip@lanl.gov
