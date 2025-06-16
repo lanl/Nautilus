@@ -64,6 +64,17 @@ set_property(CACHE NAUTILUS_WARNINGS PROPERTY STRINGS "fatal" "nonfatal" "silent
 if(NAUTILUS_ENABLE_LIBRARY)
     enable_language(CXX)
 
+    add_library(${PROJECT_NAME} INTERFACE)
+    add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+    target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
+
+    target_include_directories(${PROJECT_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+
     find_package(ports-of-call 1.7.1 REQUIRED)
     target_link_libraries(${PROJECT_NAME} INTERFACE ports-of-call::ports-of-call)
 
@@ -74,17 +85,6 @@ if(NAUTILUS_ENABLE_LIBRARY)
     else()
         message(STATUS "Building without Kokkos: excluding Nautilus Kokkos tests")
     endif()
-
-    add_library(${PROJECT_NAME} INTERFACE)
-    add_library(nautilus::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-
-    target_include_directories(${PROJECT_NAME}
-        INTERFACE
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-
-    target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
 endif()
 
