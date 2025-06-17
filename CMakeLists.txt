@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.19)
 
 project(nautilus
-    VERSION 1.0.1.2
+    VERSION 1.0.1.3
     LANGUAGES NONE
     DESCRIPTION "Nautilus nuclear utilities library"
     HOMEPAGE_URL "https://github.com/lanl/nautilus"
