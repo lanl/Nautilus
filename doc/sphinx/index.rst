@@ -8,6 +8,11 @@ Welcome to Nautilus's Documentation!
    src/overview
    src/nuclei
 
+.. toctree::
+   :hidden:
+
+    src/versioning
+
 Nautilus: Nuclear Application UTILities Under the Sea
 
 (Yes, `the acronym`_ is a little silly.  Go read some `Jules Verne`_.)
