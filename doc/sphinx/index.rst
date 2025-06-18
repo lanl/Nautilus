@@ -11,7 +11,7 @@ Welcome to Nautilus's Documentation!
 .. toctree::
    :hidden:
 
-    src/versioning
+   src/versioning
 
 Nautilus: Nuclear Application UTILities Under the Sea
 
