@@ -151,7 +151,7 @@ PORTABLE_FUNCTION constexpr inline Pantag parse_nuclide(
     switch (c) {
     case 'm':
         return Pantag(Z, A, Pantag::Index::metastable, S);
-    case 'e':
+    case 'e': // TODO: Check with Wim: Is this standard?
         return Pantag(Z, A, Pantag::Index::excitation, S);
     default: return Pantag(Z, A);
     };
