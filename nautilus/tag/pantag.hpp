@@ -18,6 +18,131 @@ namespace nautilus::tag {
 
 // TODO: Pantag doesn't strike me as a great name, but it'll do as a placeholder for now
 
+// TODO: Currently elementals are coded as a special case of nuclides, and every standard tag is
+//       either a nuclide or a particle.  Do I want to change that so that elementals are
+//       considered a third type of entity separate from nuclides?  That could lose a bit of data
+//       for particles, but that's probably not an issue (we currently have over 33 million valid
+//       particle indices, so we'd still have almost 17 million valid particle indices if we lost a
+//       bit).  It's a conceptual question: do we think of elements as special cases of nuclides or
+//       as something else entirely?
+//    -- We could actually handle this without losing a bit by treating the first two bits as
+//       collectively defining a four-element code, for example:
+//       -- 00: standard particle
+//       -- 01: standard nuclide
+//       -- 10: standard elemental
+//       -- 11: user entity
+
+// TODO: How do we handle ground states?
+//    -- A non-elemental nuclide can be either in the ground state or in an excited state.  But
+//       excited states have two different ways of indexing them:
+//       -- An excited state index simply counts up all of the excited states and numbers them in
+//          order from lowest energy to highest energy.  This is an excited state index.
+//       -- A metastable state index defines some criteria for when an excited state is considerd a
+//          metastable state, and indexes the same as excited states but skips any excited states
+//          that don't meet the criteria of metastable states.  This is a metastable state index.
+//    -- NDI only works in terms of metastable states, and so most LANL codes that I've encountered
+//       appear to follow this convention (and implicitly use the same metastable criteria as NDI).
+//       Wim points out that metastable states have problems and excited states are a better
+//       choice, and so NJOY will (already does?) operate in terms of excited states.
+//    -- It would be beyond the scope of Nautilus to implement transformations between excited and
+//       metastable indices.  For one thing the metastable criteria can vary, but more importantly
+//       that's a data question (usually involving lifetimes).
+//    -- Currently Nautilus has the machinery to support both excited and metastable indices, but
+//       without any ability to translate between the two.  It simply tracks what it's told and
+//       reports that back.
+//    -- If you're working only in excited states or only in metastable states, the ground state is
+//       simply the lowest-energy state and therefore the state with index zero.  When you have
+//       both excited and metastable states, the ground state is the only state where the excited
+//       and metastable indices are guaranteed to coincide.
+//    -- When creating a nuclide, we provide the option to specify an excited state index, specify
+//       a metastable state index, or not specify an index at all.  Without an index, the nuclide
+//       will default to the ground state (this is the reasonable choice for various reasons).
+//    -- The question then arises: Is the ground state an excited state or a metastable state or
+//       both?
+//    -- And a related question: Is the default to encode the nuclide in an excited state or in a
+//       metastable state?
+//    -- The reason for this question is because of the separate accessors: get_metastable_index
+//       and get_excitation_index, which only work if the nuclide in question is encoded to use
+//       that type of index.
+//    -- We could switch to some machinery where you can get the index and the type of index
+//       separately.  For example, something like get_excitation_index() and is_metastable_state.
+//       This cuts down how much we have to think about the special case of the ground state, but
+//       does not eliminate it.
+//    -- We could defer the question: Focus on the NDI use-case and only use metastable states.
+//       That just means we'll have some incompatibility with NJOY (which reduces the utility of
+//       Nautilus for someone who is interested in using it).  We could add excited states later to
+//       address this.  But if we know excited states are likely to be useful, we might as well
+//       work through the issues now so that we don't dig into a corner that we would have a hard
+//       time backing out of later.
+//    -- Assuming that we do include both excited and metastable indices, what questions would a
+//       user likely want to ask?
+//       -- For a code focused around NJOY, they want to ensure that the index is consistent with
+//          excited state indexing.
+//       -- For a code focused around NDI, they want to ensure that the index is consistent with
+//          NDI indexing, then get the index.  We can't ensure that the input was provided
+//          consistent with NDI's definition of metastable states, but can only report the index
+//          that we were told.
+//       -- The fact that metastable definitions vary is suggestive: Nautilus can't convert between
+//          standards, so it only reports what it was told.  We _could_ potentially just skip the
+//          entire question of _what kind of_ index we have, and just store the value of the index.
+//          Then it's up to the user to be aware of which indexing convention they're using and do
+//          any translations themselves.
+//       -- The only failing to this is when converting to standard format.  A metastable state
+//          will be reported with 'm', such as He-4m1, while an excited state will be reported with
+//          'e', such as He-4e1.  The use of 'e' _may_ be unique to Wim, and I need to check on
+//          this.
+//       -- If you look at Wikipedia, there are also "fission isomers" (aka "shape isomers")
+//          indicated with an 'f' (see especially the last paragraph of the "Metastable isomers"
+//          section of Wikipedia's "Nuclear isomer" article:
+//          https://en.wikipedia.org/wiki/Nuclear_isomer#Metastable_isomers).  Should Nautilus also
+//          have the ability to support fission isomers?
+//          -- Supporting fission isomers would require two bits to specify metastable, excitation,
+//             or fission.  That would cut us down to only 7 bits for the index, and it's not clear
+//             to me if that's sufficient.  I think Wim told me that there can be over a hundred
+//             excited states for some isotopes.
+//    -- One approach may be to ask Wim some follow-up questions:
+//       -- Is the 'e' notation standard, or is 'm' standard regardless of whether you're using
+//          excited vs metastable indices?
+//       -- Is he aware of any usage of 'f' isomers?
+//       -- What is the largest excitation index he would expect to run into?  The important point
+//          here is: will it be > 127 (requiring 8 bits) or < 128 (fitting in 7 bits)?
+//    -- If the only concern is for translating to other formats, then it may make sense to drop
+//       the distinction except as an additional query: get_excitation_index and is_metastable or
+//       something like that.
+//       -- But this still doesn't account for the ground state.  When printing the ground state
+//          won't use any annotation, although some formats append a 'g'.  Even if a 'g' is
+//          necessary, this can be handled by checking is_ground.
+//       -- I don't think it ever makes sense to allow the user to update the index without
+//          specifying what kind of index it is.  So if we choose "wrong" by defaulting to (for
+//          example) a "metastable" state with index 0, but someone wants an excitation index, we
+//          don't really care because updating the index will require specifying that they're
+//          giving an excitation index.  When querying (to convert to a new format), they'll be
+//          informed that it's a ground state.
+//       -- Alternately, if we add fission isomers, we could cheat a little:
+//          -- There are three types of non-ground states: metastable ('m'), excitation ('e'), and
+//             fission ('f').
+//          -- Encoding this requires two bits, which actually gives us four options.
+//          -- A default-constructed ground state can use the fourth combination to say ground
+//             state ('g').
+//          -- If a fourth type of excited state index is necessary, we can just repurpose that
+//             fourth combination, because the ground state is still identifiable as having index
+//             zero for every type of index.
+//          -- Then when a new index is set, we could either go with what the user specifies or we
+//             could check if this is a ground state and override it.
+//          -- Or we could just arbitrarily pick one as a default, because functionally it would
+//             probably make no difference observable to users.
+//    -- A quick survey suggests that the vast majority of usages focus exclusively on metastable
+//       states, with little reference to fission isomers and no discussion of all excitation
+//       states except possible in things dealing with quantum mechanics where everything is done
+//       in terms of other notations (such as quantum numbers).  If Wim is out on his own away from
+//       anything standard, how much effort should Nautilus (read: Brendan) invest in supporting
+//       his corner case?
+
+// TODO: Check terminology.  Wikipedia seems to be saying that "isomer" specifically refers only to
+//       metastable states, and not to all excited states.  But
+//       https://en.wikipedia.org/wiki/Nuclide#Types_of_nuclides doesn't clearly address metastable
+//       versus excitation, so it could be read as "all excited states" or "all metastable states".
+
 // Particle-and-Nuclide Tag
 class Pantag
 {
