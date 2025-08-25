@@ -225,26 +225,26 @@ public:
 
     PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
         : tag_{0}
-        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(particle);
     }
     PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A)
         : tag_{0}
-        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A);
     }
     PORTABLE_FUNCTION constexpr Pantag(
         const Storage Z, const Storage A, const Index index, const Storage S)
         : tag_{0}
-        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A, index, S);
     }
     PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
         : tag_{0}
-        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(user, data);
     }
