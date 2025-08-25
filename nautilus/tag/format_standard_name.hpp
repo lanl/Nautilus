@@ -204,7 +204,7 @@ PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard
     assert(tag.is_particle() && tag.is_standard());
     auto name = detail::null_array<SHORT_LEN>();
     char * ptr = name.data();
-    detail::append(ptr, names::Particles::get_symbol(tag.get_atomic_number()));
+    detail::append(ptr, names::Particles::get_symbol(tag.get_particle_index()));
     return name;
 }
 
