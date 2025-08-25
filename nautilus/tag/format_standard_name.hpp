@@ -24,6 +24,9 @@ namespace nautilus::tag {
 
 // ================================================================================================
 
+// TODO: These names need to be qualified (inside a namespace, more detailed name, etc) because
+//       they apply to this "standard" format, but not generally to all formats.
+
 // short nuclides can be up to 10 characters
 // short particles can be up to 7 characters (7 _bytes_, not 7 printed characters)
 // need to pad with one extra character for a null terminator (11 characters)
