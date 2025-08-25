@@ -149,8 +149,7 @@ PORTABLE_FUNCTION constexpr inline Pantag parse_nuclide(
     const std::size_t S = (c != '\0' ? read_number(ptr) : 0);
     assert(*ptr == '\0');
     switch (c) {
-    case 'm':
-        return Pantag(Z, A, Pantag::Index::metastable, S);
+    case 'm': return Pantag(Z, A, Pantag::Index::metastable, S);
     case 'e': // TODO: Check with Wim: Is this standard?
         return Pantag(Z, A, Pantag::Index::excitation, S);
     default: return Pantag(Z, A);
@@ -224,7 +223,8 @@ PORTABLE_FUNCTION constexpr inline std::array<char, LONG_LEN> to_long_standard_p
 // -- nuclides only have a single standard
 // -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
 //    you always get the PDG symbol
-PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard_name_portable(const Pantag tag)
+PORTABLE_FUNCTION constexpr inline std::array<char, SHORT_LEN> to_short_standard_name_portable(
+    const Pantag tag)
 {
     if (tag.is_nuclide())
         return detail::to_short_standard_nuclide_name(tag);
@@ -299,7 +299,8 @@ PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::string_v
     return Pantag(Z, Pantag::elemental);
 }
 template <std::size_t N>
-PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::array<char, N> & short_name)
+PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(
+    const std::array<char, N> & short_name)
 {
     assert(short_name[short_name.size() - 1] == '\0');
     return from_standard_name(short_name.data());

@@ -329,6 +329,6 @@ PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
 
 // ================================================================================================
 
-} // namespace nautilus::names
+} // namespace nautilus::tag::names
 
 #endif // NAUTILUS_NAMES_HPP

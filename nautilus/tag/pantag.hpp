@@ -224,22 +224,27 @@ public:
     // Constructors
 
     PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
-    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+        : tag_{0}
+        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(particle);
     }
     PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A)
-    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+        : tag_{0}
+        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Index index, const Storage S)
-    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+    PORTABLE_FUNCTION constexpr Pantag(
+        const Storage Z, const Storage A, const Index index, const Storage S)
+        : tag_{0}
+        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A, index, S);
     }
     PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
-    : tag_{0} // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
+        : tag_{0}
+        // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(user, data);
     }
@@ -275,7 +280,8 @@ public:
         bs_exc_meta.set(METASTABLE_INDEX, tag_);
         bs_S.set(GROUND, tag_);
     }
-    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Index index, const Storage S)
+    PORTABLE_FUNCTION constexpr void set(
+        const Storage Z, const Storage A, const Index index, const Storage S)
     {
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(STANDARD, tag_);
@@ -309,7 +315,8 @@ public:
         assert(is_standard());
         return bs_nuclide.get(tag_) == PARTICLE;
     }
-    PORTABLE_FUNCTION constexpr bool is_nuclide() const {
+    PORTABLE_FUNCTION constexpr bool is_nuclide() const
+    {
         assert(is_standard());
         return bs_nuclide.get(tag_) == NUCLIDE;
     }
@@ -317,7 +324,8 @@ public:
     // Only for user tags.  For standard tags, the more-specific accessors are preferred, as there
     // may be translations between values the users sees and values actually stored in memory, or
     // the internal layout of the data block may be changed.
-    PORTABLE_FUNCTION constexpr auto get_data() const {
+    PORTABLE_FUNCTION constexpr auto get_data() const
+    {
         assert(is_user());
         return bs_data.get(tag_);
     }
@@ -391,7 +399,8 @@ public:
         assert(is_nuclide() && has_metastable_index());
         return bs_S.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr bool is_ground() const {
+    PORTABLE_FUNCTION constexpr bool is_ground() const
+    {
         assert(is_nuclide());
         assert(!is_elemental());
         return bs_S.get(tag_) == GROUND;
