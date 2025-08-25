@@ -6,9 +6,9 @@
 
 TEST_CASE("BitSegment operations", "[tag][bitsegment]")
 {
-    using T = int32_t;
     using nautilus::tag::BitSegment;
 
+    using T = int32_t;
     T num = 0b10000000010100000000101000000001;
 
     BitSegment<T, 0, 10> bs0;
