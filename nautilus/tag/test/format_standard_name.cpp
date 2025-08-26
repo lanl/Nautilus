@@ -10,21 +10,26 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     // -- trailing "g" present or absent
     // -- number after "m" present or absent
     // -- metastable vs excitation states
+    // TODO: build Co-59g Pantag
     CHECK(from_standard_name("cobalt-59") == /*TODO*/);
     CHECK(from_standard_name("cobalt-59g") == /*TODO*/);
     CHECK(to_standard_name(Pantag(/*TODO*/)) == "cobalt-59g");
 
+    // TODO: build Ta-180m1 Pantag
     CHECK(from_standard_name("tantalum-180m") == /*TODO*/);
     CHECK(from_standard_name("tantalum-180m1") == /*TODO*/);
     CHECK(to_standard_name(Pantag(/*TODO*/)) == "tantalum-180m1");
 
+    // TODO: build Ta-180e1 Pantag
     CHECK(from_standard_name("tantalum-180e") == /*TODO*/);
     CHECK(from_standard_name("tantalum-180e1") == /*TODO*/);
     CHECK(to_standard_name(Pantag(/*TODO*/)) == "tantalum-180e1");
 
+    // TODO: build K-28m2 Pantag
     CHECK(from_standard_name("potassium-38m2") == /*TODO*/);
     CHECK(to_standard_name(Pantag(/*TODO*/)) == "potassium-38m2");
 
+    // TODO: build K-28e2 Pantag
     CHECK(from_standard_name("potassium-38e2") == /*TODO*/);
     CHECK(to_standard_name(Pantag(/*TODO*/)) == "potassium-38e2");
 
@@ -33,26 +38,33 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     // -- American
     // -- British
     // -- Canadian
-    CHECK(to_standard_name(Pantag(/*TODO*/)) == "nitrogen-14");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*IUPAC*/) == "nitrogen-14");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:American*/) == "nitrogen-14");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:British*/) == "nitrogen-14");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:Canadian*/) == "nitrogen-14");
+    // TODO: build nitrogen-14 Pantag
+    CHECK(to_standard_name(/*TODO*/ == nitrogen_standard);
+    CHECK(to_standard_name(/*TODO*/, /*IUPAC*/) == nitrogen_standard);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:American*/) == nitrogen_standard);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:British*/) == nitrogen_standard);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:Canadian*/) == nitrogen_standard);
 
-    CHECK(to_standard_name(Pantag(/*TODO*/)) == "aluminium-27");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:American*/) == "aluminum-27");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:British*/) == "aluminium-27");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:Canadian*/) == "aluminum-27");
+    // TODO: build aluminium-27 Pantag
+    CHECK(to_standard_name(/*TODO*/) == standard_aluminium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:IUPAC*/) == alternate_aluminium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:American*/) == alternate_aluminium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:British*/) == standard_aluminium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:Canadian*/) == alternate_aluminium);
 
-    CHECK(to_standard_name(Pantag(/*TODO*/)) == "sulfur-32");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:American*/) == "sulfur-32");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:British*/) == "sulphur-32");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:Canadian*/) == "sulfur-32");
+    // TODO: build sulfur-32 Pantag
+    CHECK(to_standard_name(/*TODO*/) == standard_sulfur);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:IUPAC*/) == standard_sulfur);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:American*/) == standard_sulfur);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:British*/) == alternate_sulfur);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:Canadian*/) == standard_sulfur);
 
-    CHECK(to_standard_name(Pantag(/*TODO*/)) == "caesium-133");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:American*/) == "cesium-133");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:British*/) == "caesium-133");
-    CHECK(to_standard_name(Pantag(/*TODO*/), /*TODO:Canadian*/) == "caesium-133");
+    // TODO: build caesium-133 Pantag
+    CHECK(to_standard_name(/*TODO*/) == standard_caesium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:IUPAC*/) == alternate_caesium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:American*/) == alternate_caesium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:British*/) == standard_caesium);
+    CHECK(to_standard_name(/*TODO*/, /*TODO:Canadian*/) == standard_caesium);
 
     // Elementals
     CHECK(to_standard_name(Pantag(/*TODO*/)) == "elemental carbon");
