@@ -20,10 +20,7 @@ namespace detail {
 
 struct NoLibrary {};
 
-PORTABLE_FUNCTION constexpr inline bool standard_am242(NoLibrary)
-{
-    return true;
-}
+PORTABLE_FUNCTION constexpr inline bool standard_am242(NoLibrary) { return true; }
 PORTABLE_FUNCTION constexpr inline bool standard_am242(const std::string_view & sv)
 {
     if (sv == "mendf70x") {
@@ -36,9 +33,9 @@ PORTABLE_FUNCTION constexpr inline bool standard_am242(const std::string_view & 
         return false;
     } else {
         if (std::isdigit(sv[0]) && std::isdigit(sv[1]) && std::isdigit(sv[2]) && (sv[3] == 'n') &&
-                (sv[4] == 'm')) {
+            (sv[4] == 'm')) {
             // C++17 introduces std::from_chars, but it's not constexpr until C++23
-            std::array<char, 4> s = { sv[0], sv[1], sv[2], '\0' };
+            std::array<char, 4> s = {sv[0], sv[1], sv[2], '\0'};
             const auto num = std::stoi(s.data());
             if ((num >= 121) && (num <= 135)) {
                 return false;
@@ -72,10 +69,7 @@ PORTABLE_FUNCTION constexpr inline bool standard_am242(const int n)
     }
 }
 
-PORTABLE_FUNCTION constexpr inline bool standard_am244(NoLibrary)
-{
-    return true;
-}
+PORTABLE_FUNCTION constexpr inline bool standard_am244(NoLibrary) { return true; }
 PORTABLE_FUNCTION constexpr inline bool standard_am244(const std::string_view & sv)
 {
     if (sv == "endf7act") {
@@ -107,10 +101,7 @@ PORTABLE_FUNCTION constexpr inline bool standard_am244(const int n)
     }
 }
 
-PORTABLE_FUNCTION constexpr inline int suffix_integer(const int n)
-{
-    return n;
-}
+PORTABLE_FUNCTION constexpr inline int suffix_integer(const int n) { return n; }
 PORTABLE_FUNCTION constexpr inline int suffix_integer(const double d)
 {
     return int(std::round(d * 1000));
@@ -125,17 +116,20 @@ template <typename T>
 PORTABLE_FUNCTION constexpr inline int to_NDI_SZA(const Pantag tag, T && library)
 {
     if (tag.is_particle()) {
-        switch(tag.get_particle_index()) {
-        case(nautilus::tag::names::photon): return 0; break;
-        case(nautilus::tag::names::neutron): return 1; break;
-        case(nautilus::tag::names::proton): return 1001; break;
-        default: assert(false); return 0; break;
+        switch (tag.get_particle_index()) {
+        case (nautilus::tag::names::photon): return 0; break;
+        case (nautilus::tag::names::neutron): return 1; break;
+        case (nautilus::tag::names::proton): return 1001; break;
+        default:
+            assert(false);
+            return 0;
+            break;
         }
         // Certain particles can also be encoded as ZAIDs: photon (0), neutron (1), proton (1001)
     } else {
         assert(tag.has_metastable_index());
         const auto Z = tag.get_atomic_number();
-        const auto A = tag.get_atomic_mass_number()
+        const auto A = tag.get_atomic_mass_number();
         const auto S = tag.get_metastable_index();
         // some americium nuclides are messed up in NDI for historical reasons
         if (Z == 95) {
@@ -173,12 +167,12 @@ PORTABLE_FUNCTION constexpr inline auto to_NDI_SZA(const Pantag tag)
     return to_NDI_SZA(tag, NoLibrary())
 }
 
-PORTABLE_FUNCTION constexpr inline Pantag(const int sza)
+PORTABLE_FUNCTION constexpr inline Pantag from_NDI_SZA(const int sza)
 {
-    switch(sza) {
-    case(0): return Pantag(nautilus::tag::names::photon); break;
-    case(1): return Pantag(nautilus::tag::names::neutron); break;
-    case(1001): return Pantag(nautilus::tag::names::proton); break;
+    switch (sza) {
+    case (0): return Pantag(nautilus::tag::names::photon); break;
+    case (1): return Pantag(nautilus::tag::names::neutron); break;
+    case (1001): return Pantag(nautilus::tag::names::proton); break;
     default:
         auto remainder = sza;
         const auto A = remainder % 1000;
@@ -188,16 +182,16 @@ PORTABLE_FUNCTION constexpr inline Pantag(const int sza)
         // We don't need to know the library, because the "special" values are unique across all
         // libraries.  If we see a special value we don't have to check the library name to know
         // how to interpret it, but can just parse it.
-        if (Z == 95)
-            switch(sza) {
+        if (Z == 95) {
+            switch (sza) {
             // Am-242g (encoded as Am-242m1 in NDI, plus two different encoding strategies)
-            case(95042): [[fallthrough]];
-            case(1095242): return Pantag(95, 242); break;
+            case (95042): [[fallthrough]];
+            case (1095242): return Pantag(95, 242); break;
             // Am-242m1 (encoded as Am-242g in NDI)
-            case(95242): return Pantag(95, 242, Pantag::Index::metastable, 1); break;
+            case (95242): return Pantag(95, 242, Pantag::Index::metastable, 1); break;
             // Am-244m1 (two different encoding strategies)
-            case(95044): [[fallthrough]];
-            case(1095242): return Pantag(95, 244, Pantag::Index::metastable, 1); break;
+            case (95044): [[fallthrough]];
+            case (1095242): return Pantag(95, 244, Pantag::Index::metastable, 1); break;
             }
         }
         // standard cases will fall through to here
