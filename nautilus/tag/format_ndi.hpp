@@ -2,9 +2,6 @@
 #define NAUTILUS_FORMAT_NDI_HPP
 
 // TODO:
-// -- NDI ZAID format
-// -- NDI as-yet-unnamed format (SZZAAA.NNN, used by some host codes)
-// -- NDI SZA format
 // -- NDI short string
 
 #include "nautilus/tag/pantag.hpp"
@@ -15,13 +12,62 @@ namespace nautilus::tag {
 
 namespace detail {
 
-// TODO: What if someone passes the library name as a std::string (which doesn't work on GPUs until
-//       at least C++20)?
+inline bool match_table_suffix(const std::string_view sv)
+{
+    if ((sv.length() != 3) && (sv.length() != 5))
+        return false;
+    if (!std::isdigit(sv[0]))
+        return false;
+    if (!std::isdigit(sv[1]))
+        return false;
+    if (!std::isdigit(sv[2]))
+        return false;
+    if ((sv.length() == 5) && (sv[3] != 'n'))
+        return false;
+    if ((sv.length() == 5) && (sv[4] != 'n'))
+        return false;
+    return true;
+}
+inline int table_suffix_integer(const std::string_view sv)
+{
+    assert(match_table_suffix);
+    // C++17 introduces std::from_chars, but it's not constexpr until C++23
+    std::array<char, 4> s = {sv[0], sv[1], sv[2], '\0'};
+    return std::stoi(s.data());
+}
+inline double table_suffix_decimal(const int n) { return 1.0e-3 * n; }
+inline double table_suffix_decimal(const double d) { return d; }
+inline double table_suffix_decimal(const std::string_view sv)
+{
+    const auto num = table_suffix_integer(sv);
+    return 1.0e-3 * num;
+}
 
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+inline std::string to_suffix_string(const int n)
+{
+    assert(n >= 0);
+    assert(n < 1000);
+    const auto ns = std::to_string(n);
+    return std::string(3 - ns.size(), '0') + ns + "nm";
+}
+inline std::string to_suffix_string(const std::string_view sv)
+{
+    assert(match_table_suffix(sv));
+    const std::string tail(sv.length() == 3 ? "nm" : "");
+    return sv + tail;
+}
+
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// when converting to NDI, indicates we don't know the library so the default should be used
 struct NoLibrary {};
 
-PORTABLE_FUNCTION constexpr inline bool standard_am242(NoLibrary) { return true; }
-PORTABLE_FUNCTION constexpr inline bool standard_am242(const std::string_view & sv)
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+inline bool standard_am242(NoLibrary) { return true; }
+inline bool standard_am242(const std::string_view sv)
 {
     if (sv == "mendf70x") {
         return false;
@@ -31,34 +77,15 @@ PORTABLE_FUNCTION constexpr inline bool standard_am242(const std::string_view & 
         return false;
     } else if (sv == "701nm") {
         return false;
-    } else {
-        if (std::isdigit(sv[0]) && std::isdigit(sv[1]) && std::isdigit(sv[2]) && (sv[3] == 'n') &&
-            (sv[4] == 'm')) {
-            // C++17 introduces std::from_chars, but it's not constexpr until C++23
-            std::array<char, 4> s = {sv[0], sv[1], sv[2], '\0'};
-            const auto num = std::stoi(s.data());
-            if ((num >= 121) && (num <= 135)) {
-                return false;
-            }
+    } else if (match_table_suffix(sv)) {
+        const auto num = table_suffix_integer(sv);
+        if ((num >= 121) && (num <= 135)) {
+            return false;
         }
-        return true;
     }
+    return true;
 }
-// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
-//       we should provide it given that it's so easy to break, but instead require users to parse
-//       their strings to get an integer.  But check with Edward, as he may have requested this
-//       feature?
-PORTABLE_FUNCTION constexpr inline bool standard_am242(const double d)
-{
-    if (d == 0.701) {
-        return false;
-    } else if ((d >= 0.121) && (d <= 0.135)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-PORTABLE_FUNCTION constexpr inline bool standard_am242(const int n)
+inline bool standard_am242(const int n)
 {
     if (n == 701) {
         return false;
@@ -68,9 +95,16 @@ PORTABLE_FUNCTION constexpr inline bool standard_am242(const int n)
         return true;
     }
 }
+// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
+//       we should provide it given that it's so easy to break, but instead require users to parse
+//       their strings to get an integer.  But check with Edward, as he may have requested this
+//       feature?
+inline bool standard_am242(const double d) { return standard_am242(int(std::round(d * 1000))); }
 
-PORTABLE_FUNCTION constexpr inline bool standard_am244(NoLibrary) { return true; }
-PORTABLE_FUNCTION constexpr inline bool standard_am244(const std::string_view & sv)
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+inline bool standard_am244(NoLibrary) { return true; }
+inline bool standard_am244(const std::string_view sv)
 {
     if (sv == "endf7act") {
         return false;
@@ -80,19 +114,7 @@ PORTABLE_FUNCTION constexpr inline bool standard_am244(const std::string_view & 
         return true;
     }
 }
-// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
-//       we should provide it given that it's so easy to break, but instead require users to parse
-//       their strings to get an integer.  But check with Edward, as he may have requested this
-//       feature?
-PORTABLE_FUNCTION constexpr inline bool standard_am244(const double d)
-{
-    if (d == 0.700) {
-        return false;
-    } else {
-        return true;
-    }
-}
-PORTABLE_FUNCTION constexpr inline bool standard_am244(const int n)
+inline bool standard_am244(const int n)
 {
     if (n == 700) {
         return false;
@@ -100,20 +122,19 @@ PORTABLE_FUNCTION constexpr inline bool standard_am244(const int n)
         return true;
     }
 }
-
-PORTABLE_FUNCTION constexpr inline int suffix_integer(const int n) { return n; }
-PORTABLE_FUNCTION constexpr inline int suffix_integer(const double d)
-{
-    return int(std::round(d * 1000));
-}
+// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
+//       we should provide it given that it's so easy to break, but instead require users to parse
+//       their strings to get an integer.  But check with Edward, as he may have requested this
+//       feature?
+inline bool standard_am244(const double d) { return standard_am244(int(std::round(d * 1000))); }
 
 } // end namespace detail
 
 // ================================================================================================
-// TODO: for SZA: int vs int32 vs int64?  signed vs unsigned?  templated for flexibility?
+// NDI SZA
 
 template <typename T>
-PORTABLE_FUNCTION constexpr inline int to_NDI_SZA(const Pantag tag, T && library)
+int to_NDI_SZA(const Pantag tag, T && library)
 {
     if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
@@ -161,13 +182,13 @@ PORTABLE_FUNCTION constexpr inline int to_NDI_SZA(const Pantag tag, T && library
     }
 }
 
-PORTABLE_FUNCTION constexpr inline auto to_NDI_SZA(const Pantag tag)
+inline auto to_NDI_SZA(const Pantag tag)
 {
     // If the user doesn't provide a library, then just assume we use the most-standard NDI format
     return to_NDI_SZA(tag, NoLibrary())
 }
 
-PORTABLE_FUNCTION constexpr inline Pantag from_NDI_SZA(const int sza)
+inline Pantag from_NDI_SZA(const int sza)
 {
     switch (sza) {
     case (0): return Pantag(nautilus::tag::names::photon); break;
@@ -206,21 +227,32 @@ PORTABLE_FUNCTION constexpr inline Pantag from_NDI_SZA(const int sza)
 }
 
 // ================================================================================================
+// NDI FPID
+// TODO: Still not sure about the name, but it's better than "the as-yet-unnamed format"
+// TODO: Document that this is not recommended, but is provided to support people already using it.
 
-// TODO: Use SZA to build up to as-yet-unnamed format
-// TODO: Bear in mind that we can't infer the suffix from the library name (some libraries have
-//       multiple suffixes), but we can convert between strings (660nm), floats (0.660) and
-//       integers (660).
+template <typename T>
+double to_NDI_FPID(Pantag tag, T && library)
+{
+    const auto SZA = to_NDI_SZA(tag, std::forward<T>(library));
+    const double suffix = table_suffix_decimal(std::forward<T>(library));
+    return static_cast<double>(SZA) + suffix;
+}
+
+inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast<int>(fpid)); }
 
 // ================================================================================================
+// NDI zaid
 
-// TODO: Use as-yet-unnamed format to build up to ZAID
-// TODO: Bear in mind that we can't infer the suffix from the library name, but we can convert
-//       between strings (660nm), floats (0.660) and integers (660).  We can also (based on the
-//       currently-available libraries) infer the full suffix from a partial suffix: they're all
-//       three digits followed by "nm".  Will that continue to be true in the future, or is this a
-//       feature we'll have to strip out if NDI starts using different characters in the suffix?
-
+template <typename T>
+std::string to_NDI_zaid(Pantag tag, T && library)
+{
+    assert(match_table_suffix(library));
+    std::string zaid = std::to_string(to_NDI_SZA(tag, library));
+    zaid.append('.');
+    zaid.append(to_suffix_string(std::forward<T>(library)));
+    return zaid;
+}
 // ================================================================================================
 
 } // end namespace nautilus::tag
