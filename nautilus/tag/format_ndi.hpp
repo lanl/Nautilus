@@ -1,9 +1,6 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
-// TODO:
-// -- NDI short string
-
 #include "nautilus/tag/pantag.hpp"
 
 namespace nautilus::tag {
@@ -253,6 +250,11 @@ std::string to_NDI_zaid(Pantag tag, T && library)
     zaid.append(to_suffix_string(std::forward<T>(library)));
     return zaid;
 }
+// ================================================================================================
+// NDI short string
+
+// TODO
+
 // ================================================================================================
 
 } // end namespace nautilus::tag
