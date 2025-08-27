@@ -211,10 +211,10 @@ private:
 
     Storage tag_;
 
-    struct User {};
+    struct UserTag {};
 
 public:
-    static constexpr User user();
+    static constexpr UserTag user{};
 
     static constexpr Storage elemental = 0b000000000;
 
@@ -242,7 +242,7 @@ public:
     {
         set(Z, A, index, S);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
+    PORTABLE_FUNCTION constexpr Pantag(const UserTag, const Storage data)
         : tag_{0}
     // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
@@ -295,7 +295,7 @@ public:
         }
         bs_S.set(S, tag_);
     }
-    PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
+    PORTABLE_FUNCTION constexpr void set(const UserTag, const Storage data)
     {
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(USER, tag_);
