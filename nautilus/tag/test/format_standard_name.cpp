@@ -24,7 +24,6 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     CHECK(to_long_standard_name(co59g) == "cobalt-59");
 
     constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
-    constexpr auto tmp = from_standard_name("tantalum-180m");
     CHECK((from_standard_name("tantalum-180m") == ta180m1));
     CHECK((from_standard_name("tantalum-180m1") == ta180m1));
     CHECK(to_long_standard_name(ta180m1) == "tantalum-180m1");
@@ -87,7 +86,6 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
 
     // Elementals
     constexpr Pantag c_elemental(6, Pantag::elemental);
-    constexpr auto tmp2 = from_standard_name("elemental carbon");
     CHECK((from_standard_name("elemental carbon") == c_elemental));
     CHECK(to_long_standard_name(c_elemental) == "elemental carbon");
     constexpr Pantag cs_elemental(55, Pantag::elemental);
