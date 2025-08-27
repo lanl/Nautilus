@@ -117,8 +117,8 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
     constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
     constexpr int default_am244m1 = 1095244;
     constexpr int alternate_am244m1 = 95044;
-    CHECK((from_NDI_SZA(default_am244m1) == am244m2));
-    CHECK((from_NDI_SZA(alternate_am244m1) == am244m2));
+    CHECK((from_NDI_SZA(default_am244m1) == am244m1));
+    CHECK((from_NDI_SZA(alternate_am244m1) == am244m1));
     CHECK(to_NDI_SZA(am244m1) == default_am244m1);
     CHECK(to_NDI_SZA(am244m1, "lanl2006") == default_am244m1);
     CHECK(to_NDI_SZA(am244m1, "060nm") == default_am244m1);
