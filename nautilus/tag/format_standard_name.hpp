@@ -298,7 +298,16 @@ PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::string_v
     }
     // Did not find '-', so assume an elemental
     assert(short_name.size() > 10);
-    const auto Z = names::Nuclides::find_index(short_name.substr(/*"elemental "*/ 10));
+    for (std::size_t n = 0; n < short_name.size(); ++n) {
+        if (short_name[n] == ' ') {
+            // A space means we have a "long name" for an elemental
+            const auto Z = names::Nuclides::find_index(short_name.substr(n+1));
+            assert(Z != names::Nuclides::not_found);
+            return Pantag(Z, Pantag::elemental);
+        }
+    }
+    // Did not find ' ', so assume a "short name" for an elemental
+    const auto Z = names::Nuclides::find_index(short_name);
     assert(Z != names::Nuclides::not_found);
     return Pantag(Z, Pantag::elemental);
 }
