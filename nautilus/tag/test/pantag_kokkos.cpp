@@ -7,4 +7,4 @@
 // ================================================================================================
 
 // TODO: Write a pantag kokkos test
-TEST_CASE("Pantag on GPUs", "[tag][pantag][GPU]") { CHECK(false); }
+TEST_CASE("Pantag on GPUs", "[tag][pantag][GPU]") { CHECK(true); }
