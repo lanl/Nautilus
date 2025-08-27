@@ -11,6 +11,8 @@
 #include <string>
 #include <string_view>
 
+// TODO: Get rid of this, and switch to just using std::string everywhere (or std::string_view if
+//       appropriate)
 // Note: There are versions with and without the suffix "_portable" on the function name.  The
 //       versions without the suffix are designed for ease-of-use and assume that the code is
 //       running on a CPU.  For that reason, std::string is the output type as that would typically
