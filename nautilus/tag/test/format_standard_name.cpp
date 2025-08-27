@@ -4,8 +4,6 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <iostream>
-
 // Note that the Catch2 magic doesn't always play well with Nautilus.  See
 // https://stackoverflow.com/q/59770581/1791919 for a discussion of a related problem.
 
@@ -27,14 +25,6 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
 
     constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
     constexpr auto tmp = from_standard_name("tantalum-180m");
-    std::cout << "tmp.is_standard()          = " << tmp.is_standard() << std::endl;
-    std::cout << "tmp.is_nuclide()           = " << tmp.is_nuclide() << std::endl;
-    std::cout << "tmp.get_Z()                = " << tmp.get_Z() << std::endl;
-    std::cout << "tmp.get_A()                = " << tmp.get_A() << std::endl;
-    std::cout << "tmp.is_ground()            = " << tmp.is_ground() << std::endl;
-    std::cout << "tmp.has_excitation_index() = " << tmp.has_excitation_index() << std::endl;
-    std::cout << "tmp.has_metastable_index() = " << tmp.has_metastable_index() << std::endl;
-    std::cout << "tmp.get_metastable_index() = " << tmp.get_metastable_index() << std::endl;
     CHECK((from_standard_name("tantalum-180m") == ta180m1));
     CHECK((from_standard_name("tantalum-180m1") == ta180m1));
     CHECK(to_long_standard_name(ta180m1) == "tantalum-180m1");
@@ -98,11 +88,6 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     // Elementals
     constexpr Pantag c_elemental(6, Pantag::elemental);
     constexpr auto tmp2 = from_standard_name("elemental carbon");
-    std::cout << "is_standard()  = " << tmp2.is_standard() << "   " << c_elemental.is_standard() << std::endl;
-    std::cout << "is_nuclide()   = " << tmp2.is_nuclide() << "   " << c_elemental.is_nuclide() << std::endl;
-    std::cout << "get_Z()        = " << tmp2.get_Z() << "   " << c_elemental.get_Z() << std::endl;
-    std::cout << "is_elemental() = " << tmp2.is_elemental() << "   " << c_elemental.is_elemental() << std::endl;
-    std::cout << "is_ground()    = " << tmp2.is_ground() << "   " << c_elemental.is_ground() << std::endl;
     CHECK((from_standard_name("elemental carbon") == c_elemental));
     CHECK(to_long_standard_name(c_elemental) == "elemental carbon");
     constexpr Pantag cs_elemental(55, Pantag::elemental);
