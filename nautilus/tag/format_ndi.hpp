@@ -21,7 +21,7 @@ inline bool match_table_suffix(const std::string_view sv)
         return false;
     if ((sv.length() == 5) && (sv[3] != 'n'))
         return false;
-    if ((sv.length() == 5) && (sv[4] != 'n'))
+    if ((sv.length() == 5) && (sv[4] != 'm'))
         return false;
     return true;
 }
@@ -52,8 +52,11 @@ inline std::string to_suffix_string(const int n)
 inline std::string to_suffix_string(const std::string_view sv)
 {
     assert(match_table_suffix(sv));
-    const std::string tail(sv.length() == 3 ? "nm" : "");
-    return sv + tail;
+    std::string suffix(sv);
+    if (sv.length() == 3) {
+        suffix.append("nm");
+    }
+    return suffix;
 }
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -155,10 +158,10 @@ int to_NDI_SZA(const Pantag tag, T && library)
                 // Am-242 swaps the S values for the ground state and the first metastable state
                 if (S == 0) {
                     // Am-242g has two possible SZA values depending on the library
-                    if (detail::standard_am242(std::forward<T>(library)) {
+                    if (detail::standard_am242(std::forward<T>(library))) {
                         return 1095242;
                     } else {
-                        return 95042
+                        return 95042;
                     }
                 } else if (S == 1) {
                     return Z * 1000 + A;
@@ -182,7 +185,7 @@ int to_NDI_SZA(const Pantag tag, T && library)
 inline auto to_NDI_SZA(const Pantag tag)
 {
     // If the user doesn't provide a library, then just assume we use the most-standard NDI format
-    return to_NDI_SZA(tag, NoLibrary())
+    return to_NDI_SZA(tag, detail::NoLibrary());
 }
 
 inline Pantag from_NDI_SZA(const int sza)
@@ -209,7 +212,7 @@ inline Pantag from_NDI_SZA(const int sza)
             case (95242): return Pantag(95, 242, Pantag::Index::metastable, 1); break;
             // Am-244m1 (two different encoding strategies)
             case (95044): [[fallthrough]];
-            case (1095242): return Pantag(95, 244, Pantag::Index::metastable, 1); break;
+            case (1095244): return Pantag(95, 244, Pantag::Index::metastable, 1); break;
             }
         }
         // standard cases will fall through to here
@@ -246,7 +249,7 @@ std::string to_NDI_zaid(Pantag tag, T && library)
 {
     assert(match_table_suffix(library));
     std::string zaid = std::to_string(to_NDI_SZA(tag, library));
-    zaid.append('.');
+    zaid.append(".");
     zaid.append(to_suffix_string(std::forward<T>(library)));
     return zaid;
 }
