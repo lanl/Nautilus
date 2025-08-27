@@ -9,7 +9,7 @@
 
 // ================================================================================================
 
-TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
+TEST_CASE("format: long standard name", "[tag][format][standard name]")
 {
     using nautilus::tag::from_standard_name;
     using nautilus::tag::Pantag;
@@ -138,5 +138,92 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
         "antiparticle of the negative omega baryon");
 }
 
-// TODO: short standard name
-// TODO: symbols
+// ================================================================================================
+
+TEST_CASE("format: short standard name", "[tag][format][standard name]")
+{
+    using nautilus::tag::from_standard_name;
+    using nautilus::tag::Pantag;
+    using nautilus::tag::to_short_standard_name;
+    using nautilus::tag::names::Nuclides;
+    using nautilus::tag::names::Particles;
+
+    // "Normal" names with optional cases
+    constexpr Pantag co59g(27, 59);
+    CHECK((from_standard_name("Co-59") == co59g));
+    CHECK((from_standard_name("Co-59g") == co59g));
+    CHECK(to_short_standard_name(co59g) == "Co-59");
+
+    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    CHECK((from_standard_name("Ta-180m") == ta180m1));
+    CHECK((from_standard_name("Ta-180m1") == ta180m1));
+    CHECK(to_short_standard_name(ta180m1) == "Ta-180m1");
+
+    constexpr Pantag mo93e1(42, 93, Pantag::Index::excitation, 1);
+    CHECK((from_standard_name("Mo-93e") == mo93e1));
+    CHECK((from_standard_name("Mo-93e1") == mo93e1));
+    CHECK(to_short_standard_name(mo93e1) == "Mo-93e1");
+
+    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    CHECK((from_standard_name("K-38m2") == k38m2));
+    CHECK(to_short_standard_name(k38m2) == "K-38m2");
+
+    constexpr Pantag pb188e2(82, 188, Pantag::Index::excitation, 2);
+    CHECK((from_standard_name("Pb-188e2") == pb188e2));
+    CHECK(to_short_standard_name(pb188e2) == "Pb-188e2");
+
+    // "short" standard name does not have alternate spellings
+
+    // Elementals
+    constexpr Pantag c_elemental(6, Pantag::elemental);
+    CHECK((from_standard_name("C") == c_elemental));
+    CHECK(to_short_standard_name(c_elemental) == "C");
+    constexpr Pantag cs_elemental(55, Pantag::elemental);
+    CHECK((from_standard_name("Cs") == cs_elemental));
+    CHECK(to_short_standard_name(cs_elemental) == "Cs");
+
+    // Particles
+    constexpr Pantag nu_e(nautilus::tag::names::electron_neutrino);
+    const std::string default_nu_e = "\u03BD\u2091";
+    CHECK((from_standard_name(default_nu_e) == nu_e));
+    CHECK(to_short_standard_name(nu_e) == default_nu_e);
+
+    constexpr Pantag aL0(nautilus::tag::names::neutral_lambda_antibaryon);
+    const std::string default_aL0 = "\u039B\u0304\u2070";
+    CHECK((from_standard_name(default_aL0) == aL0));
+    CHECK(to_short_standard_name(aL0) == default_aL0);
+
+    // Distinction between hydrogen-1 (nuclide) and proton (particle)
+    constexpr Pantag proton(nautilus::tag::names::proton);
+    CHECK((from_standard_name("p") == proton));
+    CHECK(to_short_standard_name(proton) == "p");
+    constexpr Pantag h1(1, 1);
+    CHECK((from_standard_name("H-1") == h1));
+    CHECK(to_short_standard_name(h1) == "H-1");
+
+    // Distinction between similar:
+    // -- p (proton) and P (phosphorus elemental); proton already checked above
+    constexpr Pantag p_elemental(15, Pantag::elemental);
+    CHECK((from_standard_name("P") == p_elemental));
+    CHECK(to_short_standard_name(p_elemental) == "P");
+    // -- n (neutron) and N (nitrogen elemental)
+    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    constexpr Pantag n_elemental(7, Pantag::elemental);
+    CHECK((from_standard_name("n") == neutron));
+    CHECK(to_short_standard_name(neutron) == "n");
+    CHECK((from_standard_name("N") == n_elemental));
+    CHECK(to_short_standard_name(n_elemental) == "N");
+
+    // First and last (verify bounds of indexing)
+    // H-1 already done above
+    constexpr Pantag og294(118, 294);
+    CHECK((from_standard_name("Og-294") == og294));
+    CHECK(to_short_standard_name(og294) == "Og-294");
+    constexpr Pantag g(nautilus::tag::names::photon);
+    CHECK((from_standard_name("\u03B3") == g));
+    CHECK(to_short_standard_name(g) == "\u03B3");
+    constexpr Pantag aOm_plus(nautilus::tag::names::positive_omega_antibaryon);
+    CHECK((from_standard_name("\u03A9\u0304\u207A") == aOm_plus));
+    CHECK(to_short_standard_name(aOm_plus) == "\u03A9\u0304\u207A");
+}
+
