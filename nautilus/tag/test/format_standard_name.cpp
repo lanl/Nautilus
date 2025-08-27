@@ -82,7 +82,9 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     constexpr Pantag aL0(nautilus::tag::names::neutral_lambda_antibaryon);
     CHECK(to_standard_name(aL0) == "neutral lambda antibaryon");
     CHECK(to_standard_name(aL0, Particle::Standard::PDG) == "neutral lambda antibaryon");
-    CHECK(to_standard_name(aL0, Particle::Standard::alternate) == "antiparticle of the neutral lambda baryon");
+    CHECK(
+        to_standard_name(aL0, Particle::Standard::alternate) ==
+        "antiparticle of the neutral lambda baryon");
 
     // Distinction between hydrogen-1 (nuclide) and proton (particle)
     CHECK(to_standard_name(Pantag(nautilus::tag::names::proton) == "proton");
@@ -97,9 +99,6 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     CHECK(to_standard_name(g) == "photon");
     constexpr Pantag aOm_plus(nautilus::tag::names::positive_omega_antibaryon);
     CHECK(to_standard_name(aOm_plus) == "positive omega antibaryon");
-
 }
 
 // TODO: symbols
-
-
