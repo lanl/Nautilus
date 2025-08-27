@@ -11,11 +11,11 @@
 
 TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
 {
-    using nautilus::tag::names::Nuclides;
-    using nautilus::tag::names::Particles;
+    using nautilus::tag::from_standard_name;
     using nautilus::tag::Pantag;
     using nautilus::tag::to_long_standard_name;
-    using nautilus::tag::from_standard_name;
+    using nautilus::tag::names::Nuclides;
+    using nautilus::tag::names::Particles;
 
     // "Normal" names with optional cases
     constexpr Pantag co59g(27, 59);
@@ -133,9 +133,10 @@ TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
     CHECK((from_standard_name("positive omega antibaryon") == aOm_plus));
     CHECK((from_standard_name("antiparticle of the negative omega baryon") == aOm_plus));
     CHECK(to_long_standard_name(aOm_plus) == "positive omega antibaryon");
-    CHECK(to_long_standard_name(aOm_plus, Particles::Standard::PDG) ==
-        "positive omega antibaryon");
-    CHECK(to_long_standard_name(aOm_plus, Particles::Standard::alternate) ==
+    CHECK(
+        to_long_standard_name(aOm_plus, Particles::Standard::PDG) == "positive omega antibaryon");
+    CHECK(
+        to_long_standard_name(aOm_plus, Particles::Standard::alternate) ==
         "antiparticle of the negative omega baryon");
 }
 

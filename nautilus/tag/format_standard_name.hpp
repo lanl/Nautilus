@@ -298,7 +298,7 @@ PORTABLE_FUNCTION constexpr inline Pantag from_standard_name(const std::string_v
     }
     // Did not find '-', so assume an elemental
     assert(short_name.size() > 10);
-    const auto Z = names::Nuclides::find_index(short_name.substr(/*"elemental "*/10));
+    const auto Z = names::Nuclides::find_index(short_name.substr(/*"elemental "*/ 10));
     assert(Z != names::Nuclides::not_found);
     return Pantag(Z, Pantag::elemental);
 }
