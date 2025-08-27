@@ -226,4 +226,3 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("\u03A9\u0304\u207A") == aOm_plus));
     CHECK(to_short_standard_name(aOm_plus) == "\u03A9\u0304\u207A");
 }
-
