@@ -2,6 +2,7 @@
 #define NAUTILUS_IDENTIFIERS_HPP
 
 #include <array>
+#include <cassert>
 #include <string_view>
 
 #include "ports-of-call/portability.hpp"
