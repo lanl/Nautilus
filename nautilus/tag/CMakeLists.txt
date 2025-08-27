@@ -1,8 +1,10 @@
 add_test_target(test_tag
     test/bitsegment.cpp
     $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/bitsegment_kokkos.cpp>
+    test/format_ndi.cpp
+    #TODO: $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/format_ndi_kokkos.cpp>
     test/format_standard_name.cpp
-    #$<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/format_standard_name.cpp>
+    #TODO: $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/format_standard_name_kokkos.cpp>
     test/names.cpp
     $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/names_kokkos.cpp>
     test/pantag.cpp
