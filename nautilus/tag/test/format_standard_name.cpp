@@ -1,104 +1,158 @@
 #include "nautilus/tag/format_standard_name.hpp"
+#include "nautilus/tag/names.hpp"
+#include "nautilus/tag/pantag.hpp"
 
 #include <catch2/catch_test_macros.hpp>
+
+#include <iostream>
+
+// Note that the Catch2 magic doesn't always play well with Nautilus.  See
+// https://stackoverflow.com/q/59770581/1791919 for a discussion of a related problem.
 
 // ================================================================================================
 
 TEST_CASE("Format: Standard Name", "[tag][format][standard name]")
 {
+    using nautilus::tag::names::Nuclides;
+    using nautilus::tag::names::Particles;
+    using nautilus::tag::Pantag;
+    using nautilus::tag::to_long_standard_name;
+    using nautilus::tag::from_standard_name;
+
     // "Normal" names with optional cases
     constexpr Pantag co59g(27, 59);
-    CHECK(from_standard_name("cobalt-59") == co59g);
-    CHECK(from_standard_name("cobalt-59g") == co59g);
-    CHECK(to_standard_name(co59g) == "cobalt-59g");
+    CHECK((from_standard_name("cobalt-59") == co59g));
+    CHECK((from_standard_name("cobalt-59g") == co59g));
+    CHECK(to_long_standard_name(co59g) == "cobalt-59");
 
     constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
-    CHECK(from_standard_name("tantalum-180m") == ta180m1);
-    CHECK(from_standard_name("tantalum-180m1") == ta180m1);
-    CHECK(to_standard_name(ta180m1) == "tantalum-180m1");
+    constexpr auto tmp = from_standard_name("tantalum-180m");
+    std::cout << "tmp.is_standard()          = " << tmp.is_standard() << std::endl;
+    std::cout << "tmp.is_nuclide()           = " << tmp.is_nuclide() << std::endl;
+    std::cout << "tmp.get_Z()                = " << tmp.get_Z() << std::endl;
+    std::cout << "tmp.get_A()                = " << tmp.get_A() << std::endl;
+    std::cout << "tmp.is_ground()            = " << tmp.is_ground() << std::endl;
+    std::cout << "tmp.has_excitation_index() = " << tmp.has_excitation_index() << std::endl;
+    std::cout << "tmp.has_metastable_index() = " << tmp.has_metastable_index() << std::endl;
+    std::cout << "tmp.get_metastable_index() = " << tmp.get_metastable_index() << std::endl;
+    CHECK((from_standard_name("tantalum-180m") == ta180m1));
+    CHECK((from_standard_name("tantalum-180m1") == ta180m1));
+    CHECK(to_long_standard_name(ta180m1) == "tantalum-180m1");
 
     constexpr Pantag mo93e1(42, 93, Pantag::Index::excitation, 1);
-    CHECK(from_standard_name("molybdenum-93e") == mo93e1);
-    CHECK(from_standard_name("molybdenum-93e1") == mo93e1);
-    CHECK(to_standard_name(mo93e1) == "molybdenum-93e1");
+    CHECK((from_standard_name("molybdenum-93e") == mo93e1));
+    CHECK((from_standard_name("molybdenum-93e1") == mo93e1));
+    CHECK(to_long_standard_name(mo93e1) == "molybdenum-93e1");
 
     constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
-    CHECK(from_standard_name("potassium-38m2") == k38m2);
-    CHECK(to_standard_name(k38m2) == "potassium-38m2");
+    CHECK((from_standard_name("potassium-38m2") == k38m2));
+    CHECK(to_long_standard_name(k38m2) == "potassium-38m2");
 
     constexpr Pantag pb188e2(82, 188, Pantag::Index::excitation, 2);
-    CHECK(from_standard_name("lead-188e2") == pb188e2);
-    CHECK(to_standard_name(pb188e2) == "lead-188e2");
+    CHECK((from_standard_name("lead-188e2") == pb188e2));
+    CHECK(to_long_standard_name(pb188e2) == "lead-188e2");
 
     // Alternate spellings
     constexpr Pantag n14(7, 14);
-    const std::string standard_nitrogen = "nitrogen-14";
-    CHECK(to_standard_name(n14) == standard_nitrogen);
-    CHECK(to_standard_name(n14, Nuclide::Standard::IUPAC) == standard_nitrogen);
-    CHECK(to_standard_name(n14, Nuclide::Standard::American) == standard_nitrogen);
-    CHECK(to_standard_name(n14, Nuclide::Standard::British) == standard_nitrogen);
-    CHECK(to_standard_name(n14, Nuclide::Standard::Canadian) == standard_nitrogen);
+    const std::string default_nitrogen = "nitrogen-14";
+    CHECK((from_standard_name(default_nitrogen) == n14));
+    CHECK(to_long_standard_name(n14) == default_nitrogen);
+    CHECK(to_long_standard_name(n14, Nuclides::Standard::IUPAC) == default_nitrogen);
+    CHECK(to_long_standard_name(n14, Nuclides::Standard::American) == default_nitrogen);
+    CHECK(to_long_standard_name(n14, Nuclides::Standard::British) == default_nitrogen);
+    CHECK(to_long_standard_name(n14, Nuclides::Standard::Canadian) == default_nitrogen);
 
     constexpr Pantag al27(13, 27);
-    const std::string standard_aluminium = "aluminium-27";
-    const std::string alternat_ealuminium = "aluminum-27";
-    CHECK(to_standard_name(al27) == standard_aluminium);
-    CHECK(to_standard_name(al27, Nuclide::Standard::IUPAC) == alternate_aluminium);
-    CHECK(to_standard_name(al27, Nuclide::Standard::American) == alternate_aluminium);
-    CHECK(to_standard_name(al27, Nuclide::Standard::British) == standard_aluminium);
-    CHECK(to_standard_name(al27, Nuclide::Standard::Canadian) == alternate_aluminium);
+    const std::string default_aluminium = "aluminium-27";
+    const std::string alternate_aluminium = "aluminum-27";
+    CHECK((from_standard_name(default_aluminium) == al27));
+    CHECK((from_standard_name(alternate_aluminium) == al27));
+    CHECK(to_long_standard_name(al27) == default_aluminium);
+    CHECK(to_long_standard_name(al27, Nuclides::Standard::IUPAC) == default_aluminium);
+    CHECK(to_long_standard_name(al27, Nuclides::Standard::American) == alternate_aluminium);
+    CHECK(to_long_standard_name(al27, Nuclides::Standard::British) == default_aluminium);
+    CHECK(to_long_standard_name(al27, Nuclides::Standard::Canadian) == alternate_aluminium);
 
     constexpr Pantag s32(16, 32);
-    const std::string standard_sulfur = "sulfur-32";
+    const std::string default_sulfur = "sulfur-32";
     const std::string alternate_sulfur = "sulphur-32";
-    CHECK(to_standard_name(s32) == standard_sulfur);
-    CHECK(to_standard_name(s32, Nuclide::Standard::IUPAC) == standard_sulfur);
-    CHECK(to_standard_name(s32, Nuclide::Standard::American) == standard_sulfur);
-    CHECK(to_standard_name(s32, Nuclide::Standard::British) == alternate_sulfur);
-    CHECK(to_standard_name(s32, Nuclide::Standard::Canadian) == standard_sulfur);
+    CHECK((from_standard_name(default_sulfur) == s32));
+    CHECK((from_standard_name(alternate_sulfur) == s32));
+    CHECK(to_long_standard_name(s32) == default_sulfur);
+    CHECK(to_long_standard_name(s32, Nuclides::Standard::IUPAC) == default_sulfur);
+    CHECK(to_long_standard_name(s32, Nuclides::Standard::American) == default_sulfur);
+    CHECK(to_long_standard_name(s32, Nuclides::Standard::British) == alternate_sulfur);
+    CHECK(to_long_standard_name(s32, Nuclides::Standard::Canadian) == default_sulfur);
 
     constexpr Pantag cs55(55, 133);
-    const std::string standard_caesium = "caesium-133";
+    const std::string default_caesium = "caesium-133";
     const std::string alternate_caesium = "cesium-133";
-    CHECK(to_standard_name(cs55) == standard_caesium);
-    CHECK(to_standard_name(cs55, Nuclide::Standard::IUPAC) == alternate_caesium);
-    CHECK(to_standard_name(cs55, Nuclide::Standard::American) == alternate_caesium);
-    CHECK(to_standard_name(cs55, Nuclide::Standard::British) == standard_caesium);
-    CHECK(to_standard_name(cs55, Nuclide::Standard::Canadian) == standard_caesium);
+    CHECK((from_standard_name(default_caesium) == cs55));
+    CHECK((from_standard_name(alternate_caesium) == cs55));
+    CHECK(to_long_standard_name(cs55) == default_caesium);
+    CHECK(to_long_standard_name(cs55, Nuclides::Standard::IUPAC) == default_caesium);
+    CHECK(to_long_standard_name(cs55, Nuclides::Standard::American) == alternate_caesium);
+    CHECK(to_long_standard_name(cs55, Nuclides::Standard::British) == default_caesium);
+    CHECK(to_long_standard_name(cs55, Nuclides::Standard::Canadian) == default_caesium);
 
     // Elementals
     constexpr Pantag c_elemental(6, Pantag::elemental);
-    CHECK(to_standard_name(c_elemental) == "elemental carbon");
+    constexpr auto tmp2 = from_standard_name("elemental carbon");
+    std::cout << "is_standard()  = " << tmp2.is_standard() << "   " << c_elemental.is_standard() << std::endl;
+    std::cout << "is_nuclide()   = " << tmp2.is_nuclide() << "   " << c_elemental.is_nuclide() << std::endl;
+    std::cout << "get_Z()        = " << tmp2.get_Z() << "   " << c_elemental.get_Z() << std::endl;
+    std::cout << "is_elemental() = " << tmp2.is_elemental() << "   " << c_elemental.is_elemental() << std::endl;
+    std::cout << "is_ground()    = " << tmp2.is_ground() << "   " << c_elemental.is_ground() << std::endl;
+    CHECK((from_standard_name("elemental carbon") == c_elemental));
+    CHECK(to_long_standard_name(c_elemental) == "elemental carbon");
     constexpr Pantag cs_elemental(55, Pantag::elemental);
-    CHECK(to_standard_name(cs_elemental, Nuclide::Standard::IUPAC) == "elemental caesium");
-    CHECK(to_standard_name(cs_elemental, Nuclide::Standard::American) == "elemental cesium");
+    CHECK((from_standard_name("elemental caesium") == cs_elemental));
+    CHECK(to_long_standard_name(cs_elemental, Nuclides::Standard::IUPAC) == "elemental caesium");
+    CHECK(to_long_standard_name(cs_elemental, Nuclides::Standard::American) == "elemental cesium");
 
     // Particles
     constexpr Pantag nu_e(nautilus::tag::names::electron_neutrino);
-    CHECK(to_standard_name(nu_e) == "electron neutrino");
-    CHECK(to_standard_name(nu_e, Particle::Standard::PDG) == "electron neutrino");
-    CHECK(to_standard_name(nu_e, Particle::Standard::alternate) == "electron neutrino");
+    const std::string default_nu_e = "electron neutrino";
+    CHECK((from_standard_name(default_nu_e) == nu_e));
+    CHECK(to_long_standard_name(nu_e) == default_nu_e);
+    CHECK(to_long_standard_name(nu_e, Particles::Standard::PDG) == default_nu_e);
+    CHECK(to_long_standard_name(nu_e, Particles::Standard::alternate) == default_nu_e);
 
     constexpr Pantag aL0(nautilus::tag::names::neutral_lambda_antibaryon);
-    CHECK(to_standard_name(aL0) == "neutral lambda antibaryon");
-    CHECK(to_standard_name(aL0, Particle::Standard::PDG) == "neutral lambda antibaryon");
-    CHECK(
-        to_standard_name(aL0, Particle::Standard::alternate) ==
-        "antiparticle of the neutral lambda baryon");
+    const std::string default_aL0 = "neutral lambda antibaryon";
+    const std::string alternate_aL0 = "antiparticle of the neutral lambda baryon";
+    CHECK((from_standard_name(default_aL0) == aL0));
+    CHECK((from_standard_name(alternate_aL0) == aL0));
+    CHECK(to_long_standard_name(aL0) == default_aL0);
+    CHECK(to_long_standard_name(aL0, Particles::Standard::PDG) == default_aL0);
+    CHECK(to_long_standard_name(aL0, Particles::Standard::alternate) == alternate_aL0);
 
     // Distinction between hydrogen-1 (nuclide) and proton (particle)
-    CHECK(to_standard_name(Pantag(nautilus::tag::names::proton) == "proton");
-    CHECK(to_standard_name(Pantag(1, 1)) == "hydrogen-1");
+    constexpr Pantag proton(nautilus::tag::names::proton);
+    CHECK((from_standard_name("proton") == proton));
+    CHECK(to_long_standard_name(proton) == "proton");
+    constexpr Pantag h1(1, 1);
+    CHECK((from_standard_name("hydrogen-1") == h1));
+    CHECK(to_long_standard_name(h1) == "hydrogen-1");
 
     // First and last (verify bounds of indexing)
-    constexpr Pantag h1(1, 1);
-    CHECK(to_standard_name(h1) == "hydrogen-1");
+    // H-1 already done above
     constexpr Pantag og294(118, 294);
-    CHECK(to_standard_name(og294) == "oganesson-294");
+    CHECK((from_standard_name("oganesson-294") == og294));
+    CHECK(to_long_standard_name(og294) == "oganesson-294");
     constexpr Pantag g(nautilus::tag::names::photon);
-    CHECK(to_standard_name(g) == "photon");
+    CHECK((from_standard_name("photon") == g));
+    CHECK(to_long_standard_name(g) == "photon");
     constexpr Pantag aOm_plus(nautilus::tag::names::positive_omega_antibaryon);
-    CHECK(to_standard_name(aOm_plus) == "positive omega antibaryon");
+    CHECK((from_standard_name("positive omega antibaryon") == aOm_plus));
+    CHECK((from_standard_name("positive omega antibaryon") == aOm_plus));
+    CHECK((from_standard_name("antiparticle of the negative omega baryon") == aOm_plus));
+    CHECK(to_long_standard_name(aOm_plus) == "positive omega antibaryon");
+    CHECK(to_long_standard_name(aOm_plus, Particles::Standard::PDG) ==
+        "positive omega antibaryon");
+    CHECK(to_long_standard_name(aOm_plus, Particles::Standard::alternate) ==
+        "antiparticle of the negative omega baryon");
 }
 
+// TODO: short standard name
 // TODO: symbols
