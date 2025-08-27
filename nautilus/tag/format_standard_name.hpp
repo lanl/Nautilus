@@ -149,7 +149,7 @@ PORTABLE_FUNCTION constexpr inline Pantag parse_nuclide(
     const char * ptr = short_name.data() + hyphen_index + 1;
     const std::size_t A = read_number(ptr);
     const char c = *(ptr++);
-    const std::size_t S = (c != '\0' ? read_number(ptr) : 0);
+    const std::size_t S = (*ptr != '\0' ? read_number(ptr) : 1);
     assert(*ptr == '\0');
     switch (c) {
     case 'm': return Pantag(Z, A, Pantag::Index::metastable, S);
