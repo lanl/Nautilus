@@ -14,6 +14,12 @@ namespace nautilus::tag::names {
 
 // ================================================================================================
 
+// TODO: Define constants such as `constexpr int Co = 27`; this will be a nice quality-of-life
+//       feature.  See, for example, the tests: I have to look up the atomic number for various
+//       elements to construct the Pantag.  To be clear, the tests should do this for some cases,
+//       but it would be nice if we could do something like `Pantag(Co, 59)` (and if we implement
+//       this feature, it should also be tested).
+
 class Nuclides
 {
 private:
