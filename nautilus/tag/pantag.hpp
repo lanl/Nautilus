@@ -211,7 +211,9 @@ private:
 
     Storage tag_;
 
-    struct User {};
+    struct User {
+        PORTABLE_FUNCTION constexpr inline User() = default;
+    };
 
 public:
     static constexpr User user;
