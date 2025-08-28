@@ -7,6 +7,7 @@
 //       -- Particles: default to 0 (lossy) or error?
 //       Add tests if an error isn't thrown
 
+#include <algorithm>
 #include <cmath>
 
 #include "nautilus/tag/pantag.hpp"
