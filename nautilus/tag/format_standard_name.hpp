@@ -23,16 +23,16 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     // Split into tokens
     auto is_number = [](const char s) {
         switch (s) {
-        case '0':
-        [[fallthrough]] case '1':
-        [[fallthrough]] case '2':
-        [[fallthrough]] case '3':
-        [[fallthrough]] case '4':
-        [[fallthrough]] case '5':
-        [[fallthrough]] case '6':
-        [[fallthrough]] case '7':
-        [[fallthrough]] case '8':
-        [[fallthrough]] case '9':
+        case '0': [[fallthrough]];
+        case '1': [[fallthrough]];
+        case '2': [[fallthrough]];
+        case '3': [[fallthrough]];
+        case '4': [[fallthrough]];
+        case '5': [[fallthrough]];
+        case '6': [[fallthrough]];
+        case '7': [[fallthrough]];
+        case '8': [[fallthrough]];
+        case '9':
             return true;
             break;
             default : return false;
@@ -53,8 +53,8 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     case 'e': // TODO: Check with Wim: Is this standard?
         return Pantag(Z, A, Pantag::Index::excitation, S);
         break;
-    case 'g':
-    [[fallthrough]] case '\0':
+    case 'g': [[fallthrough]];
+    case '\0':
         return Pantag(Z, A);
         break;
     }
