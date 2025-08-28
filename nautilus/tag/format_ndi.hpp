@@ -1,6 +1,12 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
+// TODO: Should a proton also map to 1001?
+// TODO: What should happen if a Pantag doesn't map to the NDI formats?
+//       -- Excited states: drop to ground state (lossy) or error?
+//       -- Particles: default to 0 (lossy) or error?
+//       Add tests if an error isn't thrown
+
 #include <cmath>
 
 #include "nautilus/tag/pantag.hpp"
