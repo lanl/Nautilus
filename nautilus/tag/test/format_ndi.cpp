@@ -473,4 +473,58 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
 // ================================================================================================
 
-// TODO: NDI short string
+TEST_CASE("format: NDI short string", "[tag][format][NDI]")
+{
+    using nautilus::tag::from_NDI_short_string;
+    using nautilus::tag::Pantag;
+    using nautilus::tag::to_NDI_short_string;
+
+    // Particles
+    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    CHECK((from_NDI_short_string("n") == neutron));
+    CHECK(to_NDI_short_string(neutron) == "n");
+
+    constexpr Pantag photon(nautilus::tag::names::photon);
+    CHECK((from_NDI_short_string("g") == photon));
+    CHECK((from_NDI_short_string("g0") == photon));
+    CHECK(to_NDI_short_string(photon) == "g");
+
+    // Normal nuclides
+    constexpr Pantag co59g(27, 59);
+    CHECK((from_NDI_short_string("co59") == co59g));
+    CHECK((from_NDI_short_string("co59g") == co59g));
+    CHECK(to_NDI_short_string(co59g) == "co59");
+
+    constexpr Pantag ta180(73, 180);
+    CHECK((from_NDI_short_string("ta180") == ta180));
+    CHECK((from_NDI_short_string("ta180g") == ta180));
+    CHECK(to_NDI_short_string(ta180) == "ta180");
+
+    constexpr Pantag k38(19, 38);
+    CHECK((from_NDI_short_string("k38") == k38));
+    CHECK((from_NDI_short_string("k38g") == k38));
+    CHECK(to_NDI_short_string(k38) == "k38");
+
+    // Special cases
+
+    // Am-242m1
+    // -- Am-242g and Am-242m1 are swapped: "am242" -> Am-242m1; Am-242g not representable
+    constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
+    CHECK((from_NDI_short_string("am242") == am242m1));
+    CHECK((from_NDI_short_string("am242g") == am242m1));
+    CHECK(to_NDI_short_string(am242m1) == "am242");
+
+    // Am-243g
+    // -- should be normal
+    constexpr Pantag am243g(95, 243);
+    CHECK((from_NDI_short_string("am243") == am243g));
+    CHECK((from_NDI_short_string("am243g") == am243g));
+    CHECK(to_NDI_short_string(am243g) == "am243");
+
+    // Am-244g
+    // -- should be normal
+    constexpr Pantag am244g(95, 244);
+    CHECK((from_NDI_short_string("am244") == am244g));
+    CHECK((from_NDI_short_string("am244g") == am244g));
+    CHECK(to_NDI_short_string(am244g) == "am244");
+}
