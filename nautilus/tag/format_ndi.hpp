@@ -141,6 +141,85 @@ inline bool standard_am244(const int n)
 //       feature?
 inline bool standard_am244(const double d) { return standard_am244(int(std::round(d * 1000))); }
 
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// specifically to modify the atomic symbol, not general-purpose routines
+
+inline std::string to_lowercase_symbol(std::string_view sv)
+{
+    std::string result;
+    switch(sv[0]) {
+    case('A'): result.append(1, 'a'); break;
+    case('B'): result.append(1, 'b'); break;
+    case('C'): result.append(1, 'c'); break;
+    case('D'): result.append(1, 'd'); break;
+    case('E'): result.append(1, 'e'); break;
+    case('F'): result.append(1, 'f'); break;
+    case('G'): result.append(1, 'g'); break;
+    case('H'): result.append(1, 'h'); break;
+    case('I'): result.append(1, 'i'); break;
+    case('J'): result.append(1, 'j'); break;
+    case('K'): result.append(1, 'k'); break;
+    case('L'): result.append(1, 'l'); break;
+    case('M'): result.append(1, 'm'); break;
+    case('N'): result.append(1, 'n'); break;
+    case('O'): result.append(1, 'o'); break;
+    case('P'): result.append(1, 'p'); break;
+    case('Q'): result.append(1, 'q'); break;
+    case('R'): result.append(1, 'r'); break;
+    case('S'): result.append(1, 's'); break;
+    case('T'): result.append(1, 't'); break;
+    case('U'): result.append(1, 'u'); break;
+    case('V'): result.append(1, 'v'); break;
+    case('W'): result.append(1, 'w'); break;
+    case('X'): result.append(1, 'x'); break;
+    case('Y'): result.append(1, 'y'); break;
+    case('Z'): result.append(1, 'z'); break;
+    default: assert(false);
+    }
+    if (sv.size() > 1) {
+        result.append(1, sv[1]);
+    }
+    return result;
+}
+inline std::string to_uppercase_symbol(std::string_view sv)
+{
+    std::string result;
+    switch(sv[0]) {
+    case('a'): result.append(1, 'A'); break;
+    case('b'): result.append(1, 'B'); break;
+    case('c'): result.append(1, 'C'); break;
+    case('d'): result.append(1, 'D'); break;
+    case('e'): result.append(1, 'E'); break;
+    case('f'): result.append(1, 'F'); break;
+    case('g'): result.append(1, 'G'); break;
+    case('h'): result.append(1, 'H'); break;
+    case('i'): result.append(1, 'I'); break;
+    case('j'): result.append(1, 'J'); break;
+    case('k'): result.append(1, 'K'); break;
+    case('l'): result.append(1, 'L'); break;
+    case('m'): result.append(1, 'M'); break;
+    case('n'): result.append(1, 'N'); break;
+    case('o'): result.append(1, 'O'); break;
+    case('p'): result.append(1, 'P'); break;
+    case('q'): result.append(1, 'Q'); break;
+    case('r'): result.append(1, 'R'); break;
+    case('s'): result.append(1, 'S'); break;
+    case('t'): result.append(1, 'T'); break;
+    case('u'): result.append(1, 'U'); break;
+    case('v'): result.append(1, 'V'); break;
+    case('w'): result.append(1, 'W'); break;
+    case('x'): result.append(1, 'X'); break;
+    case('y'): result.append(1, 'Y'); break;
+    case('z'): result.append(1, 'Z'); break;
+    default: assert(false);
+    }
+    if (sv.size() > 1) {
+        result.append(1, sv[1]);
+    }
+    return result;
+}
+
 } // end namespace detail
 
 // ================================================================================================
@@ -277,7 +356,82 @@ inline Pantag from_NDI_zaid(const std::string_view sv) {
 // ================================================================================================
 // NDI short string
 
-// TODO
+inline std::string to_NDI_short_string(Pantag tag)
+{
+    if (tag.is_nuclide()) {
+        assert(!tag.is_elemental());
+        const auto Z = tag.get_atomic_number();
+        const auto A = tag.get_atomic_mass_number();
+        if ((Z == 95) && (A == 242)) {
+            // Am-242g and Am-242m1 are reversed in NDI.  Since the short string doesn't deal with
+            // excited states, that means we only handle Am-242m1
+            assert(tag.has_metastable_index());
+            assert(tag.get_metastable_index() == 1);
+        } else {
+            assert(tag.is_ground());
+        }
+        assert(tag.is_ground() || ((Z == 95) && (A == 242)));
+        // handle special cases
+        if (Z == 1) {
+            if (A == 1) {
+                return "p";
+            } else if (A == 2) {
+                return "d";
+            } else if (A == 3) {
+                return "t";
+            }
+        } else if (Z == 2) {
+            if (A == 4) {
+                return "a";
+            }
+        }
+        // fallthrough to "standard" case
+        // -- By ignoring the excited state:
+        //    (a) we handle Am-242m1 (which maps to "am242")
+        //    (b) in non-debug mode, anything with the wrong metastable state will automatically
+        //        map to the default metastable state (ground state except for Am-242)
+        std::string result = detail::to_lowercase_symbol(names::Nuclides::get_symbol(Z));
+        result.append(std::to_string(A));
+        return result;
+    } else {
+        assert(tag.is_particle());
+        const auto pidx = tag.get_particle_index();
+        switch(pidx) {
+        case(nautilus::tag::names::photon): return "g"; break;
+        case(nautilus::tag::names::neutron): return "n"; break;
+        // TODO: Should proton also go to "p"?
+        default: assert(false); return "?";
+        }
+    }
+}
+
+inline Pantag from_NDI_short_string(const std::string_view sv)
+{
+    if ((sv == "g") || (sv == "g0")) {
+        return Pantag(nautilus::tag::names::photon);
+    } else if (sv == "n") {
+        return Pantag(nautilus::tag::names::neutron);
+    } else if (sv == "p") {
+        return Pantag(1, 1);
+    } else if (sv == "d") {
+        return Pantag(1, 2);
+    } else if (sv == "t") {
+        return Pantag(1, 3);
+    } else if (sv == "a") {
+        return Pantag(2, 4);
+    } else if ((sv == "am242") || (sv == "am242g")) {
+        // Am-242g and Am-242m1 are swapped in NDI
+        return Pantag(95, 242, Pantag::Index::metastable, 1);
+    }
+    const std::string numbers = "0123456789";
+    const std::string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const auto it1 = std::find_first_of(sv.begin(), sv.end(), numbers.begin(), numbers.end());
+    const auto symbol = detail::to_uppercase_symbol(std::string(sv.begin(), it1));
+    const auto Z = names::Nuclides::find_index(symbol);
+    const auto it2 = std::find_first_of(it1, sv.end(), letters.begin(), letters.end());
+    const auto A = std::atoi(std::string(it1, it2).data());
+    return Pantag(Z, A);
+}
 
 // ================================================================================================
 
