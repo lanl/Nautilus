@@ -1,6 +1,8 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
+#include <cmath>
+
 #include "nautilus/tag/pantag.hpp"
 
 namespace nautilus::tag {
@@ -11,18 +13,19 @@ namespace detail {
 
 inline bool match_table_suffix(const std::string_view sv)
 {
-    if ((sv.length() != 3) && (sv.length() != 5))
+    if ((sv.length() != 3) && (sv.length() != 5)) {
         return false;
-    if (!std::isdigit(sv[0]))
+    } else if (!std::isdigit(sv[0])) {
         return false;
-    if (!std::isdigit(sv[1]))
+    } else if (!std::isdigit(sv[1])) {
         return false;
-    if (!std::isdigit(sv[2]))
+    } else if (!std::isdigit(sv[2])) {
         return false;
-    if ((sv.length() == 5) && (sv[3] != 'n'))
+    } else if ((sv.length() == 5) && (sv[3] != 'n')) {
         return false;
-    if ((sv.length() == 5) && (sv[4] != 'm'))
+    } else if ((sv.length() == 5) && (sv[4] != 'm')) {
         return false;
+    }
     return true;
 }
 inline int table_suffix_integer(const std::string_view sv)
@@ -75,7 +78,7 @@ inline bool standard_am242(const std::string_view sv)
         return false;
     } else if (sv == "mtmg01ex") {
         return false;
-    } else if (sv == "701nm") {
+    } else if ((sv == "701nm") || (sv == "701")) {
         return false;
     } else if (match_table_suffix(sv)) {
         const auto num = table_suffix_integer(sv);
@@ -108,7 +111,7 @@ inline bool standard_am244(const std::string_view sv)
 {
     if (sv == "endf7act") {
         return false;
-    } else if (sv == "700nm") {
+    } else if ((sv == "700nm") || (sv == "700")) {
         return false;
     } else {
         return true;
@@ -235,11 +238,13 @@ template <typename T>
 double to_NDI_FPID(Pantag tag, T && library)
 {
     const auto SZA = to_NDI_SZA(tag, std::forward<T>(library));
-    const double suffix = table_suffix_decimal(std::forward<T>(library));
+    const double suffix = detail::table_suffix_decimal(std::forward<T>(library));
     return static_cast<double>(SZA) + suffix;
 }
 
-inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast<int>(fpid)); }
+inline Pantag from_NDI_FPID(const double fpid) {
+    return from_NDI_SZA(static_cast<int>(fpid));
+}
 
 // ================================================================================================
 // NDI zaid
@@ -247,7 +252,7 @@ inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast
 template <typename T>
 std::string to_NDI_zaid(Pantag tag, T && library)
 {
-    assert(match_table_suffix(library));
+    assert(detail::match_table_suffix(library));
     std::string zaid = std::to_string(to_NDI_SZA(tag, library));
     zaid.append(".");
     zaid.append(to_suffix_string(std::forward<T>(library)));
