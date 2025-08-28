@@ -145,7 +145,7 @@ inline bool standard_am244(const double d) { return standard_am244(int(std::roun
 inline std::string to_lowercase_symbol(std::string_view sv)
 {
     std::string result;
-    switch(sv[0]) {
+    switch (sv[0]) {
     case ('A'): result.append(1, 'a'); break;
     case ('B'): result.append(1, 'b'); break;
     case ('C'): result.append(1, 'c'); break;
@@ -182,7 +182,7 @@ inline std::string to_lowercase_symbol(std::string_view sv)
 inline std::string to_uppercase_symbol(std::string_view sv)
 {
     std::string result;
-    switch(sv[0]) {
+    switch (sv[0]) {
     case ('a'): result.append(1, 'A'); break;
     case ('b'): result.append(1, 'B'); break;
     case ('c'): result.append(1, 'C'); break;
