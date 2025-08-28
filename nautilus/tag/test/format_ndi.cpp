@@ -224,43 +224,59 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     CHECK(to_NDI_FPID(am242g, 0.128) == 95042.128);
     CHECK(to_NDI_FPID(am242g, 0.135) == 95042.135);
 
-    /*
-
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI FPID
     constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
-    CHECK((from_NDI_FPID(95242) == am242m1));
-    CHECK(to_NDI_FPID(am242m1) == 95242);
+    CHECK((from_NDI_FPID(95242.133) == am242m1));
+    CHECK(to_NDI_FPID(am242m1, 0.134) == 95242.134);
+    CHECK(to_NDI_FPID(am242m1, 135) == 95242.135);
+    CHECK(to_NDI_FPID(am242m1, "136") == 95242.136);
+    CHECK(to_NDI_FPID(am242m1, "137nm") == 95242.137);
 
     // Am-242m2
     // -- should be normal
     constexpr Pantag am242m2(95, 242, Pantag::Index::metastable, 2);
-    CHECK((from_NDI_FPID(2095242) == am242m2));
-    CHECK(to_NDI_FPID(am242m2) == 2095242);
+    CHECK((from_NDI_FPID(2095242.111) == am242m2));
+    CHECK(to_NDI_FPID(am242m2, 0.333) == 2095242.333);
+    CHECK(to_NDI_FPID(am242m2, 555) == 2095242.555);
+    CHECK(to_NDI_FPID(am242m2, "777") == 2095242.777);
+    CHECK(to_NDI_FPID(am242m2, "999nm") == 2095242.999);
 
     // Am-243g
     // -- should be normal
     constexpr Pantag am243g(95, 243);
-    CHECK((from_NDI_FPID(95243) == am243g));
-    CHECK(to_NDI_FPID(am243g) == 95243);
+    CHECK((from_NDI_FPID(95243.867) == am243g));
+    CHECK(to_NDI_FPID(am243g, 0.675) == 95243.675);
+    CHECK(to_NDI_FPID(am243g, 753) == 95243.753);
+    CHECK(to_NDI_FPID(am243g, "530") == 95243.530);
+    CHECK(to_NDI_FPID(am243g, "309nm") == 95243.309);
 
     // Am-243m1
     // -- should be normal
     constexpr Pantag am243m1(95, 243, Pantag::Index::metastable, 1);
-    CHECK((from_NDI_FPID(1095243) == am243m1));
-    CHECK(to_NDI_FPID(am243m1) == 1095243);
+    CHECK((from_NDI_FPID(1095243.555) == am243m1));
+    CHECK(to_NDI_FPID(am243m1, 0.555) == 1095243.555);
+    CHECK(to_NDI_FPID(am243m1, 555) == 1095243.555);
+    CHECK(to_NDI_FPID(am243m1, "555") == 1095243.555);
+    CHECK(to_NDI_FPID(am243m1, "555nm") == 1095243.555);
 
     // Am-243m2
     // -- should be normal
     constexpr Pantag am243m2(95, 243, Pantag::Index::metastable, 2);
-    CHECK((from_NDI_FPID(2095243) == am243m2));
-    CHECK(to_NDI_FPID(am243m2) == 2095243);
+    CHECK((from_NDI_FPID(2095243.135) == am243m2));
+    CHECK(to_NDI_FPID(am243m2, 0.135) == 2095243.135);
+    CHECK(to_NDI_FPID(am243m2, 135) == 2095243.135);
+    CHECK(to_NDI_FPID(am243m2, "135") == 2095243.135);
+    CHECK(to_NDI_FPID(am243m2, "135nm") == 2095243.135);
 
     // Am-244g
     // -- should be normal
     constexpr Pantag am244g(95, 244);
-    CHECK((from_NDI_FPID(95244) == am244g));
-    CHECK(to_NDI_FPID(am244g) == 95244);
+    CHECK((from_NDI_FPID(95244.951) == am244g));
+    CHECK(to_NDI_FPID(am244g, 0.951) == 95244.951);
+    CHECK(to_NDI_FPID(am244g, 951) == 95244.951);
+    CHECK(to_NDI_FPID(am244g, "951") == 95244.951);
+    CHECK(to_NDI_FPID(am244g, "951nm") == 95244.951);
 
     // Am-244m1
     // -- Am-244m1 can take different values
@@ -268,26 +284,28 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
     constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
-    constexpr int default_am244m1 = 1095244;
-    constexpr int alternate_am244m1 = 95044;
-    CHECK((from_NDI_FPID(default_am244m1) == am244m1));
-    CHECK((from_NDI_FPID(alternate_am244m1) == am244m1));
-    CHECK(to_NDI_FPID(am244m1) == default_am244m1);
-    CHECK(to_NDI_FPID(am244m1, "lanl2006") == default_am244m1);
-    CHECK(to_NDI_FPID(am244m1, "060nm") == default_am244m1);
-    CHECK(to_NDI_FPID(am244m1, 60) == default_am244m1);
-    CHECK(to_NDI_FPID(am244m1, 0.060) == default_am244m1);
-    CHECK(to_NDI_FPID(am244m1, "endf7act") == alternate_am244m1);
-    CHECK(to_NDI_FPID(am244m1, "700nm") == alternate_am244m1);
-    CHECK(to_NDI_FPID(am244m1, 700) == alternate_am244m1);
-    CHECK(to_NDI_FPID(am244m1, 0.700) == alternate_am244m1);
+    CHECK((from_NDI_FPID(1095244.600) == am244m1)); // suffix that should be 1095244
+    CHECK((from_NDI_FPID(1095244.700) == am244m1)); // suffix that should be 95044 if writing
+    CHECK((from_NDI_FPID(95044.600) == am244m1)); // suffix that should be 1095244 if writing
+    CHECK((from_NDI_FPID(95044.700) == am244m1)); // suffix that should be 95044
+    CHECK(to_NDI_FPID(am244m1, "060nm") == 1095244.060);
+    CHECK(to_NDI_FPID(am244m1, "060") == 1095244.060);
+    CHECK(to_NDI_FPID(am244m1, 60) == 1095244.060);
+    CHECK(to_NDI_FPID(am244m1, 0.060) == 1095244.060);
+    CHECK(to_NDI_FPID(am244m1, "700nm") == 95044.700);
+    CHECK(to_NDI_FPID(am244m1, "700") == 95044.700);
+    CHECK(to_NDI_FPID(am244m1, 700) == 95044.700);
+    CHECK(to_NDI_FPID(am244m1, 0.700) == 95044.700);
 
     // Am-244m2
     // -- should be normal
     constexpr Pantag am244m2(95, 244, Pantag::Index::metastable, 2);
-    CHECK((from_NDI_FPID(2095244) == am244m2));
-    CHECK(to_NDI_FPID(am244m2) == 2095244);
-*/}
+    CHECK((from_NDI_FPID(2095244.700) == am244m2));
+    CHECK(to_NDI_FPID(am244m2, 0.701) == 2095244.701);
+    CHECK(to_NDI_FPID(am244m2, 702) == 2095244.702);
+    CHECK(to_NDI_FPID(am244m2, "703") == 2095244.703);
+    CHECK(to_NDI_FPID(am244m2, "704nm") == 2095244.704);
+}
 
 // ================================================================================================
 
