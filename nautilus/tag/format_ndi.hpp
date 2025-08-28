@@ -58,10 +58,7 @@ inline std::string to_suffix_string(const int n)
     const auto ns = std::to_string(n);
     return std::string(3 - ns.size(), '0') + ns + "nm";
 }
-inline std::string to_suffix_string(const double d)
-{
-    return to_suffix_string(int(d * 1000));
-}
+inline std::string to_suffix_string(const double d) { return to_suffix_string(int(d * 1000)); }
 inline std::string to_suffix_string(const std::string_view sv)
 {
     assert(match_table_suffix(sv));
@@ -149,32 +146,32 @@ inline std::string to_lowercase_symbol(std::string_view sv)
 {
     std::string result;
     switch(sv[0]) {
-    case('A'): result.append(1, 'a'); break;
-    case('B'): result.append(1, 'b'); break;
-    case('C'): result.append(1, 'c'); break;
-    case('D'): result.append(1, 'd'); break;
-    case('E'): result.append(1, 'e'); break;
-    case('F'): result.append(1, 'f'); break;
-    case('G'): result.append(1, 'g'); break;
-    case('H'): result.append(1, 'h'); break;
-    case('I'): result.append(1, 'i'); break;
-    case('J'): result.append(1, 'j'); break;
-    case('K'): result.append(1, 'k'); break;
-    case('L'): result.append(1, 'l'); break;
-    case('M'): result.append(1, 'm'); break;
-    case('N'): result.append(1, 'n'); break;
-    case('O'): result.append(1, 'o'); break;
-    case('P'): result.append(1, 'p'); break;
-    case('Q'): result.append(1, 'q'); break;
-    case('R'): result.append(1, 'r'); break;
-    case('S'): result.append(1, 's'); break;
-    case('T'): result.append(1, 't'); break;
-    case('U'): result.append(1, 'u'); break;
-    case('V'): result.append(1, 'v'); break;
-    case('W'): result.append(1, 'w'); break;
-    case('X'): result.append(1, 'x'); break;
-    case('Y'): result.append(1, 'y'); break;
-    case('Z'): result.append(1, 'z'); break;
+    case ('A'): result.append(1, 'a'); break;
+    case ('B'): result.append(1, 'b'); break;
+    case ('C'): result.append(1, 'c'); break;
+    case ('D'): result.append(1, 'd'); break;
+    case ('E'): result.append(1, 'e'); break;
+    case ('F'): result.append(1, 'f'); break;
+    case ('G'): result.append(1, 'g'); break;
+    case ('H'): result.append(1, 'h'); break;
+    case ('I'): result.append(1, 'i'); break;
+    case ('J'): result.append(1, 'j'); break;
+    case ('K'): result.append(1, 'k'); break;
+    case ('L'): result.append(1, 'l'); break;
+    case ('M'): result.append(1, 'm'); break;
+    case ('N'): result.append(1, 'n'); break;
+    case ('O'): result.append(1, 'o'); break;
+    case ('P'): result.append(1, 'p'); break;
+    case ('Q'): result.append(1, 'q'); break;
+    case ('R'): result.append(1, 'r'); break;
+    case ('S'): result.append(1, 's'); break;
+    case ('T'): result.append(1, 't'); break;
+    case ('U'): result.append(1, 'u'); break;
+    case ('V'): result.append(1, 'v'); break;
+    case ('W'): result.append(1, 'w'); break;
+    case ('X'): result.append(1, 'x'); break;
+    case ('Y'): result.append(1, 'y'); break;
+    case ('Z'): result.append(1, 'z'); break;
     default: assert(false);
     }
     if (sv.size() > 1) {
@@ -186,32 +183,32 @@ inline std::string to_uppercase_symbol(std::string_view sv)
 {
     std::string result;
     switch(sv[0]) {
-    case('a'): result.append(1, 'A'); break;
-    case('b'): result.append(1, 'B'); break;
-    case('c'): result.append(1, 'C'); break;
-    case('d'): result.append(1, 'D'); break;
-    case('e'): result.append(1, 'E'); break;
-    case('f'): result.append(1, 'F'); break;
-    case('g'): result.append(1, 'G'); break;
-    case('h'): result.append(1, 'H'); break;
-    case('i'): result.append(1, 'I'); break;
-    case('j'): result.append(1, 'J'); break;
-    case('k'): result.append(1, 'K'); break;
-    case('l'): result.append(1, 'L'); break;
-    case('m'): result.append(1, 'M'); break;
-    case('n'): result.append(1, 'N'); break;
-    case('o'): result.append(1, 'O'); break;
-    case('p'): result.append(1, 'P'); break;
-    case('q'): result.append(1, 'Q'); break;
-    case('r'): result.append(1, 'R'); break;
-    case('s'): result.append(1, 'S'); break;
-    case('t'): result.append(1, 'T'); break;
-    case('u'): result.append(1, 'U'); break;
-    case('v'): result.append(1, 'V'); break;
-    case('w'): result.append(1, 'W'); break;
-    case('x'): result.append(1, 'X'); break;
-    case('y'): result.append(1, 'Y'); break;
-    case('z'): result.append(1, 'Z'); break;
+    case ('a'): result.append(1, 'A'); break;
+    case ('b'): result.append(1, 'B'); break;
+    case ('c'): result.append(1, 'C'); break;
+    case ('d'): result.append(1, 'D'); break;
+    case ('e'): result.append(1, 'E'); break;
+    case ('f'): result.append(1, 'F'); break;
+    case ('g'): result.append(1, 'G'); break;
+    case ('h'): result.append(1, 'H'); break;
+    case ('i'): result.append(1, 'I'); break;
+    case ('j'): result.append(1, 'J'); break;
+    case ('k'): result.append(1, 'K'); break;
+    case ('l'): result.append(1, 'L'); break;
+    case ('m'): result.append(1, 'M'); break;
+    case ('n'): result.append(1, 'N'); break;
+    case ('o'): result.append(1, 'O'); break;
+    case ('p'): result.append(1, 'P'); break;
+    case ('q'): result.append(1, 'Q'); break;
+    case ('r'): result.append(1, 'R'); break;
+    case ('s'): result.append(1, 'S'); break;
+    case ('t'): result.append(1, 'T'); break;
+    case ('u'): result.append(1, 'U'); break;
+    case ('v'): result.append(1, 'V'); break;
+    case ('w'): result.append(1, 'W'); break;
+    case ('x'): result.append(1, 'X'); break;
+    case ('y'): result.append(1, 'Y'); break;
+    case ('z'): result.append(1, 'Z'); break;
     default: assert(false);
     }
     if (sv.size() > 1) {
@@ -331,9 +328,7 @@ double to_NDI_FPID(Pantag tag, T && library)
     return static_cast<double>(SZA) + suffix;
 }
 
-inline Pantag from_NDI_FPID(const double fpid) {
-    return from_NDI_SZA(static_cast<int>(fpid));
-}
+inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast<int>(fpid)); }
 
 // ================================================================================================
 // NDI zaid
@@ -348,7 +343,8 @@ std::string to_NDI_zaid(Pantag tag, const T & library)
     return zaid;
 }
 
-inline Pantag from_NDI_zaid(const std::string_view sv) {
+inline Pantag from_NDI_zaid(const std::string_view sv)
+{
     const auto pos = sv.find('.');
     return from_NDI_SZA(std::atoi(sv.substr(0, pos).data()));
 }
@@ -396,9 +392,9 @@ inline std::string to_NDI_short_string(Pantag tag)
     } else {
         assert(tag.is_particle());
         const auto pidx = tag.get_particle_index();
-        switch(pidx) {
-        case(nautilus::tag::names::photon): return "g"; break;
-        case(nautilus::tag::names::neutron): return "n"; break;
+        switch (pidx) {
+        case (nautilus::tag::names::photon): return "g"; break;
+        case (nautilus::tag::names::neutron): return "n"; break;
         // TODO: Should proton also go to "p"?
         default: assert(false); return "?";
         }

@@ -201,8 +201,8 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     constexpr Pantag am242g(95, 242);
     CHECK((from_NDI_FPID(1095242.120) == am242g)); // suffix that should be 1095242
     CHECK((from_NDI_FPID(1095242.123) == am242g)); // suffix that should be 95042 if writing
-    CHECK((from_NDI_FPID(95042.120) == am242g)); // suffix that should be 1095242 if writing
-    CHECK((from_NDI_FPID(95042.123) == am242g)); // suffix that should be 95042
+    CHECK((from_NDI_FPID(95042.120) == am242g));   // suffix that should be 1095242 if writing
+    CHECK((from_NDI_FPID(95042.123) == am242g));   // suffix that should be 95042
     CHECK(to_NDI_FPID(am242g, "083") == 1095242.083);
     CHECK(to_NDI_FPID(am242g, "083nm") == 1095242.083);
     CHECK(to_NDI_FPID(am242g, 83) == 1095242.083);
@@ -286,8 +286,8 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
     CHECK((from_NDI_FPID(1095244.600) == am244m1)); // suffix that should be 1095244
     CHECK((from_NDI_FPID(1095244.700) == am244m1)); // suffix that should be 95044 if writing
-    CHECK((from_NDI_FPID(95044.600) == am244m1)); // suffix that should be 1095244 if writing
-    CHECK((from_NDI_FPID(95044.700) == am244m1)); // suffix that should be 95044
+    CHECK((from_NDI_FPID(95044.600) == am244m1));   // suffix that should be 1095244 if writing
+    CHECK((from_NDI_FPID(95044.700) == am244m1));   // suffix that should be 95044
     CHECK(to_NDI_FPID(am244m1, "060nm") == 1095244.060);
     CHECK(to_NDI_FPID(am244m1, "060") == 1095244.060);
     CHECK(to_NDI_FPID(am244m1, 60) == 1095244.060);
@@ -365,8 +365,8 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     constexpr Pantag am242g(95, 242);
     CHECK((from_NDI_zaid("1095242.120nm") == am242g)); // suffix that should be 1095242
     CHECK((from_NDI_zaid("1095242.123nm") == am242g)); // suffix that should be 95042 if writing
-    CHECK((from_NDI_zaid("95042.120nm") == am242g)); // suffix that should be 1095242 if writing
-    CHECK((from_NDI_zaid("95042.123nm") == am242g)); // suffix that should be 95042
+    CHECK((from_NDI_zaid("95042.120nm") == am242g));   // suffix that should be 1095242 if writing
+    CHECK((from_NDI_zaid("95042.123nm") == am242g));   // suffix that should be 95042
     CHECK(to_NDI_zaid(am242g, "083") == "1095242.083nm");
     CHECK(to_NDI_zaid(am242g, "083nm") == "1095242.083nm");
     CHECK(to_NDI_zaid(am242g, 83) == "1095242.083nm");
@@ -450,8 +450,8 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
     CHECK((from_NDI_zaid("1095244.600nm") == am244m1)); // suffix that should be 1095244
     CHECK((from_NDI_zaid("1095244.700nm") == am244m1)); // suffix that should be 95044 if writing
-    CHECK((from_NDI_zaid("95044.600nm") == am244m1)); // suffix that should be 1095244 if writing
-    CHECK((from_NDI_zaid("95044.700nm") == am244m1)); // suffix that should be 95044
+    CHECK((from_NDI_zaid("95044.600nm") == am244m1));   // suffix that should be 1095244 if writing
+    CHECK((from_NDI_zaid("95044.700nm") == am244m1));   // suffix that should be 95044
     CHECK(to_NDI_zaid(am244m1, "060nm") == "1095244.060nm");
     CHECK(to_NDI_zaid(am244m1, "060") == "1095244.060nm");
     CHECK(to_NDI_zaid(am244m1, 60) == "1095244.060nm");
