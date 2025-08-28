@@ -58,6 +58,10 @@ inline std::string to_suffix_string(const int n)
     const auto ns = std::to_string(n);
     return std::string(3 - ns.size(), '0') + ns + "nm";
 }
+inline std::string to_suffix_string(const double d)
+{
+    return to_suffix_string(int(d * 1000));
+}
 inline std::string to_suffix_string(const std::string_view sv)
 {
     assert(match_table_suffix(sv));
@@ -256,14 +260,20 @@ inline Pantag from_NDI_FPID(const double fpid) {
 // NDI zaid
 
 template <typename T>
-std::string to_NDI_zaid(Pantag tag, T && library)
+std::string to_NDI_zaid(Pantag tag, const T & library)
 {
     assert(detail::match_table_suffix(library));
     std::string zaid = std::to_string(to_NDI_SZA(tag, library));
     zaid.append(".");
-    zaid.append(to_suffix_string(std::forward<T>(library)));
+    zaid.append(detail::to_suffix_string(library));
     return zaid;
 }
+
+inline Pantag from_NDI_zaid(const std::string_view sv) {
+    const auto pos = sv.find('.');
+    return from_NDI_SZA(std::atoi(sv.substr(0, pos).data()));
+}
+
 // ================================================================================================
 // NDI short string
 
