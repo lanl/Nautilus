@@ -352,8 +352,6 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     CHECK(to_NDI_zaid(k38m2, "050") == "2019038.050nm");
     CHECK(to_NDI_zaid(k38m2, "500nm") == "2019038.500nm");
 
-    /*
-
     // Special cases
 
     // Am-242g
@@ -365,84 +363,84 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     //       -- mtmg01 / 121nm - 135nm
     //       -- mtmg01ex / 121nm - 135nm
     constexpr Pantag am242g(95, 242);
-    CHECK((from_NDI_zaid(1095242.120) == am242g)); // suffix that should be 1095242
-    CHECK((from_NDI_zaid(1095242.123) == am242g)); // suffix that should be 95042 if writing
-    CHECK((from_NDI_zaid(95042.120) == am242g)); // suffix that should be 1095242 if writing
-    CHECK((from_NDI_zaid(95042.123) == am242g)); // suffix that should be 95042
-    CHECK(to_NDI_zaid(am242g, "083") == 1095242.083);
-    CHECK(to_NDI_zaid(am242g, "083nm") == 1095242.083);
-    CHECK(to_NDI_zaid(am242g, 83) == 1095242.083);
-    CHECK(to_NDI_zaid(am242g, 0.083) == 1095242.083);
-    CHECK(to_NDI_zaid(am242g, "701") == 95042.701);
-    CHECK(to_NDI_zaid(am242g, "701nm") == 95042.701);
-    CHECK(to_NDI_zaid(am242g, 701) == 95042.701);
-    CHECK(to_NDI_zaid(am242g, 0.701) == 95042.701);
-    CHECK(to_NDI_zaid(am242g, "121") == 95042.121);
-    CHECK(to_NDI_zaid(am242g, "128") == 95042.128);
-    CHECK(to_NDI_zaid(am242g, "135") == 95042.135);
-    CHECK(to_NDI_zaid(am242g, "121nm") == 95042.121);
-    CHECK(to_NDI_zaid(am242g, "128nm") == 95042.128);
-    CHECK(to_NDI_zaid(am242g, "135nm") == 95042.135);
-    CHECK(to_NDI_zaid(am242g, 121) == 95042.121);
-    CHECK(to_NDI_zaid(am242g, 128) == 95042.128);
-    CHECK(to_NDI_zaid(am242g, 135) == 95042.135);
-    CHECK(to_NDI_zaid(am242g, 0.121) == 95042.121);
-    CHECK(to_NDI_zaid(am242g, 0.128) == 95042.128);
-    CHECK(to_NDI_zaid(am242g, 0.135) == 95042.135);
+    CHECK((from_NDI_zaid("1095242.120nm") == am242g)); // suffix that should be 1095242
+    CHECK((from_NDI_zaid("1095242.123nm") == am242g)); // suffix that should be 95042 if writing
+    CHECK((from_NDI_zaid("95042.120nm") == am242g)); // suffix that should be 1095242 if writing
+    CHECK((from_NDI_zaid("95042.123nm") == am242g)); // suffix that should be 95042
+    CHECK(to_NDI_zaid(am242g, "083") == "1095242.083nm");
+    CHECK(to_NDI_zaid(am242g, "083nm") == "1095242.083nm");
+    CHECK(to_NDI_zaid(am242g, 83) == "1095242.083nm");
+    CHECK(to_NDI_zaid(am242g, 0.083) == "1095242.083nm");
+    CHECK(to_NDI_zaid(am242g, "701") == "95042.701nm");
+    CHECK(to_NDI_zaid(am242g, "701nm") == "95042.701nm");
+    CHECK(to_NDI_zaid(am242g, 701) == "95042.701nm");
+    CHECK(to_NDI_zaid(am242g, 0.701) == "95042.701nm");
+    CHECK(to_NDI_zaid(am242g, "121") == "95042.121nm");
+    CHECK(to_NDI_zaid(am242g, "128") == "95042.128nm");
+    CHECK(to_NDI_zaid(am242g, "135") == "95042.135nm");
+    CHECK(to_NDI_zaid(am242g, "121nm") == "95042.121nm");
+    CHECK(to_NDI_zaid(am242g, "128nm") == "95042.128nm");
+    CHECK(to_NDI_zaid(am242g, "135nm") == "95042.135nm");
+    CHECK(to_NDI_zaid(am242g, 121) == "95042.121nm");
+    CHECK(to_NDI_zaid(am242g, 128) == "95042.128nm");
+    CHECK(to_NDI_zaid(am242g, 135) == "95042.135nm");
+    CHECK(to_NDI_zaid(am242g, 0.121) == "95042.121nm");
+    CHECK(to_NDI_zaid(am242g, 0.128) == "95042.128nm");
+    CHECK(to_NDI_zaid(am242g, 0.135) == "95042.135nm");
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI zaid
     constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
-    CHECK((from_NDI_zaid(95242.133) == am242m1));
-    CHECK(to_NDI_zaid(am242m1, 0.134) == 95242.134);
-    CHECK(to_NDI_zaid(am242m1, 135) == 95242.135);
-    CHECK(to_NDI_zaid(am242m1, "136") == 95242.136);
-    CHECK(to_NDI_zaid(am242m1, "137nm") == 95242.137);
+    CHECK((from_NDI_zaid("95242.133nm") == am242m1));
+    CHECK(to_NDI_zaid(am242m1, 0.134) == "95242.134nm");
+    CHECK(to_NDI_zaid(am242m1, 135) == "95242.135nm");
+    CHECK(to_NDI_zaid(am242m1, "136") == "95242.136nm");
+    CHECK(to_NDI_zaid(am242m1, "137nm") == "95242.137nm");
 
     // Am-242m2
     // -- should be normal
     constexpr Pantag am242m2(95, 242, Pantag::Index::metastable, 2);
-    CHECK((from_NDI_zaid(2095242.111) == am242m2));
-    CHECK(to_NDI_zaid(am242m2, 0.333) == 2095242.333);
-    CHECK(to_NDI_zaid(am242m2, 555) == 2095242.555);
-    CHECK(to_NDI_zaid(am242m2, "777") == 2095242.777);
-    CHECK(to_NDI_zaid(am242m2, "999nm") == 2095242.999);
+    CHECK((from_NDI_zaid("2095242.111nm") == am242m2));
+    CHECK(to_NDI_zaid(am242m2, 0.333) == "2095242.333nm");
+    CHECK(to_NDI_zaid(am242m2, 555) == "2095242.555nm");
+    CHECK(to_NDI_zaid(am242m2, "777") == "2095242.777nm");
+    CHECK(to_NDI_zaid(am242m2, "999nm") == "2095242.999nm");
 
     // Am-243g
     // -- should be normal
     constexpr Pantag am243g(95, 243);
-    CHECK((from_NDI_zaid(95243.867) == am243g));
-    CHECK(to_NDI_zaid(am243g, 0.675) == 95243.675);
-    CHECK(to_NDI_zaid(am243g, 753) == 95243.753);
-    CHECK(to_NDI_zaid(am243g, "530") == 95243.530);
-    CHECK(to_NDI_zaid(am243g, "309nm") == 95243.309);
+    CHECK((from_NDI_zaid("95243.867nm") == am243g));
+    CHECK(to_NDI_zaid(am243g, 0.675) == "95243.675nm");
+    CHECK(to_NDI_zaid(am243g, 753) == "95243.753nm");
+    CHECK(to_NDI_zaid(am243g, "530") == "95243.530nm");
+    CHECK(to_NDI_zaid(am243g, "309nm") == "95243.309nm");
 
     // Am-243m1
     // -- should be normal
     constexpr Pantag am243m1(95, 243, Pantag::Index::metastable, 1);
-    CHECK((from_NDI_zaid(1095243.555) == am243m1));
-    CHECK(to_NDI_zaid(am243m1, 0.555) == 1095243.555);
-    CHECK(to_NDI_zaid(am243m1, 555) == 1095243.555);
-    CHECK(to_NDI_zaid(am243m1, "555") == 1095243.555);
-    CHECK(to_NDI_zaid(am243m1, "555nm") == 1095243.555);
+    CHECK((from_NDI_zaid("1095243.555nm") == am243m1));
+    CHECK(to_NDI_zaid(am243m1, 0.555) == "1095243.555nm");
+    CHECK(to_NDI_zaid(am243m1, 555) == "1095243.555nm");
+    CHECK(to_NDI_zaid(am243m1, "555") == "1095243.555nm");
+    CHECK(to_NDI_zaid(am243m1, "555nm") == "1095243.555nm");
 
     // Am-243m2
     // -- should be normal
     constexpr Pantag am243m2(95, 243, Pantag::Index::metastable, 2);
-    CHECK((from_NDI_zaid(2095243.135) == am243m2));
-    CHECK(to_NDI_zaid(am243m2, 0.135) == 2095243.135);
-    CHECK(to_NDI_zaid(am243m2, 135) == 2095243.135);
-    CHECK(to_NDI_zaid(am243m2, "135") == 2095243.135);
-    CHECK(to_NDI_zaid(am243m2, "135nm") == 2095243.135);
+    CHECK((from_NDI_zaid("2095243.135nm") == am243m2));
+    CHECK(to_NDI_zaid(am243m2, 0.135) == "2095243.135nm");
+    CHECK(to_NDI_zaid(am243m2, 135) == "2095243.135nm");
+    CHECK(to_NDI_zaid(am243m2, "135") == "2095243.135nm");
+    CHECK(to_NDI_zaid(am243m2, "135nm") == "2095243.135nm");
 
     // Am-244g
     // -- should be normal
     constexpr Pantag am244g(95, 244);
-    CHECK((from_NDI_zaid(95244.951) == am244g));
-    CHECK(to_NDI_zaid(am244g, 0.951) == 95244.951);
-    CHECK(to_NDI_zaid(am244g, 951) == 95244.951);
-    CHECK(to_NDI_zaid(am244g, "951") == 95244.951);
-    CHECK(to_NDI_zaid(am244g, "951nm") == 95244.951);
+    CHECK((from_NDI_zaid("95244.951nm") == am244g));
+    CHECK(to_NDI_zaid(am244g, 0.951) == "95244.951nm");
+    CHECK(to_NDI_zaid(am244g, 951) == "95244.951nm");
+    CHECK(to_NDI_zaid(am244g, "951") == "95244.951nm");
+    CHECK(to_NDI_zaid(am244g, "951nm") == "95244.951nm");
 
     // Am-244m1
     // -- Am-244m1 can take different values
@@ -450,30 +448,29 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
     constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
-    CHECK((from_NDI_zaid(1095244.600) == am244m1)); // suffix that should be 1095244
-    CHECK((from_NDI_zaid(1095244.700) == am244m1)); // suffix that should be 95044 if writing
-    CHECK((from_NDI_zaid(95044.600) == am244m1)); // suffix that should be 1095244 if writing
-    CHECK((from_NDI_zaid(95044.700) == am244m1)); // suffix that should be 95044
-    CHECK(to_NDI_zaid(am244m1, "060nm") == 1095244.060);
-    CHECK(to_NDI_zaid(am244m1, "060") == 1095244.060);
-    CHECK(to_NDI_zaid(am244m1, 60) == 1095244.060);
-    CHECK(to_NDI_zaid(am244m1, 0.060) == 1095244.060);
-    CHECK(to_NDI_zaid(am244m1, "700nm") == 95044.700);
-    CHECK(to_NDI_zaid(am244m1, "700") == 95044.700);
-    CHECK(to_NDI_zaid(am244m1, 700) == 95044.700);
-    CHECK(to_NDI_zaid(am244m1, 0.700) == 95044.700);
+    CHECK((from_NDI_zaid("1095244.600nm") == am244m1)); // suffix that should be 1095244
+    CHECK((from_NDI_zaid("1095244.700nm") == am244m1)); // suffix that should be 95044 if writing
+    CHECK((from_NDI_zaid("95044.600nm") == am244m1)); // suffix that should be 1095244 if writing
+    CHECK((from_NDI_zaid("95044.700nm") == am244m1)); // suffix that should be 95044
+    CHECK(to_NDI_zaid(am244m1, "060nm") == "1095244.060nm");
+    CHECK(to_NDI_zaid(am244m1, "060") == "1095244.060nm");
+    CHECK(to_NDI_zaid(am244m1, 60) == "1095244.060nm");
+    CHECK(to_NDI_zaid(am244m1, 0.060) == "1095244.060nm");
+    CHECK(to_NDI_zaid(am244m1, "700nm") == "95044.700nm");
+    CHECK(to_NDI_zaid(am244m1, "700") == "95044.700nm");
+    CHECK(to_NDI_zaid(am244m1, 700) == "95044.700nm");
+    CHECK(to_NDI_zaid(am244m1, 0.700) == "95044.700nm");
 
     // Am-244m2
     // -- should be normal
     constexpr Pantag am244m2(95, 244, Pantag::Index::metastable, 2);
-    CHECK((from_NDI_zaid(2095244.700) == am244m2));
-    CHECK(to_NDI_zaid(am244m2, 0.701) == 2095244.701);
-    CHECK(to_NDI_zaid(am244m2, 702) == 2095244.702);
-    CHECK(to_NDI_zaid(am244m2, "703") == 2095244.703);
-    CHECK(to_NDI_zaid(am244m2, "704nm") == 2095244.704);
-*/}
+    CHECK((from_NDI_zaid("2095244.700nm") == am244m2));
+    CHECK(to_NDI_zaid(am244m2, 0.701) == "2095244.701nm");
+    CHECK(to_NDI_zaid(am244m2, 702) == "2095244.702nm");
+    CHECK(to_NDI_zaid(am244m2, "703") == "2095244.703nm");
+    CHECK(to_NDI_zaid(am244m2, "704nm") == "2095244.704nm");
+}
 
 // ================================================================================================
 
-// TODO: NDI zaid
 // TODO: NDI short string
