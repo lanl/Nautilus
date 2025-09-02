@@ -98,8 +98,6 @@ inline std::string to_uppercase_symbol(std::string_view sv)
 // ================================================================================================
 // IC chemsym
 
-// TODO: Below is untested.  Above hasn't been modified at all yet, so needs to be reviewed.
-
 inline std::string to_IC_chemsym(Pantag tag)
 {
     if (tag.is_nuclide()) {
