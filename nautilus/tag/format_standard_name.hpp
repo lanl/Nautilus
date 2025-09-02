@@ -13,11 +13,6 @@
 #include <string>
 #include <string_view>
 
-// TODO: What to return if a tag is not representable in standard format?
-//    -- bad nuclide (Z == 0, Z > Oganesson)
-//    -- unknown tag
-//    -- user tag
-
 namespace nautilus::tag {
 
 // ================================================================================================
