@@ -7,135 +7,13 @@
 #include <cmath>
 
 #include "nautilus/tag/pantag.hpp"
+#include "nautilus/tag/tokenize.hpp"
 
 namespace nautilus::tag {
 
 // ================================================================================================
 
 namespace detail {
-
-inline bool match_table_suffix(const std::string_view sv)
-{
-    if ((sv.length() != 3) && (sv.length() != 5)) {
-        return false;
-    } else if (!std::isdigit(sv[0])) {
-        return false;
-    } else if (!std::isdigit(sv[1])) {
-        return false;
-    } else if (!std::isdigit(sv[2])) {
-        return false;
-    } else if ((sv.length() == 5) && (sv[3] != 'n')) {
-        return false;
-    } else if ((sv.length() == 5) && (sv[4] != 'm')) {
-        return false;
-    }
-    return true;
-}
-inline int table_suffix_integer(const std::string_view sv)
-{
-    assert(match_table_suffix);
-    // C++17 introduces std::from_chars, but it's not constexpr until C++23
-    std::array<char, 4> s = {sv[0], sv[1], sv[2], '\0'};
-    return std::stoi(s.data());
-}
-inline double table_suffix_decimal(const int n) { return 1.0e-3 * n; }
-inline double table_suffix_decimal(const double d) { return d; }
-inline double table_suffix_decimal(const std::string_view sv)
-{
-    const auto num = table_suffix_integer(sv);
-    return 1.0e-3 * num;
-}
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline std::string to_suffix_string(const int n)
-{
-    assert(n >= 0);
-    assert(n < 1000);
-    const auto ns = std::to_string(n);
-    return std::string(3 - ns.size(), '0') + ns + "nm";
-}
-inline std::string to_suffix_string(const double d) { return to_suffix_string(int(d * 1000)); }
-inline std::string to_suffix_string(const std::string_view sv)
-{
-    assert(match_table_suffix(sv));
-    std::string suffix(sv);
-    if (sv.length() == 3) {
-        suffix.append("nm");
-    }
-    return suffix;
-}
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// when converting to NDI, indicates we don't know the library so the default should be used
-struct NoLibrary {};
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline bool standard_am242(NoLibrary) { return true; }
-inline bool standard_am242(const std::string_view sv)
-{
-    if (sv == "mendf70x") {
-        return false;
-    } else if (sv == "mtmg01") {
-        return false;
-    } else if (sv == "mtmg01ex") {
-        return false;
-    } else if ((sv == "701nm") || (sv == "701")) {
-        return false;
-    } else if (match_table_suffix(sv)) {
-        const auto num = table_suffix_integer(sv);
-        if ((num >= 121) && (num <= 135)) {
-            return false;
-        }
-    }
-    return true;
-}
-inline bool standard_am242(const int n)
-{
-    if (n == 701) {
-        return false;
-    } else if ((n >= 121) && (n <= 135)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
-//       we should provide it given that it's so easy to break, but instead require users to parse
-//       their strings to get an integer.  But check with Edward, as he may have requested this
-//       feature?
-inline bool standard_am242(const double d) { return standard_am242(int(std::round(d * 1000))); }
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline bool standard_am244(NoLibrary) { return true; }
-inline bool standard_am244(const std::string_view sv)
-{
-    if (sv == "endf7act") {
-        return false;
-    } else if ((sv == "700nm") || (sv == "700")) {
-        return false;
-    } else {
-        return true;
-    }
-}
-inline bool standard_am244(const int n)
-{
-    if (n == 700) {
-        return false;
-    } else {
-        return true;
-    }
-}
-// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
-//       we should provide it given that it's so easy to break, but instead require users to parse
-//       their strings to get an integer.  But check with Edward, as he may have requested this
-//       feature?
-inline bool standard_am244(const double d) { return standard_am244(int(std::round(d * 1000))); }
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // specifically to modify the atomic symbol, not general-purpose routines
 // TODO: This is duplicated in NDI and IC.  I suspect it should move to names.hpp instead.
@@ -241,7 +119,7 @@ inline std::string to_IC_chemsym(Pantag tag)
             // append the metastable state if not in the ground state
             // -- can't just check tag.is_ground() because Am-242g and Am-242m1 are swapped
             assert(tag.has_metastable_index());
-            const auto S = tag.get_metastable_index();
+            auto S = tag.get_metastable_index();
             if ((Z == 95) && (A == 242)) {
                 if (S == 0) {
                     S = 1;
@@ -266,25 +144,9 @@ inline std::string to_IC_chemsym(Pantag tag)
     }
 }
 
-// Nuclides:
-// -- Default: atomic symbol (lowercase), no hyphen, atomic mass number
-//    -- Can have metastable state (but never 'm' without a number), 'g' is optional (not default)
-//    -- Can also append table identifier number as ".###", accept on input but don't generate
-// -- Elementals are the atomic symbol (lowercase) and nothing else
-// -- Special cases
-//    -- Am-242g can accept "am42", "am042", and "am242m1" on input; prefer "am242m1"
-//    -- Am-242m1 can accept "am242", "am242g"; prefer "am242"
-//    -- lawrencium is normally "Lr", but in this format it is "lw" (should lr be okay on input?)
-// Particles:
-// -- photons are "g" or "g0"; prefer "g0"
-// -- neutrons are "nt1"
-// -- protons are never generates, but should we accept "p" on input?
-// -- no other particles
-
 inline Pantag from_IC_chemsym(const std::string_view sv0)
 {
-    // TODO: Add a default of "unknown" if any step of parsing fails
-    const std::string sv(sv0.begin(), sv0.begin + sv0.find('.'));
+    const std::string sv(sv0.substr(0, sv0.find('.')));
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
     } else if (sv == "nt1") {
@@ -296,28 +158,33 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
         // Am-242g and Am-242m1 are swapped in NDI
         return Pantag(95, 242);
     }
-    const std::string numbers = "0123456789";
-    const std::string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const auto it1 = std::find_first_of(sv.begin(), sv.end(), numbers.begin(), numbers.end());
-    auto symbol = detail::to_uppercase_symbol(std::string(sv.begin(), it1));
-    if (symbol == "lw") {
+    // If we fall through to here, we assume this is a nuclide
+    const auto tokens = tokenize_nuclide(sv);
+    // Get the atomic number
+    auto symbol = detail::to_uppercase_symbol(tokens[0]);
+    if (symbol == "lw") { // lawrencium is non-standard
         symbol = "lr";
     }
     const auto Z = names::Nuclides::find_index(symbol);
-    const auto it2 = std::find_first_of(it1, sv.end(), letters.begin(), letters.end());
-    const auto A = std::atoi(std::string(it1, it2).data());
-    const auto tail = std::string(it2, sv.end());
-    int S = 0;
-    switch (tail[0]) {
-    case '\0': [[fallthrough]];
-    case 'g': S = 0; break;
-    case 'm':
-        tail.erase(0, 1);
-        S = std::stoi(tail);
-        break;
-    default: assert(false);
+    if (Z == names::Nuclides::not_found) {
+        return Pantag(Pantag::unknown);
     }
-    return Pantag(Z, A, Pantag::Index::metastable, S);
+    // Get the atomic mass number
+    if (tokens[1].size() == 0) {
+        return Pantag(Z, Pantag::elemental);
+    }
+    const auto A = std::stoi(tokens[1]);
+    // Get the excitation index
+    const auto c = tokens[2][0];
+    assert((c == 'g') || (c == 'm') || (c == '\0'));
+    switch(c) {
+    case 'g': [[fallthrough]];
+    case '\0': return Pantag(Z, A); break;
+    case 'm':
+        return Pantag(Z, A, Pantag::Index::metastable, std::stoi(tokens[2].substr(1)));
+        break;
+    default: return Pantag(Pantag::unknown);
+    }
 }
 
 // ================================================================================================
