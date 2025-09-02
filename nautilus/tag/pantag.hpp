@@ -216,9 +216,11 @@ private:
 
     struct User {};
 
-    PORTABLE_FUNCTION constexpr unknown_tag()
+    struct Unknown {};
+
+    PORTABLE_FUNCTION constexpr auto unknown_tag() const
     {
-        Storage unk_tag;
+        Storage unk_tag = 0;
         bs_user.set(USER, unk_tag);
         bs_data.set(UNKNOWN, unk_tag);
         bs_version.set(CURRENT_VERSION, unk_tag);

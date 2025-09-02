@@ -28,7 +28,7 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     auto tokens = tokenize_nuclide(name);
     // Remove the hyphen
     assert(tokens[0].size() == hyphen_index + 1);
-    tokens[0] = tokens[0].substr(hyphen_index);
+    tokens[0] = tokens[0].substr(0, hyphen_index);
     // Valid name or symbol?
     const auto Z = names::Nuclides::find_index(tokens[0]);
     if (Z == names::Nuclides::not_found) {
@@ -36,13 +36,14 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     }
     // Atomic mass number (elementals are handled separately)
     if (tokens[1].size() == 0) {
-        return Pantag(Z, A);
+        return Pantag(Pantag::unknown);
     }
     const auto A = std::stoi(tokens[1]);
-    // Excited state annotation
-    assert((tokens[2] == 'g') || (tokens[2] == 'm') || (tokens[2] == 'e') || (tokens[2] == '\0'));
-    const auto S = (token2.size() > 1 ? std::stoi(token2.substr(1)) : 1); // "m" = "m1", "e" = "e1"
-    switch (tokens[2][0]) {
+    // Excited state annotation ("m" or "e" alone defaults to "m1" or "e1")
+    const auto c = tokens[2][0];
+    assert((c == 'g') || (c == 'm') || (c == 'e') || (c == '\0'));
+    const auto S = (tokens[2].size() > 1 ? std::stoi(tokens[2].substr(1)) : 1);
+    switch (c) {
     case 'm': return Pantag(Z, A, Pantag::Index::metastable, S); break;
     case 'e': // TODO: Check with Wim: Is this standard?
               //    -- Maybe this is a detail of the _format_ and not of the tag?  That is, if I
