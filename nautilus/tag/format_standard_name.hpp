@@ -51,6 +51,10 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     switch (token2[0]) {
     case 'm': return Pantag(Z, A, Pantag::Index::metastable, S); break;
     case 'e': // TODO: Check with Wim: Is this standard?
+              //    -- Maybe this is a detail of the _format_ and not of the tag?  That is, if I
+              //       convert to standard format (assuming "e#" isn't really standard), then we
+              //       always go to "m#"), but if we go to another format (Where is Wim using this?
+              //       NJOY?) then we assume it's an excitation state and go to "e#"?
         return Pantag(Z, A, Pantag::Index::excitation, S);
         break;
     case 'g': [[fallthrough]];
