@@ -3,7 +3,7 @@
 
 #include "nautilus/tag/names.hpp"
 #include "nautilus/tag/pantag.hpp"
-#include "nautilus/tag/tokenize.hpp"
+#include "nautilus/tag/string_processing.hpp"
 
 #include "ports-of-call/portability.hpp"
 
