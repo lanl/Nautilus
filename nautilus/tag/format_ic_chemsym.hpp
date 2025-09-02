@@ -1,8 +1,6 @@
 #ifndef NAUTILUS_FORMAT_IC_HPP
 #define NAUTILUS_FORMAT_IC_HPP
 
-// TODO: What should happen if a Pantag doesn't map to the IC chemsym format?
-
 #include <algorithm>
 #include <cmath>
 
@@ -16,11 +14,15 @@ namespace nautilus::tag {
 
 inline std::string to_IC_chemsym(Pantag tag)
 {
+    const std::string invalid = "unknown";
     if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
+        if ((Z < 1) || (Z > names::Nuclides::count)) {
+            return invalid;
+        }
         std::string result(names::Nuclides::get_symbol(Z));
         result[0] = to_lower(result[0]);
-        // lawrencium is uses a pre-standard symbol and was never updated after standardization
+        // lawrencium uses a pre-standard symbol and was never updated after standardization
         if (result == "lr") {
             result = "lw";
         }
@@ -54,7 +56,7 @@ inline std::string to_IC_chemsym(Pantag tag)
         switch (pidx) {
         case (nautilus::tag::names::photon): return "g0"; break;
         case (nautilus::tag::names::neutron): return "nt1"; break;
-        default: assert(false); return "?";
+        default: return invalid;
         }
     }
 }

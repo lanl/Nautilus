@@ -89,4 +89,8 @@ TEST_CASE("format: IC chemsym", "[tag][format][IC]")
     constexpr Pantag ca_elemental(20, Pantag::elemental);
     CHECK((from_IC_chemsym("ca") == ca_elemental));
     CHECK(to_IC_chemsym(ca_elemental) == "ca");
+
+    // Bad inputs
+    CHECK(to_IC_chemsym(Pantag(nautilus::tag::names::electron_neutrino)) == "unknown");
+    CHECK(to_IC_chemsym(Pantag(127, 255)) == "unknown");
 }
