@@ -13,6 +13,7 @@
 #include <cmath>
 
 #include "nautilus/tag/pantag.hpp"
+#include "nautilus/tag/tokenize.hpp"
 
 namespace nautilus::tag {
 
@@ -282,11 +283,11 @@ inline auto to_NDI_SZA(const Pantag tag)
 
 inline Pantag from_NDI_SZA(const int sza)
 {
-    // TODO: Add a default of "unknown" if any step of parsing fails
+    // TODO: Should 1001 -> proton or H-1?
+    //    -- Are all NDI formats lossy?  Pantag(proton) --> 1001 --> Pantag(1,1)?
     switch (sza) {
     case (0): return Pantag(nautilus::tag::names::photon); break;
     case (1): return Pantag(nautilus::tag::names::neutron); break;
-    case (1001): return Pantag(nautilus::tag::names::proton); break;
     default:
         auto remainder = sza;
         const auto A = remainder % 1000;
@@ -333,6 +334,7 @@ double to_NDI_FPID(Pantag tag, T && library)
 }
 
 // Throw away the suffix (after the decimal) and coerce into an integer
+// TODO: Pass the table suffix
 inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast<int>(fpid)); }
 
 // ================================================================================================
@@ -350,7 +352,7 @@ std::string to_NDI_zaid(Pantag tag, const T & library)
 
 inline Pantag from_NDI_zaid(const std::string_view sv)
 {
-    // TODO: Add a default of "unknown" if any step of parsing fails
+    // TODO: Pass the table suffix
     const auto pos = sv.find('.');
     return from_NDI_SZA(std::atoi(sv.substr(0, pos).data()));
 }
@@ -396,12 +398,14 @@ inline std::string to_NDI_short_string(Pantag tag)
         result.append(std::to_string(A));
         return result;
     } else {
+        // Be aware that this format can be "lossy": (TODO, add to documentation)
+        //    from_NDI_short_string(to_NDI_short_string(Pantag(proton))) --> Pantag(1,1)
         assert(tag.is_particle());
         const auto pidx = tag.get_particle_index();
         switch (pidx) {
         case (nautilus::tag::names::photon): return "g"; break;
         case (nautilus::tag::names::neutron): return "n"; break;
-        // TODO: Should proton also go to "p"?
+        case (nautilus::tag::names::proton): return "p"; break;
         default: assert(false); return "?";
         }
     }
@@ -409,7 +413,6 @@ inline std::string to_NDI_short_string(Pantag tag)
 
 inline Pantag from_NDI_short_string(const std::string_view sv)
 {
-    // TODO: Add a default of "unknown" if any step of parsing fails
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
     } else if (sv == "n") {
@@ -422,17 +425,26 @@ inline Pantag from_NDI_short_string(const std::string_view sv)
         return Pantag(1, 3);
     } else if (sv == "a") {
         return Pantag(2, 4);
-    } else if ((sv == "am242") || (sv == "am242g")) {
+    } else if (sv == "am242") {
         // Am-242g and Am-242m1 are swapped in NDI
         return Pantag(95, 242, Pantag::Index::metastable, 1);
     }
-    const std::string numbers = "0123456789";
-    const std::string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const auto it1 = std::find_first_of(sv.begin(), sv.end(), numbers.begin(), numbers.end());
-    const auto symbol = detail::to_uppercase_symbol(std::string(sv.begin(), it1));
-    const auto Z = names::Nuclides::find_index(symbol);
-    const auto it2 = std::find_first_of(it1, sv.end(), letters.begin(), letters.end());
-    const auto A = std::atoi(std::string(it1, it2).data());
+    const auto tokens = tokenize_nuclide(sv);
+    // NDI short string does not have a hyphen between the symbol and the atomic mass number
+    const auto Z = names::Nuclides::find_index(detail::to_uppercase_symbol(tokens[0]));
+    if (Z == names::Nuclides::not_found) {
+        return Pantag(Pantag::unknown);
+    }
+    // NDI short string does not permit elementals
+    if (tokens[1].size() == 0) {
+        return Pantag(Pantag::unknown);
+    }
+    assert(tokens[1][0] != '0'); // Would lead to bad parsing in std::stoi
+    const auto A = std::stoi(tokens[1]);
+    // NDI short string does not permit "g" suffix or excited states (except Am-242m1, see above)
+    if (tokens[2].size() > 0) {
+        return Pantag(Pantag::unknown);
+    }
     return Pantag(Z, A);
 }
 

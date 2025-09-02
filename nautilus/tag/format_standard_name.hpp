@@ -3,6 +3,7 @@
 
 #include "nautilus/tag/names.hpp"
 #include "nautilus/tag/pantag.hpp"
+#include "nautilus/tag/tokenize.hpp"
 
 #include "ports-of-call/portability.hpp"
 
@@ -24,36 +25,24 @@ namespace detail {
 
 inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphen_index)
 {
-    // Split into tokens
-    auto is_number = [](const char s) {
-        switch (s) {
-        case '0': [[fallthrough]];
-        case '1': [[fallthrough]];
-        case '2': [[fallthrough]];
-        case '3': [[fallthrough]];
-        case '4': [[fallthrough]];
-        case '5': [[fallthrough]];
-        case '6': [[fallthrough]];
-        case '7': [[fallthrough]];
-        case '8': [[fallthrough]];
-        case '9':
-            return true;
-            break;
-            default : return false;
-        }
-    };
-    // TODO: Put in logic to default to "unknown" if any parsing step fails
-    const auto token0 = name.substr(0, hyphen_index);
-    const auto it1 = std::find_if(name.begin() + hyphen_index + 1, name.end(), is_number);
-    const auto it2 = std::find_if_not(it1, name.end(), is_number);
-    const auto token1 = std::string(it1, it2);
-    const auto token2 = std::string(it2, name.end());
-    // Parse
-    const auto Z = names::Nuclides::find_index(token0);
-    const auto A = std::stoi(token1);
-    assert((token2[0] == 'g') || (token2[0] == 'm') || (token2[0] == 'e') || (token2[0] == '\0'));
-    const auto S = (token2.size() > 1 ? std::stoi(token2.substr(1)) : 1);
-    switch (token2[0]) {
+    auto tokens = tokenize_nuclide(name);
+    // Remove the hyphen
+    assert(tokens[0].size() == hyphen_index + 1);
+    tokens[0] = tokens[0].substr(hyphen_index);
+    // Valid name or symbol?
+    const auto Z = names::Nuclides::find_index(tokens[0]);
+    if (Z == names::Nuclides::not_found) {
+        return Pantag(Pantag::unknown);
+    }
+    // Atomic mass number (elementals are handled separately)
+    if (tokens[1].size() == 0) {
+        return Pantag(Z, A);
+    }
+    const auto A = std::stoi(tokens[1]);
+    // Excited state annotation
+    assert((tokens[2] == 'g') || (tokens[2] == 'm') || (tokens[2] == 'e') || (tokens[2] == '\0'));
+    const auto S = (token2.size() > 1 ? std::stoi(token2.substr(1)) : 1); // "m" = "m1", "e" = "e1"
+    switch (tokens[2][0]) {
     case 'm': return Pantag(Z, A, Pantag::Index::metastable, S); break;
     case 'e': // TODO: Check with Wim: Is this standard?
               //    -- Maybe this is a detail of the _format_ and not of the tag?  That is, if I
@@ -66,6 +55,8 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     case '\0':
         return Pantag(Z, A);
         break;
+    default:
+        return Pantag(Pantag::unknown);
     }
 }
 
