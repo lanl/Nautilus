@@ -311,8 +311,11 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     switch (tail[0]) {
     case '\0': [[fallthrough]];
     case 'g': S = 0; break;
-    case 'm': tail.erase(0, 1); S = std::stoi(tail); break;
-    default: assert(false); 
+    case 'm':
+          tail.erase(0, 1);
+          S = std::stoi(tail);
+          break;
+    default: assert(false);
     }
     return Pantag(Z, A, Pantag::Index::metastable, S);
 }

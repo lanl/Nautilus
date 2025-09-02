@@ -53,11 +53,8 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
         return Pantag(Z, A, Pantag::Index::excitation, S);
         break;
     case 'g': [[fallthrough]];
-    case '\0':
-        return Pantag(Z, A);
-        break;
-    default:
-        return Pantag(Pantag::unknown);
+    case '\0': return Pantag(Z, A); break;
+    default: return Pantag(Pantag::unknown);
     }
 }
 

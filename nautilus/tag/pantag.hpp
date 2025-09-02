@@ -241,8 +241,7 @@ public:
 
     PORTABLE_FUNCTION constexpr Pantag(const Unknown = unknown)
         : tag_{unknown_tag()}
-    {
-    }
+    {}
 
     PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
         : tag_{unknown_tag()}
@@ -277,10 +276,7 @@ public:
     // ____________________________________________________________________________________________
     // Build a Pantag
 
-    PORTABLE_FUNCTION constexpr void set(const Unknown)
-    {
-        tag_ = unknown_tag();
-    }
+    PORTABLE_FUNCTION constexpr void set(const Unknown) { tag_ = unknown_tag(); }
     PORTABLE_FUNCTION constexpr void set(const Storage particle)
     {
         bs_version.set(CURRENT_VERSION, tag_);
@@ -335,7 +331,8 @@ public:
     PORTABLE_FUNCTION constexpr bool is_unknown() const { return tag_ == unknown_tag(); }
 
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
-    PORTABLE_FUNCTION constexpr bool is_user() const {
+    PORTABLE_FUNCTION constexpr bool is_user() const
+    {
         // an "unknown" pantag is encoded as a "user" tag with a special value
         if (is_unknown()) {
             return false;
