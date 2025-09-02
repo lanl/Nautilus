@@ -175,6 +175,9 @@ private:
     static constexpr Storage STANDARD = 0b0;
     static constexpr Storage USER = 0b1;
 
+    // An "unknown" tag is a special value of "user" tags
+    static constexpr Storage UNKNOWN = 0b11111111111111111111111111;
+
     static constexpr Storage CURRENT_VERSION = 0b00000;
 
     // More detailed breakdown for standard nuclides
@@ -213,7 +216,18 @@ private:
 
     struct User {};
 
+    PORTABLE_FUNCTION constexpr unknown_tag()
+    {
+        Storage unk_tag;
+        bs_user.set(USER, unk_tag);
+        bs_data.set(UNKNOWN, unk_tag);
+        bs_version.set(CURRENT_VERSION, unk_tag);
+        return unk_tag;
+    }
+
 public:
+    static constexpr Unknown unknown{};
+
     static constexpr User user{};
 
     static constexpr Storage elemental = 0b000000000;
@@ -223,27 +237,32 @@ public:
     // ____________________________________________________________________________________________
     // Constructors
 
+    PORTABLE_FUNCTION constexpr Pantag(const Unknown = unknown)
+        : tag_{unknown_tag()}
+    {
+    }
+
     PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
-        : tag_{0}
+        : tag_{unknown_tag()}
     // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(particle);
     }
     PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A)
-        : tag_{0}
+        : tag_{unknown_tag()}
     // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A);
     }
     PORTABLE_FUNCTION constexpr Pantag(
         const Storage Z, const Storage A, const Index index, const Storage S)
-        : tag_{0}
+        : tag_{unknown_tag()}
     // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A, index, S);
     }
     PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
-        : tag_{0}
+        : tag_{unknown_tag()}
     // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(user, data);
@@ -256,6 +275,10 @@ public:
     // ____________________________________________________________________________________________
     // Build a Pantag
 
+    PORTABLE_FUNCTION constexpr void set(const Unknown)
+    {
+        tag_ = unknown_tag();
+    }
     PORTABLE_FUNCTION constexpr void set(const Storage particle)
     {
         bs_version.set(CURRENT_VERSION, tag_);
@@ -307,8 +330,17 @@ public:
 
     PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
 
+    PORTABLE_FUNCTION constexpr bool is_unknown() const { return tag_ == unknown_tag(); }
+
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
-    PORTABLE_FUNCTION constexpr bool is_user() const { return bs_user.get(tag_) == USER; }
+    PORTABLE_FUNCTION constexpr bool is_user() const {
+        // an "unknown" pantag is encoded as a "user" tag with a special value
+        if (is_unknown()) {
+            return false;
+        } else {
+            return bs_user.get(tag_) == USER;
+        }
+    }
 
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
@@ -324,6 +356,7 @@ public:
     // Only for user tags.  For standard tags, the more-specific accessors are preferred, as there
     // may be translations between values the users sees and values actually stored in memory, or
     // the internal layout of the data block may be changed.
+    // -- TODO: Does this imply I should use a different name?  Maybe get_user_data?
     PORTABLE_FUNCTION constexpr auto get_data() const
     {
         assert(is_user());

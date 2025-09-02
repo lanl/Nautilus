@@ -5,6 +5,8 @@
 // TODO: What should happen if a Pantag doesn't map to the NDI formats?
 //       -- Excited states: drop to ground state (lossy) or error?
 //       -- Particles: default to 0 (lossy) or error?
+//       -- User: ???
+//       -- Unknown: ???
 //       Add tests if an error isn't thrown
 
 #include <algorithm>
@@ -280,6 +282,7 @@ inline auto to_NDI_SZA(const Pantag tag)
 
 inline Pantag from_NDI_SZA(const int sza)
 {
+    // TODO: Add a default of "unknown" if any step of parsing fails
     switch (sza) {
     case (0): return Pantag(nautilus::tag::names::photon); break;
     case (1): return Pantag(nautilus::tag::names::neutron); break;
@@ -329,6 +332,7 @@ double to_NDI_FPID(Pantag tag, T && library)
     return static_cast<double>(SZA) + suffix;
 }
 
+// Throw away the suffix (after the decimal) and coerce into an integer
 inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast<int>(fpid)); }
 
 // ================================================================================================
@@ -346,6 +350,7 @@ std::string to_NDI_zaid(Pantag tag, const T & library)
 
 inline Pantag from_NDI_zaid(const std::string_view sv)
 {
+    // TODO: Add a default of "unknown" if any step of parsing fails
     const auto pos = sv.find('.');
     return from_NDI_SZA(std::atoi(sv.substr(0, pos).data()));
 }
@@ -404,6 +409,7 @@ inline std::string to_NDI_short_string(Pantag tag)
 
 inline Pantag from_NDI_short_string(const std::string_view sv)
 {
+    // TODO: Add a default of "unknown" if any step of parsing fails
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
     } else if (sv == "n") {

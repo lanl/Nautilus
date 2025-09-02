@@ -12,6 +12,10 @@
 #include <string>
 #include <string_view>
 
+// TODO: What to return if a tag is not representable in standard format?
+//    -- unknown tag
+//    -- user tag
+
 namespace nautilus::tag {
 
 // ================================================================================================
@@ -38,6 +42,7 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
             default : return false;
         }
     };
+    // TODO: Put in logic to default to "unknown" if any parsing step fails
     const auto token0 = name.substr(0, hyphen_index);
     const auto it1 = std::find_if(name.begin() + hyphen_index + 1, name.end(), is_number);
     const auto it2 = std::find_if_not(it1, name.end(), is_number);
@@ -159,6 +164,7 @@ inline std::string to_long_standard_name(
 // for both short and long names.
 inline Pantag from_standard_name(const std::string_view short_name)
 {
+    // TODO: Add a default of returning "unknown" if any parsing step fails
     // Check if we have a known particle
     const auto pindex = names::Particles::find_index(short_name);
     if (pindex != names::Particles::not_found) {

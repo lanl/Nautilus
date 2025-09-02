@@ -283,6 +283,7 @@ inline std::string to_IC_chemsym(Pantag tag)
 
 inline Pantag from_IC_chemsym(const std::string_view sv0)
 {
+    // TODO: Add a default of "unknown" if any step of parsing fails
     const std::string sv(sv0.begin(), sv0.begin + sv0.find('.'));
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
