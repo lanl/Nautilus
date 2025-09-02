@@ -240,4 +240,16 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     constexpr Pantag aOm_plus(nautilus::tag::names::positive_omega_antibaryon);
     CHECK((from_standard_name("\u03A9\u0304\u207A") == aOm_plus));
     CHECK(to_short_standard_name(aOm_plus) == "\u03A9\u0304\u207A");
+
+    // Bad input
+    constexpr Pantag unknown(Pantag::unknown);
+    CHECK((from_standard_name("BadInput") == unknown)); // garbage
+    CHECK((from_standard_name("Xx-") == unknown)); // Xx isn't a nuclide
+    CHECK((from_standard_name("Ni-") == unknown)); // incomplete
+    CHECK((from_standard_name("Au-197q1") == unknown)); // invalid metastable state indicator
+
+    // "Bad" tag
+    CHECK(to_long_standard_name(Pantag(0, 0)) == "unknown"); // Z = 0
+    CHECK(to_long_standard_name(Pantag(127, 0)) == "unknown"); // Z > Oganesson
+    CHECK(to_long_standard_name(Pantag(Pantag::user, 0)) == "unknown"); // user tag
 }
