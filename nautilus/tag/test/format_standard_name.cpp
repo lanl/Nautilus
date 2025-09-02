@@ -146,6 +146,11 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("brass-") == unknown)); // brass isn't a nuclide
     CHECK((from_standard_name("nickel-") == unknown)); // incomplete
     CHECK((from_standard_name("carbon-12z1") == unknown)); // invalid metastable state indicator
+
+    // "Bad" tag
+    CHECK(to_long_standard_name(Pantag(0, 0)) == "unknown"); // Z = 0
+    CHECK(to_long_standard_name(Pantag(127, 0)) == "unknown"); // Z > Oganesson
+    CHECK(to_long_standard_name(Pantag(Pantag::user, 0)) == "unknown"); // user tag
 }
 
 // ================================================================================================

@@ -9,6 +9,13 @@
 //       -- Unknown: ???
 //       Add tests if an error isn't thrown
 
+// TODO: What types to use?
+//    -- Currently I have SZA as int.  I should specify the precision (int32_t or similar) and
+//       decide if it should be signed or unsigned.  If there's not a clear "best" answer, consider
+//       templating on the SZA type.
+//    -- Currently I have FPID as double.  I should check if it should be double or float.  If
+//       there's not a clear "best" answer, consider templating on the SZA type.
+
 #include <algorithm>
 #include <cmath>
 
@@ -20,6 +27,15 @@ namespace nautilus::tag {
 // ================================================================================================
 
 namespace detail {
+
+// TODO: This is a function instead of a constexpr value in case we need to template on the type
+PORTABLE_FUNCTION constexpr int invalid_SZA()
+{
+    // TODO: This value won't work if SZA type is unsigned.
+    return -1;
+}
+
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 inline bool match_table_suffix(const std::string_view sv)
 {

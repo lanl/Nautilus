@@ -14,6 +14,7 @@
 #include <string_view>
 
 // TODO: What to return if a tag is not representable in standard format?
+//    -- bad nuclide (Z == 0, Z > Oganesson)
 //    -- unknown tag
 //    -- user tag
 
@@ -22,6 +23,8 @@ namespace nautilus::tag {
 // ================================================================================================
 
 namespace detail {
+
+const std::string invalid = "unknown";
 
 inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphen_index)
 {
@@ -62,6 +65,10 @@ inline std::string to_short_standard_nuclide_name(const Pantag tag)
 {
     assert(tag.is_nuclide() && tag.is_standard());
     std::string name;
+    const auto Z = tag.get_atomic_number();
+    if ((Z == 0) || (Z > names::Nuclides::count)) {
+        return invalid;
+    }
     name.append(names::Nuclides::get_symbol(tag.get_atomic_number()));
     if (!tag.is_elemental()) {
         name.append("-");
@@ -82,7 +89,11 @@ inline std::string to_long_standard_nuclide_name(
     if (tag.is_elemental()) {
         name.append("elemental ");
     }
-    name.append(names::Nuclides::get_name(tag.get_atomic_number(), standard));
+    const auto Z = tag.get_atomic_number();
+    if ((Z == 0) || (Z > names::Nuclides::count)) {
+        return invalid;
+    }
+    name.append(names::Nuclides::get_name(Z, standard));
     if (!tag.is_elemental()) {
         name.append("-");
         name.append(std::to_string(tag.get_atomic_mass_number()));
@@ -97,14 +108,22 @@ inline std::string to_long_standard_nuclide_name(
 inline std::string to_short_standard_particle_name(const Pantag tag)
 {
     assert(tag.is_particle() && tag.is_standard());
-    return std::string(names::Particles::get_symbol(tag.get_particle_index()));
+    const auto index = tag.get_particle_index();
+    if (index >= names::Particles::count) {
+        return invalid;
+    }
+    return std::string(names::Particles::get_symbol(index));
 }
 
 inline std::string to_long_standard_particle_name(
     const Pantag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
 {
     assert(tag.is_particle() && tag.is_standard());
-    return std::string(names::Particles::get_name(tag.get_particle_index(), standard));
+    const auto index = tag.get_particle_index();
+    if (index >= names::Particles::count) {
+        return invalid;
+    }
+    return std::string(names::Particles::get_name(index, standard));
 }
 
 } // namespace detail
@@ -117,10 +136,13 @@ inline std::string to_long_standard_particle_name(
 //    you always get the PDG symbol
 inline std::string to_short_standard_name(const Pantag tag)
 {
-    if (tag.is_nuclide())
+    if (tag.is_user() || tag.is_unknown()) {
+        return detail::invalid;
+    } else if (tag.is_nuclide()) {
         return detail::to_short_standard_nuclide_name(tag);
-    else
+    } else {
         return detail::to_short_standard_particle_name(tag);
+    }
 }
 
 // ================================================================================================
@@ -132,10 +154,13 @@ inline std::string to_long_standard_name(
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
-    if (tag.is_nuclide())
+    if (tag.is_user() || tag.is_unknown()) {
+        return detail::invalid;
+    } else if (tag.is_nuclide()) {
         return detail::to_long_standard_nuclide_name(tag, nuclide_standard);
-    else
+    } else {
         return detail::to_long_standard_particle_name(tag, particle_standard);
+    }
 }
 inline std::string to_long_standard_name(
     const Pantag tag,
