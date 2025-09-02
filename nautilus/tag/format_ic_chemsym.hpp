@@ -1,5 +1,5 @@
-#ifndef NAUTILUS_FORMAT_NDI_HPP
-#define NAUTILUS_FORMAT_NDI_HPP
+#ifndef NAUTILUS_FORMAT_IC_HPP
+#define NAUTILUS_FORMAT_IC_HPP
 
 // TODO: What should happen if a Pantag doesn't map to the IC chemsym format?
 
@@ -160,8 +160,8 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     const auto tokens = tokenize_nuclide(sv);
     // Get the atomic number
     auto symbol = detail::to_uppercase_symbol(tokens[0]);
-    if (symbol == "lw") { // lawrencium is non-standard
-        symbol = "lr";
+    if (symbol == "Lw") { // lawrencium is non-standard
+        symbol = "Lr";
     }
     const auto Z = names::Nuclides::find_index(symbol);
     if (Z == names::Nuclides::not_found) {
@@ -189,4 +189,4 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
 
 } // end namespace nautilus::tag
 
-#endif // $ifndef NAUTILUS_FORMAT_NDI_HPP
+#endif // $ifndef NAUTILUS_FORMAT_IC_HPP
