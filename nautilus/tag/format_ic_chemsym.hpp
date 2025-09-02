@@ -19,7 +19,7 @@ inline std::string to_IC_chemsym(Pantag tag)
     if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
         std::string result(names::Nuclides::get_symbol(Z));
-        result[0] = static_cast<char>(std::tolower(static_cast<unsigned char>(result[0])));
+        result[0] = to_lower(result[0]);
         // lawrencium is uses a pre-standard symbol and was never updated after standardization
         if (result == "lr") {
             result = "lw";
@@ -77,7 +77,7 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     const auto tokens = tokenize_nuclide(sv);
     // Get the atomic number
     auto symbol = tokens[0];
-    symbol[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(symbol[0])));
+    symbol[0] = to_upper(symbol[0]);
     if (symbol == "Lw") { // lawrencium is non-standard
         symbol = "Lr";
     }

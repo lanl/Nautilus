@@ -316,7 +316,7 @@ inline std::string to_NDI_short_string(Pantag tag)
         //    (b) in non-debug mode, anything with the wrong metastable state will automatically
         //        map to the default metastable state (ground state except for Am-242)
         std::string result(names::Nuclides::get_symbol(Z));
-        result[0] = static_cast<char>(std::tolower(static_cast<unsigned char>(result[0])));
+        result[0] = to_lower(result[0]);
         result.append(std::to_string(A));
         return result;
     } else {
@@ -354,7 +354,7 @@ inline Pantag from_NDI_short_string(const std::string_view sv)
     const auto tokens = tokenize_nuclide(sv);
     // NDI short string does not have a hyphen between the symbol and the atomic mass number
     auto symbol = tokens[0];
-    symbol[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(symbol[0])));
+    symbol[0] = to_upper(symbol[0]);
     const auto Z = names::Nuclides::find_index(symbol);
     if (Z == names::Nuclides::not_found) {
         return Pantag(Pantag::unknown);

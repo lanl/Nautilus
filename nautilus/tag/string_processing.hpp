@@ -4,6 +4,7 @@
 #include "ports-of-call/portability.hpp"
 
 #include <array>
+#include <cctype>
 #include <string>
 #include <string_view>
 
@@ -39,6 +40,20 @@ inline std::array<std::string, 3> tokenize_nuclide(const std::string_view sv)
         }
     }
     return {token0, token1, token2};
+}
+
+// ================================================================================================
+
+// For explanation of these functions, see
+// -- https://en.cppreference.com/w/cpp/string/byte/tolower
+// -- https://en.cppreference.com/w/cpp/string/byte/toupper
+inline char to_lower(const char c)
+{
+    return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+}
+inline char to_upper(const char c)
+{
+    return static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
 }
 
 // ================================================================================================
