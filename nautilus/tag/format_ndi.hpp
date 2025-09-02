@@ -1,14 +1,6 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
-// TODO: Should a proton also map to 1001?
-// TODO: What should happen if a Pantag doesn't map to the NDI formats?
-//       -- Excited states: drop to ground state (lossy) or error?
-//       -- Particles: default to 0 (lossy) or error?
-//       -- User: ???
-//       -- Unknown: ???
-//       Add tests if an error isn't thrown
-
 // TODO: What types to use?
 //    -- Currently I have SZA as int.  I should specify the precision (int32_t or similar) and
 //       decide if it should be signed or unsigned.  If there's not a clear "best" answer, consider
@@ -16,8 +8,20 @@
 //    -- Currently I have FPID as double.  I should check if it should be double or float.  If
 //       there's not a clear "best" answer, consider templating on the SZA type.
 
+// TODO: I currently have a mix of things with and without PORTABLE_FUNCTION.  Decide if SZA and/or
+//       FPID should be available on the GPU.  I know zaid should not be available on the GPU
+//       because it involves strings.
+
+// TODO: In the documentation, explain that NDI formats are lossy because of the conversion
+//       proton -> (NDI format) -> H-1
+
+// TODO: In the documentation, explain that floating-point formats are not recommended, but are
+//       only supported for customers already using such formats.  This includes specifying the
+//       library by a floating-point suffix (e.g., 0.654) and the entire FPID format.
+
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "nautilus/tag/pantag.hpp"
 #include "nautilus/tag/string_processing.hpp"
@@ -28,12 +32,18 @@ namespace nautilus::tag {
 
 namespace detail {
 
-// TODO: This is a function instead of a constexpr value in case we need to template on the type
-PORTABLE_FUNCTION constexpr int invalid_SZA()
+// TODO: These are functions instead of constexpr values in case we need to template on the type
+PORTABLE_FUNCTION inline constexpr int invalid_SZA()
 {
     // TODO: This value won't work if SZA type is unsigned.
     return -1;
 }
+PORTABLE_FUNCTION inline constexpr double invalid_FPID()
+{
+    return std::numeric_limits<double>::max();
+}
+const std::string invalid_zaid = "unknown";
+const std::string invalid_short_string = "unknown";
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -125,10 +135,6 @@ inline bool standard_am242(const int n)
         return true;
     }
 }
-// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
-//       we should provide it given that it's so easy to break, but instead require users to parse
-//       their strings to get an integer.  But check with Edward, as he may have requested this
-//       feature?
 inline bool standard_am242(const double d) { return standard_am242(int(std::round(d * 1000))); }
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -152,10 +158,6 @@ inline bool standard_am244(const int n)
         return true;
     }
 }
-// TODO: Thanks to floating-point truncation error, this is really unreliable.  I'm not convinced
-//       we should provide it given that it's so easy to break, but instead require users to parse
-//       their strings to get an integer.  But check with Edward, as he may have requested this
-//       feature?
 inline bool standard_am244(const double d) { return standard_am244(int(std::round(d * 1000))); }
 
 } // end namespace detail
@@ -166,17 +168,18 @@ inline bool standard_am244(const double d) { return standard_am244(int(std::roun
 template <typename T>
 int to_NDI_SZA(const Pantag tag, T && library)
 {
-    if (tag.is_particle()) {
+    if (tag.is_user() || tag.is_unknown()) {
+        return detail::invalid_SZA();
+    } else if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
         case (nautilus::tag::names::photon): return 0; break;
         case (nautilus::tag::names::neutron): return 1; break;
         case (nautilus::tag::names::proton): return 1001; break;
         default:
             assert(false);
-            return 0;
+            return detail::invalid_SZA();
             break;
         }
-        // Certain particles can also be encoded as ZAIDs: photon (0), neutron (1), proton (1001)
     } else {
         assert(tag.has_metastable_index());
         const auto Z = tag.get_atomic_number();
@@ -220,16 +223,18 @@ inline auto to_NDI_SZA(const Pantag tag)
 
 inline Pantag from_NDI_SZA(const int sza)
 {
-    // TODO: Should 1001 -> proton or H-1?
-    //    -- Are all NDI formats lossy?  Pantag(proton) --> 1001 --> Pantag(1,1)?
     switch (sza) {
     case (0): return Pantag(nautilus::tag::names::photon); break;
     case (1): return Pantag(nautilus::tag::names::neutron); break;
+    // don't add proton, because H-1 is preferred when working with NDI
     default:
         auto remainder = sza;
         const auto A = remainder % 1000;
         remainder /= 1000;
         const auto Z = remainder % 1000;
+        if (Z == 0) {
+            return Pantag(Pantag::unknown);
+        }
         // special cases: some americium nuclides are messed up for historical reasons
         // We don't need to know the library, because the "special" values are unique across all
         // libraries.  If we see a special value we don't have to check the library name to know
@@ -248,6 +253,7 @@ inline Pantag from_NDI_SZA(const int sza)
         }
         // standard cases will fall through to here
         if (A == 0) {
+            // NDI encodes elementals by setting A to zero
             return Pantag(Z, Pantag::elemental);
         } else {
             remainder /= 1000;
@@ -260,7 +266,6 @@ inline Pantag from_NDI_SZA(const int sza)
 // ================================================================================================
 // NDI FPID
 // TODO: Still not sure about the name, but it's better than "the as-yet-unnamed format"
-// TODO: Document that this is not recommended, but is provided to support people already using it.
 
 template <typename T>
 double to_NDI_FPID(Pantag tag, T && library)
@@ -271,8 +276,10 @@ double to_NDI_FPID(Pantag tag, T && library)
 }
 
 // Throw away the suffix (after the decimal) and coerce into an integer
-// TODO: Pass the table suffix
-inline Pantag from_NDI_FPID(const double fpid) { return from_NDI_SZA(static_cast<int>(fpid)); }
+inline Pantag from_NDI_FPID(const double fpid) {
+    // Throw away the suffix, because going _from_ NDI doesn't need to know the library
+    return from_NDI_SZA(static_cast<int>(fpid));
+}
 
 // ================================================================================================
 // NDI zaid
@@ -289,9 +296,7 @@ std::string to_NDI_zaid(Pantag tag, const T & library)
 
 inline Pantag from_NDI_zaid(const std::string_view sv)
 {
-    // TODO: Pass the table suffix
-    const auto pos = sv.find('.');
-    return from_NDI_SZA(std::atoi(sv.substr(0, pos).data()));
+    return from_NDI_SZA(std::atoi(sv.substr(0, sv.find('.')).data()));
 }
 
 // ================================================================================================
@@ -299,7 +304,9 @@ inline Pantag from_NDI_zaid(const std::string_view sv)
 
 inline std::string to_NDI_short_string(Pantag tag)
 {
-    if (tag.is_nuclide()) {
+    if (tag.is_user() || tag.is_unknown()) {
+        return detail::invalid_short_string;
+    } else if (tag.is_nuclide()) {
         assert(!tag.is_elemental());
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
@@ -308,10 +315,17 @@ inline std::string to_NDI_short_string(Pantag tag)
             // excited states, that means we only handle Am-242m1
             assert(tag.has_metastable_index());
             assert(tag.get_metastable_index() == 1);
+            if (!tag.has_metastable_index()) {
+                return detail::invalid_short_string;
+            }
+            if (tag.get_metastable_index() != 1) {
+                return detail::invalid_short_string;
+            }
         } else {
-            assert(tag.is_ground());
+            if (!tag.is_ground()) {
+                return detail::invalid_short_string;
+            }
         }
-        assert(tag.is_ground() || ((Z == 95) && (A == 242)));
         // handle special cases
         if (Z == 1) {
             if (A == 1) {
@@ -331,20 +345,21 @@ inline std::string to_NDI_short_string(Pantag tag)
         //    (a) we handle Am-242m1 (which maps to "am242")
         //    (b) in non-debug mode, anything with the wrong metastable state will automatically
         //        map to the default metastable state (ground state except for Am-242)
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return detail::invalid_short_string;
+        }
         std::string result(names::Nuclides::get_symbol(Z));
         result[0] = to_lower(result[0]);
         result.append(std::to_string(A));
         return result;
     } else {
-        // Be aware that this format can be "lossy": (TODO, add to documentation)
-        //    from_NDI_short_string(to_NDI_short_string(Pantag(proton))) --> Pantag(1,1)
         assert(tag.is_particle());
         const auto pidx = tag.get_particle_index();
         switch (pidx) {
         case (nautilus::tag::names::photon): return "g"; break;
         case (nautilus::tag::names::neutron): return "n"; break;
         case (nautilus::tag::names::proton): return "p"; break;
-        default: assert(false); return "?";
+        default: return detail::invalid_short_string;
         }
     }
 }
