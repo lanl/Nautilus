@@ -151,34 +151,27 @@ inline std::string to_long_standard_name(
 // and Particles::find_index are implemented, having from_short_standard_name and
 // from_long_standard_name would be redundant because they would be identical and both would work
 // for both short and long names.
-inline Pantag from_standard_name(const std::string_view short_name)
+inline Pantag from_standard_name(const std::string_view name)
 {
-    // TODO: Add a default of returning "unknown" if any parsing step fails
     // Check if we have a known particle
-    const auto pindex = names::Particles::find_index(short_name);
+    const auto pindex = names::Particles::find_index(name);
     if (pindex != names::Particles::not_found) {
         return Pantag(pindex);
     }
     // Not a particle, so assume a nuclide
-    for (std::size_t n = 0; n < short_name.size(); ++n) {
-        if (short_name[n] == '-') {
+    for (std::size_t n = 0; n < name.size(); ++n) {
+        if (name[n] == '-') {
             // A hyphen means we have a specific nuclide and not an elemental
-            return detail::parse_nuclide(short_name, n);
+            return detail::parse_nuclide(name, n);
         }
     }
     // Did not find '-', so assume an elemental
-    assert(short_name.size() > 10);
-    for (std::size_t n = 0; n < short_name.size(); ++n) {
-        if (short_name[n] == ' ') {
-            // A space means we have a "long name" for an elemental
-            const auto Z = names::Nuclides::find_index(short_name.substr(n + 1));
-            assert(Z != names::Nuclides::not_found);
-            return Pantag(Z, Pantag::elemental);
-        }
+    const auto pos = name.find_last_of(' ');
+    const auto Z = names::Nuclides::find_index(
+            pos == std::string_view::npos ? name : name.substr(pos+1));
+    if (Z == names::Nuclides::not_found) {
+        return Pantag(Pantag::unknown);
     }
-    // Did not find ' ', so assume a "short name" for an elemental
-    const auto Z = names::Nuclides::find_index(short_name);
-    assert(Z != names::Nuclides::not_found);
     return Pantag(Z, Pantag::elemental);
 }
 

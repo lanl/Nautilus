@@ -136,6 +136,16 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     CHECK(
         to_long_standard_name(aOm_plus, Particles::Standard::alternate) ==
         "antiparticle of the negative omega baryon");
+
+    // Bad input
+    constexpr Pantag unknown(Pantag::unknown);
+    CHECK((from_standard_name("BadInput") == unknown)); // garbage
+    CHECK((from_standard_name("elemental ") == unknown)); // incomplete
+    CHECK((from_standard_name("carbon elemental") == unknown)); // should be "elemental carbon"
+    CHECK((from_standard_name("elemental steel") == unknown)); // steel isn't a nuclide
+    CHECK((from_standard_name("brass-") == unknown)); // brass isn't a nuclide
+    CHECK((from_standard_name("nickel-") == unknown)); // incomplete
+    CHECK((from_standard_name("carbon-12z1") == unknown)); // invalid metastable state indicator
 }
 
 // ================================================================================================
