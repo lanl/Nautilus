@@ -31,7 +31,6 @@ class BitSegment
 {
     // In C++23 std::bitset becomes constexpr, so it may be worth reimplementing this using bitset.
 private:
-    // TODO: Could I get rid of the T vs Storage distinction by shifting and then masking?
     // Coerce to unsigned so shifting works the way I want
     // -- Using std::bitset may eliminate the need for this
     using Storage = typename std::make_unsigned<T>::type;
@@ -84,8 +83,6 @@ public:
         assert(masked_value == shifted_value);
         t = masked_t | masked_value;
     }
-    // TODO: Do I want to be fancy and add ease-of-use features like implicit cast (equivalent to
-    //       get) and assignemnt (equivalent to set)?
 };
 
 // ================================================================================================
