@@ -270,6 +270,7 @@ inline Pantag from_NDI_SZA(const int sza)
 template <typename T>
 double to_NDI_FPID(Pantag tag, T && library)
 {
+    // TODO: check for invalid_SZA and translate to invalid_FPID
     const auto SZA = to_NDI_SZA(tag, std::forward<T>(library));
     const double suffix = detail::table_suffix_decimal(std::forward<T>(library));
     return static_cast<double>(SZA) + suffix;
@@ -278,6 +279,7 @@ double to_NDI_FPID(Pantag tag, T && library)
 // Throw away the suffix (after the decimal) and coerce into an integer
 inline Pantag from_NDI_FPID(const double fpid)
 {
+    // TODO: check for invalid_FPID
     // Throw away the suffix, because going _from_ NDI doesn't need to know the library
     return from_NDI_SZA(static_cast<int>(fpid));
 }
@@ -288,6 +290,7 @@ inline Pantag from_NDI_FPID(const double fpid)
 template <typename T>
 std::string to_NDI_zaid(Pantag tag, const T & library)
 {
+    // TODO: check for invalid_SZA and translate to invalid_zaid
     assert(detail::match_table_suffix(library));
     std::string zaid = std::to_string(to_NDI_SZA(tag, library));
     zaid.append(".");
@@ -297,6 +300,7 @@ std::string to_NDI_zaid(Pantag tag, const T & library)
 
 inline Pantag from_NDI_zaid(const std::string_view sv)
 {
+    // TODO: check for invalid_zaid
     return from_NDI_SZA(std::atoi(sv.substr(0, sv.find('.')).data()));
 }
 
@@ -367,6 +371,7 @@ inline std::string to_NDI_short_string(Pantag tag)
 
 inline Pantag from_NDI_short_string(const std::string_view sv)
 {
+    // TODO: check for invalid_short_string
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
     } else if (sv == "n") {
