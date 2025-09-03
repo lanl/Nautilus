@@ -66,12 +66,8 @@ PORTABLE_FUNCTION inline constexpr int invalid_partial_zaid()
     // TODO: This value won't work if SZA type is unsigned.
     return -1;
 }
-PORTABLE_FUNCTION inline constexpr double invalid_FPID()
-{
-    return std::numeric_limits<double>::max();
-}
-const std::string invalid_zaid = "unknown";
-const std::string invalid_short_string = "unknown";
+const std::string invalid_full_zaid = "unknown";
+const char invalid_particle_symbol = ' ';
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -132,7 +128,7 @@ inline std::string to_suffix_string(const std::string_view sv)
 // ================================================================================================
 // MCNP partial zaid
 
-int to_MCNP_partial_zaid(const Pantag tag)
+inline int to_MCNP_partial_zaid(const Pantag tag)
 {
     if (!tag.is_nuclide()) {
         // TODO: Should proton translate to H-1?
@@ -141,7 +137,7 @@ int to_MCNP_partial_zaid(const Pantag tag)
         assert(tag.has_metastable_index());
         const auto Z = tag.get_atomic_number();
         if (tag.is_elemental()) {
-            return Pantag(Z, Pantag::elemental);
+            return detail::invalid_partial_zaid();
         }
         const auto A = tag.get_atomic_mass_number();
         auto m = tag.get_metastable_index();
@@ -224,10 +220,10 @@ std::string to_MCNP_full_zaid(Pantag tag, const std::string_view library)
     return zaid;
 }
 
-inline Pantag from_NDI_zaid(const std::string_view sv)
+inline Pantag from_MCNP_full_zaid(const std::string_view sv)
 {
     // TODO: check for invalid_full_zaid
-    return from_NDI_SZA(std::atoi(sv.substr(0, sv.find('.')).data()));
+    return from_MCNP_partial_zaid(std::atoi(sv.substr(0, sv.find('.')).data()));
 }
 
 // ================================================================================================
@@ -243,7 +239,7 @@ inline char to_MCNP_particle_symbol(Pantag tag)
     } else if (tag.is_nuclide()) {
         // This format doens't use elementals
         if (tag.is_elemental()) {
-            return invalid_particle_symbol;
+            return detail::invalid_particle_symbol;
         }
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
@@ -251,7 +247,7 @@ inline char to_MCNP_particle_symbol(Pantag tag)
             return 'H';
         } else if /*deuteron*/ ((Z == 1) && (A == 2)) {
             return 'D';
-        } else if /*triton*/ ((Z = 1) && (A == 3)) {
+        } else if /*triton*/ ((Z == 1) && (A == 3)) {
             return 'T';
         } else if /*helion*/ ((Z == 2) && (A == 3)) {
             return 'S';
