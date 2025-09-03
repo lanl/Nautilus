@@ -276,7 +276,8 @@ double to_NDI_FPID(Pantag tag, T && library)
 }
 
 // Throw away the suffix (after the decimal) and coerce into an integer
-inline Pantag from_NDI_FPID(const double fpid) {
+inline Pantag from_NDI_FPID(const double fpid)
+{
     // Throw away the suffix, because going _from_ NDI doesn't need to know the library
     return from_NDI_SZA(static_cast<int>(fpid));
 }

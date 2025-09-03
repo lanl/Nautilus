@@ -95,7 +95,7 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     // Get the excitation index
     const auto c = tokens[2][0];
     assert((c == 'g') || (c == 'm') || (c == '\0'));
-    switch(c) {
+    switch (c) {
     case 'g': [[fallthrough]];
     case '\0': return Pantag(Z, A); break;
     case 'm':
