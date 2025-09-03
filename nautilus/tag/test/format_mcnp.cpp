@@ -24,7 +24,7 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
         int Z;
         int A;
     };
-    constexpr int N = 1000;
+    constexpr int N = 704;
     std::array<nuc,N> isotopes{
         nuc{1, 1},
         nuc{1, 2},

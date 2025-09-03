@@ -137,17 +137,17 @@ inline int to_MCNP_partial_zaid(const Pantag tag)
         assert(tag.has_metastable_index());
         const auto Z = tag.get_atomic_number();
         if (tag.is_elemental()) {
+            // TODO: Add support for elementals
             return detail::invalid_partial_zaid();
         }
         const auto A = tag.get_atomic_mass_number();
         auto m = tag.get_metastable_index();
-        // some americium nuclides are messed up in NDI for historical reasons
+        // Am-242 swaps the m values for the ground state and the first metastable state
         if ((Z == 95) && (A == 242)) {
-            // Am-242 swaps the S values for the ground state and the first metastable state
             if (m == 0) {
-                m == 1;
+                m = 1;
             } else if (m == 1) {
-                m == 0;
+                m = 0;
             }
         }
         // assemble the value
@@ -184,7 +184,7 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
             const auto Z3 = Z * Z2;
             return -0.0000711325*Z3 + 0.0147356*Z2 + 1.75397*Z + 2.04063;
         };
-        const int m = std::round(0.01 * (A - 300 - f(Z)));
+        m = std::round(0.01 * (A - 300 - f(Z)));
         assert(m > 0);        // sanity check: if A > 400 then we must have an excited state
         A -= (300 + m * 100); // remove the metastable correction from the atomic mass number
         assert(A >= Z);       // sanity check: cannot have negative neutrons
