@@ -204,8 +204,7 @@ public:
     // ____________________________________________________________________________________________
     // Generic accessors
 
-    // TODO: version() and get_version() are too similar; change this to current_version()
-    PORTABLE_FUNCTION static constexpr auto version() { return CURRENT_VERSION; }
+    PORTABLE_FUNCTION static constexpr auto current_version() { return CURRENT_VERSION; }
     PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
 
     // The user interface exposes a three-state system: standard, user, or unknown, which are
