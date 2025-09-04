@@ -272,17 +272,16 @@ public:
     // TODO: Is the name "get_metastable_index" still appropriate, or should I change it?
     //    -- Related: Should I add shorthand like get_Z and get_A?  NDI would want get_S while MCNP
     //       would want get_m, so maybe both or maybe neither?
+    // The metastable index doesn't apply to elementals, so it is assumed that elementals are in
+    // the ground state.
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
-        // TODO: What to do for an elemental: return GROUND or `assert(!is_elemental())`?
         assert(is_nuclide());
-        return bs_S.get(tag_);
+        return (is_elemental() ? GROUND : bs_S.get(tag_));
     }
     PORTABLE_FUNCTION constexpr bool is_ground() const
     {
-        // the metastable index is meaningless for elementals, so just return true
-        // TODO: Is that the correct choice, or should it be `assert(!is_elemental())`?
-        return (is_elemental() ? true : get_metastable_index() == GROUND);
+        return get_metastable_index() == GROUND;
     }
 
     // ____________________________________________________________________________________________
