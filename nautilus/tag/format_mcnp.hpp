@@ -214,7 +214,9 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
 
 std::string to_MCNP_full_zaid(Pantag tag, const std::string_view library)
 {
-    // TODO: check for invalid_partial_zaid and transform to invalid_full_zaid
+    if (tag.is_unknown()) {
+        return detail::invalid_full_zaid;
+    }
     assert(detail::match_table_suffix(library));
     std::string zaid = std::to_string(to_MCNP_partial_zaid(tag));
     zaid.append(".");
@@ -224,7 +226,9 @@ std::string to_MCNP_full_zaid(Pantag tag, const std::string_view library)
 
 inline Pantag from_MCNP_full_zaid(const std::string_view sv)
 {
-    // TODO: check for invalid_full_zaid
+    if (sv == detail::invalid_full_zaid) {
+        return Pantag(Pantag::unknown);
+    }
     return from_MCNP_partial_zaid(std::atoi(sv.substr(0, sv.find('.')).data()));
 }
 
