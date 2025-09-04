@@ -92,6 +92,8 @@ private:
     BitSegment<Storage, 14, 9> bs_A;
     BitSegment<Storage, 6, 8> bs_S;
 
+    static constexpr Storage elemental_A = 0b000000000;
+
     // More detailed breakdown for standard particles
     //      00IIIIIIIIIIIIIIIIIIIIIIIIVVVVVV
     //      |||                       |      rskip   bits   description
@@ -109,6 +111,8 @@ private:
     struct User {};
 
     struct Unknown {};
+
+    struct Elemental {};
 
     PORTABLE_FUNCTION constexpr auto null_tag() const
     {
@@ -132,8 +136,7 @@ public:
 
     static constexpr User user{};
 
-    // TODO: Should this be a struct like unknown and user?
-    static constexpr Storage elemental = 0b000000000;
+    static constexpr Elemental elemental{};
 
     // ____________________________________________________________________________________________
     // Constructors
@@ -151,6 +154,11 @@ public:
         : tag_{unknown_tag()}
     {
         set(Z, A, S);
+    }
+    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Elemental)
+        : tag_{unknown_tag()}
+    {
+        set(Z, elemental);
     }
     PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
         : tag_{unknown_tag()}
@@ -182,8 +190,18 @@ public:
         bs_nuclide.set(NUCLIDE, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        assert(A == elemental ? S == 0 : true); // S is meaningless with elementals
+        assert(A >= Z); // no negative neutron counts
         bs_S.set(S, tag_);
+    }
+    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Elemental)
+    {
+        tag_ = null_tag();
+        bs_version.set(CURRENT_VERSION, tag_);
+        bs_user.set(STANDARD, tag_);
+        bs_nuclide.set(NUCLIDE, tag_);
+        bs_Z.set(Z, tag_);
+        bs_A.set(elemental_A, tag_);
+        bs_S.set(0, tag_); // S is meaningless with elementals, so set to ground state
     }
     PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
     {
@@ -255,7 +273,7 @@ public:
 
     PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
-        return get_A() == elemental;
+        return get_A() == elemental_A;
     }
 
     PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
