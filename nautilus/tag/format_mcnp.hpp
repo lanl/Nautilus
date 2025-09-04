@@ -266,7 +266,6 @@ inline char to_MCNP_particle_symbol(Pantag tag)
             return '#';
         }
     } else if (tag.is_particle()) {
-        // TODO: Here and below, should we do `using namespace nautilus::tag::names;`?
         switch (tag.get_particle_index()) {
         case nautilus::tag::names::neutron:                     return 'N'; break;
         case nautilus::tag::names::photon:                      return 'P'; break;
