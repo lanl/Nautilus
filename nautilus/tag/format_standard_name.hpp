@@ -38,38 +38,29 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     }
     const auto A = std::stoi(tokens[1]);
     // Excited state annotation ("m" or "e" alone defaults to "m1" or "e1")
-    const auto c = tokens[2][0];
-    assert((c == 'g') || (c == 'm') || (c == 'e') || (c == '\0'));
     const auto S = (tokens[2].size() > 1 ? std::stoi(tokens[2].substr(1)) : 1);
-    switch (c) {
-    case 'm': return Pantag(Z, A, Pantag::Index::metastable, S); break;
-    case 'e': // TODO: Check with Wim: Is this standard?
-              //    -- Maybe this is a detail of the _format_ and not of the tag?  That is, if I
-              //       convert to standard format (assuming "e#" isn't really standard), then we
-              //       always go to "m#"), but if we go to another format (Where is Wim using this?
-              //       NJOY?) then we assume it's an excitation state and go to "e#"?
-        return Pantag(Z, A, Pantag::Index::excitation, S);
-        break;
-    case 'g': [[fallthrough]];
-    case '\0': return Pantag(Z, A); break;
+    switch (tokens[2][0]) {
+    case '\0': [[fallthrough]];
+    case 'g': return Pantag(Z, A); break;
+    case 'm': return Pantag(Z, A, S); break;
     default: return Pantag(Pantag::unknown);
     }
 }
 
 inline std::string to_short_standard_nuclide_name(const Pantag tag)
 {
-    assert(tag.is_nuclide() && tag.is_standard());
+    assert(tag.is_nuclide());
     std::string name;
     const auto Z = tag.get_atomic_number();
     if ((Z == 0) || (Z > names::Nuclides::count)) {
         return invalid;
     }
-    name.append(names::Nuclides::get_symbol(tag.get_atomic_number()));
+    name.append(names::Nuclides::get_symbol(Z));
     if (!tag.is_elemental()) {
         name.append("-");
         name.append(std::to_string(tag.get_atomic_mass_number()));
         if (!tag.is_ground()) {
-            name.append(tag.has_metastable_index() ? "m" : "e");
+            name.append(1, 'm');
             name.append(std::to_string(tag.get_index()));
         }
     }
@@ -79,7 +70,7 @@ inline std::string to_short_standard_nuclide_name(const Pantag tag)
 inline std::string to_long_standard_nuclide_name(
     const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
 {
-    assert(tag.is_nuclide() && tag.is_standard());
+    assert(tag.is_nuclide());
     std::string name;
     if (tag.is_elemental()) {
         name.append("elemental ");
@@ -93,7 +84,7 @@ inline std::string to_long_standard_nuclide_name(
         name.append("-");
         name.append(std::to_string(tag.get_atomic_mass_number()));
         if (!tag.is_ground()) {
-            name.append(tag.has_metastable_index() ? "m" : "e");
+            name.append(1, 'm');
             name.append(std::to_string(tag.get_index()));
         }
     }
@@ -102,7 +93,7 @@ inline std::string to_long_standard_nuclide_name(
 
 inline std::string to_short_standard_particle_name(const Pantag tag)
 {
-    assert(tag.is_particle() && tag.is_standard());
+    assert(tag.is_particle());
     const auto index = tag.get_particle_index();
     if (index >= names::Particles::count) {
         return invalid;
@@ -113,7 +104,7 @@ inline std::string to_short_standard_particle_name(const Pantag tag)
 inline std::string to_long_standard_particle_name(
     const Pantag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
 {
-    assert(tag.is_particle() && tag.is_standard());
+    assert(tag.is_particle());
     const auto index = tag.get_particle_index();
     if (index >= names::Particles::count) {
         return invalid;
@@ -131,12 +122,12 @@ inline std::string to_long_standard_particle_name(
 //    you always get the PDG symbol
 inline std::string to_short_standard_name(const Pantag tag)
 {
-    if (tag.is_user() || tag.is_unknown()) {
-        return detail::invalid;
-    } else if (tag.is_nuclide()) {
+    if (tag.is_nuclide()) {
         return detail::to_short_standard_nuclide_name(tag);
-    } else {
+    } else if (tag.is_particle()) {
         return detail::to_short_standard_particle_name(tag);
+    } else {
+        return detail::invalid;
     }
 }
 
@@ -149,12 +140,12 @@ inline std::string to_long_standard_name(
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
-    if (tag.is_user() || tag.is_unknown()) {
-        return detail::invalid;
     } else if (tag.is_nuclide()) {
         return detail::to_long_standard_nuclide_name(tag, nuclide_standard);
-    } else {
+    } else if (tag.is_particle()) {
         return detail::to_long_standard_particle_name(tag, particle_standard);
+    } else {
+        return detail::invalid;
     }
 }
 inline std::string to_long_standard_name(
@@ -162,7 +153,7 @@ inline std::string to_long_standard_name(
     const names::Particles::Standard particle_standard = names::Particles::Standard(0),
     const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
 {
-    return to_long_standard_name(tag, nuclide_standard, particle_standard).data();
+    return to_long_standard_name(tag, nuclide_standard, particle_standard);
 }
 
 // ================================================================================================
@@ -187,8 +178,8 @@ inline Pantag from_standard_name(const std::string_view name)
     }
     // Did not find '-', so assume an elemental
     const auto pos = name.find_last_of(' ');
-    const auto Z =
-        names::Nuclides::find_index(pos == std::string_view::npos ? name : name.substr(pos+1));
+    const std::string_view name0 = (pos == std::string_view::npos ? name : name.substr(pos+1));
+    const auto Z = names::Nuclides::find_index(name0);
     if (Z == names::Nuclides::not_found) {
         return Pantag(Pantag::unknown);
     }

@@ -73,9 +73,9 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
                 // skip Am-242, because it's a special case tested below
                 break;
             }
-            // The MCNP manual notes that excited states can be m = 1, 2, 3, or 4
+            // MCNP allows the excited states m = 1, 2, 3, or 4
             for (int m = 0; m < 5; ++m) {
-                Pantag tag(Z, A, Pantag::Index::metastable, m);
+                Pantag tag(Z, A, m);
                 int partial_zaid = Z * 1000 + A;
                 if (m != 0) {
                     partial_zaid += 300 + m * 100;

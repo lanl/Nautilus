@@ -168,20 +168,14 @@ inline bool standard_am244(const double d) { return standard_am244(int(std::roun
 template <typename T>
 int to_NDI_SZA(const Pantag tag, T && library)
 {
-    if (tag.is_user() || tag.is_unknown()) {
-        return detail::invalid_SZA();
-    } else if (tag.is_particle()) {
+    if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
-        case (nautilus::tag::names::photon): return 0; break;
-        case (nautilus::tag::names::neutron): return 1; break;
-        case (nautilus::tag::names::proton): return 1001; break;
-        default:
-            assert(false);
-            return detail::invalid_SZA();
-            break;
+        case nautilus::tag::names::photon: return 0; break;
+        case nautilus::tag::names::neutron: return 1; break;
+        case nautilus::tag::names::proton: return 1001; break;
+        default: return detail::invalid_SZA(); break;
         }
-    } else {
-        assert(tag.has_metastable_index());
+    } else if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
         const auto S = tag.get_metastable_index();
@@ -197,7 +191,7 @@ int to_NDI_SZA(const Pantag tag, T && library)
                         return 95042;
                     }
                 } else if (S == 1) {
-                    return Z * 1000 + A;
+                    return 95242;
                 }
             } else if (A == 244) {
                 // Am-244m1 has two possible SZA values depending on the library
@@ -212,6 +206,8 @@ int to_NDI_SZA(const Pantag tag, T && library)
         }
         // standard cases fall through to here
         return (S * 1000 + Z) * 1000 + A;
+    } else {
+        return detail::invalid_SZA();
     }
 }
 
@@ -223,43 +219,32 @@ inline auto to_NDI_SZA(const Pantag tag)
 
 inline Pantag from_NDI_SZA(const int sza)
 {
+    // Special cases
     switch (sza) {
-    case (0): return Pantag(nautilus::tag::names::photon); break;
-    case (1): return Pantag(nautilus::tag::names::neutron); break;
-    // don't add proton, because H-1 is preferred when working with NDI
-    default:
-        auto remainder = sza;
-        const auto A = remainder % 1000;
-        remainder /= 1000;
-        const auto Z = remainder % 1000;
-        if (Z == 0) {
-            return Pantag(Pantag::unknown);
-        }
-        // special cases: some americium nuclides are messed up for historical reasons
-        // We don't need to know the library, because the "special" values are unique across all
-        // libraries.  If we see a special value we don't have to check the library name to know
-        // how to interpret it, but can just parse it.
-        if (Z == 95) {
-            switch (sza) {
-            // Am-242g (encoded as Am-242m1 in NDI, plus two different encoding strategies)
-            case (95042): [[fallthrough]];
-            case (1095242): return Pantag(95, 242); break;
-            // Am-242m1 (encoded as Am-242g in NDI)
-            case (95242): return Pantag(95, 242, Pantag::Index::metastable, 1); break;
-            // Am-244m1 (two different encoding strategies)
-            case (95044): [[fallthrough]];
-            case (1095244): return Pantag(95, 244, Pantag::Index::metastable, 1); break;
-            }
-        }
-        // standard cases will fall through to here
-        if (A == 0) {
-            // NDI encodes elementals by setting A to zero
-            return Pantag(Z, Pantag::elemental);
-        } else {
-            remainder /= 1000;
-            const auto S = remainder;
-            return Pantag(Z, A, Pantag::Index::metastable, S);
-        }
+    // particles (ignore proton, because H-1 is preferred when working with NDI)
+    case 0: return Pantag(nautilus::tag::names::photon); break;
+    case 1: return Pantag(nautilus::tag::names::neutron); break;
+    // Am-242g (encoded as Am-242m1 in NDI, plus two different encoding strategies)
+    case 95042: [[fallthrough]];
+    case 1095242: return Pantag(95, 242); break;
+    // Am-242m1 (encoded as Am-242g in NDI)
+    case 95242: return Pantag(95, 242, Pantag::Index::metastable, 1); break;
+    // Am-244m1 (two different encoding strategies)
+    case 95044: [[fallthrough]];
+    case 1095244: return Pantag(95, 244, Pantag::Index::metastable, 1); break;
+    }
+    // Parse as a nuclide
+    auto remainder = sza;
+    const auto A = remainder % 1000;
+    remainder /= 1000;
+    const auto Z = remainder % 1000;
+    if (Z == 0) {
+        return Pantag(Pantag::unknown);
+    }
+    if (A == 0) { // NDI encodes elementals by setting A to zero
+        return Pantag(Z, Pantag::elemental);
+    } else {
+        return Pantag(Z, A, remainder / 1000);
     }
 }
 
@@ -309,20 +294,14 @@ inline Pantag from_NDI_zaid(const std::string_view sv)
 
 inline std::string to_NDI_short_string(Pantag tag)
 {
-    if (tag.is_user() || tag.is_unknown()) {
-        return detail::invalid_short_string;
-    } else if (tag.is_nuclide()) {
-        assert(!tag.is_elemental());
+    if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
+        // Elementals not supported by short string
+        assert(!tag.is_elemental());
+        // Short string doesn't support excited states
         if ((Z == 95) && (A == 242)) {
-            // Am-242g and Am-242m1 are reversed in NDI.  Since the short string doesn't deal with
-            // excited states, that means we only handle Am-242m1
-            assert(tag.has_metastable_index());
-            assert(tag.get_metastable_index() == 1);
-            if (!tag.has_metastable_index()) {
-                return detail::invalid_short_string;
-            }
+            // Am-242g and Am-242m1 are reversed in NDI, so Am-242m1 is allowed but Am-242g is not
             if (tag.get_metastable_index() != 1) {
                 return detail::invalid_short_string;
             }
@@ -333,23 +312,15 @@ inline std::string to_NDI_short_string(Pantag tag)
         }
         // handle special cases
         if (Z == 1) {
-            if (A == 1) {
-                return "p";
-            } else if (A == 2) {
-                return "d";
-            } else if (A == 3) {
-                return "t";
+            switch (A) {
+            case 1: return "p"; break;
+            case 2: return "d"; break;
+            case 3: return "t"; break;
             }
-        } else if (Z == 2) {
-            if (A == 4) {
-                return "a";
-            }
+        } else if ((Z == 2) && (A == 4)) {
+            return "a";
         }
         // fallthrough to "standard" case
-        // -- By ignoring the excited state:
-        //    (a) we handle Am-242m1 (which maps to "am242")
-        //    (b) in non-debug mode, anything with the wrong metastable state will automatically
-        //        map to the default metastable state (ground state except for Am-242)
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return detail::invalid_short_string;
         }
@@ -357,21 +328,22 @@ inline std::string to_NDI_short_string(Pantag tag)
         result[0] = to_lower(result[0]);
         result.append(std::to_string(A));
         return result;
-    } else {
-        assert(tag.is_particle());
-        const auto pidx = tag.get_particle_index();
-        switch (pidx) {
-        case (nautilus::tag::names::photon): return "g"; break;
-        case (nautilus::tag::names::neutron): return "n"; break;
-        case (nautilus::tag::names::proton): return "p"; break;
+    } else (tag.is_particle()) {
+        switch (tag.get_particle_index()) {
+        case nautilus::tag::names::photon: return "g"; break;
+        case nautilus::tag::names::neutron: return "n"; break;
+        case nautilus::tag::names::proton: return "p"; break;
         default: return detail::invalid_short_string;
         }
+    } else {
+        return detail::invalid_short_string;
     }
 }
 
 inline Pantag from_NDI_short_string(const std::string_view sv)
 {
     // TODO: check for invalid_short_string
+    // Particles and special cases
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
     } else if (sv == "n") {
@@ -386,7 +358,7 @@ inline Pantag from_NDI_short_string(const std::string_view sv)
         return Pantag(2, 4);
     } else if (sv == "am242") {
         // Am-242g and Am-242m1 are swapped in NDI
-        return Pantag(95, 242, Pantag::Index::metastable, 1);
+        return Pantag(95, 242, 1);
     }
     const auto tokens = tokenize_nuclide(sv);
     // NDI short string does not have a hyphen between the symbol and the atomic mass number

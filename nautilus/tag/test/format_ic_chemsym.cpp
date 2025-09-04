@@ -31,11 +31,11 @@ TEST_CASE("format: IC chemsym", "[tag][format][IC]")
     CHECK((from_IC_chemsym("co59") == co59g));
     CHECK(to_IC_chemsym(co59g) == "co59");
 
-    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    constexpr Pantag ta180m1(73, 180, 1);
     CHECK((from_IC_chemsym("ta180m1") == ta180m1));
     CHECK(to_IC_chemsym(ta180m1) == "ta180m1");
 
-    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_IC_chemsym("k38m2") == k38m2));
     CHECK(to_IC_chemsym(k38m2) == "k38m2");
 
@@ -51,14 +51,14 @@ TEST_CASE("format: IC chemsym", "[tag][format][IC]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI SZA
-    constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
+    constexpr Pantag am242m1(95, 242, 1);
     CHECK((from_IC_chemsym("am242g") == am242m1));
     CHECK((from_IC_chemsym("am242") == am242m1));
     CHECK(to_IC_chemsym(am242m1) == "am242");
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, Pantag::Index::metastable, 2);
+    constexpr Pantag am242m2(95, 242, 2);
     CHECK((from_IC_chemsym("am242m2") == am242m2));
     CHECK(to_IC_chemsym(am242m2) == "am242m2");
 

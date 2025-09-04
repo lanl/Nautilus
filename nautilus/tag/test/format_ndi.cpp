@@ -29,11 +29,11 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
     CHECK((from_NDI_SZA(27059) == co59g));
     CHECK(to_NDI_SZA(co59g) == 27059);
 
-    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    constexpr Pantag ta180m1(73, 180, 1);
     CHECK((from_NDI_SZA(1073180) == ta180m1));
     CHECK(to_NDI_SZA(ta180m1) == 1073180);
 
-    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_NDI_SZA(2019038) == k38m2));
     CHECK(to_NDI_SZA(k38m2) == 2019038);
 
@@ -80,13 +80,13 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI SZA
-    constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
+    constexpr Pantag am242m1(95, 242, 1);
     CHECK((from_NDI_SZA(95242) == am242m1));
     CHECK(to_NDI_SZA(am242m1) == 95242);
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, Pantag::Index::metastable, 2);
+    constexpr Pantag am242m2(95, 242, 2);
     CHECK((from_NDI_SZA(2095242) == am242m2));
     CHECK(to_NDI_SZA(am242m2) == 2095242);
 
@@ -98,13 +98,13 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 
     // Am-243m1
     // -- should be normal
-    constexpr Pantag am243m1(95, 243, Pantag::Index::metastable, 1);
+    constexpr Pantag am243m1(95, 243, 1);
     CHECK((from_NDI_SZA(1095243) == am243m1));
     CHECK(to_NDI_SZA(am243m1) == 1095243);
 
     // Am-243m2
     // -- should be normal
-    constexpr Pantag am243m2(95, 243, Pantag::Index::metastable, 2);
+    constexpr Pantag am243m2(95, 243, 2);
     CHECK((from_NDI_SZA(2095243) == am243m2));
     CHECK(to_NDI_SZA(am243m2) == 2095243);
 
@@ -119,7 +119,7 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
     //    -- 1095244 (most cases)
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
-    constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
+    constexpr Pantag am244m1(95, 244, 1);
     constexpr int default_am244m1 = 1095244;
     constexpr int alternate_am244m1 = 95044;
     CHECK((from_NDI_SZA(default_am244m1) == am244m1));
@@ -138,7 +138,7 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 
     // Am-244m2
     // -- should be normal
-    constexpr Pantag am244m2(95, 244, Pantag::Index::metastable, 2);
+    constexpr Pantag am244m2(95, 244, 2);
     CHECK((from_NDI_SZA(2095244) == am244m2));
     CHECK(to_NDI_SZA(am244m2) == 2095244);
 }
@@ -174,14 +174,14 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     CHECK(to_NDI_FPID(co59g, "456") == 27059.456);
     CHECK(to_NDI_FPID(co59g, "567nm") == 27059.567);
 
-    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    constexpr Pantag ta180m1(73, 180, 1);
     CHECK((from_NDI_FPID(1073180.987) == ta180m1));
     CHECK(to_NDI_FPID(ta180m1, 0.876) == 1073180.876);
     CHECK(to_NDI_FPID(ta180m1, 765) == 1073180.765);
     CHECK(to_NDI_FPID(ta180m1, "654") == 1073180.654);
     CHECK(to_NDI_FPID(ta180m1, "543nm") == 1073180.543);
 
-    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_NDI_FPID(2019038.123) == k38m2));
     CHECK(to_NDI_FPID(k38m2, 0.135) == 2019038.135);
     CHECK(to_NDI_FPID(k38m2, 147) == 2019038.147);
@@ -226,7 +226,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI FPID
-    constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
+    constexpr Pantag am242m1(95, 242, 1);
     CHECK((from_NDI_FPID(95242.133) == am242m1));
     CHECK(to_NDI_FPID(am242m1, 0.134) == 95242.134);
     CHECK(to_NDI_FPID(am242m1, 135) == 95242.135);
@@ -235,7 +235,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, Pantag::Index::metastable, 2);
+    constexpr Pantag am242m2(95, 242, 2);
     CHECK((from_NDI_FPID(2095242.111) == am242m2));
     CHECK(to_NDI_FPID(am242m2, 0.333) == 2095242.333);
     CHECK(to_NDI_FPID(am242m2, 555) == 2095242.555);
@@ -253,7 +253,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-243m1
     // -- should be normal
-    constexpr Pantag am243m1(95, 243, Pantag::Index::metastable, 1);
+    constexpr Pantag am243m1(95, 243, 1);
     CHECK((from_NDI_FPID(1095243.555) == am243m1));
     CHECK(to_NDI_FPID(am243m1, 0.555) == 1095243.555);
     CHECK(to_NDI_FPID(am243m1, 555) == 1095243.555);
@@ -262,7 +262,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-243m2
     // -- should be normal
-    constexpr Pantag am243m2(95, 243, Pantag::Index::metastable, 2);
+    constexpr Pantag am243m2(95, 243, 2);
     CHECK((from_NDI_FPID(2095243.135) == am243m2));
     CHECK(to_NDI_FPID(am243m2, 0.135) == 2095243.135);
     CHECK(to_NDI_FPID(am243m2, 135) == 2095243.135);
@@ -283,7 +283,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     //    -- 1095244 (most cases)
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
-    constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
+    constexpr Pantag am244m1(95, 244, 1);
     CHECK((from_NDI_FPID(1095244.600) == am244m1)); // suffix that should be 1095244
     CHECK((from_NDI_FPID(1095244.700) == am244m1)); // suffix that should be 95044 if writing
     CHECK((from_NDI_FPID(95044.600) == am244m1));   // suffix that should be 1095244 if writing
@@ -299,7 +299,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-244m2
     // -- should be normal
-    constexpr Pantag am244m2(95, 244, Pantag::Index::metastable, 2);
+    constexpr Pantag am244m2(95, 244, 2);
     CHECK((from_NDI_FPID(2095244.700) == am244m2));
     CHECK(to_NDI_FPID(am244m2, 0.701) == 2095244.701);
     CHECK(to_NDI_FPID(am244m2, 702) == 2095244.702);
@@ -338,14 +338,14 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     CHECK(to_NDI_zaid(co59g, "456") == "27059.456nm");
     CHECK(to_NDI_zaid(co59g, "567nm") == "27059.567nm");
 
-    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    constexpr Pantag ta180m1(73, 180, 1);
     CHECK((from_NDI_zaid("1073180.987nm") == ta180m1));
     CHECK(to_NDI_zaid(ta180m1, 0.876) == "1073180.876nm");
     CHECK(to_NDI_zaid(ta180m1, 765) == "1073180.765nm");
     CHECK(to_NDI_zaid(ta180m1, "654") == "1073180.654nm");
     CHECK(to_NDI_zaid(ta180m1, "543nm") == "1073180.543nm");
 
-    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_NDI_zaid("2019038.123nm") == k38m2));
     CHECK(to_NDI_zaid(k38m2, 0.000) == "2019038.000nm");
     CHECK(to_NDI_zaid(k38m2, 5) == "2019038.005nm");
@@ -390,7 +390,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI zaid
-    constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
+    constexpr Pantag am242m1(95, 242, 1);
     CHECK((from_NDI_zaid("95242.133nm") == am242m1));
     CHECK(to_NDI_zaid(am242m1, 0.134) == "95242.134nm");
     CHECK(to_NDI_zaid(am242m1, 135) == "95242.135nm");
@@ -399,7 +399,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, Pantag::Index::metastable, 2);
+    constexpr Pantag am242m2(95, 242, 2);
     CHECK((from_NDI_zaid("2095242.111nm") == am242m2));
     CHECK(to_NDI_zaid(am242m2, 0.333) == "2095242.333nm");
     CHECK(to_NDI_zaid(am242m2, 555) == "2095242.555nm");
@@ -417,7 +417,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-243m1
     // -- should be normal
-    constexpr Pantag am243m1(95, 243, Pantag::Index::metastable, 1);
+    constexpr Pantag am243m1(95, 243, 1);
     CHECK((from_NDI_zaid("1095243.555nm") == am243m1));
     CHECK(to_NDI_zaid(am243m1, 0.555) == "1095243.555nm");
     CHECK(to_NDI_zaid(am243m1, 555) == "1095243.555nm");
@@ -426,7 +426,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-243m2
     // -- should be normal
-    constexpr Pantag am243m2(95, 243, Pantag::Index::metastable, 2);
+    constexpr Pantag am243m2(95, 243, 2);
     CHECK((from_NDI_zaid("2095243.135nm") == am243m2));
     CHECK(to_NDI_zaid(am243m2, 0.135) == "2095243.135nm");
     CHECK(to_NDI_zaid(am243m2, 135) == "2095243.135nm");
@@ -447,7 +447,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     //    -- 1095244 (most cases)
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
-    constexpr Pantag am244m1(95, 244, Pantag::Index::metastable, 1);
+    constexpr Pantag am244m1(95, 244, 1);
     CHECK((from_NDI_zaid("1095244.600nm") == am244m1)); // suffix that should be 1095244
     CHECK((from_NDI_zaid("1095244.700nm") == am244m1)); // suffix that should be 95044 if writing
     CHECK((from_NDI_zaid("95044.600nm") == am244m1));   // suffix that should be 1095244 if writing
@@ -463,7 +463,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-244m2
     // -- should be normal
-    constexpr Pantag am244m2(95, 244, Pantag::Index::metastable, 2);
+    constexpr Pantag am244m2(95, 244, 2);
     CHECK((from_NDI_zaid("2095244.700nm") == am244m2));
     CHECK(to_NDI_zaid(am244m2, 0.701) == "2095244.701nm");
     CHECK(to_NDI_zaid(am244m2, 702) == "2095244.702nm");
@@ -506,7 +506,7 @@ TEST_CASE("format: NDI short string", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped: "am242" -> Am-242m1; Am-242g not representable
-    constexpr Pantag am242m1(95, 242, Pantag::Index::metastable, 1);
+    constexpr Pantag am242m1(95, 242, 1);
     CHECK((from_NDI_short_string("am242") == am242m1));
     CHECK(to_NDI_short_string(am242m1) == "am242");
 

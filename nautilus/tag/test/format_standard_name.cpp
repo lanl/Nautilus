@@ -23,21 +23,21 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("cobalt-59g") == co59g));
     CHECK(to_long_standard_name(co59g) == "cobalt-59");
 
-    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    constexpr Pantag ta180m1(73, 180, 1);
     CHECK((from_standard_name("tantalum-180m") == ta180m1));
     CHECK((from_standard_name("tantalum-180m1") == ta180m1));
     CHECK(to_long_standard_name(ta180m1) == "tantalum-180m1");
 
-    constexpr Pantag mo93e1(42, 93, Pantag::Index::excitation, 1);
+    constexpr Pantag mo93e1(42, 93, 1);
     CHECK((from_standard_name("molybdenum-93e") == mo93e1));
     CHECK((from_standard_name("molybdenum-93e1") == mo93e1));
     CHECK(to_long_standard_name(mo93e1) == "molybdenum-93e1");
 
-    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_standard_name("potassium-38m2") == k38m2));
     CHECK(to_long_standard_name(k38m2) == "potassium-38m2");
 
-    constexpr Pantag pb188e2(82, 188, Pantag::Index::excitation, 2);
+    constexpr Pantag pb188e2(82, 188, 2);
     CHECK((from_standard_name("lead-188e2") == pb188e2));
     CHECK(to_long_standard_name(pb188e2) == "lead-188e2");
 
@@ -169,21 +169,21 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("Co-59g") == co59g));
     CHECK(to_short_standard_name(co59g) == "Co-59");
 
-    constexpr Pantag ta180m1(73, 180, Pantag::Index::metastable, 1);
+    constexpr Pantag ta180m1(73, 180, 1);
     CHECK((from_standard_name("Ta-180m") == ta180m1));
     CHECK((from_standard_name("Ta-180m1") == ta180m1));
     CHECK(to_short_standard_name(ta180m1) == "Ta-180m1");
 
-    constexpr Pantag mo93e1(42, 93, Pantag::Index::excitation, 1);
+    constexpr Pantag mo93e1(42, 93, 1);
     CHECK((from_standard_name("Mo-93e") == mo93e1));
     CHECK((from_standard_name("Mo-93e1") == mo93e1));
     CHECK(to_short_standard_name(mo93e1) == "Mo-93e1");
 
-    constexpr Pantag k38m2(19, 38, Pantag::Index::metastable, 2);
+    constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_standard_name("K-38m2") == k38m2));
     CHECK(to_short_standard_name(k38m2) == "K-38m2");
 
-    constexpr Pantag pb188e2(82, 188, Pantag::Index::excitation, 2);
+    constexpr Pantag pb188e2(82, 188, 2);
     CHECK((from_standard_name("Pb-188e2") == pb188e2));
     CHECK(to_short_standard_name(pb188e2) == "Pb-188e2");
 

@@ -16,61 +16,62 @@ inline std::string to_IC_chemsym(Pantag tag)
 {
     const std::string invalid = "unknown";
     if (tag.is_nuclide()) {
+        // start with the atomic symbol, all lowercase
         const auto Z = tag.get_atomic_number();
         if ((Z < 1) || (Z > names::Nuclides::count)) {
             return invalid;
         }
         std::string result(names::Nuclides::get_symbol(Z));
         result[0] = to_lower(result[0]);
-        // lawrencium uses a pre-standard symbol and was never updated after standardization
-        if (result == "lr") {
+        if (result == "lr") { // lawrencium uses a pre-standard symbol and was never fixed
             result = "lw";
         }
         if (tag.is_elemental()) {
             // elementals are just the atomic symbol
             return result;
-        } else {
-            // append the atomic mass number
-            const auto A = tag.get_atomic_mass_number();
-            result.append(std::to_string(A));
-            // append the metastable state if not in the ground state
-            // -- can't just check tag.is_ground() because Am-242g and Am-242m1 are swapped
-            assert(tag.has_metastable_index());
-            auto S = tag.get_metastable_index();
-            if ((Z == 95) && (A == 242)) {
-                if (S == 0) {
-                    S = 1;
-                } else if (S == 1) {
-                    S = 0;
-                }
-            }
-            if (S > 0) {
-                result.append("m");
-                result.append(std::to_string(S));
-            }
-            return result;
         }
-    } else {
-        assert(tag.is_particle());
+        // append the atomic mass number
+        const auto A = tag.get_atomic_mass_number();
+        result.append(std::to_string(A));
+        // append the metastable state if not in the ground state
+        // -- can't just check tag.is_ground() because Am-242g and Am-242m1 are swapped
+        auto S = tag.get_metastable_index();
+        if ((Z == 95) && (A == 242)) {
+            if (S == 0) {
+                S = 1;
+            } else if (S == 1) {
+                S = 0;
+            }
+        }
+        if (S > 0) {
+            result.append("m");
+            result.append(std::to_string(S));
+        }
+        return result;
+    } else if (tag.is_particle()) {
         const auto pidx = tag.get_particle_index();
         switch (pidx) {
-        case (nautilus::tag::names::photon): return "g0"; break;
-        case (nautilus::tag::names::neutron): return "nt1"; break;
+        case nautilus::tag::names::photon: return "g0"; break;
+        case nautilus::tag::names::neutron: return "nt1"; break;
         default: return invalid;
         }
+    } else /* "unknown" tag */ {
+        return invalid;
     }
 }
 
 inline Pantag from_IC_chemsym(const std::string_view sv0)
 {
+    // Throw out the optional suffix
     const std::string sv(sv0.substr(0, sv0.find('.')));
+    // Check for known particles or special cases
     if ((sv == "g") || (sv == "g0")) {
         return Pantag(nautilus::tag::names::photon);
     } else if (sv == "nt1") {
         return Pantag(nautilus::tag::names::neutron);
     } else if ((sv == "am242") || (sv == "am242g")) {
         // Am-242g and Am-242m1 are swapped in NDI
-        return Pantag(95, 242, Pantag::Index::metastable, 1);
+        return Pantag(95, 242, 1);
     } else if ((sv == "am42") || (sv == "am042") || (sv == "am242m1")) {
         // Am-242g and Am-242m1 are swapped in NDI
         return Pantag(95, 242);
@@ -94,13 +95,11 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     const auto A = std::stoi(tokens[1]);
     // Get the excitation index
     const auto c = tokens[2][0];
-    assert((c == 'g') || (c == 'm') || (c == '\0'));
+    const auto S = std::stoi(tokens[2].substr(1));
     switch (c) {
-    case 'g': [[fallthrough]];
-    case '\0': return Pantag(Z, A); break;
-    case 'm':
-        return Pantag(Z, A, Pantag::Index::metastable, std::stoi(tokens[2].substr(1)));
-        break;
+    case '\0': [[fallthrough]];
+    case 'g': return Pantag(Z, A); break;
+    case 'm': return Pantag(Z, A, S); break;
     default: return Pantag(Pantag::unknown);
     }
 }

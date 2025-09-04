@@ -15,6 +15,7 @@
 //       map back to Nautilus as H-1
 //    -- Particle symbol will map proton and H-1 to the same value, and that value will then map
 //       back to Nautilus as proton
+//    -- Check all these possible changes, because my implementation may have changed some details.
 
 #include <algorithm>
 #include <cmath>
@@ -25,6 +26,7 @@
 
 namespace nautilus::tag {
 
+// TODO: Move this discussion to the documentation
 // See https://mcnp.lanl.gov/pdf_files/TechReport_2017_LANL_LA-UR-17-29981_WernerArmstrongEtAl.pdf,
 // Table 3-32, page 3-56, for details of the MCNP zaid:
 // -- A full zaid is ZZZAAA.abx, where
@@ -50,11 +52,6 @@ namespace nautilus::tag {
 // above.  This format includes H-1 (as a proton), H-2 (as a deutron), H-3 (as a triton), He-3 (as
 // a helion), and He-4 (as an alpha particle), and has a catch-all for "heavy ions" (noted to be
 // any ion that's not one of the five previously-mentioned light ions).
-
-// Three formats:
-// -- partial zaid (related to but distinct from NDI SZA)
-// -- full zaid (related to but distinct from NDI zaid)
-// -- particle symbol (no corresponding format in NDI)
 
 // ================================================================================================
 
@@ -133,18 +130,19 @@ inline int to_MCNP_partial_zaid(const Pantag tag)
     if (!tag.is_nuclide()) {
         // The MCNP zaid is a nuclide-focused format that (as far as I can tell at the moment) does
         // not include any particles.  For this reason, we don't translate a proton (particle) to
-        // the MCNP partial zaid format.  TODO: Shift this note to the documentation.
+        // the MCNP partial zaid format (where it would become H-1).
+        // -- TODO: Shift this note to the documentation.
         return detail::invalid_partial_zaid();
     } else {
-        assert(tag.has_metastable_index());
+        // Get the values needed to assemble the partial zaid
         const auto Z = tag.get_atomic_number();
         if (tag.is_elemental()) {
             return Z * 1000; // A = 0 for elementals
         }
         const auto A = tag.get_atomic_mass_number();
         auto m = tag.get_metastable_index();
-        // Am-242 swaps the m values for the ground state and the first metastable state
         if ((Z == 95) && (A == 242)) {
+            // Am-242 swaps the m values for the ground state and the first metastable state
             if (m == 0) {
                 m = 1;
             } else if (m == 1) {
@@ -154,8 +152,7 @@ inline int to_MCNP_partial_zaid(const Pantag tag)
         // assemble the value
         auto partial_zaid = Z * 1000 + A;
         if (m > 4) {
-            // MCNP partial zaid does not support m > 4
-            return detail::invalid_partial_zaid();
+            return detail::invalid_partial_zaid(); // MCNP partial zaid does not support m > 4
         }
         if (m != 0) {
             partial_zaid += 300 + m * 100;
@@ -175,15 +172,14 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
     // Check for metastable states
     int m = 0;
     // -- The heaviest known nuclide is a little below 300, and if there's a metastable state then
-    //    we know A will be greater than 400 (300 + m * 100 + A, with m > 0 and A > 0)
+    //    we know A will be greater than 400 (300 + m * 100 + A, with m >= 1 and A >= 1)
     if (A > 400) {
-        // TODO: Need to test this with a large number of isotopes, trying m = 0, 1, ...
         // Approximate A = f(Z)
         // -- Based on fitting hundreds of isotopes (across elements 1 - 118) found on Wikipedia.
         // -- Accurate to within +/- 10 for all isotopes tested.  The rounding strategy below
         //    requires that it be strictly within +/- 50 for all isotopes.
-        // -- Conveniently, the cubic fit always gives non-negative values for A and N = A - Z (not
-        //    sure if that's required, but it's nice to have).
+        // -- Conveniently, the cubic fit always gives non-negative values for A and for N = A - Z
+        //    (not sure if that's important, but it's nice to have).
         auto f = [](const int Z) {
             const auto Z2 = Z * Z;
             const auto Z3 = Z * Z2;
@@ -191,10 +187,11 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
         };
         m = std::round(0.01 * (A - 300 - f(Z)));
         assert(m > 0);        // sanity check: if A > 400 then we must have an excited state
+        assert(m < 5);        // MCNP format only supports up to m == 4
         A -= (300 + m * 100); // remove the metastable correction from the atomic mass number
         assert(A >= Z);       // sanity check: cannot have negative neutrons
     }
-    // special cases: Am-242g and Am-242m1 are swapped
+    // -- special cases: Am-242g and Am-242m1 are swapped
     if ((Z == 95) && (A == 242)) {
         if (m == 0) {
             m = 1;
@@ -208,7 +205,7 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
     } else if /* ground state */ (m == 0) {
         return Pantag(Z, A);
     } else /* excited state */ {
-        return Pantag(Z, A, Pantag::Index::metastable, m);
+        return Pantag(Z, A, m);
     }
 }
 
@@ -239,11 +236,14 @@ inline Pantag from_MCNP_full_zaid(const std::string_view sv)
 
 inline char to_MCNP_particle_symbol(Pantag tag)
 {
-    if (tag.is_user() || tag.is_unknown()) {
-        return detail::invalid_particle_symbol;
-    } else if (tag.is_nuclide()) {
-        // This format doens't use elementals
+    if (tag.is_nuclide()) {
+        // This format doens't support elementals
         if (tag.is_elemental()) {
+            return detail::invalid_particle_symbol;
+        }
+        // This format doesn't support excited states
+        // -- Pantag fixes the Am-242g and Am-242m1 "swap", so ignore that special case here
+        if (!tag.is_ground()) {
             return detail::invalid_particle_symbol;
         }
         const auto Z = tag.get_atomic_number();
@@ -261,44 +261,45 @@ inline char to_MCNP_particle_symbol(Pantag tag)
         } else /*heavy ions*/ {
             return '#';
         }
-    } else {
-        assert(tag.is_particle());
-        const auto pidx = tag.get_particle_index();
-        switch (pidx) {
-        case nautilus::tag::names::neutron: return 'N'; break;
-        case nautilus::tag::names::photon: return 'P'; break;
-        case nautilus::tag::names::electron: return 'E'; break;
-        case nautilus::tag::names::muon: return '|'; break;
-        case nautilus::tag::names::antineutron: return 'Q'; break;
-        case nautilus::tag::names::electron_neutrino: return 'U'; break;
-        case nautilus::tag::names::muon_neutrino: return 'V'; break;
-        case nautilus::tag::names::positron: return 'F'; break;
-        case nautilus::tag::names::proton: return 'H'; break;
-        case nautilus::tag::names::neutral_lambda_baryon: return 'L'; break;
-        case nautilus::tag::names::positive_sigma_baryon: return '+'; break;
-        case nautilus::tag::names::negative_sigma_baryon: return '-'; break;
-        case nautilus::tag::names::neutral_xi_baryon: return 'X'; break;
-        case nautilus::tag::names::negative_xi_baryon: return 'Y'; break;
-        case nautilus::tag::names::negative_omega_baryon: return 'O'; break;
-        case nautilus::tag::names::antimuon: return '!'; break;
-        case nautilus::tag::names::electron_antineutrino: return '<'; break;
-        case nautilus::tag::names::muon_antineutrino: return '>'; break;
-        case nautilus::tag::names::antiproton: return 'G'; break;
-        case nautilus::tag::names::positive_pion: return '/'; break;
-        case nautilus::tag::names::neutral_pion: return 'Z'; break;
-        case nautilus::tag::names::positive_kaon: return 'K'; break;
-        case nautilus::tag::names::short_kaon: return '%'; break;
-        case nautilus::tag::names::long_kaon: return '^'; break;
-        case nautilus::tag::names::neutral_lambda_antibaryon: return 'B'; break;
-        case nautilus::tag::names::negative_sigma_antibaryon: return '_'; break;
-        case nautilus::tag::names::positive_sigma_antibaryon: return '~'; break;
-        case nautilus::tag::names::neutral_xi_antibaryon: return 'C'; break;
-        case nautilus::tag::names::positive_xi_antibaryon: return 'W'; break;
-        case nautilus::tag::names::positive_omega_antibaryon: return '@'; break;
-        case nautilus::tag::names::negative_pion: return '*'; break;
-        case nautilus::tag::names::negative_kaon: return '?'; break;
+    } else if (tag.is_particle()) {
+        // TODO: Here and below, should we do `using namespace nautilus::tag::names;`?
+        switch (tag.get_particle_index()) {
+        case nautilus::tag::names::neutron:                     return 'N'; break;
+        case nautilus::tag::names::photon:                      return 'P'; break;
+        case nautilus::tag::names::electron:                    return 'E'; break;
+        case nautilus::tag::names::muon:                        return '|'; break;
+        case nautilus::tag::names::antineutron:                 return 'Q'; break;
+        case nautilus::tag::names::electron_neutrino:           return 'U'; break;
+        case nautilus::tag::names::muon_neutrino:               return 'V'; break;
+        case nautilus::tag::names::positron:                    return 'F'; break;
+        case nautilus::tag::names::proton:                      return 'H'; break;
+        case nautilus::tag::names::neutral_lambda_baryon:       return 'L'; break;
+        case nautilus::tag::names::positive_sigma_baryon:       return '+'; break;
+        case nautilus::tag::names::negative_sigma_baryon:       return '-'; break;
+        case nautilus::tag::names::neutral_xi_baryon:           return 'X'; break;
+        case nautilus::tag::names::negative_xi_baryon:          return 'Y'; break;
+        case nautilus::tag::names::negative_omega_baryon:       return 'O'; break;
+        case nautilus::tag::names::antimuon:                    return '!'; break;
+        case nautilus::tag::names::electron_antineutrino:       return '<'; break;
+        case nautilus::tag::names::muon_antineutrino:           return '>'; break;
+        case nautilus::tag::names::antiproton:                  return 'G'; break;
+        case nautilus::tag::names::positive_pion:               return '/'; break;
+        case nautilus::tag::names::neutral_pion:                return 'Z'; break;
+        case nautilus::tag::names::positive_kaon:               return 'K'; break;
+        case nautilus::tag::names::short_kaon:                  return '%'; break;
+        case nautilus::tag::names::long_kaon:                   return '^'; break;
+        case nautilus::tag::names::neutral_lambda_antibaryon:   return 'B'; break;
+        case nautilus::tag::names::negative_sigma_antibaryon:   return '_'; break;
+        case nautilus::tag::names::positive_sigma_antibaryon:   return '~'; break;
+        case nautilus::tag::names::neutral_xi_antibaryon:       return 'C'; break;
+        case nautilus::tag::names::positive_xi_antibaryon:      return 'W'; break;
+        case nautilus::tag::names::positive_omega_antibaryon:   return '@'; break;
+        case nautilus::tag::names::negative_pion:               return '*'; break;
+        case nautilus::tag::names::negative_kaon:               return '?'; break;
         default: return detail::invalid_particle_symbol;
         }
+    } else {
+        return detail::invalid_particle_symbol;
     }
 }
 

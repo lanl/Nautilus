@@ -77,6 +77,9 @@ public:
     PORTABLE_FUNCTION static constexpr void set(const V value, T & t)
     {
         static_assert(sizeof(V) == sizeof(Storage));
+        // TODO: The assertion below will check that the value isn't modified by masking, but it
+        //       could be modified by shifting.  Put in an assertion that the value is within the
+        //       allowed range.
         const T masked_t = t & ~mask();
         const T shifted_value = value << RSKIP;
         const T masked_value = shifted_value & mask();
