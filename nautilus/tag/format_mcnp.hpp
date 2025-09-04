@@ -183,7 +183,7 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
         auto f = [](const int Z) {
             const auto Z2 = Z * Z;
             const auto Z3 = Z * Z2;
-            return -0.0000711325*Z3 + 0.0147356*Z2 + 1.75397*Z + 2.04063;
+            return -0.0000711325 * Z3 + 0.0147356 * Z2 + 1.75397 * Z + 2.04063;
         };
         m = std::round(0.01 * (A - 300 - f(Z)));
         assert(m > 0);        // sanity check: if A > 400 then we must have an excited state
@@ -267,38 +267,38 @@ inline char to_MCNP_particle_symbol(Pantag tag)
         }
     } else if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
-        case nautilus::tag::names::neutron:                     return 'N'; break;
-        case nautilus::tag::names::photon:                      return 'P'; break;
-        case nautilus::tag::names::electron:                    return 'E'; break;
-        case nautilus::tag::names::muon:                        return '|'; break;
-        case nautilus::tag::names::antineutron:                 return 'Q'; break;
-        case nautilus::tag::names::electron_neutrino:           return 'U'; break;
-        case nautilus::tag::names::muon_neutrino:               return 'V'; break;
-        case nautilus::tag::names::positron:                    return 'F'; break;
-        case nautilus::tag::names::proton:                      return 'H'; break;
-        case nautilus::tag::names::neutral_lambda_baryon:       return 'L'; break;
-        case nautilus::tag::names::positive_sigma_baryon:       return '+'; break;
-        case nautilus::tag::names::negative_sigma_baryon:       return '-'; break;
-        case nautilus::tag::names::neutral_xi_baryon:           return 'X'; break;
-        case nautilus::tag::names::negative_xi_baryon:          return 'Y'; break;
-        case nautilus::tag::names::negative_omega_baryon:       return 'O'; break;
-        case nautilus::tag::names::antimuon:                    return '!'; break;
-        case nautilus::tag::names::electron_antineutrino:       return '<'; break;
-        case nautilus::tag::names::muon_antineutrino:           return '>'; break;
-        case nautilus::tag::names::antiproton:                  return 'G'; break;
-        case nautilus::tag::names::positive_pion:               return '/'; break;
-        case nautilus::tag::names::neutral_pion:                return 'Z'; break;
-        case nautilus::tag::names::positive_kaon:               return 'K'; break;
-        case nautilus::tag::names::short_kaon:                  return '%'; break;
-        case nautilus::tag::names::long_kaon:                   return '^'; break;
-        case nautilus::tag::names::neutral_lambda_antibaryon:   return 'B'; break;
-        case nautilus::tag::names::negative_sigma_antibaryon:   return '_'; break;
-        case nautilus::tag::names::positive_sigma_antibaryon:   return '~'; break;
-        case nautilus::tag::names::neutral_xi_antibaryon:       return 'C'; break;
-        case nautilus::tag::names::positive_xi_antibaryon:      return 'W'; break;
-        case nautilus::tag::names::positive_omega_antibaryon:   return '@'; break;
-        case nautilus::tag::names::negative_pion:               return '*'; break;
-        case nautilus::tag::names::negative_kaon:               return '?'; break;
+        case nautilus::tag::names::neutron: return 'N'; break;
+        case nautilus::tag::names::photon: return 'P'; break;
+        case nautilus::tag::names::electron: return 'E'; break;
+        case nautilus::tag::names::muon: return '|'; break;
+        case nautilus::tag::names::antineutron: return 'Q'; break;
+        case nautilus::tag::names::electron_neutrino: return 'U'; break;
+        case nautilus::tag::names::muon_neutrino: return 'V'; break;
+        case nautilus::tag::names::positron: return 'F'; break;
+        case nautilus::tag::names::proton: return 'H'; break;
+        case nautilus::tag::names::neutral_lambda_baryon: return 'L'; break;
+        case nautilus::tag::names::positive_sigma_baryon: return '+'; break;
+        case nautilus::tag::names::negative_sigma_baryon: return '-'; break;
+        case nautilus::tag::names::neutral_xi_baryon: return 'X'; break;
+        case nautilus::tag::names::negative_xi_baryon: return 'Y'; break;
+        case nautilus::tag::names::negative_omega_baryon: return 'O'; break;
+        case nautilus::tag::names::antimuon: return '!'; break;
+        case nautilus::tag::names::electron_antineutrino: return '<'; break;
+        case nautilus::tag::names::muon_antineutrino: return '>'; break;
+        case nautilus::tag::names::antiproton: return 'G'; break;
+        case nautilus::tag::names::positive_pion: return '/'; break;
+        case nautilus::tag::names::neutral_pion: return 'Z'; break;
+        case nautilus::tag::names::positive_kaon: return 'K'; break;
+        case nautilus::tag::names::short_kaon: return '%'; break;
+        case nautilus::tag::names::long_kaon: return '^'; break;
+        case nautilus::tag::names::neutral_lambda_antibaryon: return 'B'; break;
+        case nautilus::tag::names::negative_sigma_antibaryon: return '_'; break;
+        case nautilus::tag::names::positive_sigma_antibaryon: return '~'; break;
+        case nautilus::tag::names::neutral_xi_antibaryon: return 'C'; break;
+        case nautilus::tag::names::positive_xi_antibaryon: return 'W'; break;
+        case nautilus::tag::names::positive_omega_antibaryon: return '@'; break;
+        case nautilus::tag::names::negative_pion: return '*'; break;
+        case nautilus::tag::names::negative_kaon: return '?'; break;
         default: return detail::invalid_particle_symbol;
         }
     } else {

@@ -16,7 +16,8 @@
 
 namespace detail {
 
-auto load_isotopes() {
+auto load_isotopes()
+{
     // Open the file
     std::ifstream fin("isotopes.dat");
     CHECK(fin.is_open());
@@ -80,8 +81,9 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
                 if (m != 0) {
                     partial_zaid += 300 + m * 100;
                 }
-                INFO("checking Z = " << Z << ", A = " << A << ", m = " << m << " (partial zaid = "
-                        << partial_zaid << ")");
+                INFO(
+                    "checking Z = " << Z << ", A = " << A << ", m = " << m
+                                    << " (partial zaid = " << partial_zaid << ")");
                 CHECK((from_MCNP_partial_zaid(partial_zaid) == tag));
                 CHECK(to_MCNP_partial_zaid(tag) == partial_zaid);
             }

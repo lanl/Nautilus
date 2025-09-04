@@ -178,7 +178,7 @@ inline Pantag from_standard_name(const std::string_view name)
     }
     // Did not find '-', so assume an elemental
     const auto pos = name.find_last_of(' ');
-    const std::string_view name0 = (pos == std::string_view::npos ? name : name.substr(pos+1));
+    const std::string_view name0 = (pos == std::string_view::npos ? name : name.substr(pos + 1));
     const auto Z = names::Nuclides::find_index(name0);
     if (Z == names::Nuclides::not_found) {
         return Pantag(Pantag::unknown);

@@ -150,7 +150,7 @@ public:
     {
         set(particle);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Storage S=0)
+    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Storage S = 0)
         : tag_{unknown_tag()}
     {
         set(Z, A, S);
@@ -182,7 +182,7 @@ public:
         bs_nuclide.set(PARTICLE, tag_);
         bs_pindex.set(particle, tag_);
     }
-    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S=0)
+    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S = 0)
     {
         tag_ = null_tag();
         bs_version.set(CURRENT_VERSION, tag_);
@@ -271,10 +271,7 @@ public:
     }
     PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
 
-    PORTABLE_FUNCTION constexpr bool is_elemental() const
-    {
-        return get_A() == elemental_A;
-    }
+    PORTABLE_FUNCTION constexpr bool is_elemental() const { return get_A() == elemental_A; }
 
     PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
     PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
@@ -289,10 +286,7 @@ public:
         assert(is_nuclide());
         return (is_elemental() ? 0 : bs_S.get(tag_));
     }
-    PORTABLE_FUNCTION constexpr bool is_ground() const
-    {
-        return get_metastable_index() == 0;
-    }
+    PORTABLE_FUNCTION constexpr bool is_ground() const { return get_metastable_index() == 0; }
 
     // ____________________________________________________________________________________________
     // standard-particle-specific accessors
