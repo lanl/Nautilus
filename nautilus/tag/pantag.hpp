@@ -18,21 +18,15 @@ namespace nautilus::tag {
 
 // TODO: Pantag doesn't strike me as a great name, but it'll do as a placeholder for now
 
-// TODO: Currently elementals are coded as a special case of nuclides, and every standard tag is
-//       either a nuclide or a particle.  Do I want to change that so that elementals are
-//       considered a third type of entity separate from nuclides?  That could lose a bit of data
-//       for particles, but that's probably not an issue (we currently have over 33 million valid
-//       particle indices, so we'd still have almost 17 million valid particle indices if we lost a
-//       bit).  It's a conceptual question: do we think of elements as special cases of nuclides or
-//       as something else entirely?
-//    -- We could actually handle this without losing a bit by treating the first two bits as
-//       collectively defining a four-element code, for example:
-//       -- 00: standard particle
-//       -- 01: standard nuclide
-//       -- 10: standard elemental
-//       -- 11: user entity
-
 // TODO: How do we handle ground states?
+// (Updated note: It may be that the use of "excited states" instead of "metastable states" is
+// simply a detail of the NJOY format that Wim will define.  If that's the case, then we don't need
+// to indicate a metastable or excited state, but instead just store an excitation index.  For the
+// NJOY format that's assumed to be an excited state index, and for the NDI formats that's assumed
+// to be a metastable state index.  The documentation would need to clearly indicate to the user
+// that different formats use the index in different ways, and Nautilus won't (in fact, can't)
+// convert between different conventions.  That means that it's up to the user to only convert
+// between consistent formats or only convert ground-state values.
 //    -- A non-elemental nuclide can be either in the ground state or in an excited state.  But
 //       excited states have two different ways of indexing them:
 //       -- An excited state index simply counts up all of the excited states and numbers them in
@@ -142,6 +136,19 @@ namespace nautilus::tag {
 //       metastable states, and not to all excited states.  But
 //       https://en.wikipedia.org/wiki/Nuclide#Types_of_nuclides doesn't clearly address metastable
 //       versus excitation, so it could be read as "all excited states" or "all metastable states".
+//    -- https://en.wikipedia.org/wiki/Nuclear_isomer says isomers are specifically for metastable
+//       states
+//    -- Interestingly, https://en.wikipedia.org/wiki/Nuclear_isomer also gives two definitions of
+//       metastable and the reasons for them, giving a nice illustration of why "metastable" is
+//       ill-defined:
+//       > "Metastable" describes nuclei whose excited states have half-lives of 1e−9 seconds or
+//       > longer, 100 to 1000 times longer than the half-lives of the excited nuclear states that
+//       > decay with a "prompt" half-life (ordinarily on the order of 1e−12 seconds). Some
+//       > references recommend 5e−9 seconds to distinguish the metastable half-life from the
+//       > normal "prompt" gamma-emission half-life.
+//       The citation Wikipedia gives for this is  Walker, Philip M.; Carroll, James J. (2007).
+//       "Nuclear Isomers: Recipes from the Past and Ingredients for the Future" (PDF). Nuclear
+//       Physics News. 17 (2): 11–15. doi:10.1080/10506890701404206. S2CID 22342780.
 
 // Particle-and-Nuclide Tag
 class Pantag
@@ -245,26 +252,22 @@ public:
 
     PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
         : tag_{unknown_tag()}
-    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(particle);
     }
     PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A)
         : tag_{unknown_tag()}
-    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A);
     }
     PORTABLE_FUNCTION constexpr Pantag(
         const Storage Z, const Storage A, const Index index, const Storage S)
         : tag_{unknown_tag()}
-    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(Z, A, index, S);
     }
     PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
         : tag_{unknown_tag()}
-    // TODO: Dummy argument to avoid compiler warnings -- does this indicate a problem?
     {
         set(user, data);
     }
@@ -343,12 +346,16 @@ public:
 
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
-        assert(is_standard());
+        if (!is_standard()) {
+            return false;
+        }
         return bs_nuclide.get(tag_) == PARTICLE;
     }
     PORTABLE_FUNCTION constexpr bool is_nuclide() const
     {
-        assert(is_standard());
+        if (!is_standard()) {
+            return false;
+        }
         return bs_nuclide.get(tag_) == NUCLIDE;
     }
 
