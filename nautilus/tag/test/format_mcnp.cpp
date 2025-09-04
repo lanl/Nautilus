@@ -777,14 +777,18 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
     // proton vs H-1
     // TODO
 
-    // particle
-    // TODO
+    // elementals
+    CHECK((from_MCNP_partial_zaid(6000) == Pantag(6, Pantag::elemental)));
+    CHECK(to_MCNP_partial_zaid(Pantag(13, Pantag::elemental)) == 13000);
+
+    // particles
+    CHECK(to_MCNP_partial_zaid(Pantag(nautilus::tag::names::muon)) == -1);
 
     // user
-    // TODO
+    CHECK(to_MCNP_partial_zaid(Pantag(Pantag::user, 0)) == -1);
 
     // unknown
-    // TODO
+    CHECK(to_MCNP_partial_zaid(Pantag(Pantag::unknown)) == -1);
 }
 
 // ================================================================================================
