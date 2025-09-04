@@ -49,24 +49,24 @@ private:
     using Storage = uint32_t;
 
     // Basic breakdown for all tags
-    //      NDDDDDDDDDDDDDDDDDDDDDDDDDDVVVVV
-    //      ||                         |     rskip   bits   description
-    //      ||                         \____  0       5     version
-    //      |\______________________________  5      26     data
+    //      NDDDDDDDDDDDDDDDDDDDDDDDDDVVVVVV
+    //      ||                        |      rskip   bits   description
+    //      ||                        \_____  0       6     version
+    //      |\______________________________  6      25     data
     //      \_______________________________ 31       1     user flag
     BitSegment<Storage, 31, 1> bs_user;
-    BitSegment<Storage, 5, 26> bs_data;
-    BitSegment<Storage, 0, 5> bs_version;
+    BitSegment<Storage, 6, 25> bs_data;
+    BitSegment<Storage, 0, 6> bs_version;
 
     // Breakdown for standard tags
-    //      0NDDDDDDDDDDDDDDDDDDDDDDDDDVVVVV
-    //      |||                        |     rskip   bits   description
-    //      |||                        \____  0       5     version
-    //      ||\_____________________________  5      25     standard data
+    //      0NDDDDDDDDDDDDDDDDDDDDDDDDVVVVVV
+    //      |||                       |      rskip   bits   description
+    //      |||                       \_____  0       6     version
+    //      ||\_____________________________  6      24     standard data
     //      |\______________________________ 30       1     nuclide flag
     //      \_______________________________ 31       1     user flag
     BitSegment<Storage, 30, 1> bs_nuclide;
-    BitSegment<Storage, 5, 25> bs_sdata; // sdata = standard (non-user) tags
+    BitSegment<Storage, 6, 24> bs_sdata; // sdata = standard (non-user) tags
 
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
@@ -75,42 +75,34 @@ private:
     static constexpr Storage USER = 0b1;
 
     // An "unknown" tag is a special value of "user" tags
-    static constexpr Storage UNKNOWN = 0b11111111111111111111111111;
+    static constexpr Storage UNKNOWN = 0b1111111111111111111111111;
 
-    static constexpr Storage CURRENT_VERSION = 0b00000;
+    static constexpr Storage CURRENT_VERSION = 0b000000;
 
     // More detailed breakdown for standard nuclides
-    //      01ZZZZZZZAAAAAAAAAMSSSSSSSSVVVVV
-    //      |||      |        ||       |     rskip   bits   description
-    //      |||      |        ||       \____  0       5     version
-    //      |||      |        |\____________  5       8     excitation/metastable index
-    //      |||      |        \_____________ 13       1     metastable flag
+    //      01ZZZZZZZAAAAAAAAASSSSSSSSVVVVVV
+    //      |||      |        |       |      rskip   bits   description
+    //      |||      |        |       \_____  0       6     version
+    //      |||      |        \_____________  6       8     excitation/metastable index
     //      |||      \______________________ 14       9     atomic mass number
     //      ||\_____________________________ 23       7     atomic number
     //      |\______________________________ 30       1     nuclide flag (nuclide: 1)
     //      \_______________________________ 31       1     user flag (standard: 0)
     BitSegment<Storage, 23, 7> bs_Z;
     BitSegment<Storage, 14, 9> bs_A;
-    // TODO: See if I can shift bs_S to fill the empty bit, then shorten the standard particle and
-    //       user ranges to extend the version range.
-    BitSegment<Storage, 5, 8> bs_S;
-
-    static constexpr Storage EXCITATION_INDEX = 0b0;
-    static constexpr Storage METASTABLE_INDEX = 0b1;
-
-    static constexpr Storage GROUND = 0b00000000;
+    BitSegment<Storage, 6, 8> bs_S;
 
     // More detailed breakdown for standard particles
-    //      00IIIIIIIIIIIIIIIIIIIIIIIIIVVVVV
-    //      |||                        |     rskip   bits   description
-    //      |||                        \____  0       5     version
-    //      ||\_____________________________ 11      25     particle index
+    //      00IIIIIIIIIIIIIIIIIIIIIIIIVVVVVV
+    //      |||                       |      rskip   bits   description
+    //      |||                       \_____  0       6     version
+    //      ||\_____________________________  6      24     particle index
     //      |\______________________________ 30       1     nuclide flag (particle: 0)
     //      \_______________________________ 31       1     user flag (standard: 0)
     // Note that the particle index is a genuine index (see the implementation in names.hpp), so
     // unless we add over 33 million more particles then we know the index is guaranteed to fit
     // within the particle index segment.
-    BitSegment<Storage, 5, 6> bs_pindex;
+    BitSegment<Storage, 6, 24> bs_pindex;
 
     Storage tag_;
 
@@ -155,7 +147,7 @@ public:
     {
         set(particle);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Storage S=GROUND)
+    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Storage S=0)
         : tag_{unknown_tag()}
     {
         set(Z, A, S);
@@ -182,7 +174,7 @@ public:
         bs_nuclide.set(PARTICLE, tag_);
         bs_pindex.set(particle, tag_);
     }
-    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S=GROUND)
+    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S=0)
     {
         tag_ = null_tag();
         bs_version.set(CURRENT_VERSION, tag_);
@@ -190,7 +182,7 @@ public:
         bs_nuclide.set(NUCLIDE, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        assert(A == elemental ? S == GROUND : true); // S is meaningless with elementals
+        assert(A == elemental ? S == 0 : true); // S is meaningless with elementals
         bs_S.set(S, tag_);
     }
     PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
@@ -277,11 +269,11 @@ public:
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
         assert(is_nuclide());
-        return (is_elemental() ? GROUND : bs_S.get(tag_));
+        return (is_elemental() ? 0 : bs_S.get(tag_));
     }
     PORTABLE_FUNCTION constexpr bool is_ground() const
     {
-        return get_metastable_index() == GROUND;
+        return get_metastable_index() == 0;
     }
 
     // ____________________________________________________________________________________________
