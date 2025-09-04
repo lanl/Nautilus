@@ -101,7 +101,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(!my_tag.is_standard());
         CHECK(my_tag.is_user());
 
-        CHECK(my_tag.get_data() == 0b00000000000000000001100100);
+        CHECK(my_tag.get_user_data() == 0b00000000000000000001100100);
 
         CHECK(my_tag.get_version() == 0b00000);
     }

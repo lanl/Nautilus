@@ -234,12 +234,10 @@ public:
     // ____________________________________________________________________________________________
     // user-specific accessors
 
-    // TODO: Change the name to something like get_user_data
-
     // Only for user tags.  For standard tags, the more-specific accessors are preferred, as there
     // may be translations between values the users sees and values actually stored in memory, or
     // the internal layout of the data block may be changed.
-    PORTABLE_FUNCTION constexpr auto get_data() const
+    PORTABLE_FUNCTION constexpr auto get_user_data() const
     {
         assert(is_user());
         return bs_data.get(tag_);
