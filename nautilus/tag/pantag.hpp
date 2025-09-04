@@ -285,7 +285,7 @@ public:
     {
         // the metastable index is meaningless for elementals, so just return true
         // TODO: Is that the correct choice, or should it be `assert(!is_elemental())`?
-        return (is_ground() ? true : get_metastable_index() == GROUND);
+        return (is_elemental() ? true : get_metastable_index() == GROUND);
     }
 
     // ____________________________________________________________________________________________

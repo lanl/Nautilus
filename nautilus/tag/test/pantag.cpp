@@ -50,9 +50,6 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.get_Z() == 1);
 
         CHECK(my_tag.is_elemental());
-
-        CHECK(!my_tag.has_excitation_index());
-        CHECK(!my_tag.has_metastable_index());
     }
 
     SECTION("nuclide tag (default index)")
@@ -72,43 +69,13 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.get_atomic_mass_number() == 56);
         CHECK(my_tag.get_A() == 56);
 
-        CHECK(my_tag.has_excitation_index());
-        CHECK(my_tag.get_excitation_index() == 0);
-
-        CHECK(my_tag.has_metastable_index());
         CHECK(my_tag.get_metastable_index() == 0);
-
         CHECK(my_tag.is_ground());
-    }
-
-    SECTION("nuclide tag (excitation index)")
-    {
-        Pantag my_tag(2, 4, Pantag::Index::excitation, 10);
-        CHECK(my_tag.is_standard());
-        CHECK(!my_tag.is_user());
-
-        CHECK(my_tag.is_nuclide());
-        CHECK(!my_tag.is_particle());
-
-        CHECK(my_tag.get_version() == 0b00000);
-
-        CHECK(my_tag.get_atomic_number() == 2);
-        CHECK(my_tag.get_Z() == 2);
-
-        CHECK(my_tag.get_atomic_mass_number() == 4);
-        CHECK(my_tag.get_A() == 4);
-
-        CHECK(my_tag.has_excitation_index());
-        CHECK(my_tag.get_excitation_index() == 10);
-
-        CHECK(!my_tag.has_metastable_index());
-
-        CHECK(!my_tag.is_ground());
     }
 
     SECTION("nuclide tag (metastable index)")
     {
-        Pantag my_tag(6, 12, Pantag::Index::metastable, 1);
+        Pantag my_tag(6, 12, 1);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -123,11 +90,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
         CHECK(my_tag.get_atomic_mass_number() == 12);
         CHECK(my_tag.get_A() == 12);
 
-        CHECK(!my_tag.has_excitation_index());
-
-        CHECK(my_tag.has_metastable_index());
         CHECK(my_tag.get_metastable_index() == 1);
-
         CHECK(!my_tag.is_ground());
     }
 

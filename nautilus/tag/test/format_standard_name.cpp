@@ -28,18 +28,9 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("tantalum-180m1") == ta180m1));
     CHECK(to_long_standard_name(ta180m1) == "tantalum-180m1");
 
-    constexpr Pantag mo93e1(42, 93, 1);
-    CHECK((from_standard_name("molybdenum-93e") == mo93e1));
-    CHECK((from_standard_name("molybdenum-93e1") == mo93e1));
-    CHECK(to_long_standard_name(mo93e1) == "molybdenum-93e1");
-
     constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_standard_name("potassium-38m2") == k38m2));
     CHECK(to_long_standard_name(k38m2) == "potassium-38m2");
-
-    constexpr Pantag pb188e2(82, 188, 2);
-    CHECK((from_standard_name("lead-188e2") == pb188e2));
-    CHECK(to_long_standard_name(pb188e2) == "lead-188e2");
 
     // Alternate spellings
     constexpr Pantag n14(7, 14);
@@ -174,18 +165,9 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("Ta-180m1") == ta180m1));
     CHECK(to_short_standard_name(ta180m1) == "Ta-180m1");
 
-    constexpr Pantag mo93e1(42, 93, 1);
-    CHECK((from_standard_name("Mo-93e") == mo93e1));
-    CHECK((from_standard_name("Mo-93e1") == mo93e1));
-    CHECK(to_short_standard_name(mo93e1) == "Mo-93e1");
-
     constexpr Pantag k38m2(19, 38, 2);
     CHECK((from_standard_name("K-38m2") == k38m2));
     CHECK(to_short_standard_name(k38m2) == "K-38m2");
-
-    constexpr Pantag pb188e2(82, 188, 2);
-    CHECK((from_standard_name("Pb-188e2") == pb188e2));
-    CHECK(to_short_standard_name(pb188e2) == "Pb-188e2");
 
     // "short" standard name does not have alternate spellings
 

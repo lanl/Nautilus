@@ -228,10 +228,10 @@ inline Pantag from_NDI_SZA(const int sza)
     case 95042: [[fallthrough]];
     case 1095242: return Pantag(95, 242); break;
     // Am-242m1 (encoded as Am-242g in NDI)
-    case 95242: return Pantag(95, 242, Pantag::Index::metastable, 1); break;
+    case 95242: return Pantag(95, 242, 1); break;
     // Am-244m1 (two different encoding strategies)
     case 95044: [[fallthrough]];
-    case 1095244: return Pantag(95, 244, Pantag::Index::metastable, 1); break;
+    case 1095244: return Pantag(95, 244, 1); break;
     }
     // Parse as a nuclide
     auto remainder = sza;
@@ -328,7 +328,7 @@ inline std::string to_NDI_short_string(Pantag tag)
         result[0] = to_lower(result[0]);
         result.append(std::to_string(A));
         return result;
-    } else (tag.is_particle()) {
+    } else if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
         case nautilus::tag::names::photon: return "g"; break;
         case nautilus::tag::names::neutron: return "n"; break;

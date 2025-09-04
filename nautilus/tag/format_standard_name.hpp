@@ -61,7 +61,7 @@ inline std::string to_short_standard_nuclide_name(const Pantag tag)
         name.append(std::to_string(tag.get_atomic_mass_number()));
         if (!tag.is_ground()) {
             name.append(1, 'm');
-            name.append(std::to_string(tag.get_index()));
+            name.append(std::to_string(tag.get_metastable_index()));
         }
     }
     return name;
@@ -85,7 +85,7 @@ inline std::string to_long_standard_nuclide_name(
         name.append(std::to_string(tag.get_atomic_mass_number()));
         if (!tag.is_ground()) {
             name.append(1, 'm');
-            name.append(std::to_string(tag.get_index()));
+            name.append(std::to_string(tag.get_metastable_index()));
         }
     }
     return name;
@@ -140,7 +140,7 @@ inline std::string to_long_standard_name(
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
-    } else if (tag.is_nuclide()) {
+    if (tag.is_nuclide()) {
         return detail::to_long_standard_nuclide_name(tag, nuclide_standard);
     } else if (tag.is_particle()) {
         return detail::to_long_standard_particle_name(tag, particle_standard);

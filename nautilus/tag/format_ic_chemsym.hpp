@@ -94,12 +94,10 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     }
     const auto A = std::stoi(tokens[1]);
     // Get the excitation index
-    const auto c = tokens[2][0];
-    const auto S = std::stoi(tokens[2].substr(1));
-    switch (c) {
+    switch (tokens[2][0]) {
     case '\0': [[fallthrough]];
     case 'g': return Pantag(Z, A); break;
-    case 'm': return Pantag(Z, A, S); break;
+    case 'm': return Pantag(Z, A, std::stoi(tokens[2].substr(1))); break;
     default: return Pantag(Pantag::unknown);
     }
 }
