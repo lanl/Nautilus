@@ -137,8 +137,7 @@ inline int to_MCNP_partial_zaid(const Pantag tag)
         assert(tag.has_metastable_index());
         const auto Z = tag.get_atomic_number();
         if (tag.is_elemental()) {
-            // TODO: Add support for elementals
-            return detail::invalid_partial_zaid();
+            return Z * 1000; // A = 0 for elementals
         }
         const auto A = tag.get_atomic_mass_number();
         auto m = tag.get_metastable_index();
