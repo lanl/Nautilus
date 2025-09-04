@@ -62,6 +62,8 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
     using nautilus::tag::Pantag;
     using nautilus::tag::to_MCNP_partial_zaid;
 
+    // TODO: Should I get the "unknown partial zaid" value from format_mcnp.hpp?
+
     // Normal nuclides
     const auto elements = detail::load_isotopes();
     for (const auto & element : elements) {
@@ -122,14 +124,12 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
     CHECK(to_MCNP_partial_zaid(6912) == -1);
     CHECK(to_MCNP_partial_zaid(47907) == -1);
 
-    // proton vs H-1
-    // TODO
-
     // elementals
     CHECK((from_MCNP_partial_zaid(6000) == Pantag(6, Pantag::elemental)));
     CHECK(to_MCNP_partial_zaid(Pantag(13, Pantag::elemental)) == 13000);
 
     // particles
+    CHECK(to_MCNP_partial_zaid(Pantag(nautilus::tag::names::proton)) == -1);
     CHECK(to_MCNP_partial_zaid(Pantag(nautilus::tag::names::muon)) == -1);
 
     // user

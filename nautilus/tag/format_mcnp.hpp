@@ -131,7 +131,9 @@ inline std::string to_suffix_string(const std::string_view sv)
 inline int to_MCNP_partial_zaid(const Pantag tag)
 {
     if (!tag.is_nuclide()) {
-        // TODO: Should proton translate to H-1?
+        // The MCNP zaid is a nuclide-focused format that (as far as I can tell at the moment) does
+        // not include any particles.  For this reason, we don't translate a proton (particle) to
+        // the MCNP partial zaid format.  TODO: Shift this note to the documentation.
         return detail::invalid_partial_zaid();
     } else {
         assert(tag.has_metastable_index());
