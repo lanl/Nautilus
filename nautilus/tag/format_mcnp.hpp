@@ -151,6 +151,10 @@ inline int to_MCNP_partial_zaid(const Pantag tag)
         }
         // assemble the value
         auto partial_zaid = Z * 1000 + A;
+        if (m > 4) {
+            // MCNP partial zaid does not support m > 4
+            return detail::invalid_partial_zaid();
+        }
         if (m != 0) {
             partial_zaid += 300 + m * 100;
         }

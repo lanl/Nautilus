@@ -774,6 +774,13 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
     CHECK((from_MCNP_partial_zaid(am242m4_zaid) == am242m4_tag));
     CHECK(to_MCNP_partial_zaid(am242m4_tag) == am242m4_zaid);
 
+    // m > 4 is not allowed
+    // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
+    //    m > 4 is not permitted
+    CHECK(to_MCNP_partial_zaid(6812) == -1);
+    CHECK(to_MCNP_partial_zaid(6912) == -1);
+    CHECK(to_MCNP_partial_zaid(47907) == -1);
+
     // proton vs H-1
     // TODO
 
