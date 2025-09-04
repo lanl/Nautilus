@@ -11,3 +11,9 @@ add_test_target(test_tag
     $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/pantag_kokkos.cpp>
     #TODO: test/string_processing.cpp
 )
+
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/isotopes.dat
+    ${CMAKE_BINARY_DIR}/test/isotopes.dat
+    COPYONLY
+)
