@@ -158,10 +158,6 @@ public:
         set(user, data);
     }
 
-    // TODO: Do I need explicit copy/move/assignment that checks the version and updates if there's
-    //       a version mismatch?  Or do we assume that copy/move/assignment are already working
-    //       with an updated version, and it's only other methods that have to handle old versions?
-
     // ____________________________________________________________________________________________
     // Build an EntityTag
 
