@@ -1,15 +1,6 @@
 #ifndef NAUTILUS_FORMAT_MCNP_HPP
 #define NAUTILUS_FORMAT_MCNP_HPP
 
-// TODO: What types to use?
-//    -- Currently I have partial zaid as int.  I should specify the precision (int32_t or similar)
-//       and decide if it should be signed or unsigned.  If there's not a clear "best" answer,
-//       consider templating on the SZA type.
-
-// TODO: I currently have a mix of things with and without PORTABLE_FUNCTION.  Decide if partial
-//       zaid and particle symbol should be available on the GPU.  I know full zaid should not be
-//       available on the GPU because it involves strings.
-
 // TODO: In the documentation, explain that MCNP formats are lossy:
 //    -- Full and partial zaid will map proton and H-1 to the same value, and that value will then
 //       map back to Nautilus as H-1
@@ -54,76 +45,9 @@ namespace nautilus::entity_tag {
 // any ion that's not one of the five previously-mentioned light ions).
 
 // ================================================================================================
-
-namespace detail {
-
-// TODO: These are functions instead of constexpr values in case we need to template on the type
-PORTABLE_FUNCTION inline constexpr int invalid_partial_zaid()
-{
-    // TODO: This value won't work if SZA type is unsigned.
-    return -1;
-}
-const std::string invalid_full_zaid = "unknown";
-const char invalid_particle_symbol = ' ';
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline bool match_table_suffix(const std::string_view sv)
-{
-    if ((sv.length() != 3) && (sv.length() != 5)) {
-        return false;
-    } else if (!std::isdigit(sv[0])) {
-        return false;
-    } else if (!std::isdigit(sv[1])) {
-        return false;
-    } else if (!std::isdigit(sv[2])) {
-        return false;
-    } else if ((sv.length() == 5) && (sv[3] != 'n')) {
-        return false;
-    } else if ((sv.length() == 5) && (sv[4] != 'm')) {
-        return false;
-    }
-    return true;
-}
-inline int table_suffix_integer(const std::string_view sv)
-{
-    assert(match_table_suffix);
-    // C++17 introduces std::from_chars, but it's not constexpr until C++23
-    std::array<char, 4> s = {sv[0], sv[1], sv[2], '\0'};
-    return std::stoi(s.data());
-}
-inline double table_suffix_decimal(const int n) { return 1.0e-3 * n; }
-inline double table_suffix_decimal(const double d) { return d; }
-inline double table_suffix_decimal(const std::string_view sv)
-{
-    const auto num = table_suffix_integer(sv);
-    return 1.0e-3 * num;
-}
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline std::string to_suffix_string(const int n)
-{
-    assert(n >= 0);
-    assert(n < 1000);
-    const auto ns = std::to_string(n);
-    return std::string(3 - ns.size(), '0') + ns + "nm";
-}
-inline std::string to_suffix_string(const double d) { return to_suffix_string(int(d * 1000)); }
-inline std::string to_suffix_string(const std::string_view sv)
-{
-    assert(match_table_suffix(sv));
-    std::string suffix(sv);
-    if (sv.length() == 3) {
-        suffix.append("nm");
-    }
-    return suffix;
-}
-
-} // end namespace detail
-
-// ================================================================================================
 // MCNP partial zaid
+
+constexpr int invalid_mcnp_partial_zaid = -1;
 
 inline int to_MCNP_partial_zaid(const EntityTag tag)
 {
@@ -132,7 +56,7 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
         // not include any particles.  For this reason, we don't translate a proton (particle) to
         // the MCNP partial zaid format (where it would become H-1).
         // -- TODO: Shift this note to the documentation.
-        return detail::invalid_partial_zaid();
+        return invalid_mcnp_partial_zaid;
     } else {
         // Get the values needed to assemble the partial zaid
         const auto Z = tag.get_atomic_number();
@@ -151,8 +75,8 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
         }
         // assemble the value
         auto partial_zaid = Z * 1000 + A;
-        if (m > 4) {
-            return detail::invalid_partial_zaid(); // MCNP partial zaid does not support m > 4
+        if (m > 4) { // MCNP partial zaid does not support m > 4
+            return invalid_mcnp_partial_zaid;
         }
         if (m != 0) {
             partial_zaid += 300 + m * 100;
@@ -212,12 +136,13 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
 // ================================================================================================
 // MCNP full zaid
 
+const std::string invalid_mcnp_full_zaid = "unknown";
+
 std::string to_MCNP_full_zaid(EntityTag tag, const std::string_view library)
 {
     if (tag.is_unknown()) {
-        return detail::invalid_full_zaid;
+        return invalid_mcnp_full_zaid;
     }
-    assert(detail::match_table_suffix(library));
     std::string zaid = std::to_string(to_MCNP_partial_zaid(tag));
     zaid.append(".");
     zaid.append(library);
@@ -226,7 +151,7 @@ std::string to_MCNP_full_zaid(EntityTag tag, const std::string_view library)
 
 inline EntityTag from_MCNP_full_zaid(const std::string_view sv)
 {
-    if (sv == detail::invalid_full_zaid) {
+    if (sv == invalid_mcnp_full_zaid) {
         return EntityTag(EntityTag::unknown);
     }
     return from_MCNP_partial_zaid(std::atoi(sv.substr(0, sv.find('.')).data()));
@@ -238,17 +163,19 @@ inline EntityTag from_MCNP_full_zaid(const std::string_view sv)
 //    "alternate" standards, so the names used here won't necessary align with the names in the
 //    MCNP manual.
 
+const char invalid_mncp_particle_symbol = ' ';
+
 inline char to_MCNP_particle_symbol(EntityTag tag)
 {
     if (tag.is_nuclide()) {
         // This format doens't support elementals
         if (tag.is_elemental()) {
-            return detail::invalid_particle_symbol;
+            return invalid_mcnp_particle_symbol;
         }
         // This format doesn't support excited states
         // -- EntityTag fixes the Am-242g and Am-242m1 "swap", so ignore that special case here
         if (!tag.is_ground()) {
-            return detail::invalid_particle_symbol;
+            return invalid_mcnp_particle_symbol;
         }
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
@@ -299,10 +226,10 @@ inline char to_MCNP_particle_symbol(EntityTag tag)
         case names::positive_omega_antibaryon: return '@'; break;
         case names::negative_pion: return '*'; break;
         case names::negative_kaon: return '?'; break;
-        default: return detail::invalid_particle_symbol;
+        default: return invalid_mcnp_particle_symbol;
         }
     } else {
-        return detail::invalid_particle_symbol;
+        return invalid_mcnp_particle_symbol;
     }
 }
 
