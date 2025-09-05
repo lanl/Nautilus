@@ -1,10 +1,6 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
-// TODO: I currently have a mix of things with and without PORTABLE_FUNCTION.  Decide if SZA and/or
-//       FPID should be available on the GPU.  I know zaid should not be available on the GPU
-//       because it involves strings.
-
 // TODO: In the documentation, explain that NDI formats are lossy because of the conversion
 //       proton -> (NDI format) -> H-1
 
