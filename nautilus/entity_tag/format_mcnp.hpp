@@ -163,7 +163,7 @@ inline EntityTag from_MCNP_full_zaid(const std::string_view sv)
 //    "alternate" standards, so the names used here won't necessary align with the names in the
 //    MCNP manual.
 
-const char invalid_mncp_particle_symbol = ' ';
+const char invalid_mcnp_particle_symbol = ' ';
 
 inline char to_MCNP_particle_symbol(EntityTag tag)
 {
