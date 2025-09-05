@@ -255,8 +255,10 @@ inline EntityTag from_NDI_SZA(const int sza)
 template <typename T>
 double to_NDI_FPID(EntityTag tag, T && library)
 {
-    // TODO: check for invalid_SZA and translate to invalid_FPID
     const auto SZA = to_NDI_SZA(tag, std::forward<T>(library));
+    if (SZA == detail::invalid_SZA()) {
+        return detail::invalid_FPID();
+    }
     const double suffix = detail::table_suffix_decimal(std::forward<T>(library));
     return static_cast<double>(SZA) + suffix;
 }
@@ -264,7 +266,9 @@ double to_NDI_FPID(EntityTag tag, T && library)
 // Throw away the suffix (after the decimal) and coerce into an integer
 inline EntityTag from_NDI_FPID(const double fpid)
 {
-    // TODO: check for invalid_FPID
+    if (fpid == detail::invalid_FPID()) {
+        return EntityTag(EntityTag::unknown);
+    }
     // Throw away the suffix, because going _from_ NDI doesn't need to know the library
     return from_NDI_SZA(static_cast<int>(fpid));
 }
@@ -275,9 +279,12 @@ inline EntityTag from_NDI_FPID(const double fpid)
 template <typename T>
 std::string to_NDI_zaid(EntityTag tag, const T & library)
 {
-    // TODO: check for invalid_SZA and translate to invalid_zaid
     assert(detail::match_table_suffix(library));
-    std::string zaid = std::to_string(to_NDI_SZA(tag, library));
+    const auto SZA = to_NDI_SZA(tag, library);
+    if (SZA == detail::invalid_SZA()) {
+        return detail::invalid_zaid;
+    }
+    std::string zaid = std::to_string(SZA);
     zaid.append(".");
     zaid.append(detail::to_suffix_string(library));
     return zaid;
@@ -285,7 +292,9 @@ std::string to_NDI_zaid(EntityTag tag, const T & library)
 
 inline EntityTag from_NDI_zaid(const std::string_view sv)
 {
-    // TODO: check for invalid_zaid
+    if (sv == detail::invalid_zaid) {
+        return EntityTag(EntityTag::unknown);
+    }
     return from_NDI_SZA(std::atoi(sv.substr(0, sv.find('.')).data()));
 }
 
@@ -342,9 +351,10 @@ inline std::string to_NDI_short_string(EntityTag tag)
 
 inline EntityTag from_NDI_short_string(const std::string_view sv)
 {
-    // TODO: check for invalid_short_string
-    // Particles and special cases
-    if ((sv == "g") || (sv == "g0")) {
+    // Unknown, particles, special cases
+    if (sv == detail::invalid_short_string) {
+        return EntityTag(EntityTag::unknown);
+    } else if ((sv == "g") || (sv == "g0")) {
         return EntityTag(names::photon);
     } else if (sv == "n") {
         return EntityTag(names::neutron);
