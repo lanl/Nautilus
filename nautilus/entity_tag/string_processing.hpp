@@ -47,14 +47,30 @@ inline std::array<std::string, 3> tokenize_nuclide(const std::string_view sv)
 // For explanation of these functions, see
 // -- https://en.cppreference.com/w/cpp/string/byte/tolower
 // -- https://en.cppreference.com/w/cpp/string/byte/toupper
-inline char to_lower(const char c)
+PORTABLE_FUNCTION inline constexpr char to_lower(const char c)
 {
     return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 }
-inline char to_upper(const char c)
+PORTABLE_FUNCTION inline constexpr char to_upper(const char c)
 {
     return static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
 }
+
+// ================================================================================================
+
+PORTABLE_FUNCTION inline constexpr bool my_strcmp(const char * s1, const char * s2)
+{
+    for (; (*s1 != '\0') && (*s2 != '\0'); ++s1, ++s2) {
+        if (*s1 != *s2) {
+            return false;
+        }
+    }
+    return (*s1 == '\0') && (*s2 == '\0');
+};
+PORTABLE_FUNCTION inline constexpr bool my_strcmp(const std::string_view sv, const char * s2)
+{
+    return my_strcmp(sv.data(), s2);
+};
 
 // ================================================================================================
 

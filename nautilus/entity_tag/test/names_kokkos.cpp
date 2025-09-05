@@ -1,25 +1,10 @@
 #include "names.hpp"
 
+#include "nautilus/entity_tag/string_processing.hpp"
+
 #include <catch2/catch_test_macros.hpp>
 
 #include <Kokkos_Core.hpp>
-
-// ================================================================================================
-
-// TODO: Where should this go?  Very likely not here.
-PORTABLE_FUNCTION constexpr bool my_strcmp(const char * s1, const char * s2)
-{
-    for (; (*s1 != '\0') && (*s2 != '\0'); ++s1, ++s2) {
-        if (*s1 != *s2) {
-            return false;
-        }
-    }
-    return (*s1 == '\0') && (*s2 == '\0');
-};
-PORTABLE_FUNCTION constexpr bool my_strcmp(const std::string_view sv, const char * s2)
-{
-    return my_strcmp(sv.data(), s2);
-};
 
 // ================================================================================================
 
@@ -27,6 +12,8 @@ TEST_CASE("particle names on GPU", "[names][GPU]")
 {
     using HostSpace = Kokkos::HostSpace;
     using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
+
+    using nautilus::entity_tag::my_strcmp;
 
     SECTION("long names")
     {
@@ -91,6 +78,8 @@ TEST_CASE("nuclide names on GPU", "[names][GPU]")
 {
     using HostSpace = Kokkos::HostSpace;
     using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
+
+    using nautilus::entity_tag::my_strcmp;
 
     SECTION("long names")
     {
