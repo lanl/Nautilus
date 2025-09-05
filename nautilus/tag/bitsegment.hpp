@@ -2,6 +2,7 @@
 #define NAUTILUS_BITSEGMENT_HPP
 
 #include "ports-of-call/portability.hpp"
+#include "ports-of-call/robust_utils.hpp"
 
 #include <cassert>
 #include <climits>
@@ -45,6 +46,17 @@ private:
     // Ensure we don't have an empty segment
     static_assert(COUNT > 0);
 
+    PORTABLE_FUNCTION static constexpr Storage max_value()
+    {
+        // We can't just do 1 << COUNT - 1 because what if the bitsegment runs the full range of
+        // the Storage datatype?
+        Storage max_value = 0;
+        for (int n = 0; n < COUNT; ++n) {
+            max_value += 1 << n;
+        }
+        return max_value;
+    }
+
     // Generate the mask for the bits in the segment
     // -- Generates the mask as the unsigned Storage type instead of the input T type in order to
     //    get logical shift-right (shift-right of signed values is implementation-defined, but
@@ -77,9 +89,8 @@ public:
     PORTABLE_FUNCTION static constexpr void set(const V value, T & t)
     {
         static_assert(sizeof(V) == sizeof(Storage));
-        // TODO: The assertion below will check that the value isn't modified by masking, but it
-        //       could be modified by shifting.  Put in an assertion that the value is within the
-        //       allowed range.
+        assert(PortsOfCall::Robust::check_nonnegative(value));
+        assert(value <= max_value());
         const T masked_t = t & ~mask();
         const T shifted_value = value << RSKIP;
         const T masked_value = shifted_value & mask();
