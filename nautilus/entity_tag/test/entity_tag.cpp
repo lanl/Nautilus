@@ -4,13 +4,13 @@
 
 // ================================================================================================
 
-TEST_CASE("EntityTag", "[tag][entity_tag]")
+TEST_CASE("EntityTag", "[entity_tag]")
 {
-    using nautilus::tag::EntityTag;
+    using nautilus::entity_tag::EntityTag;
 
     SECTION("particle tag")
     {
-        EntityTag my_tag(nautilus::tag::names::electron);
+        EntityTag my_tag(nautilus::entity_tag::names::electron);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -19,10 +19,10 @@ TEST_CASE("EntityTag", "[tag][entity_tag]")
 
         CHECK(my_tag.get_version() == 0b00000);
 
-        CHECK(my_tag.get_particle_index() == nautilus::tag::names::electron);
-        CHECK(my_tag.get_particle_index() != nautilus::tag::names::positron);
+        CHECK(my_tag.get_particle_index() == nautilus::entity_tag::names::electron);
+        CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::positron);
 
-        my_tag.set(nautilus::tag::names::positron);
+        my_tag.set(nautilus::entity_tag::names::positron);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -31,8 +31,8 @@ TEST_CASE("EntityTag", "[tag][entity_tag]")
 
         CHECK(my_tag.get_version() == 0b00000);
 
-        CHECK(my_tag.get_particle_index() == nautilus::tag::names::positron);
-        CHECK(my_tag.get_particle_index() != nautilus::tag::names::electron);
+        CHECK(my_tag.get_particle_index() == nautilus::entity_tag::names::positron);
+        CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::electron);
     }
 
     SECTION("nuclide tag (elemental)")

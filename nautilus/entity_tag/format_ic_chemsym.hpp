@@ -7,7 +7,7 @@
 #include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/string_processing.hpp"
 
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // ================================================================================================
 // IC chemsym
@@ -51,8 +51,8 @@ inline std::string to_IC_chemsym(EntityTag tag)
     } else if (tag.is_particle()) {
         const auto pidx = tag.get_particle_index();
         switch (pidx) {
-        case nautilus::tag::names::photon: return "g0"; break;
-        case nautilus::tag::names::neutron: return "nt1"; break;
+        case nautilus::entity_tag::names::photon: return "g0"; break;
+        case nautilus::entity_tag::names::neutron: return "nt1"; break;
         default: return invalid;
         }
     } else /* "unknown" tag */ {
@@ -66,9 +66,9 @@ inline EntityTag from_IC_chemsym(const std::string_view sv0)
     const std::string sv(sv0.substr(0, sv0.find('.')));
     // Check for known particles or special cases
     if ((sv == "g") || (sv == "g0")) {
-        return EntityTag(nautilus::tag::names::photon);
+        return EntityTag(nautilus::entity_tag::names::photon);
     } else if (sv == "nt1") {
-        return EntityTag(nautilus::tag::names::neutron);
+        return EntityTag(nautilus::entity_tag::names::neutron);
     } else if ((sv == "am242") || (sv == "am242g")) {
         // Am-242g and Am-242m1 are swapped in NDI
         return EntityTag(95, 242, 1);
@@ -104,6 +104,6 @@ inline EntityTag from_IC_chemsym(const std::string_view sv0)
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // $ifndef NAUTILUS_FORMAT_IC_HPP

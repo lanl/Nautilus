@@ -57,11 +57,11 @@ auto load_isotopes()
 
 // ================================================================================================
 
-TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
+TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
 {
-    using nautilus::tag::from_MCNP_partial_zaid;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_MCNP_partial_zaid;
+    using nautilus::entity_tag::from_MCNP_partial_zaid;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_MCNP_partial_zaid;
 
     // TODO: Should I get the "unknown partial zaid" value from format_mcnp.hpp?
 
@@ -131,8 +131,8 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
     CHECK(to_MCNP_partial_zaid(EntityTag(13, EntityTag::elemental)) == 13000);
 
     // particles
-    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::tag::names::proton)) == -1);
-    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::tag::names::muon)) == -1);
+    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::proton)) == -1);
+    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::muon)) == -1);
 
     // user
     CHECK(to_MCNP_partial_zaid(EntityTag(EntityTag::user, 0)) == -1);
@@ -146,21 +146,21 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
 // TODO: MCNP full zaid
 // TODO: MCNP particle symbol
 
-/*TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
+/*TEST_CASE("format: NDI zaid", "[entity_tag][format][NDI]")
 {
-    using nautilus::tag::from_NDI_zaid;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_NDI_zaid;
+    using nautilus::entity_tag::from_NDI_zaid;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_NDI_zaid;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_NDI_zaid("1.999nm") == neutron));
     CHECK(to_NDI_zaid(neutron, 0.999) == "1.999nm");
     CHECK(to_NDI_zaid(neutron, 999) == "1.999nm");
     CHECK(to_NDI_zaid(neutron, "999") == "1.999nm");
     CHECK(to_NDI_zaid(neutron, "999nm") == "1.999nm");
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_NDI_zaid("0.000nm") == photon));
     CHECK(to_NDI_zaid(photon, 0.456) == "0.456nm");
     CHECK(to_NDI_zaid(photon, 789) == "0.789nm");
@@ -310,18 +310,18 @@ TEST_CASE("format: MCNP partial zaid", "[tag][format][MCNP]")
 
 // ================================================================================================
 
-TEST_CASE("format: NDI short string", "[tag][format][NDI]")
+TEST_CASE("format: NDI short string", "[entity_tag][format][NDI]")
 {
-    using nautilus::tag::from_NDI_short_string;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_NDI_short_string;
+    using nautilus::entity_tag::from_NDI_short_string;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_NDI_short_string;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_NDI_short_string("n") == neutron));
     CHECK(to_NDI_short_string(neutron) == "n");
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_NDI_short_string("g") == photon));
     CHECK((from_NDI_short_string("g0") == photon));
     CHECK(to_NDI_short_string(photon) == "g");

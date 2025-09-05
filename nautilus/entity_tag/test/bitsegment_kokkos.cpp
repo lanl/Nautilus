@@ -6,7 +6,7 @@
 
 // ================================================================================================
 
-TEST_CASE("BitSegment on GPUs", "[tag][bitsegment][GPU]")
+TEST_CASE("BitSegment on GPUs", "[entity_tag][bitsegment][GPU]")
 {
     // The main tests are run on CPU.  These tests only demonstrate that the code runs on GPU.
     constexpr size_t N{6};
@@ -17,7 +17,7 @@ TEST_CASE("BitSegment on GPUs", "[tag][bitsegment][GPU]")
         N, KOKKOS_LAMBDA(int const n) {
             results_gpu(n) = 0;
             using T = int32_t;
-            using nautilus::tag::BitSegment;
+            using nautilus::entity_tag::BitSegment;
             T num = 0x0000FFFF;
             BitSegment<T, 16, 16> bs0;
             if (bs0.mask() == static_cast<T>(0xFFFF0000)) {

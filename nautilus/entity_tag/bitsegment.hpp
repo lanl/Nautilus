@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <type_traits>
 
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // ================================================================================================
 
@@ -101,6 +101,6 @@ public:
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // #ifndef NAUTILUS_BITSEGMENT_HPP

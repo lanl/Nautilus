@@ -26,7 +26,7 @@
 #include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/string_processing.hpp"
 
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // ================================================================================================
 
@@ -170,9 +170,9 @@ int to_NDI_SZA(const EntityTag tag, T && library)
 {
     if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
-        case nautilus::tag::names::photon: return 0; break;
-        case nautilus::tag::names::neutron: return 1; break;
-        case nautilus::tag::names::proton: return 1001; break;
+        case nautilus::entity_tag::names::photon: return 0; break;
+        case nautilus::entity_tag::names::neutron: return 1; break;
+        case nautilus::entity_tag::names::proton: return 1001; break;
         default: return detail::invalid_SZA(); break;
         }
     } else if (tag.is_nuclide()) {
@@ -222,8 +222,8 @@ inline EntityTag from_NDI_SZA(const int sza)
     // Special cases
     switch (sza) {
     // particles (ignore proton, because H-1 is preferred when working with NDI)
-    case 0: return EntityTag(nautilus::tag::names::photon); break;
-    case 1: return EntityTag(nautilus::tag::names::neutron); break;
+    case 0: return EntityTag(nautilus::entity_tag::names::photon); break;
+    case 1: return EntityTag(nautilus::entity_tag::names::neutron); break;
     // Am-242g (encoded as Am-242m1 in NDI, plus two different encoding strategies)
     case 95042: [[fallthrough]];
     case 1095242: return EntityTag(95, 242); break;
@@ -330,9 +330,9 @@ inline std::string to_NDI_short_string(EntityTag tag)
         return result;
     } else if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
-        case nautilus::tag::names::photon: return "g"; break;
-        case nautilus::tag::names::neutron: return "n"; break;
-        case nautilus::tag::names::proton: return "p"; break;
+        case nautilus::entity_tag::names::photon: return "g"; break;
+        case nautilus::entity_tag::names::neutron: return "n"; break;
+        case nautilus::entity_tag::names::proton: return "p"; break;
         default: return detail::invalid_short_string;
         }
     } else {
@@ -345,9 +345,9 @@ inline EntityTag from_NDI_short_string(const std::string_view sv)
     // TODO: check for invalid_short_string
     // Particles and special cases
     if ((sv == "g") || (sv == "g0")) {
-        return EntityTag(nautilus::tag::names::photon);
+        return EntityTag(nautilus::entity_tag::names::photon);
     } else if (sv == "n") {
-        return EntityTag(nautilus::tag::names::neutron);
+        return EntityTag(nautilus::entity_tag::names::neutron);
     } else if (sv == "p") {
         return EntityTag(1, 1);
     } else if (sv == "d") {
@@ -383,6 +383,6 @@ inline EntityTag from_NDI_short_string(const std::string_view sv)
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // $ifndef NAUTILUS_FORMAT_NDI_HPP

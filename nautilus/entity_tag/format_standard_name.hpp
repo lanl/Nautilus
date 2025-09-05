@@ -13,7 +13,7 @@
 #include <string>
 #include <string_view>
 
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // ================================================================================================
 
@@ -188,6 +188,6 @@ inline EntityTag from_standard_name(const std::string_view name)
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // #ifndef NAUTILUS_FORMAT_STANDARD_HPP

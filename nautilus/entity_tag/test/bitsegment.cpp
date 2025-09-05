@@ -4,9 +4,9 @@
 
 // ================================================================================================
 
-TEST_CASE("BitSegment operations", "[tag][bitsegment]")
+TEST_CASE("BitSegment operations", "[entity_tag][bitsegment]")
 {
-    using nautilus::tag::BitSegment;
+    using nautilus::entity_tag::BitSegment;
 
     using T = int32_t;
     T num = 0b10000000010100000000101000000001;

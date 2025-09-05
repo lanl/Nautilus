@@ -8,7 +8,7 @@
 #include <string>
 #include <string_view>
 
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // ================================================================================================
 
@@ -58,6 +58,6 @@ inline char to_upper(const char c)
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // #ifndef NAUTILUS_TOKENIZE_HPP

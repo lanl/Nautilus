@@ -9,18 +9,18 @@
 
 // ================================================================================================
 
-TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
+TEST_CASE("format: NDI SZA", "[entity_tag][format][NDI]")
 {
-    using nautilus::tag::from_NDI_SZA;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_NDI_SZA;
+    using nautilus::entity_tag::from_NDI_SZA;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_NDI_SZA;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_NDI_SZA(1) == neutron));
     CHECK(to_NDI_SZA(neutron) == 1);
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_NDI_SZA(0) == photon));
     CHECK(to_NDI_SZA(photon) == 0);
 
@@ -145,21 +145,21 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 
 // ================================================================================================
 
-TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
+TEST_CASE("format: NDI FPID", "[entity_tag][format][NDI]")
 {
-    using nautilus::tag::from_NDI_FPID;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_NDI_FPID;
+    using nautilus::entity_tag::from_NDI_FPID;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_NDI_FPID;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_NDI_FPID(1.999) == neutron));
     CHECK(to_NDI_FPID(neutron, 0.999) == 1.999);
     CHECK(to_NDI_FPID(neutron, 999) == 1.999);
     CHECK(to_NDI_FPID(neutron, "999") == 1.999);
     CHECK(to_NDI_FPID(neutron, "999nm") == 1.999);
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_NDI_FPID(0.000) == photon));
     CHECK(to_NDI_FPID(photon, 0.456) == 0.456);
     CHECK(to_NDI_FPID(photon, 789) == 0.789);
@@ -309,21 +309,21 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
 // ================================================================================================
 
-TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
+TEST_CASE("format: NDI zaid", "[entity_tag][format][NDI]")
 {
-    using nautilus::tag::from_NDI_zaid;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_NDI_zaid;
+    using nautilus::entity_tag::from_NDI_zaid;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_NDI_zaid;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_NDI_zaid("1.999nm") == neutron));
     CHECK(to_NDI_zaid(neutron, 0.999) == "1.999nm");
     CHECK(to_NDI_zaid(neutron, 999) == "1.999nm");
     CHECK(to_NDI_zaid(neutron, "999") == "1.999nm");
     CHECK(to_NDI_zaid(neutron, "999nm") == "1.999nm");
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_NDI_zaid("0.000nm") == photon));
     CHECK(to_NDI_zaid(photon, 0.456) == "0.456nm");
     CHECK(to_NDI_zaid(photon, 789) == "0.789nm");
@@ -473,18 +473,18 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
 // ================================================================================================
 
-TEST_CASE("format: NDI short string", "[tag][format][NDI]")
+TEST_CASE("format: NDI short string", "[entity_tag][format][NDI]")
 {
-    using nautilus::tag::from_NDI_short_string;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_NDI_short_string;
+    using nautilus::entity_tag::from_NDI_short_string;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_NDI_short_string;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_NDI_short_string("n") == neutron));
     CHECK(to_NDI_short_string(neutron) == "n");
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_NDI_short_string("g") == photon));
     CHECK((from_NDI_short_string("g0") == photon));
     CHECK(to_NDI_short_string(photon) == "g");

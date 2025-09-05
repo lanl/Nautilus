@@ -12,8 +12,7 @@
 #include <cstdint>
 #include <type_traits>
 
-// TODO: Change namespace to entity_tag or leave as just tag?
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // ================================================================================================
 
@@ -107,9 +106,9 @@ private:
 
     struct Elemental {};
 
+    // return an EntityTag that's all zero to provide a known starting point
     PORTABLE_FUNCTION constexpr auto null_tag() const
     {
-        // return a tag that's all zero to provide a known starting point
         Storage null_tag = 0;
         null_tag = null_tag & ~null_tag;
         return null_tag;
@@ -304,6 +303,6 @@ public:
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // #ifndef NAUTILUS_ENTITYTAG_HPP

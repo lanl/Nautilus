@@ -41,7 +41,7 @@ TEST_CASE("particle names on GPU", "[names][GPU]")
 
         Kokkos::parallel_for(
             N, KOKKOS_LAMBDA(int n) {
-                using namespace nautilus::tag::names;
+                using namespace nautilus::entity_tag::names;
                 results_g(n) = 0;
                 if (my_strcmp(Particles::get_name(photon), "photon")) {
                     results_g(n) += 1;
@@ -70,7 +70,7 @@ TEST_CASE("particle names on GPU", "[names][GPU]")
 
         Kokkos::parallel_for(
             N, KOKKOS_LAMBDA(int n) {
-                using namespace nautilus::tag::names;
+                using namespace nautilus::entity_tag::names;
                 results_g(n) = 0;
                 if (my_strcmp(Particles::get_symbol(positron), "e\u207A")) {
                     results_g(n) += 1;
@@ -105,7 +105,7 @@ TEST_CASE("nuclide names on GPU", "[names][GPU]")
 
         Kokkos::parallel_for(
             N, KOKKOS_LAMBDA(int n) {
-                using namespace nautilus::tag::names;
+                using namespace nautilus::entity_tag::names;
                 results_g(n) = 0;
                 if (my_strcmp(Nuclides::get_name(2, Nuclides::Standard::IUPAC), "helium")) {
                     results_g(n) += 1;
@@ -131,7 +131,7 @@ TEST_CASE("nuclide names on GPU", "[names][GPU]")
 
         Kokkos::parallel_for(
             N, KOKKOS_LAMBDA(int n) {
-                using namespace nautilus::tag::names;
+                using namespace nautilus::entity_tag::names;
                 results_g(n) = 0;
                 if (my_strcmp(Nuclides::get_symbol(1), "H")) {
                     results_g(n) += 1;

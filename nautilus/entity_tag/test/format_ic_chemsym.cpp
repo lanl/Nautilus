@@ -9,18 +9,18 @@
 
 // ================================================================================================
 
-TEST_CASE("format: IC chemsym", "[tag][format][IC]")
+TEST_CASE("format: IC chemsym", "[entity_tag][format][IC]")
 {
-    using nautilus::tag::from_IC_chemsym;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_IC_chemsym;
+    using nautilus::entity_tag::from_IC_chemsym;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_IC_chemsym;
 
     // Particles
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     CHECK((from_IC_chemsym("nt1") == neutron));
     CHECK(to_IC_chemsym(neutron) == "nt1");
 
-    constexpr EntityTag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
     CHECK((from_IC_chemsym("g0") == photon));
     CHECK((from_IC_chemsym("g") == photon));
     CHECK(to_IC_chemsym(photon) == "g0");
@@ -91,6 +91,6 @@ TEST_CASE("format: IC chemsym", "[tag][format][IC]")
     CHECK(to_IC_chemsym(ca_elemental) == "ca");
 
     // Bad inputs
-    CHECK(to_IC_chemsym(EntityTag(nautilus::tag::names::electron_neutrino)) == "unknown");
+    CHECK(to_IC_chemsym(EntityTag(nautilus::entity_tag::names::electron_neutrino)) == "unknown");
     CHECK(to_IC_chemsym(EntityTag(127, 255)) == "unknown");
 }

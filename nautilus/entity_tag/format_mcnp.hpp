@@ -24,7 +24,7 @@
 #include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/string_processing.hpp"
 
-namespace nautilus::tag {
+namespace nautilus::entity_tag {
 
 // TODO: Move this discussion to the documentation
 // See https://mcnp.lanl.gov/pdf_files/TechReport_2017_LANL_LA-UR-17-29981_WernerArmstrongEtAl.pdf,
@@ -267,38 +267,38 @@ inline char to_MCNP_particle_symbol(EntityTag tag)
         }
     } else if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
-        case nautilus::tag::names::neutron: return 'N'; break;
-        case nautilus::tag::names::photon: return 'P'; break;
-        case nautilus::tag::names::electron: return 'E'; break;
-        case nautilus::tag::names::muon: return '|'; break;
-        case nautilus::tag::names::antineutron: return 'Q'; break;
-        case nautilus::tag::names::electron_neutrino: return 'U'; break;
-        case nautilus::tag::names::muon_neutrino: return 'V'; break;
-        case nautilus::tag::names::positron: return 'F'; break;
-        case nautilus::tag::names::proton: return 'H'; break;
-        case nautilus::tag::names::neutral_lambda_baryon: return 'L'; break;
-        case nautilus::tag::names::positive_sigma_baryon: return '+'; break;
-        case nautilus::tag::names::negative_sigma_baryon: return '-'; break;
-        case nautilus::tag::names::neutral_xi_baryon: return 'X'; break;
-        case nautilus::tag::names::negative_xi_baryon: return 'Y'; break;
-        case nautilus::tag::names::negative_omega_baryon: return 'O'; break;
-        case nautilus::tag::names::antimuon: return '!'; break;
-        case nautilus::tag::names::electron_antineutrino: return '<'; break;
-        case nautilus::tag::names::muon_antineutrino: return '>'; break;
-        case nautilus::tag::names::antiproton: return 'G'; break;
-        case nautilus::tag::names::positive_pion: return '/'; break;
-        case nautilus::tag::names::neutral_pion: return 'Z'; break;
-        case nautilus::tag::names::positive_kaon: return 'K'; break;
-        case nautilus::tag::names::short_kaon: return '%'; break;
-        case nautilus::tag::names::long_kaon: return '^'; break;
-        case nautilus::tag::names::neutral_lambda_antibaryon: return 'B'; break;
-        case nautilus::tag::names::negative_sigma_antibaryon: return '_'; break;
-        case nautilus::tag::names::positive_sigma_antibaryon: return '~'; break;
-        case nautilus::tag::names::neutral_xi_antibaryon: return 'C'; break;
-        case nautilus::tag::names::positive_xi_antibaryon: return 'W'; break;
-        case nautilus::tag::names::positive_omega_antibaryon: return '@'; break;
-        case nautilus::tag::names::negative_pion: return '*'; break;
-        case nautilus::tag::names::negative_kaon: return '?'; break;
+        case nautilus::entity_tag::names::neutron: return 'N'; break;
+        case nautilus::entity_tag::names::photon: return 'P'; break;
+        case nautilus::entity_tag::names::electron: return 'E'; break;
+        case nautilus::entity_tag::names::muon: return '|'; break;
+        case nautilus::entity_tag::names::antineutron: return 'Q'; break;
+        case nautilus::entity_tag::names::electron_neutrino: return 'U'; break;
+        case nautilus::entity_tag::names::muon_neutrino: return 'V'; break;
+        case nautilus::entity_tag::names::positron: return 'F'; break;
+        case nautilus::entity_tag::names::proton: return 'H'; break;
+        case nautilus::entity_tag::names::neutral_lambda_baryon: return 'L'; break;
+        case nautilus::entity_tag::names::positive_sigma_baryon: return '+'; break;
+        case nautilus::entity_tag::names::negative_sigma_baryon: return '-'; break;
+        case nautilus::entity_tag::names::neutral_xi_baryon: return 'X'; break;
+        case nautilus::entity_tag::names::negative_xi_baryon: return 'Y'; break;
+        case nautilus::entity_tag::names::negative_omega_baryon: return 'O'; break;
+        case nautilus::entity_tag::names::antimuon: return '!'; break;
+        case nautilus::entity_tag::names::electron_antineutrino: return '<'; break;
+        case nautilus::entity_tag::names::muon_antineutrino: return '>'; break;
+        case nautilus::entity_tag::names::antiproton: return 'G'; break;
+        case nautilus::entity_tag::names::positive_pion: return '/'; break;
+        case nautilus::entity_tag::names::neutral_pion: return 'Z'; break;
+        case nautilus::entity_tag::names::positive_kaon: return 'K'; break;
+        case nautilus::entity_tag::names::short_kaon: return '%'; break;
+        case nautilus::entity_tag::names::long_kaon: return '^'; break;
+        case nautilus::entity_tag::names::neutral_lambda_antibaryon: return 'B'; break;
+        case nautilus::entity_tag::names::negative_sigma_antibaryon: return '_'; break;
+        case nautilus::entity_tag::names::positive_sigma_antibaryon: return '~'; break;
+        case nautilus::entity_tag::names::neutral_xi_antibaryon: return 'C'; break;
+        case nautilus::entity_tag::names::positive_xi_antibaryon: return 'W'; break;
+        case nautilus::entity_tag::names::positive_omega_antibaryon: return '@'; break;
+        case nautilus::entity_tag::names::negative_pion: return '*'; break;
+        case nautilus::entity_tag::names::negative_kaon: return '?'; break;
         default: return detail::invalid_particle_symbol;
         }
     } else {
@@ -311,42 +311,42 @@ inline EntityTag from_MCNP_particle_symbol(const char c)
     // Given that this is the "particle symbol", we prefer a particle to a nuclide in the case
     // where the choice is ambiguous (proton vs H-1)
     switch (c) {
-    case 'N': return EntityTag(nautilus::tag::names::neutron); break;
-    case 'P': return EntityTag(nautilus::tag::names::photon); break;
-    case 'E': return EntityTag(nautilus::tag::names::electron); break;
-    case '|': return EntityTag(nautilus::tag::names::muon); break;
-    case 'Q': return EntityTag(nautilus::tag::names::antineutron); break;
-    case 'U': return EntityTag(nautilus::tag::names::electron_neutrino); break;
-    case 'V': return EntityTag(nautilus::tag::names::muon_neutrino); break;
-    case 'F': return EntityTag(nautilus::tag::names::positron); break;
-    case 'H': return EntityTag(nautilus::tag::names::proton); break;
-    case 'L': return EntityTag(nautilus::tag::names::neutral_lambda_baryon); break;
-    case '+': return EntityTag(nautilus::tag::names::positive_sigma_baryon); break;
-    case '-': return EntityTag(nautilus::tag::names::negative_sigma_baryon); break;
-    case 'X': return EntityTag(nautilus::tag::names::neutral_xi_baryon); break;
-    case 'Y': return EntityTag(nautilus::tag::names::negative_xi_baryon); break;
-    case 'O': return EntityTag(nautilus::tag::names::negative_omega_baryon); break;
-    case '!': return EntityTag(nautilus::tag::names::antimuon); break;
-    case '<': return EntityTag(nautilus::tag::names::electron_antineutrino); break;
-    case '>': return EntityTag(nautilus::tag::names::muon_antineutrino); break;
-    case 'G': return EntityTag(nautilus::tag::names::antiproton); break;
-    case '/': return EntityTag(nautilus::tag::names::positive_pion); break;
-    case 'Z': return EntityTag(nautilus::tag::names::neutral_pion); break;
-    case 'K': return EntityTag(nautilus::tag::names::positive_kaon); break;
-    case '%': return EntityTag(nautilus::tag::names::short_kaon); break;
-    case '^': return EntityTag(nautilus::tag::names::long_kaon); break;
-    case 'B': return EntityTag(nautilus::tag::names::neutral_lambda_antibaryon); break;
-    case '_': return EntityTag(nautilus::tag::names::negative_sigma_antibaryon); break;
-    case '~': return EntityTag(nautilus::tag::names::positive_sigma_antibaryon); break;
-    case 'C': return EntityTag(nautilus::tag::names::neutral_xi_antibaryon); break;
-    case 'W': return EntityTag(nautilus::tag::names::positive_xi_antibaryon); break;
-    case '@': return EntityTag(nautilus::tag::names::positive_omega_antibaryon); break;
+    case 'N': return EntityTag(nautilus::entity_tag::names::neutron); break;
+    case 'P': return EntityTag(nautilus::entity_tag::names::photon); break;
+    case 'E': return EntityTag(nautilus::entity_tag::names::electron); break;
+    case '|': return EntityTag(nautilus::entity_tag::names::muon); break;
+    case 'Q': return EntityTag(nautilus::entity_tag::names::antineutron); break;
+    case 'U': return EntityTag(nautilus::entity_tag::names::electron_neutrino); break;
+    case 'V': return EntityTag(nautilus::entity_tag::names::muon_neutrino); break;
+    case 'F': return EntityTag(nautilus::entity_tag::names::positron); break;
+    case 'H': return EntityTag(nautilus::entity_tag::names::proton); break;
+    case 'L': return EntityTag(nautilus::entity_tag::names::neutral_lambda_baryon); break;
+    case '+': return EntityTag(nautilus::entity_tag::names::positive_sigma_baryon); break;
+    case '-': return EntityTag(nautilus::entity_tag::names::negative_sigma_baryon); break;
+    case 'X': return EntityTag(nautilus::entity_tag::names::neutral_xi_baryon); break;
+    case 'Y': return EntityTag(nautilus::entity_tag::names::negative_xi_baryon); break;
+    case 'O': return EntityTag(nautilus::entity_tag::names::negative_omega_baryon); break;
+    case '!': return EntityTag(nautilus::entity_tag::names::antimuon); break;
+    case '<': return EntityTag(nautilus::entity_tag::names::electron_antineutrino); break;
+    case '>': return EntityTag(nautilus::entity_tag::names::muon_antineutrino); break;
+    case 'G': return EntityTag(nautilus::entity_tag::names::antiproton); break;
+    case '/': return EntityTag(nautilus::entity_tag::names::positive_pion); break;
+    case 'Z': return EntityTag(nautilus::entity_tag::names::neutral_pion); break;
+    case 'K': return EntityTag(nautilus::entity_tag::names::positive_kaon); break;
+    case '%': return EntityTag(nautilus::entity_tag::names::short_kaon); break;
+    case '^': return EntityTag(nautilus::entity_tag::names::long_kaon); break;
+    case 'B': return EntityTag(nautilus::entity_tag::names::neutral_lambda_antibaryon); break;
+    case '_': return EntityTag(nautilus::entity_tag::names::negative_sigma_antibaryon); break;
+    case '~': return EntityTag(nautilus::entity_tag::names::positive_sigma_antibaryon); break;
+    case 'C': return EntityTag(nautilus::entity_tag::names::neutral_xi_antibaryon); break;
+    case 'W': return EntityTag(nautilus::entity_tag::names::positive_xi_antibaryon); break;
+    case '@': return EntityTag(nautilus::entity_tag::names::positive_omega_antibaryon); break;
     case 'D': return EntityTag(1, 2); break;
     case 'T': return EntityTag(1, 3); break;
     case 'S': return EntityTag(2, 3); break;
     case 'A': return EntityTag(2, 4); break;
-    case '*': return EntityTag(nautilus::tag::names::negative_pion); break;
-    case '?': return EntityTag(nautilus::tag::names::negative_kaon); break;
+    case '*': return EntityTag(nautilus::entity_tag::names::negative_pion); break;
+    case '?': return EntityTag(nautilus::entity_tag::names::negative_kaon); break;
     case '#': return EntityTag(EntityTag::unknown); break; // # can be _any_ heavy ion, so unknown
     default: return EntityTag(EntityTag::unknown);
     }
@@ -354,6 +354,6 @@ inline EntityTag from_MCNP_particle_symbol(const char c)
 
 // ================================================================================================
 
-} // end namespace nautilus::tag
+} // end namespace nautilus::entity_tag
 
 #endif // $ifndef NAUTILUS_FORMAT_NDI_HPP

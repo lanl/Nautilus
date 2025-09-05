@@ -9,13 +9,13 @@
 
 // ================================================================================================
 
-TEST_CASE("format: long standard name", "[tag][format][standard name]")
+TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
 {
-    using nautilus::tag::from_standard_name;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_long_standard_name;
-    using nautilus::tag::names::Nuclides;
-    using nautilus::tag::names::Particles;
+    using nautilus::entity_tag::from_standard_name;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_long_standard_name;
+    using nautilus::entity_tag::names::Nuclides;
+    using nautilus::entity_tag::names::Particles;
 
     // "Normal" names with optional cases
     constexpr EntityTag co59g(27, 59);
@@ -85,14 +85,14 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     CHECK(to_long_standard_name(cs_elemental, Nuclides::Standard::American) == "elemental cesium");
 
     // Particles
-    constexpr EntityTag nu_e(nautilus::tag::names::electron_neutrino);
+    constexpr EntityTag nu_e(nautilus::entity_tag::names::electron_neutrino);
     const std::string default_nu_e = "electron neutrino";
     CHECK((from_standard_name(default_nu_e) == nu_e));
     CHECK(to_long_standard_name(nu_e) == default_nu_e);
     CHECK(to_long_standard_name(nu_e, Particles::Standard::PDG) == default_nu_e);
     CHECK(to_long_standard_name(nu_e, Particles::Standard::alternate) == default_nu_e);
 
-    constexpr EntityTag aL0(nautilus::tag::names::neutral_lambda_antibaryon);
+    constexpr EntityTag aL0(nautilus::entity_tag::names::neutral_lambda_antibaryon);
     const std::string default_aL0 = "neutral lambda antibaryon";
     const std::string alternate_aL0 = "antiparticle of the neutral lambda baryon";
     CHECK((from_standard_name(default_aL0) == aL0));
@@ -102,7 +102,7 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     CHECK(to_long_standard_name(aL0, Particles::Standard::alternate) == alternate_aL0);
 
     // Distinction between hydrogen-1 (nuclide) and proton (particle)
-    constexpr EntityTag proton(nautilus::tag::names::proton);
+    constexpr EntityTag proton(nautilus::entity_tag::names::proton);
     CHECK((from_standard_name("proton") == proton));
     CHECK(to_long_standard_name(proton) == "proton");
     constexpr EntityTag h1(1, 1);
@@ -114,10 +114,10 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
     constexpr EntityTag og294(118, 294);
     CHECK((from_standard_name("oganesson-294") == og294));
     CHECK(to_long_standard_name(og294) == "oganesson-294");
-    constexpr EntityTag g(nautilus::tag::names::photon);
+    constexpr EntityTag g(nautilus::entity_tag::names::photon);
     CHECK((from_standard_name("photon") == g));
     CHECK(to_long_standard_name(g) == "photon");
-    constexpr EntityTag aOm_plus(nautilus::tag::names::positive_omega_antibaryon);
+    constexpr EntityTag aOm_plus(nautilus::entity_tag::names::positive_omega_antibaryon);
     CHECK((from_standard_name("positive omega antibaryon") == aOm_plus));
     CHECK((from_standard_name("positive omega antibaryon") == aOm_plus));
     CHECK((from_standard_name("antiparticle of the negative omega baryon") == aOm_plus));
@@ -146,13 +146,13 @@ TEST_CASE("format: long standard name", "[tag][format][standard name]")
 
 // ================================================================================================
 
-TEST_CASE("format: short standard name", "[tag][format][standard name]")
+TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
 {
-    using nautilus::tag::from_standard_name;
-    using nautilus::tag::EntityTag;
-    using nautilus::tag::to_short_standard_name;
-    using nautilus::tag::names::Nuclides;
-    using nautilus::tag::names::Particles;
+    using nautilus::entity_tag::from_standard_name;
+    using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::to_short_standard_name;
+    using nautilus::entity_tag::names::Nuclides;
+    using nautilus::entity_tag::names::Particles;
 
     // "Normal" names with optional cases
     constexpr EntityTag co59g(27, 59);
@@ -180,18 +180,18 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     CHECK(to_short_standard_name(cs_elemental) == "Cs");
 
     // Particles
-    constexpr EntityTag nu_e(nautilus::tag::names::electron_neutrino);
+    constexpr EntityTag nu_e(nautilus::entity_tag::names::electron_neutrino);
     const std::string default_nu_e = "\u03BD\u2091";
     CHECK((from_standard_name(default_nu_e) == nu_e));
     CHECK(to_short_standard_name(nu_e) == default_nu_e);
 
-    constexpr EntityTag aL0(nautilus::tag::names::neutral_lambda_antibaryon);
+    constexpr EntityTag aL0(nautilus::entity_tag::names::neutral_lambda_antibaryon);
     const std::string default_aL0 = "\u039B\u0304\u2070";
     CHECK((from_standard_name(default_aL0) == aL0));
     CHECK(to_short_standard_name(aL0) == default_aL0);
 
     // Distinction between hydrogen-1 (nuclide) and proton (particle)
-    constexpr EntityTag proton(nautilus::tag::names::proton);
+    constexpr EntityTag proton(nautilus::entity_tag::names::proton);
     CHECK((from_standard_name("p") == proton));
     CHECK(to_short_standard_name(proton) == "p");
     constexpr EntityTag h1(1, 1);
@@ -204,7 +204,7 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     CHECK((from_standard_name("P") == p_elemental));
     CHECK(to_short_standard_name(p_elemental) == "P");
     // -- n (neutron) and N (nitrogen elemental)
-    constexpr EntityTag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     constexpr EntityTag n_elemental(7, EntityTag::elemental);
     CHECK((from_standard_name("n") == neutron));
     CHECK(to_short_standard_name(neutron) == "n");
@@ -216,10 +216,10 @@ TEST_CASE("format: short standard name", "[tag][format][standard name]")
     constexpr EntityTag og294(118, 294);
     CHECK((from_standard_name("Og-294") == og294));
     CHECK(to_short_standard_name(og294) == "Og-294");
-    constexpr EntityTag g(nautilus::tag::names::photon);
+    constexpr EntityTag g(nautilus::entity_tag::names::photon);
     CHECK((from_standard_name("\u03B3") == g));
     CHECK(to_short_standard_name(g) == "\u03B3");
-    constexpr EntityTag aOm_plus(nautilus::tag::names::positive_omega_antibaryon);
+    constexpr EntityTag aOm_plus(nautilus::entity_tag::names::positive_omega_antibaryon);
     CHECK((from_standard_name("\u03A9\u0304\u207A") == aOm_plus));
     CHECK(to_short_standard_name(aOm_plus) == "\u03A9\u0304\u207A");
 

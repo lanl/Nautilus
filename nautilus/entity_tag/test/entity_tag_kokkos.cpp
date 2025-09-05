@@ -7,4 +7,4 @@
 // ================================================================================================
 
 // TODO: Write an EntityTag kokkos test
-TEST_CASE("EntityTag on GPUs", "[tag][entity_tag][GPU]") { CHECK(true); }
+TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]") { CHECK(true); }
