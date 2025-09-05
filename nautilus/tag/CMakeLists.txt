@@ -7,8 +7,8 @@ add_test_target(test_tag
     test/format_standard_name.cpp   # Not currently expected to run on GPUs
     test/names.cpp
     $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/names_kokkos.cpp>
-    test/pantag.cpp # TODO: Rename pantag.cpp, pantag_kokkos.cpp
-    $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/pantag_kokkos.cpp>
+    test/entity_tag.cpp
+    $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/entity_tag_kokkos.cpp>
     #TODO: test/string_processing.cpp
 )
 
