@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "nautilus/tag/pantag.hpp"
+#include "nautilus/tag/entity_tag.hpp"
 #include "nautilus/tag/string_processing.hpp"
 
 namespace nautilus::tag {

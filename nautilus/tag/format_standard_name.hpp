@@ -2,7 +2,7 @@
 #define NAUTILUS_FORMAT_STANDARD_HPP
 
 #include "nautilus/tag/names.hpp"
-#include "nautilus/tag/pantag.hpp"
+#include "nautilus/tag/entity_tag.hpp"
 #include "nautilus/tag/string_processing.hpp"
 
 #include "ports-of-call/portability.hpp"
