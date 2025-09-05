@@ -7,16 +7,6 @@
 // ================================================================================================
 
 // TODO: Where should this go?  Very likely not here.
-PORTABLE_FUNCTION constexpr bool my_strcmp(const std::string_view sv, const char * s2)
-{
-    const char * s1 = sv.data();
-    for (; (*s1 != '\0') && (*s2 != '\0'); ++s1, ++s2) {
-        if (*s1 != *s2) {
-            return false;
-        }
-    }
-    return (*s1 == '\0') && (*s2 == '\0');
-};
 PORTABLE_FUNCTION constexpr bool my_strcmp(const char * s1, const char * s2)
 {
     for (; (*s1 != '\0') && (*s2 != '\0'); ++s1, ++s2) {
@@ -25,6 +15,10 @@ PORTABLE_FUNCTION constexpr bool my_strcmp(const char * s1, const char * s2)
         }
     }
     return (*s1 == '\0') && (*s2 == '\0');
+};
+PORTABLE_FUNCTION constexpr bool my_strcmp(const std::string_view sv, const char * s2)
+{
+    return my_strcmp(sv.data(), s2);
 };
 
 // ================================================================================================
