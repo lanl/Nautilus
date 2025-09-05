@@ -1,6 +1,6 @@
-#include "nautilus/tag/format_standard_name.hpp"
-#include "nautilus/tag/names.hpp"
-#include "nautilus/tag/entity_tag.hpp"
+#include "nautilus/entity_tag/format_standard_name.hpp"
+#include "nautilus/entity_tag/names.hpp"
+#include "nautilus/entity_tag/entity_tag.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 

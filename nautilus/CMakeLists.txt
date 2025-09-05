@@ -6,5 +6,4 @@ add_test_target(test_all
     test/zaid_tools.cpp
 )
 
-# TODO: Rename directory to entity_tag?
-add_subdirectory(tag)
+add_subdirectory(entity_tag)

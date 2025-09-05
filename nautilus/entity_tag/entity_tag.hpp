@@ -1,8 +1,8 @@
 #ifndef NAUTILUS_ENTITYTAG_HPP
 #define NAUTILUS_ENTITYTAG_HPP
 
-#include "nautilus/tag/bitsegment.hpp"
-#include "nautilus/tag/names.hpp"
+#include "nautilus/entity_tag/bitsegment.hpp"
+#include "nautilus/entity_tag/names.hpp"
 
 #include "ports-of-call/portability.hpp"
 

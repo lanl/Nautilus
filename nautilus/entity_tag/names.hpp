@@ -1,7 +1,7 @@
 #ifndef NAUTILUS_NAMES_HPP
 #define NAUTILUS_NAMES_HPP
 
-#include "nautilus/tag/identifiers.hpp"
+#include "nautilus/entity_tag/identifiers.hpp"
 
 #include <array>
 #include <string_view>

@@ -1,9 +1,9 @@
 #ifndef NAUTILUS_FORMAT_STANDARD_HPP
 #define NAUTILUS_FORMAT_STANDARD_HPP
 
-#include "nautilus/tag/names.hpp"
-#include "nautilus/tag/entity_tag.hpp"
-#include "nautilus/tag/string_processing.hpp"
+#include "nautilus/entity_tag/names.hpp"
+#include "nautilus/entity_tag/entity_tag.hpp"
+#include "nautilus/entity_tag/string_processing.hpp"
 
 #include "ports-of-call/portability.hpp"
 
