@@ -12,14 +12,15 @@ namespace nautilus::entity_tag {
 // ================================================================================================
 // IC chemsym
 
+const std::string invalid_ic_chemsym = "unknown";
+
 inline std::string to_IC_chemsym(EntityTag tag)
 {
-    const std::string invalid = "unknown";
     if (tag.is_nuclide()) {
         // start with the atomic symbol, all lowercase
         const auto Z = tag.get_atomic_number();
         if ((Z < 1) || (Z > names::Nuclides::count)) {
-            return invalid;
+            return invalid_ic_chemsym;
         }
         std::string result(names::Nuclides::get_symbol(Z));
         result[0] = to_lower(result[0]);
@@ -53,15 +54,18 @@ inline std::string to_IC_chemsym(EntityTag tag)
         switch (pidx) {
         case names::photon: return "g0"; break;
         case names::neutron: return "nt1"; break;
-        default: return invalid;
+        default: return invalid_ic_chemsym;
         }
     } else /* "unknown" tag */ {
-        return invalid;
+        return invalid_ic_chemsym;
     }
 }
 
 inline EntityTag from_IC_chemsym(const std::string_view sv0)
 {
+    if (sv0 == invalid_ic_chemsym) {
+        return EntityTag(EntityTag::unknown);
+    }
     // Throw out the optional suffix
     const std::string sv(sv0.substr(0, sv0.find('.')));
     // Check for known particles or special cases
