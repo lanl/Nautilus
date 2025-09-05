@@ -1,13 +1,6 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
-// TODO: What types to use?
-//    -- Currently I have SZA as int.  I should specify the precision (int32_t or similar) and
-//       decide if it should be signed or unsigned.  If there's not a clear "best" answer, consider
-//       templating on the SZA type.
-//    -- Currently I have FPID as double.  I should check if it should be double or float.  If
-//       there's not a clear "best" answer, consider templating on the SZA type.
-
 // TODO: I currently have a mix of things with and without PORTABLE_FUNCTION.  Decide if SZA and/or
 //       FPID should be available on the GPU.  I know zaid should not be available on the GPU
 //       because it involves strings.
@@ -32,21 +25,6 @@ namespace nautilus::entity_tag {
 // ================================================================================================
 
 namespace detail {
-
-// TODO: These are functions instead of constexpr values in case we need to template on the type
-PORTABLE_FUNCTION inline constexpr int invalid_SZA()
-{
-    // TODO: This value won't work if SZA type is unsigned.
-    return -1;
-}
-PORTABLE_FUNCTION inline constexpr double invalid_FPID()
-{
-    return std::numeric_limits<double>::max();
-}
-const std::string invalid_zaid = "unknown";
-const std::string invalid_short_string = "unknown";
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 inline bool match_table_suffix(const std::string_view sv)
 {
@@ -166,6 +144,8 @@ struct Am244 {
 // ================================================================================================
 // NDI SZA
 
+constexpr int invalid_ndi_sza = -1;
+
 template <typename T>
 int to_NDI_SZA(const EntityTag tag, T && library)
 {
@@ -174,7 +154,7 @@ int to_NDI_SZA(const EntityTag tag, T && library)
         case names::photon: return 0; break;
         case names::neutron: return 1; break;
         case names::proton: return 1001; break;
-        default: return detail::invalid_SZA(); break;
+        default: return invalid_ndi_sza; break;
         }
     } else if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
@@ -208,7 +188,7 @@ int to_NDI_SZA(const EntityTag tag, T && library)
         // standard cases fall through to here
         return (S * 1000 + Z) * 1000 + A;
     } else {
-        return detail::invalid_SZA();
+        return invalid_ndi_sza;
     }
 }
 
@@ -253,12 +233,14 @@ inline EntityTag from_NDI_SZA(const int sza)
 // NDI FPID
 // TODO: Still not sure about the name, but it's better than "the as-yet-unnamed format"
 
+constexpr double invalid_ndi_fpid = std::numeric_limits<double>::max();
+
 template <typename T>
 double to_NDI_FPID(EntityTag tag, T && library)
 {
     const auto SZA = to_NDI_SZA(tag, std::forward<T>(library));
-    if (SZA == detail::invalid_SZA()) {
-        return detail::invalid_FPID();
+    if (SZA == invalid_ndi_sza) {
+        return invalid_ndi_fpid;
     }
     const double suffix = detail::table_suffix_decimal(std::forward<T>(library));
     return static_cast<double>(SZA) + suffix;
@@ -267,7 +249,7 @@ double to_NDI_FPID(EntityTag tag, T && library)
 // Throw away the suffix (after the decimal) and coerce into an integer
 inline EntityTag from_NDI_FPID(const double fpid)
 {
-    if (fpid == detail::invalid_FPID()) {
+    if (fpid == invalid_ndi_fpid) {
         return EntityTag(EntityTag::unknown);
     }
     // Throw away the suffix, because going _from_ NDI doesn't need to know the library
@@ -277,13 +259,15 @@ inline EntityTag from_NDI_FPID(const double fpid)
 // ================================================================================================
 // NDI zaid
 
+const std::string invalid_ndi_zaid = "unknown";
+
 template <typename T>
 std::string to_NDI_zaid(EntityTag tag, const T & library)
 {
     assert(detail::match_table_suffix(library));
     const auto SZA = to_NDI_SZA(tag, library);
-    if (SZA == detail::invalid_SZA()) {
-        return detail::invalid_zaid;
+    if (SZA == invalid_ndi_sza) {
+        return invalid_ndi_zaid;
     }
     std::string zaid = std::to_string(SZA);
     zaid.append(".");
@@ -293,7 +277,7 @@ std::string to_NDI_zaid(EntityTag tag, const T & library)
 
 inline EntityTag from_NDI_zaid(const std::string_view sv)
 {
-    if (sv == detail::invalid_zaid) {
+    if (sv == invalid_ndi_zaid) {
         return EntityTag(EntityTag::unknown);
     }
     return from_NDI_SZA(std::atoi(sv.substr(0, sv.find('.')).data()));
@@ -301,6 +285,8 @@ inline EntityTag from_NDI_zaid(const std::string_view sv)
 
 // ================================================================================================
 // NDI short string
+
+const std::string invalid_ndi_short_string = "unknown";
 
 inline std::string to_NDI_short_string(EntityTag tag)
 {
@@ -313,11 +299,11 @@ inline std::string to_NDI_short_string(EntityTag tag)
         if ((Z == 95) && (A == 242)) {
             // Am-242g and Am-242m1 are reversed in NDI, so Am-242m1 is allowed but Am-242g is not
             if (tag.get_metastable_index() != 1) {
-                return detail::invalid_short_string;
+                return invalid_ndi_short_string;
             }
         } else {
             if (!tag.is_ground()) {
-                return detail::invalid_short_string;
+                return invalid_ndi_short_string;
             }
         }
         // handle special cases
@@ -332,7 +318,7 @@ inline std::string to_NDI_short_string(EntityTag tag)
         }
         // fallthrough to "standard" case
         if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return detail::invalid_short_string;
+            return invalid_ndi_short_string;
         }
         std::string result(names::Nuclides::get_symbol(Z));
         result[0] = to_lower(result[0]);
@@ -343,17 +329,17 @@ inline std::string to_NDI_short_string(EntityTag tag)
         case names::photon: return "g"; break;
         case names::neutron: return "n"; break;
         case names::proton: return "p"; break;
-        default: return detail::invalid_short_string;
+        default: return invalid_ndi_short_string;
         }
     } else {
-        return detail::invalid_short_string;
+        return invalid_ndi_short_string;
     }
 }
 
 inline EntityTag from_NDI_short_string(const std::string_view sv)
 {
     // Unknown, particles, special cases
-    if (sv == detail::invalid_short_string) {
+    if (sv == invalid_ndi_short_string) {
         return EntityTag(EntityTag::unknown);
     } else if ((sv == "g") || (sv == "g0")) {
         return EntityTag(names::photon);
