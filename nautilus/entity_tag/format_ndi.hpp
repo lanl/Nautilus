@@ -65,6 +65,7 @@ inline bool match_table_suffix(const std::string_view sv)
     }
     return true;
 }
+
 inline int table_suffix_integer(const std::string_view sv)
 {
     assert(match_table_suffix);
@@ -72,6 +73,7 @@ inline int table_suffix_integer(const std::string_view sv)
     std::from_chars(sv.begin(), sv.begin() + 3, result);
     return result;
 }
+
 inline double table_suffix_decimal(const int n) { return 1.0e-3 * n; }
 inline double table_suffix_decimal(const double d) { return d; }
 inline double table_suffix_decimal(const std::string_view sv)
@@ -80,17 +82,18 @@ inline double table_suffix_decimal(const std::string_view sv)
     return 1.0e-3 * num;
 }
 
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline std::string to_suffix_string(const int n)
+inline std::string table_suffix_string(const int n)
 {
     assert(n >= 0);
     assert(n < 1000);
     const auto ns = std::to_string(n);
     return std::string(3 - ns.size(), '0') + ns + "nm";
 }
-inline std::string to_suffix_string(const double d) { return to_suffix_string(int(d * 1000)); }
-inline std::string to_suffix_string(const std::string_view sv)
+inline std::string table_suffix_string(const double d)
+{
+    return table_suffix_string(static_cast<int>(d * 1000));
+}
+inline std::string table_suffix_string(const std::string_view sv)
 {
     assert(match_table_suffix(sv));
     std::string suffix(sv);
@@ -284,7 +287,7 @@ std::string to_NDI_zaid(EntityTag tag, const T & library)
     }
     std::string zaid = std::to_string(SZA);
     zaid.append(".");
-    zaid.append(detail::to_suffix_string(library));
+    zaid.append(detail::table_suffix_string(library));
     return zaid;
 }
 
