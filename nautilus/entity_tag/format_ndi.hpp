@@ -1,13 +1,6 @@
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 
-// TODO: In the documentation, explain that NDI formats are lossy because of the conversion
-//       proton -> (NDI format) -> H-1
-
-// TODO: In the documentation, explain that floating-point formats are not recommended, but are
-//       only supported for customers already using such formats.  This includes specifying the
-//       library by a floating-point suffix (e.g., 0.654) and the entire FPID format.
-
 #include <algorithm>
 #include <charconv>
 #include <cmath>

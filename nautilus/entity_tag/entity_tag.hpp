@@ -16,24 +16,6 @@ namespace nautilus::entity_tag {
 
 // ================================================================================================
 
-// TODO: Add a discussion to the documentation about excited vs metastable states
-//    -- Metastable is not well-defined
-//    -- All formats currently supported (appear to) share the same metastable definition
-//    -- Some formats we haven't (yet?) implemented may use different definition of metastable
-//    -- Some formats we haven't (yet?) implemented, such as GNDS and upcoming "modern" NJOY use
-//       excitation state indices.
-//    -- Interestingly, https://en.wikipedia.org/wiki/Nuclear_isomer also gives two definitions of
-//       metastable and the reasons for them, giving a nice illustration of why "metastable" is
-//       ill-defined:
-//       > "Metastable" describes nuclei whose excited states have half-lives of 1e−9 seconds or
-//       > longer, 100 to 1000 times longer than the half-lives of the excited nuclear states that
-//       > decay with a "prompt" half-life (ordinarily on the order of 1e−12 seconds). Some
-//       > references recommend 5e−9 seconds to distinguish the metastable half-life from the
-//       > normal "prompt" gamma-emission half-life.
-//       The citation Wikipedia gives for this is  Walker, Philip M.; Carroll, James J. (2007).
-//       "Nuclear Isomers: Recipes from the Past and Ingredients for the Future" (PDF). Nuclear
-//       Physics News. 17 (2): 11–15. doi:10.1080/10506890701404206. S2CID 22342780.
-
 class EntityTag
 {
 private:

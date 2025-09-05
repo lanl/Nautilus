@@ -1,13 +1,6 @@
 #ifndef NAUTILUS_FORMAT_MCNP_HPP
 #define NAUTILUS_FORMAT_MCNP_HPP
 
-// TODO: In the documentation, explain that MCNP formats are lossy:
-//    -- Full and partial zaid will map proton and H-1 to the same value, and that value will then
-//       map back to Nautilus as H-1
-//    -- Particle symbol will map proton and H-1 to the same value, and that value will then map
-//       back to Nautilus as proton
-//    -- Check all these possible changes, because my implementation may have changed some details.
-
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -17,33 +10,6 @@
 
 namespace nautilus::entity_tag {
 
-// TODO: Move this discussion to the documentation
-// See https://mcnp.lanl.gov/pdf_files/TechReport_2017_LANL_LA-UR-17-29981_WernerArmstrongEtAl.pdf,
-// Table 3-32, page 3-56, for details of the MCNP zaid:
-// -- A full zaid is ZZZAAA.abx, where
-//    -- ZZZ is the atomic number
-//    -- AAA is one of
-//       -- 000 for elementals
-//       -- the atomic mass number for ground-state nuclides
-//       -- the atomic mass number + 300 + (m x 100) for metastable states (m = metastable index)
-//    -- ab is the alphanumeric library identifier
-//    -- x is the class of data (see Table 11-1 on page 11-1 for classes and their x value)
-//    -- See Note 2 below the table (page 3-58): some(?) particles can be encoded in this format as
-//       well, because the note says that photons and electrons use AAA = 000.  However, I cannot
-//       find any further information about this, so Nautilus will not support particles.
-//    -- Also discussed on page 1-13 under the item "Nuclide Identification Number (ZAID)"
-// -- A partial zaid is just the ZZZAAA part of the full zaid (drop .abx)
-// My notes say that Am-242 has g and m1 reversed as in NDI, but they hope to fix that in a future
-// format (string-based) that's in progress.
-
-// N.B.: MNCP sometimes uses the term "helion" for a He-3 nucleus (similar to "alpha" for a He-4
-// nucleus or "deutron" for a H-2 nucleus or "triton" for a H-3 nucleus).
-
-// MCNP also has the particle symbol, shown in Table 2-2 (page 2-11) of the document referenced
-// above.  This format includes H-1 (as a proton), H-2 (as a deutron), H-3 (as a triton), He-3 (as
-// a helion), and He-4 (as an alpha particle), and has a catch-all for "heavy ions" (noted to be
-// any ion that's not one of the five previously-mentioned light ions).
-
 // ================================================================================================
 // MCNP partial zaid
 
@@ -52,10 +18,6 @@ constexpr int invalid_mcnp_partial_zaid = -1;
 inline int to_MCNP_partial_zaid(const EntityTag tag)
 {
     if (!tag.is_nuclide()) {
-        // The MCNP zaid is a nuclide-focused format that (as far as I can tell at the moment) does
-        // not include any particles.  For this reason, we don't translate a proton (particle) to
-        // the MCNP partial zaid format (where it would become H-1).
-        // -- TODO: Shift this note to the documentation.
         return invalid_mcnp_partial_zaid;
     } else {
         // Get the values needed to assemble the partial zaid
