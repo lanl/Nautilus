@@ -20,6 +20,7 @@
 //       library by a floating-point suffix (e.g., 0.654) and the entire FPID format.
 
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <limits>
 
@@ -67,9 +68,9 @@ inline bool match_table_suffix(const std::string_view sv)
 inline int table_suffix_integer(const std::string_view sv)
 {
     assert(match_table_suffix);
-    // C++17 introduces std::from_chars, but it's not constexpr until C++23
-    std::array<char, 4> s = {sv[0], sv[1], sv[2], '\0'};
-    return std::stoi(s.data());
+    int result = 0;
+    std::from_chars(sv.begin(), sv.begin() + 3, result);
+    return result;
 }
 inline double table_suffix_decimal(const int n) { return 1.0e-3 * n; }
 inline double table_suffix_decimal(const double d) { return d; }
@@ -101,19 +102,14 @@ inline std::string to_suffix_string(const std::string_view sv)
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// when converting to NDI, indicates we don't know the library so the default should be used
-struct NoLibrary {};
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 template <typename T, typename Container>
 bool contains(const Container & c, const T & value)
 {
     return std::find(c.begin(), c.end(), value) != c.end();
 }
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+// when converting to NDI, indicates we don't know the library so the default should be used
+struct NoLibrary {};
+// Special cases for Am-242
 struct Am242 {
     static inline bool is_standard(NoLibrary) { return true; }
     static inline bool is_standard(const int num)
@@ -140,9 +136,7 @@ struct Am242 {
         return !contains(libraries, str);
     }
 };
-
-//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+// Special cases for Am-244
 struct Am244 {
     static inline bool is_standard(NoLibrary) { return true; }
     static inline bool is_standard(const int num)
