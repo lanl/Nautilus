@@ -1,5 +1,5 @@
-#ifndef NAUTILUS_FORMAT_IC_HPP
-#define NAUTILUS_FORMAT_IC_HPP
+#ifndef NAUTILUS_FORMAT_IC_CHEMSYM_HPP
+#define NAUTILUS_FORMAT_IC_CHEMSYM_HPP
 
 #include <algorithm>
 #include <cmath>
@@ -106,4 +106,4 @@ inline EntityTag from_IC_chemsym(const std::string_view sv0)
 
 } // end namespace nautilus::entity_tag
 
-#endif // $ifndef NAUTILUS_FORMAT_IC_HPP
+#endif // $ifndef NAUTILUS_FORMAT_IC_CHEMSYM_HPP

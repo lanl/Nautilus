@@ -1,5 +1,5 @@
-#ifndef NAUTILUS_FORMAT_NDI_HPP
-#define NAUTILUS_FORMAT_NDI_HPP
+#ifndef NAUTILUS_FORMAT_MCNP_HPP
+#define NAUTILUS_FORMAT_MCNP_HPP
 
 // TODO: What types to use?
 //    -- Currently I have partial zaid as int.  I should specify the precision (int32_t or similar)
@@ -356,4 +356,4 @@ inline EntityTag from_MCNP_particle_symbol(const char c)
 
 } // end namespace nautilus::entity_tag
 
-#endif // $ifndef NAUTILUS_FORMAT_NDI_HPP
+#endif // $ifndef NAUTILUS_FORMAT_MCNP_HPP

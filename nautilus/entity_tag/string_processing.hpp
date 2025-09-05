@@ -1,5 +1,5 @@
-#ifndef NAUTILUS_TOKENIZE_HPP
-#define NAUTILUS_TOKENIZE_HPP
+#ifndef NAUTILUS_STRINGPROCESSING_HPP
+#define NAUTILUS_STRINGPROCESSING_HPP
 
 #include "ports-of-call/portability.hpp"
 
@@ -60,4 +60,4 @@ inline char to_upper(const char c)
 
 } // end namespace nautilus::entity_tag
 
-#endif // #ifndef NAUTILUS_TOKENIZE_HPP
+#endif // #ifndef NAUTILUS_STRINGPROCESSING_HPP
