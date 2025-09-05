@@ -21,7 +21,7 @@ namespace detail {
 
 const std::string invalid = "unknown";
 
-inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphen_index)
+inline EntityTag parse_nuclide(const std::string_view name, const std::size_t hyphen_index)
 {
     auto tokens = tokenize_nuclide(name);
     // Remove the hyphen
@@ -30,24 +30,24 @@ inline Pantag parse_nuclide(const std::string_view name, const std::size_t hyphe
     // Valid name or symbol?
     const auto Z = names::Nuclides::find_index(tokens[0]);
     if (Z == names::Nuclides::not_found) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     // Atomic mass number (elementals are handled separately)
     if (tokens[1].size() == 0) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     const auto A = std::stoi(tokens[1]);
     // Excited state annotation ("m" or "e" alone defaults to "m1" or "e1")
     const auto S = (tokens[2].size() > 1 ? std::stoi(tokens[2].substr(1)) : 1);
     switch (tokens[2][0]) {
     case '\0': [[fallthrough]];
-    case 'g': return Pantag(Z, A); break;
-    case 'm': return Pantag(Z, A, S); break;
-    default: return Pantag(Pantag::unknown);
+    case 'g': return EntityTag(Z, A); break;
+    case 'm': return EntityTag(Z, A, S); break;
+    default: return EntityTag(EntityTag::unknown);
     }
 }
 
-inline std::string to_short_standard_nuclide_name(const Pantag tag)
+inline std::string to_short_standard_nuclide_name(const EntityTag tag)
 {
     assert(tag.is_nuclide());
     std::string name;
@@ -68,7 +68,7 @@ inline std::string to_short_standard_nuclide_name(const Pantag tag)
 }
 
 inline std::string to_long_standard_nuclide_name(
-    const Pantag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
+    const EntityTag tag, const names::Nuclides::Standard standard = names::Nuclides::Standard(0))
 {
     assert(tag.is_nuclide());
     std::string name;
@@ -91,7 +91,7 @@ inline std::string to_long_standard_nuclide_name(
     return name;
 }
 
-inline std::string to_short_standard_particle_name(const Pantag tag)
+inline std::string to_short_standard_particle_name(const EntityTag tag)
 {
     assert(tag.is_particle());
     const auto index = tag.get_particle_index();
@@ -102,7 +102,7 @@ inline std::string to_short_standard_particle_name(const Pantag tag)
 }
 
 inline std::string to_long_standard_particle_name(
-    const Pantag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
+    const EntityTag tag, const names::Particles::Standard standard = names::Particles::Standard(0))
 {
     assert(tag.is_particle());
     const auto index = tag.get_particle_index();
@@ -120,7 +120,7 @@ inline std::string to_long_standard_particle_name(
 // -- nuclides only have a single standard
 // -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
 //    you always get the PDG symbol
-inline std::string to_short_standard_name(const Pantag tag)
+inline std::string to_short_standard_name(const EntityTag tag)
 {
     if (tag.is_nuclide()) {
         return detail::to_short_standard_nuclide_name(tag);
@@ -136,7 +136,7 @@ inline std::string to_short_standard_name(const Pantag tag)
 // Variations of the same thing so that the user can specify a nuclide standard and/or a particle
 // standard, and if they specify both then the order is irrelevant.
 inline std::string to_long_standard_name(
-    const Pantag tag,
+    const EntityTag tag,
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
@@ -149,7 +149,7 @@ inline std::string to_long_standard_name(
     }
 }
 inline std::string to_long_standard_name(
-    const Pantag tag,
+    const EntityTag tag,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0),
     const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
 {
@@ -162,12 +162,12 @@ inline std::string to_long_standard_name(
 // and Particles::find_index are implemented, having from_short_standard_name and
 // from_long_standard_name would be redundant because they would be identical and both would work
 // for both short and long names.
-inline Pantag from_standard_name(const std::string_view name)
+inline EntityTag from_standard_name(const std::string_view name)
 {
     // Check if we have a known particle
     const auto pindex = names::Particles::find_index(name);
     if (pindex != names::Particles::not_found) {
-        return Pantag(pindex);
+        return EntityTag(pindex);
     }
     // Not a particle, so assume a nuclide
     for (std::size_t n = 0; n < name.size(); ++n) {
@@ -181,9 +181,9 @@ inline Pantag from_standard_name(const std::string_view name)
     const std::string_view name0 = (pos == std::string_view::npos ? name : name.substr(pos + 1));
     const auto Z = names::Nuclides::find_index(name0);
     if (Z == names::Nuclides::not_found) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
-    return Pantag(Z, Pantag::elemental);
+    return EntityTag(Z, EntityTag::elemental);
 }
 
 // ================================================================================================

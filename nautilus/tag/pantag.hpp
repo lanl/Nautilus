@@ -1,5 +1,5 @@
-#ifndef NAUTILUS_PANTAG_HPP
-#define NAUTILUS_PANTAG_HPP
+#ifndef NAUTILUS_ENTITYTAG_HPP
+#define NAUTILUS_ENTITYTAG_HPP
 
 #include "nautilus/tag/bitsegment.hpp"
 #include "nautilus/tag/names.hpp"
@@ -12,17 +12,10 @@
 #include <cstdint>
 #include <type_traits>
 
+// TODO: Change namespace to entity_tag or leave as just tag?
 namespace nautilus::tag {
 
 // ================================================================================================
-
-// TODO: Pantag doesn't strike me as a great name, but it'll do as a placeholder for now
-//    -- EntityTag?  I don't want to go all the way to something super-generic like "tag" or
-//       "label" or "identifier" in case we introduce some other kind of tag/label/identifier (for
-//       example, something like Pantag but for reaction identifiers).  I can't think of a good
-//       name that includes particles, nuclides, elementals, and similar.  Perhaps "entity" or
-//       something similar is the best we can do, relying on the fact that it's the EntityTag _from
-//       Nautilus_ to provide sufficient context regarding what it is.
 
 // TODO: Add a discussion to the documentation about excited vs metastable states
 //    -- Metastable is not well-defined
@@ -42,8 +35,7 @@ namespace nautilus::tag {
 //       "Nuclear Isomers: Recipes from the Past and Ingredients for the Future" (PDF). Nuclear
 //       Physics News. 17 (2): 11–15. doi:10.1080/10506890701404206. S2CID 22342780.
 
-// Particle-and-Nuclide Tag
-class Pantag
+class EntityTag
 {
 private:
     using Storage = uint32_t;
@@ -74,7 +66,8 @@ private:
     static constexpr Storage STANDARD = 0b0;
     static constexpr Storage USER = 0b1;
 
-    // An "unknown" tag is a special value of "user" tags
+    // An "unknown" tag is encoded as a special value of "user" tag, but is not considered to
+    // actually be a "user" tag itself
     static constexpr Storage UNKNOWN = 0b1111111111111111111111111;
 
     static constexpr Storage CURRENT_VERSION = 0b000000;
@@ -141,26 +134,26 @@ public:
     // ____________________________________________________________________________________________
     // Constructors
 
-    PORTABLE_FUNCTION constexpr Pantag(const Unknown = unknown)
+    PORTABLE_FUNCTION constexpr EntityTag(const Unknown = unknown)
         : tag_{unknown_tag()}
     {}
 
-    PORTABLE_FUNCTION constexpr Pantag(const Storage particle)
+    PORTABLE_FUNCTION constexpr EntityTag(const Storage particle)
         : tag_{unknown_tag()}
     {
         set(particle);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Storage A, const Storage S = 0)
+    PORTABLE_FUNCTION constexpr EntityTag(const Storage Z, const Storage A, const Storage S = 0)
         : tag_{unknown_tag()}
     {
         set(Z, A, S);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const Storage Z, const Elemental)
+    PORTABLE_FUNCTION constexpr EntityTag(const Storage Z, const Elemental)
         : tag_{unknown_tag()}
     {
         set(Z, elemental);
     }
-    PORTABLE_FUNCTION constexpr Pantag(const User, const Storage data)
+    PORTABLE_FUNCTION constexpr EntityTag(const User, const Storage data)
         : tag_{unknown_tag()}
     {
         set(user, data);
@@ -171,7 +164,7 @@ public:
     //       with an updated version, and it's only other methods that have to handle old versions?
 
     // ____________________________________________________________________________________________
-    // Build a Pantag
+    // Build an EntityTag
 
     PORTABLE_FUNCTION constexpr void set(const Unknown) { tag_ = unknown_tag(); }
     PORTABLE_FUNCTION constexpr void set(const Storage particle)
@@ -223,7 +216,8 @@ public:
     PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
     PORTABLE_FUNCTION constexpr bool is_user() const
     {
-        // an "unknown" pantag is encoded as a "user" tag with a special value
+        // an "unknown" tag is encoded as a "user" tag with a special value, but is not itself
+        // considered a "user" tag
         if (is_unknown()) {
             return false;
         } else {
@@ -300,16 +294,16 @@ public:
     // ____________________________________________________________________________________________
     // Comparison operators
 
-    PORTABLE_FUNCTION constexpr bool operator==(const Pantag other) { return tag_ == other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator!=(const Pantag other) { return tag_ != other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator<=(const Pantag other) { return tag_ <= other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator>=(const Pantag other) { return tag_ >= other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator<(const Pantag other) { return tag_ < other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator>(const Pantag other) { return tag_ > other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator==(const EntityTag other) { return tag_ == other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator!=(const EntityTag other) { return tag_ != other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator<=(const EntityTag other) { return tag_ <= other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator>=(const EntityTag other) { return tag_ >= other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator<(const EntityTag other) { return tag_ < other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator>(const EntityTag other) { return tag_ > other.tag_; }
 };
 
 // ================================================================================================
 
 } // end namespace nautilus::tag
 
-#endif // #ifndef NAUTILUS_PANTAG_HPP
+#endif // #ifndef NAUTILUS_ENTITYTAG_HPP

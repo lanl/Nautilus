@@ -125,7 +125,7 @@ inline std::string to_suffix_string(const std::string_view sv)
 // ================================================================================================
 // MCNP partial zaid
 
-inline int to_MCNP_partial_zaid(const Pantag tag)
+inline int to_MCNP_partial_zaid(const EntityTag tag)
 {
     if (!tag.is_nuclide()) {
         // The MCNP zaid is a nuclide-focused format that (as far as I can tell at the moment) does
@@ -161,13 +161,13 @@ inline int to_MCNP_partial_zaid(const Pantag tag)
     }
 }
 
-inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
+inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
 {
     // Split into Z and A
     auto A = partial_zaid % 1000;
     const auto Z = partial_zaid / 1000;
     if (Z == 0) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     // Check for metastable states
     int m = 0;
@@ -199,20 +199,20 @@ inline Pantag from_MCNP_partial_zaid(const int partial_zaid)
             m = 0;
         }
     }
-    // construct the Pantag
+    // construct the EntityTag
     if /* elemental */ (A == 0) {
-        return Pantag(Z, Pantag::elemental);
+        return EntityTag(Z, EntityTag::elemental);
     } else if /* ground state */ (m == 0) {
-        return Pantag(Z, A);
+        return EntityTag(Z, A);
     } else /* excited state */ {
-        return Pantag(Z, A, m);
+        return EntityTag(Z, A, m);
     }
 }
 
 // ================================================================================================
 // MCNP full zaid
 
-std::string to_MCNP_full_zaid(Pantag tag, const std::string_view library)
+std::string to_MCNP_full_zaid(EntityTag tag, const std::string_view library)
 {
     if (tag.is_unknown()) {
         return detail::invalid_full_zaid;
@@ -224,10 +224,10 @@ std::string to_MCNP_full_zaid(Pantag tag, const std::string_view library)
     return zaid;
 }
 
-inline Pantag from_MCNP_full_zaid(const std::string_view sv)
+inline EntityTag from_MCNP_full_zaid(const std::string_view sv)
 {
     if (sv == detail::invalid_full_zaid) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     return from_MCNP_partial_zaid(std::atoi(sv.substr(0, sv.find('.')).data()));
 }
@@ -238,7 +238,7 @@ inline Pantag from_MCNP_full_zaid(const std::string_view sv)
 //    "alternate" standards, so the names used here won't necessary align with the names in the
 //    MCNP manual.
 
-inline char to_MCNP_particle_symbol(Pantag tag)
+inline char to_MCNP_particle_symbol(EntityTag tag)
 {
     if (tag.is_nuclide()) {
         // This format doens't support elementals
@@ -246,7 +246,7 @@ inline char to_MCNP_particle_symbol(Pantag tag)
             return detail::invalid_particle_symbol;
         }
         // This format doesn't support excited states
-        // -- Pantag fixes the Am-242g and Am-242m1 "swap", so ignore that special case here
+        // -- EntityTag fixes the Am-242g and Am-242m1 "swap", so ignore that special case here
         if (!tag.is_ground()) {
             return detail::invalid_particle_symbol;
         }
@@ -306,49 +306,49 @@ inline char to_MCNP_particle_symbol(Pantag tag)
     }
 }
 
-inline Pantag from_MCNP_particle_symbol(const char c)
+inline EntityTag from_MCNP_particle_symbol(const char c)
 {
     // Given that this is the "particle symbol", we prefer a particle to a nuclide in the case
     // where the choice is ambiguous (proton vs H-1)
     switch (c) {
-    case 'N': return Pantag(nautilus::tag::names::neutron); break;
-    case 'P': return Pantag(nautilus::tag::names::photon); break;
-    case 'E': return Pantag(nautilus::tag::names::electron); break;
-    case '|': return Pantag(nautilus::tag::names::muon); break;
-    case 'Q': return Pantag(nautilus::tag::names::antineutron); break;
-    case 'U': return Pantag(nautilus::tag::names::electron_neutrino); break;
-    case 'V': return Pantag(nautilus::tag::names::muon_neutrino); break;
-    case 'F': return Pantag(nautilus::tag::names::positron); break;
-    case 'H': return Pantag(nautilus::tag::names::proton); break;
-    case 'L': return Pantag(nautilus::tag::names::neutral_lambda_baryon); break;
-    case '+': return Pantag(nautilus::tag::names::positive_sigma_baryon); break;
-    case '-': return Pantag(nautilus::tag::names::negative_sigma_baryon); break;
-    case 'X': return Pantag(nautilus::tag::names::neutral_xi_baryon); break;
-    case 'Y': return Pantag(nautilus::tag::names::negative_xi_baryon); break;
-    case 'O': return Pantag(nautilus::tag::names::negative_omega_baryon); break;
-    case '!': return Pantag(nautilus::tag::names::antimuon); break;
-    case '<': return Pantag(nautilus::tag::names::electron_antineutrino); break;
-    case '>': return Pantag(nautilus::tag::names::muon_antineutrino); break;
-    case 'G': return Pantag(nautilus::tag::names::antiproton); break;
-    case '/': return Pantag(nautilus::tag::names::positive_pion); break;
-    case 'Z': return Pantag(nautilus::tag::names::neutral_pion); break;
-    case 'K': return Pantag(nautilus::tag::names::positive_kaon); break;
-    case '%': return Pantag(nautilus::tag::names::short_kaon); break;
-    case '^': return Pantag(nautilus::tag::names::long_kaon); break;
-    case 'B': return Pantag(nautilus::tag::names::neutral_lambda_antibaryon); break;
-    case '_': return Pantag(nautilus::tag::names::negative_sigma_antibaryon); break;
-    case '~': return Pantag(nautilus::tag::names::positive_sigma_antibaryon); break;
-    case 'C': return Pantag(nautilus::tag::names::neutral_xi_antibaryon); break;
-    case 'W': return Pantag(nautilus::tag::names::positive_xi_antibaryon); break;
-    case '@': return Pantag(nautilus::tag::names::positive_omega_antibaryon); break;
-    case 'D': return Pantag(1, 2); break;
-    case 'T': return Pantag(1, 3); break;
-    case 'S': return Pantag(2, 3); break;
-    case 'A': return Pantag(2, 4); break;
-    case '*': return Pantag(nautilus::tag::names::negative_pion); break;
-    case '?': return Pantag(nautilus::tag::names::negative_kaon); break;
-    case '#': return Pantag(Pantag::unknown); break; // # can be _any_ heavy ion, thus unknown
-    default: return Pantag(Pantag::unknown);
+    case 'N': return EntityTag(nautilus::tag::names::neutron); break;
+    case 'P': return EntityTag(nautilus::tag::names::photon); break;
+    case 'E': return EntityTag(nautilus::tag::names::electron); break;
+    case '|': return EntityTag(nautilus::tag::names::muon); break;
+    case 'Q': return EntityTag(nautilus::tag::names::antineutron); break;
+    case 'U': return EntityTag(nautilus::tag::names::electron_neutrino); break;
+    case 'V': return EntityTag(nautilus::tag::names::muon_neutrino); break;
+    case 'F': return EntityTag(nautilus::tag::names::positron); break;
+    case 'H': return EntityTag(nautilus::tag::names::proton); break;
+    case 'L': return EntityTag(nautilus::tag::names::neutral_lambda_baryon); break;
+    case '+': return EntityTag(nautilus::tag::names::positive_sigma_baryon); break;
+    case '-': return EntityTag(nautilus::tag::names::negative_sigma_baryon); break;
+    case 'X': return EntityTag(nautilus::tag::names::neutral_xi_baryon); break;
+    case 'Y': return EntityTag(nautilus::tag::names::negative_xi_baryon); break;
+    case 'O': return EntityTag(nautilus::tag::names::negative_omega_baryon); break;
+    case '!': return EntityTag(nautilus::tag::names::antimuon); break;
+    case '<': return EntityTag(nautilus::tag::names::electron_antineutrino); break;
+    case '>': return EntityTag(nautilus::tag::names::muon_antineutrino); break;
+    case 'G': return EntityTag(nautilus::tag::names::antiproton); break;
+    case '/': return EntityTag(nautilus::tag::names::positive_pion); break;
+    case 'Z': return EntityTag(nautilus::tag::names::neutral_pion); break;
+    case 'K': return EntityTag(nautilus::tag::names::positive_kaon); break;
+    case '%': return EntityTag(nautilus::tag::names::short_kaon); break;
+    case '^': return EntityTag(nautilus::tag::names::long_kaon); break;
+    case 'B': return EntityTag(nautilus::tag::names::neutral_lambda_antibaryon); break;
+    case '_': return EntityTag(nautilus::tag::names::negative_sigma_antibaryon); break;
+    case '~': return EntityTag(nautilus::tag::names::positive_sigma_antibaryon); break;
+    case 'C': return EntityTag(nautilus::tag::names::neutral_xi_antibaryon); break;
+    case 'W': return EntityTag(nautilus::tag::names::positive_xi_antibaryon); break;
+    case '@': return EntityTag(nautilus::tag::names::positive_omega_antibaryon); break;
+    case 'D': return EntityTag(1, 2); break;
+    case 'T': return EntityTag(1, 3); break;
+    case 'S': return EntityTag(2, 3); break;
+    case 'A': return EntityTag(2, 4); break;
+    case '*': return EntityTag(nautilus::tag::names::negative_pion); break;
+    case '?': return EntityTag(nautilus::tag::names::negative_kaon); break;
+    case '#': return EntityTag(EntityTag::unknown); break; // # can be _any_ heavy ion, so unknown
+    default: return EntityTag(EntityTag::unknown);
     }
 }
 

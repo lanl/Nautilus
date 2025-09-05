@@ -166,7 +166,7 @@ inline bool standard_am244(const double d) { return standard_am244(int(std::roun
 // NDI SZA
 
 template <typename T>
-int to_NDI_SZA(const Pantag tag, T && library)
+int to_NDI_SZA(const EntityTag tag, T && library)
 {
     if (tag.is_particle()) {
         switch (tag.get_particle_index()) {
@@ -211,27 +211,27 @@ int to_NDI_SZA(const Pantag tag, T && library)
     }
 }
 
-inline auto to_NDI_SZA(const Pantag tag)
+inline auto to_NDI_SZA(const EntityTag tag)
 {
     // If the user doesn't provide a library, then just assume we use the most-standard NDI format
     return to_NDI_SZA(tag, detail::NoLibrary());
 }
 
-inline Pantag from_NDI_SZA(const int sza)
+inline EntityTag from_NDI_SZA(const int sza)
 {
     // Special cases
     switch (sza) {
     // particles (ignore proton, because H-1 is preferred when working with NDI)
-    case 0: return Pantag(nautilus::tag::names::photon); break;
-    case 1: return Pantag(nautilus::tag::names::neutron); break;
+    case 0: return EntityTag(nautilus::tag::names::photon); break;
+    case 1: return EntityTag(nautilus::tag::names::neutron); break;
     // Am-242g (encoded as Am-242m1 in NDI, plus two different encoding strategies)
     case 95042: [[fallthrough]];
-    case 1095242: return Pantag(95, 242); break;
+    case 1095242: return EntityTag(95, 242); break;
     // Am-242m1 (encoded as Am-242g in NDI)
-    case 95242: return Pantag(95, 242, 1); break;
+    case 95242: return EntityTag(95, 242, 1); break;
     // Am-244m1 (two different encoding strategies)
     case 95044: [[fallthrough]];
-    case 1095244: return Pantag(95, 244, 1); break;
+    case 1095244: return EntityTag(95, 244, 1); break;
     }
     // Parse as a nuclide
     auto remainder = sza;
@@ -239,12 +239,12 @@ inline Pantag from_NDI_SZA(const int sza)
     remainder /= 1000;
     const auto Z = remainder % 1000;
     if (Z == 0) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     if (A == 0) { // NDI encodes elementals by setting A to zero
-        return Pantag(Z, Pantag::elemental);
+        return EntityTag(Z, EntityTag::elemental);
     } else {
-        return Pantag(Z, A, remainder / 1000);
+        return EntityTag(Z, A, remainder / 1000);
     }
 }
 
@@ -253,7 +253,7 @@ inline Pantag from_NDI_SZA(const int sza)
 // TODO: Still not sure about the name, but it's better than "the as-yet-unnamed format"
 
 template <typename T>
-double to_NDI_FPID(Pantag tag, T && library)
+double to_NDI_FPID(EntityTag tag, T && library)
 {
     // TODO: check for invalid_SZA and translate to invalid_FPID
     const auto SZA = to_NDI_SZA(tag, std::forward<T>(library));
@@ -262,7 +262,7 @@ double to_NDI_FPID(Pantag tag, T && library)
 }
 
 // Throw away the suffix (after the decimal) and coerce into an integer
-inline Pantag from_NDI_FPID(const double fpid)
+inline EntityTag from_NDI_FPID(const double fpid)
 {
     // TODO: check for invalid_FPID
     // Throw away the suffix, because going _from_ NDI doesn't need to know the library
@@ -273,7 +273,7 @@ inline Pantag from_NDI_FPID(const double fpid)
 // NDI zaid
 
 template <typename T>
-std::string to_NDI_zaid(Pantag tag, const T & library)
+std::string to_NDI_zaid(EntityTag tag, const T & library)
 {
     // TODO: check for invalid_SZA and translate to invalid_zaid
     assert(detail::match_table_suffix(library));
@@ -283,7 +283,7 @@ std::string to_NDI_zaid(Pantag tag, const T & library)
     return zaid;
 }
 
-inline Pantag from_NDI_zaid(const std::string_view sv)
+inline EntityTag from_NDI_zaid(const std::string_view sv)
 {
     // TODO: check for invalid_zaid
     return from_NDI_SZA(std::atoi(sv.substr(0, sv.find('.')).data()));
@@ -292,7 +292,7 @@ inline Pantag from_NDI_zaid(const std::string_view sv)
 // ================================================================================================
 // NDI short string
 
-inline std::string to_NDI_short_string(Pantag tag)
+inline std::string to_NDI_short_string(EntityTag tag)
 {
     if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
@@ -340,25 +340,25 @@ inline std::string to_NDI_short_string(Pantag tag)
     }
 }
 
-inline Pantag from_NDI_short_string(const std::string_view sv)
+inline EntityTag from_NDI_short_string(const std::string_view sv)
 {
     // TODO: check for invalid_short_string
     // Particles and special cases
     if ((sv == "g") || (sv == "g0")) {
-        return Pantag(nautilus::tag::names::photon);
+        return EntityTag(nautilus::tag::names::photon);
     } else if (sv == "n") {
-        return Pantag(nautilus::tag::names::neutron);
+        return EntityTag(nautilus::tag::names::neutron);
     } else if (sv == "p") {
-        return Pantag(1, 1);
+        return EntityTag(1, 1);
     } else if (sv == "d") {
-        return Pantag(1, 2);
+        return EntityTag(1, 2);
     } else if (sv == "t") {
-        return Pantag(1, 3);
+        return EntityTag(1, 3);
     } else if (sv == "a") {
-        return Pantag(2, 4);
+        return EntityTag(2, 4);
     } else if (sv == "am242") {
         // Am-242g and Am-242m1 are swapped in NDI
-        return Pantag(95, 242, 1);
+        return EntityTag(95, 242, 1);
     }
     const auto tokens = tokenize_nuclide(sv);
     // NDI short string does not have a hyphen between the symbol and the atomic mass number
@@ -366,19 +366,19 @@ inline Pantag from_NDI_short_string(const std::string_view sv)
     symbol[0] = to_upper(symbol[0]);
     const auto Z = names::Nuclides::find_index(symbol);
     if (Z == names::Nuclides::not_found) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     // NDI short string does not permit elementals
     if (tokens[1].size() == 0) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     assert(tokens[1][0] != '0'); // Would lead to bad parsing in std::stoi
     const auto A = std::stoi(tokens[1]);
     // NDI short string does not permit "g" suffix or excited states (except Am-242m1, see above)
     if (tokens[2].size() > 0) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
-    return Pantag(Z, A);
+    return EntityTag(Z, A);
 }
 
 // ================================================================================================

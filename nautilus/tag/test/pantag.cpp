@@ -4,13 +4,13 @@
 
 // ================================================================================================
 
-TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
+TEST_CASE("EntityTag", "[tag][entity_tag]")
 {
-    using nautilus::tag::Pantag;
+    using nautilus::tag::EntityTag;
 
     SECTION("particle tag")
     {
-        Pantag my_tag(nautilus::tag::names::electron);
+        EntityTag my_tag(nautilus::tag::names::electron);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -37,7 +37,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("nuclide tag (elemental)")
     {
-        Pantag my_tag(1, Pantag::elemental);
+        EntityTag my_tag(1, EntityTag::elemental);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -54,7 +54,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("nuclide tag (default index)")
     {
-        Pantag my_tag(28, 56);
+        EntityTag my_tag(28, 56);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -75,7 +75,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("nuclide tag (metastable index)")
     {
-        Pantag my_tag(6, 12, 1);
+        EntityTag my_tag(6, 12, 1);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
@@ -96,7 +96,7 @@ TEST_CASE("Particle and Nuclide Tag", "[tag][pantag]")
 
     SECTION("user tag")
     {
-        Pantag my_tag(Pantag::user, 100);
+        EntityTag my_tag(EntityTag::user, 100);
 
         CHECK(!my_tag.is_standard());
         CHECK(my_tag.is_user());

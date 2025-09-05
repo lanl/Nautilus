@@ -6,5 +6,5 @@
 
 // ================================================================================================
 
-// TODO: Write a pantag kokkos test
-TEST_CASE("Pantag on GPUs", "[tag][pantag][GPU]") { CHECK(true); }
+// TODO: Write an EntityTag kokkos test
+TEST_CASE("EntityTag on GPUs", "[tag][entity_tag][GPU]") { CHECK(true); }

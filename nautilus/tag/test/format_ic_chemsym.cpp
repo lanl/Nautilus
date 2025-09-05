@@ -12,30 +12,30 @@
 TEST_CASE("format: IC chemsym", "[tag][format][IC]")
 {
     using nautilus::tag::from_IC_chemsym;
-    using nautilus::tag::Pantag;
+    using nautilus::tag::EntityTag;
     using nautilus::tag::to_IC_chemsym;
 
     // Particles
-    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::tag::names::neutron);
     CHECK((from_IC_chemsym("nt1") == neutron));
     CHECK(to_IC_chemsym(neutron) == "nt1");
 
-    constexpr Pantag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::tag::names::photon);
     CHECK((from_IC_chemsym("g0") == photon));
     CHECK((from_IC_chemsym("g") == photon));
     CHECK(to_IC_chemsym(photon) == "g0");
 
     // Normal nuclides
-    constexpr Pantag co59g(27, 59);
+    constexpr EntityTag co59g(27, 59);
     CHECK((from_IC_chemsym("co59g") == co59g));
     CHECK((from_IC_chemsym("co59") == co59g));
     CHECK(to_IC_chemsym(co59g) == "co59");
 
-    constexpr Pantag ta180m1(73, 180, 1);
+    constexpr EntityTag ta180m1(73, 180, 1);
     CHECK((from_IC_chemsym("ta180m1") == ta180m1));
     CHECK(to_IC_chemsym(ta180m1) == "ta180m1");
 
-    constexpr Pantag k38m2(19, 38, 2);
+    constexpr EntityTag k38m2(19, 38, 2);
     CHECK((from_IC_chemsym("k38m2") == k38m2));
     CHECK(to_IC_chemsym(k38m2) == "k38m2");
 
@@ -43,7 +43,7 @@ TEST_CASE("format: IC chemsym", "[tag][format][IC]")
 
     // Am-242g
     // -- Am-242g and Am-242m1 are swapped in IC chemsym
-    constexpr Pantag am242g(95, 242);
+    constexpr EntityTag am242g(95, 242);
     CHECK((from_IC_chemsym("am42") == am242g));
     CHECK((from_IC_chemsym("am042") == am242g));
     CHECK((from_IC_chemsym("am242m1") == am242g));
@@ -51,46 +51,46 @@ TEST_CASE("format: IC chemsym", "[tag][format][IC]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI SZA
-    constexpr Pantag am242m1(95, 242, 1);
+    constexpr EntityTag am242m1(95, 242, 1);
     CHECK((from_IC_chemsym("am242g") == am242m1));
     CHECK((from_IC_chemsym("am242") == am242m1));
     CHECK(to_IC_chemsym(am242m1) == "am242");
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, 2);
+    constexpr EntityTag am242m2(95, 242, 2);
     CHECK((from_IC_chemsym("am242m2") == am242m2));
     CHECK(to_IC_chemsym(am242m2) == "am242m2");
 
     // Am-243g
     // -- should be normal
-    constexpr Pantag am243g(95, 243);
+    constexpr EntityTag am243g(95, 243);
     CHECK((from_IC_chemsym("am243g") == am243g));
     CHECK((from_IC_chemsym("am243") == am243g));
     CHECK(to_IC_chemsym(am243g) == "am243");
 
     // Am-244g
     // -- should be normal
-    constexpr Pantag am244g(95, 244);
+    constexpr EntityTag am244g(95, 244);
     CHECK((from_IC_chemsym("am244g") == am244g));
     CHECK((from_IC_chemsym("am244") == am244g));
     CHECK(to_IC_chemsym(am244g) == "am244");
 
     // Lr-266
     // -- IC chemsym uses the outdated symbol "Lw" instead of the modern "Lr"
-    constexpr Pantag lr266(103, 266);
+    constexpr EntityTag lr266(103, 266);
     CHECK((from_IC_chemsym("lw266") == lr266));
     CHECK(to_IC_chemsym(lr266) == "lw266");
 
     // Elementals
-    constexpr Pantag n_elemental(7, Pantag::elemental);
+    constexpr EntityTag n_elemental(7, EntityTag::elemental);
     CHECK((from_IC_chemsym("n") == n_elemental));
     CHECK(to_IC_chemsym(n_elemental) == "n");
-    constexpr Pantag ca_elemental(20, Pantag::elemental);
+    constexpr EntityTag ca_elemental(20, EntityTag::elemental);
     CHECK((from_IC_chemsym("ca") == ca_elemental));
     CHECK(to_IC_chemsym(ca_elemental) == "ca");
 
     // Bad inputs
-    CHECK(to_IC_chemsym(Pantag(nautilus::tag::names::electron_neutrino)) == "unknown");
-    CHECK(to_IC_chemsym(Pantag(127, 255)) == "unknown");
+    CHECK(to_IC_chemsym(EntityTag(nautilus::tag::names::electron_neutrino)) == "unknown");
+    CHECK(to_IC_chemsym(EntityTag(127, 255)) == "unknown");
 }

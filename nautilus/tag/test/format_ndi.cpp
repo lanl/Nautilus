@@ -12,28 +12,28 @@
 TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 {
     using nautilus::tag::from_NDI_SZA;
-    using nautilus::tag::Pantag;
+    using nautilus::tag::EntityTag;
     using nautilus::tag::to_NDI_SZA;
 
     // Particles
-    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::tag::names::neutron);
     CHECK((from_NDI_SZA(1) == neutron));
     CHECK(to_NDI_SZA(neutron) == 1);
 
-    constexpr Pantag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::tag::names::photon);
     CHECK((from_NDI_SZA(0) == photon));
     CHECK(to_NDI_SZA(photon) == 0);
 
     // Normal nuclides
-    constexpr Pantag co59g(27, 59);
+    constexpr EntityTag co59g(27, 59);
     CHECK((from_NDI_SZA(27059) == co59g));
     CHECK(to_NDI_SZA(co59g) == 27059);
 
-    constexpr Pantag ta180m1(73, 180, 1);
+    constexpr EntityTag ta180m1(73, 180, 1);
     CHECK((from_NDI_SZA(1073180) == ta180m1));
     CHECK(to_NDI_SZA(ta180m1) == 1073180);
 
-    constexpr Pantag k38m2(19, 38, 2);
+    constexpr EntityTag k38m2(19, 38, 2);
     CHECK((from_NDI_SZA(2019038) == k38m2));
     CHECK(to_NDI_SZA(k38m2) == 2019038);
 
@@ -47,7 +47,7 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
     //       -- mendf70x / 701nm
     //       -- mtmg01 / 121nm - 135nm
     //       -- mtmg01ex / 121nm - 135nm
-    constexpr Pantag am242g(95, 242);
+    constexpr EntityTag am242g(95, 242);
     constexpr int default_am242g = 1095242;
     constexpr int alternate_am242g = 95042;
     CHECK((from_NDI_SZA(default_am242g) == am242g));
@@ -80,37 +80,37 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI SZA
-    constexpr Pantag am242m1(95, 242, 1);
+    constexpr EntityTag am242m1(95, 242, 1);
     CHECK((from_NDI_SZA(95242) == am242m1));
     CHECK(to_NDI_SZA(am242m1) == 95242);
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, 2);
+    constexpr EntityTag am242m2(95, 242, 2);
     CHECK((from_NDI_SZA(2095242) == am242m2));
     CHECK(to_NDI_SZA(am242m2) == 2095242);
 
     // Am-243g
     // -- should be normal
-    constexpr Pantag am243g(95, 243);
+    constexpr EntityTag am243g(95, 243);
     CHECK((from_NDI_SZA(95243) == am243g));
     CHECK(to_NDI_SZA(am243g) == 95243);
 
     // Am-243m1
     // -- should be normal
-    constexpr Pantag am243m1(95, 243, 1);
+    constexpr EntityTag am243m1(95, 243, 1);
     CHECK((from_NDI_SZA(1095243) == am243m1));
     CHECK(to_NDI_SZA(am243m1) == 1095243);
 
     // Am-243m2
     // -- should be normal
-    constexpr Pantag am243m2(95, 243, 2);
+    constexpr EntityTag am243m2(95, 243, 2);
     CHECK((from_NDI_SZA(2095243) == am243m2));
     CHECK(to_NDI_SZA(am243m2) == 2095243);
 
     // Am-244g
     // -- should be normal
-    constexpr Pantag am244g(95, 244);
+    constexpr EntityTag am244g(95, 244);
     CHECK((from_NDI_SZA(95244) == am244g));
     CHECK(to_NDI_SZA(am244g) == 95244);
 
@@ -119,7 +119,7 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
     //    -- 1095244 (most cases)
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
-    constexpr Pantag am244m1(95, 244, 1);
+    constexpr EntityTag am244m1(95, 244, 1);
     constexpr int default_am244m1 = 1095244;
     constexpr int alternate_am244m1 = 95044;
     CHECK((from_NDI_SZA(default_am244m1) == am244m1));
@@ -138,7 +138,7 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 
     // Am-244m2
     // -- should be normal
-    constexpr Pantag am244m2(95, 244, 2);
+    constexpr EntityTag am244m2(95, 244, 2);
     CHECK((from_NDI_SZA(2095244) == am244m2));
     CHECK(to_NDI_SZA(am244m2) == 2095244);
 }
@@ -148,18 +148,18 @@ TEST_CASE("format: NDI SZA", "[tag][format][NDI]")
 TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 {
     using nautilus::tag::from_NDI_FPID;
-    using nautilus::tag::Pantag;
+    using nautilus::tag::EntityTag;
     using nautilus::tag::to_NDI_FPID;
 
     // Particles
-    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::tag::names::neutron);
     CHECK((from_NDI_FPID(1.999) == neutron));
     CHECK(to_NDI_FPID(neutron, 0.999) == 1.999);
     CHECK(to_NDI_FPID(neutron, 999) == 1.999);
     CHECK(to_NDI_FPID(neutron, "999") == 1.999);
     CHECK(to_NDI_FPID(neutron, "999nm") == 1.999);
 
-    constexpr Pantag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::tag::names::photon);
     CHECK((from_NDI_FPID(0.000) == photon));
     CHECK(to_NDI_FPID(photon, 0.456) == 0.456);
     CHECK(to_NDI_FPID(photon, 789) == 0.789);
@@ -167,21 +167,21 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     CHECK(to_NDI_FPID(photon, "369nm") == 0.369);
 
     // Normal nuclides
-    constexpr Pantag co59g(27, 59);
+    constexpr EntityTag co59g(27, 59);
     CHECK((from_NDI_FPID(27059.123) == co59g));
     CHECK(to_NDI_FPID(co59g, 0.234) == 27059.234);
     CHECK(to_NDI_FPID(co59g, 345) == 27059.345);
     CHECK(to_NDI_FPID(co59g, "456") == 27059.456);
     CHECK(to_NDI_FPID(co59g, "567nm") == 27059.567);
 
-    constexpr Pantag ta180m1(73, 180, 1);
+    constexpr EntityTag ta180m1(73, 180, 1);
     CHECK((from_NDI_FPID(1073180.987) == ta180m1));
     CHECK(to_NDI_FPID(ta180m1, 0.876) == 1073180.876);
     CHECK(to_NDI_FPID(ta180m1, 765) == 1073180.765);
     CHECK(to_NDI_FPID(ta180m1, "654") == 1073180.654);
     CHECK(to_NDI_FPID(ta180m1, "543nm") == 1073180.543);
 
-    constexpr Pantag k38m2(19, 38, 2);
+    constexpr EntityTag k38m2(19, 38, 2);
     CHECK((from_NDI_FPID(2019038.123) == k38m2));
     CHECK(to_NDI_FPID(k38m2, 0.135) == 2019038.135);
     CHECK(to_NDI_FPID(k38m2, 147) == 2019038.147);
@@ -198,7 +198,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     //       -- mendf70x / 701nm
     //       -- mtmg01 / 121nm - 135nm
     //       -- mtmg01ex / 121nm - 135nm
-    constexpr Pantag am242g(95, 242);
+    constexpr EntityTag am242g(95, 242);
     CHECK((from_NDI_FPID(1095242.120) == am242g)); // suffix that should be 1095242
     CHECK((from_NDI_FPID(1095242.123) == am242g)); // suffix that should be 95042 if writing
     CHECK((from_NDI_FPID(95042.120) == am242g));   // suffix that should be 1095242 if writing
@@ -226,7 +226,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI FPID
-    constexpr Pantag am242m1(95, 242, 1);
+    constexpr EntityTag am242m1(95, 242, 1);
     CHECK((from_NDI_FPID(95242.133) == am242m1));
     CHECK(to_NDI_FPID(am242m1, 0.134) == 95242.134);
     CHECK(to_NDI_FPID(am242m1, 135) == 95242.135);
@@ -235,7 +235,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, 2);
+    constexpr EntityTag am242m2(95, 242, 2);
     CHECK((from_NDI_FPID(2095242.111) == am242m2));
     CHECK(to_NDI_FPID(am242m2, 0.333) == 2095242.333);
     CHECK(to_NDI_FPID(am242m2, 555) == 2095242.555);
@@ -244,7 +244,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-243g
     // -- should be normal
-    constexpr Pantag am243g(95, 243);
+    constexpr EntityTag am243g(95, 243);
     CHECK((from_NDI_FPID(95243.867) == am243g));
     CHECK(to_NDI_FPID(am243g, 0.675) == 95243.675);
     CHECK(to_NDI_FPID(am243g, 753) == 95243.753);
@@ -253,7 +253,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-243m1
     // -- should be normal
-    constexpr Pantag am243m1(95, 243, 1);
+    constexpr EntityTag am243m1(95, 243, 1);
     CHECK((from_NDI_FPID(1095243.555) == am243m1));
     CHECK(to_NDI_FPID(am243m1, 0.555) == 1095243.555);
     CHECK(to_NDI_FPID(am243m1, 555) == 1095243.555);
@@ -262,7 +262,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-243m2
     // -- should be normal
-    constexpr Pantag am243m2(95, 243, 2);
+    constexpr EntityTag am243m2(95, 243, 2);
     CHECK((from_NDI_FPID(2095243.135) == am243m2));
     CHECK(to_NDI_FPID(am243m2, 0.135) == 2095243.135);
     CHECK(to_NDI_FPID(am243m2, 135) == 2095243.135);
@@ -271,7 +271,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-244g
     // -- should be normal
-    constexpr Pantag am244g(95, 244);
+    constexpr EntityTag am244g(95, 244);
     CHECK((from_NDI_FPID(95244.951) == am244g));
     CHECK(to_NDI_FPID(am244g, 0.951) == 95244.951);
     CHECK(to_NDI_FPID(am244g, 951) == 95244.951);
@@ -283,7 +283,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
     //    -- 1095244 (most cases)
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
-    constexpr Pantag am244m1(95, 244, 1);
+    constexpr EntityTag am244m1(95, 244, 1);
     CHECK((from_NDI_FPID(1095244.600) == am244m1)); // suffix that should be 1095244
     CHECK((from_NDI_FPID(1095244.700) == am244m1)); // suffix that should be 95044 if writing
     CHECK((from_NDI_FPID(95044.600) == am244m1));   // suffix that should be 1095244 if writing
@@ -299,7 +299,7 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 
     // Am-244m2
     // -- should be normal
-    constexpr Pantag am244m2(95, 244, 2);
+    constexpr EntityTag am244m2(95, 244, 2);
     CHECK((from_NDI_FPID(2095244.700) == am244m2));
     CHECK(to_NDI_FPID(am244m2, 0.701) == 2095244.701);
     CHECK(to_NDI_FPID(am244m2, 702) == 2095244.702);
@@ -312,18 +312,18 @@ TEST_CASE("format: NDI FPID", "[tag][format][NDI]")
 TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 {
     using nautilus::tag::from_NDI_zaid;
-    using nautilus::tag::Pantag;
+    using nautilus::tag::EntityTag;
     using nautilus::tag::to_NDI_zaid;
 
     // Particles
-    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::tag::names::neutron);
     CHECK((from_NDI_zaid("1.999nm") == neutron));
     CHECK(to_NDI_zaid(neutron, 0.999) == "1.999nm");
     CHECK(to_NDI_zaid(neutron, 999) == "1.999nm");
     CHECK(to_NDI_zaid(neutron, "999") == "1.999nm");
     CHECK(to_NDI_zaid(neutron, "999nm") == "1.999nm");
 
-    constexpr Pantag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::tag::names::photon);
     CHECK((from_NDI_zaid("0.000nm") == photon));
     CHECK(to_NDI_zaid(photon, 0.456) == "0.456nm");
     CHECK(to_NDI_zaid(photon, 789) == "0.789nm");
@@ -331,21 +331,21 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     CHECK(to_NDI_zaid(photon, "369nm") == "0.369nm");
 
     // Normal nuclides
-    constexpr Pantag co59g(27, 59);
+    constexpr EntityTag co59g(27, 59);
     CHECK((from_NDI_zaid("27059.123nm") == co59g));
     CHECK(to_NDI_zaid(co59g, 0.234) == "27059.234nm");
     CHECK(to_NDI_zaid(co59g, 345) == "27059.345nm");
     CHECK(to_NDI_zaid(co59g, "456") == "27059.456nm");
     CHECK(to_NDI_zaid(co59g, "567nm") == "27059.567nm");
 
-    constexpr Pantag ta180m1(73, 180, 1);
+    constexpr EntityTag ta180m1(73, 180, 1);
     CHECK((from_NDI_zaid("1073180.987nm") == ta180m1));
     CHECK(to_NDI_zaid(ta180m1, 0.876) == "1073180.876nm");
     CHECK(to_NDI_zaid(ta180m1, 765) == "1073180.765nm");
     CHECK(to_NDI_zaid(ta180m1, "654") == "1073180.654nm");
     CHECK(to_NDI_zaid(ta180m1, "543nm") == "1073180.543nm");
 
-    constexpr Pantag k38m2(19, 38, 2);
+    constexpr EntityTag k38m2(19, 38, 2);
     CHECK((from_NDI_zaid("2019038.123nm") == k38m2));
     CHECK(to_NDI_zaid(k38m2, 0.000) == "2019038.000nm");
     CHECK(to_NDI_zaid(k38m2, 5) == "2019038.005nm");
@@ -362,7 +362,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     //       -- mendf70x / 701nm
     //       -- mtmg01 / 121nm - 135nm
     //       -- mtmg01ex / 121nm - 135nm
-    constexpr Pantag am242g(95, 242);
+    constexpr EntityTag am242g(95, 242);
     CHECK((from_NDI_zaid("1095242.120nm") == am242g)); // suffix that should be 1095242
     CHECK((from_NDI_zaid("1095242.123nm") == am242g)); // suffix that should be 95042 if writing
     CHECK((from_NDI_zaid("95042.120nm") == am242g));   // suffix that should be 1095242 if writing
@@ -390,7 +390,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped in NDI zaid
-    constexpr Pantag am242m1(95, 242, 1);
+    constexpr EntityTag am242m1(95, 242, 1);
     CHECK((from_NDI_zaid("95242.133nm") == am242m1));
     CHECK(to_NDI_zaid(am242m1, 0.134) == "95242.134nm");
     CHECK(to_NDI_zaid(am242m1, 135) == "95242.135nm");
@@ -399,7 +399,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-242m2
     // -- should be normal
-    constexpr Pantag am242m2(95, 242, 2);
+    constexpr EntityTag am242m2(95, 242, 2);
     CHECK((from_NDI_zaid("2095242.111nm") == am242m2));
     CHECK(to_NDI_zaid(am242m2, 0.333) == "2095242.333nm");
     CHECK(to_NDI_zaid(am242m2, 555) == "2095242.555nm");
@@ -408,7 +408,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-243g
     // -- should be normal
-    constexpr Pantag am243g(95, 243);
+    constexpr EntityTag am243g(95, 243);
     CHECK((from_NDI_zaid("95243.867nm") == am243g));
     CHECK(to_NDI_zaid(am243g, 0.675) == "95243.675nm");
     CHECK(to_NDI_zaid(am243g, 753) == "95243.753nm");
@@ -417,7 +417,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-243m1
     // -- should be normal
-    constexpr Pantag am243m1(95, 243, 1);
+    constexpr EntityTag am243m1(95, 243, 1);
     CHECK((from_NDI_zaid("1095243.555nm") == am243m1));
     CHECK(to_NDI_zaid(am243m1, 0.555) == "1095243.555nm");
     CHECK(to_NDI_zaid(am243m1, 555) == "1095243.555nm");
@@ -426,7 +426,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-243m2
     // -- should be normal
-    constexpr Pantag am243m2(95, 243, 2);
+    constexpr EntityTag am243m2(95, 243, 2);
     CHECK((from_NDI_zaid("2095243.135nm") == am243m2));
     CHECK(to_NDI_zaid(am243m2, 0.135) == "2095243.135nm");
     CHECK(to_NDI_zaid(am243m2, 135) == "2095243.135nm");
@@ -435,7 +435,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-244g
     // -- should be normal
-    constexpr Pantag am244g(95, 244);
+    constexpr EntityTag am244g(95, 244);
     CHECK((from_NDI_zaid("95244.951nm") == am244g));
     CHECK(to_NDI_zaid(am244g, 0.951) == "95244.951nm");
     CHECK(to_NDI_zaid(am244g, 951) == "95244.951nm");
@@ -447,7 +447,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
     //    -- 1095244 (most cases)
     //    -- 95044 (specific cases)
     //       -- endf7act / 660nm
-    constexpr Pantag am244m1(95, 244, 1);
+    constexpr EntityTag am244m1(95, 244, 1);
     CHECK((from_NDI_zaid("1095244.600nm") == am244m1)); // suffix that should be 1095244
     CHECK((from_NDI_zaid("1095244.700nm") == am244m1)); // suffix that should be 95044 if writing
     CHECK((from_NDI_zaid("95044.600nm") == am244m1));   // suffix that should be 1095244 if writing
@@ -463,7 +463,7 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 
     // Am-244m2
     // -- should be normal
-    constexpr Pantag am244m2(95, 244, 2);
+    constexpr EntityTag am244m2(95, 244, 2);
     CHECK((from_NDI_zaid("2095244.700nm") == am244m2));
     CHECK(to_NDI_zaid(am244m2, 0.701) == "2095244.701nm");
     CHECK(to_NDI_zaid(am244m2, 702) == "2095244.702nm");
@@ -476,29 +476,29 @@ TEST_CASE("format: NDI zaid", "[tag][format][NDI]")
 TEST_CASE("format: NDI short string", "[tag][format][NDI]")
 {
     using nautilus::tag::from_NDI_short_string;
-    using nautilus::tag::Pantag;
+    using nautilus::tag::EntityTag;
     using nautilus::tag::to_NDI_short_string;
 
     // Particles
-    constexpr Pantag neutron(nautilus::tag::names::neutron);
+    constexpr EntityTag neutron(nautilus::tag::names::neutron);
     CHECK((from_NDI_short_string("n") == neutron));
     CHECK(to_NDI_short_string(neutron) == "n");
 
-    constexpr Pantag photon(nautilus::tag::names::photon);
+    constexpr EntityTag photon(nautilus::tag::names::photon);
     CHECK((from_NDI_short_string("g") == photon));
     CHECK((from_NDI_short_string("g0") == photon));
     CHECK(to_NDI_short_string(photon) == "g");
 
     // Normal nuclides
-    constexpr Pantag co59g(27, 59);
+    constexpr EntityTag co59g(27, 59);
     CHECK((from_NDI_short_string("co59") == co59g));
     CHECK(to_NDI_short_string(co59g) == "co59");
 
-    constexpr Pantag ta180(73, 180);
+    constexpr EntityTag ta180(73, 180);
     CHECK((from_NDI_short_string("ta180") == ta180));
     CHECK(to_NDI_short_string(ta180) == "ta180");
 
-    constexpr Pantag k38(19, 38);
+    constexpr EntityTag k38(19, 38);
     CHECK((from_NDI_short_string("k38") == k38));
     CHECK(to_NDI_short_string(k38) == "k38");
 
@@ -506,19 +506,19 @@ TEST_CASE("format: NDI short string", "[tag][format][NDI]")
 
     // Am-242m1
     // -- Am-242g and Am-242m1 are swapped: "am242" -> Am-242m1; Am-242g not representable
-    constexpr Pantag am242m1(95, 242, 1);
+    constexpr EntityTag am242m1(95, 242, 1);
     CHECK((from_NDI_short_string("am242") == am242m1));
     CHECK(to_NDI_short_string(am242m1) == "am242");
 
     // Am-243g
     // -- should be normal
-    constexpr Pantag am243g(95, 243);
+    constexpr EntityTag am243g(95, 243);
     CHECK((from_NDI_short_string("am243") == am243g));
     CHECK(to_NDI_short_string(am243g) == "am243");
 
     // Am-244g
     // -- should be normal
-    constexpr Pantag am244g(95, 244);
+    constexpr EntityTag am244g(95, 244);
     CHECK((from_NDI_short_string("am244") == am244g));
     CHECK(to_NDI_short_string(am244g) == "am244");
 }

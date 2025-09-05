@@ -12,7 +12,7 @@ namespace nautilus::tag {
 // ================================================================================================
 // IC chemsym
 
-inline std::string to_IC_chemsym(Pantag tag)
+inline std::string to_IC_chemsym(EntityTag tag)
 {
     const std::string invalid = "unknown";
     if (tag.is_nuclide()) {
@@ -60,21 +60,21 @@ inline std::string to_IC_chemsym(Pantag tag)
     }
 }
 
-inline Pantag from_IC_chemsym(const std::string_view sv0)
+inline EntityTag from_IC_chemsym(const std::string_view sv0)
 {
     // Throw out the optional suffix
     const std::string sv(sv0.substr(0, sv0.find('.')));
     // Check for known particles or special cases
     if ((sv == "g") || (sv == "g0")) {
-        return Pantag(nautilus::tag::names::photon);
+        return EntityTag(nautilus::tag::names::photon);
     } else if (sv == "nt1") {
-        return Pantag(nautilus::tag::names::neutron);
+        return EntityTag(nautilus::tag::names::neutron);
     } else if ((sv == "am242") || (sv == "am242g")) {
         // Am-242g and Am-242m1 are swapped in NDI
-        return Pantag(95, 242, 1);
+        return EntityTag(95, 242, 1);
     } else if ((sv == "am42") || (sv == "am042") || (sv == "am242m1")) {
         // Am-242g and Am-242m1 are swapped in NDI
-        return Pantag(95, 242);
+        return EntityTag(95, 242);
     }
     // If we fall through to here, we assume this is a nuclide
     const auto tokens = tokenize_nuclide(sv);
@@ -86,19 +86,19 @@ inline Pantag from_IC_chemsym(const std::string_view sv0)
     }
     const auto Z = names::Nuclides::find_index(symbol);
     if (Z == names::Nuclides::not_found) {
-        return Pantag(Pantag::unknown);
+        return EntityTag(EntityTag::unknown);
     }
     // Get the atomic mass number
     if (tokens[1].size() == 0) {
-        return Pantag(Z, Pantag::elemental);
+        return EntityTag(Z, EntityTag::elemental);
     }
     const auto A = std::stoi(tokens[1]);
     // Get the excitation index
     switch (tokens[2][0]) {
     case '\0': [[fallthrough]];
-    case 'g': return Pantag(Z, A); break;
-    case 'm': return Pantag(Z, A, std::stoi(tokens[2].substr(1))); break;
-    default: return Pantag(Pantag::unknown);
+    case 'g': return EntityTag(Z, A); break;
+    case 'm': return EntityTag(Z, A, std::stoi(tokens[2].substr(1))); break;
+    default: return EntityTag(EntityTag::unknown);
     }
 }
 
