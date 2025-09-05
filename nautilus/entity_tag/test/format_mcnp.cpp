@@ -62,8 +62,7 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
     using nautilus::entity_tag::from_MCNP_partial_zaid;
     using nautilus::entity_tag::EntityTag;
     using nautilus::entity_tag::to_MCNP_partial_zaid;
-
-    // TODO: Should I get the "unknown partial zaid" value from format_mcnp.hpp?
+    using nautilus::entity_tag::invalid_mcnp_partial_zaid;
 
     // Normal nuclides
     const auto elements = detail::load_isotopes();
@@ -122,23 +121,25 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
     // m > 4 is not allowed
     // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
     //    m > 4 is not permitted
-    CHECK(to_MCNP_partial_zaid(6812) == -1);
-    CHECK(to_MCNP_partial_zaid(6912) == -1);
-    CHECK(to_MCNP_partial_zaid(47907) == -1);
+    CHECK(to_MCNP_partial_zaid(6812) == invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(6912) == invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(47907) == invalid_mcnp_partial_zaid);
 
     // elementals
     CHECK((from_MCNP_partial_zaid(6000) == EntityTag(6, EntityTag::elemental)));
     CHECK(to_MCNP_partial_zaid(EntityTag(13, EntityTag::elemental)) == 13000);
 
     // particles
-    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::proton)) == -1);
-    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::muon)) == -1);
+    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::proton)) ==
+            invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::muon)) ==
+            invalid_mcnp_partial_zaid);
 
     // user
-    CHECK(to_MCNP_partial_zaid(EntityTag(EntityTag::user, 0)) == -1);
+    CHECK(to_MCNP_partial_zaid(EntityTag(EntityTag::user, 0)) == invalid_mcnp_partial_zaid);
 
     // unknown
-    CHECK(to_MCNP_partial_zaid(EntityTag(EntityTag::unknown)) == -1);
+    CHECK(to_MCNP_partial_zaid(EntityTag(EntityTag::unknown)) == invalid_mcnp_partial_zaid);
 }
 
 // ================================================================================================
