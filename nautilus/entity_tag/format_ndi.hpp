@@ -106,59 +106,63 @@ struct NoLibrary {};
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-inline bool standard_am242(NoLibrary) { return true; }
-inline bool standard_am242(const std::string_view sv)
+template <typename T, typename Container>
+bool contains(const Container & c, const T & value)
 {
-    if (sv == "mendf70x") {
-        return false;
-    } else if (sv == "mtmg01") {
-        return false;
-    } else if (sv == "mtmg01ex") {
-        return false;
-    } else if ((sv == "701nm") || (sv == "701")) {
-        return false;
-    } else if (match_table_suffix(sv)) {
-        const auto num = table_suffix_integer(sv);
-        if ((num >= 121) && (num <= 135)) {
-            return false;
-        }
-    }
-    return true;
+    return std::find(c.begin(), c.end(), value) != c.end();
 }
-inline bool standard_am242(const int n)
-{
-    if (n == 701) {
-        return false;
-    } else if ((n >= 121) && (n <= 135)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-inline bool standard_am242(const double d) { return standard_am242(int(std::round(d * 1000))); }
 
 //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-inline bool standard_am244(NoLibrary) { return true; }
-inline bool standard_am244(const std::string_view sv)
-{
-    if (sv == "endf7act") {
-        return false;
-    } else if ((sv == "700nm") || (sv == "700")) {
-        return false;
-    } else {
-        return true;
+struct Am242 {
+    static inline bool is_standard(NoLibrary) { return true; }
+    static inline bool is_standard(const int num)
+    {
+        // As of C++20 we can make std::vector constexpr, which means we don't have to rebuild the
+        // list of table IDs every time this function is called.
+        std::vector<int> table_ids;
+        table_ids.push_back(701);
+        for (int n = 121; n <= 135; ++n) {
+            table_ids.push_back(n);
+        }
+        return !contains(table_ids, num);
     }
-}
-inline bool standard_am244(const int n)
-{
-    if (n == 700) {
-        return false;
-    } else {
-        return true;
+    static inline bool is_standard(const double d)
+    {
+        return is_standard(static_cast<int>(std::round(d * 1000)));
     }
-}
-inline bool standard_am244(const double d) { return standard_am244(int(std::round(d * 1000))); }
+    static inline bool is_standard(const std::string & str)
+    {
+        if (match_table_suffix(str)) {
+            return is_standard(table_suffix_integer(str));
+        }
+        const std::vector<std::string> libraries{"mendf70x", "mtmg01", "mtmg01ex"};
+        return !contains(libraries, str);
+    }
+};
+
+//  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+struct Am244 {
+    static inline bool is_standard(NoLibrary) { return true; }
+    static inline bool is_standard(const int num)
+    {
+        std::vector<int> table_ids{700};
+        return !contains(table_ids, num);
+    }
+    static inline bool is_standard(const double d)
+    {
+        return is_standard(static_cast<int>(std::round(d * 1000)));
+    }
+    static inline bool is_standard(const std::string & str)
+    {
+        if (match_table_suffix(str)) {
+            return is_standard(table_suffix_integer(str));
+        }
+        const std::vector<std::string> libraries{"endf7act"};
+        return !contains(libraries, str);
+    }
+};
 
 } // end namespace detail
 
@@ -185,7 +189,7 @@ int to_NDI_SZA(const EntityTag tag, T && library)
                 // Am-242 swaps the S values for the ground state and the first metastable state
                 if (S == 0) {
                     // Am-242g has two possible SZA values depending on the library
-                    if (detail::standard_am242(std::forward<T>(library))) {
+                    if (detail::Am242::is_standard(std::forward<T>(library))) {
                         return 1095242;
                     } else {
                         return 95042;
@@ -196,7 +200,7 @@ int to_NDI_SZA(const EntityTag tag, T && library)
             } else if (A == 244) {
                 // Am-244m1 has two possible SZA values depending on the library
                 if (S == 1) {
-                    if (detail::standard_am244(std::forward<T>(library))) {
+                    if (detail::Am244::is_standard(std::forward<T>(library))) {
                         return 1095244;
                     } else {
                         return 95044;
