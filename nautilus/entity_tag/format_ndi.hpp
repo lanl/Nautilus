@@ -5,6 +5,7 @@
 #include <charconv>
 #include <cmath>
 #include <limits>
+#include <vector>
 
 #include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/string_processing.hpp"
