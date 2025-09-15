@@ -9,7 +9,7 @@ add_test_target(test_tag
     test/format_standard_name.cpp   # Not currently expected to run on GPUs
     test/names.cpp
     $<$<BOOL:${NAUTILUS_ENABLE_KOKKOS}>:test/names_kokkos.cpp>
-    #TODO: test/string_processing.cpp
+    test/string_processing.cpp
 )
 
 configure_file(
