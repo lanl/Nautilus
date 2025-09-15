@@ -247,9 +247,6 @@ public:
     PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
     PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
 
-    // TODO: Is the name "get_metastable_index" still appropriate, or should I change it?
-    //    -- Related: Should I add shorthand like get_Z and get_A?  NDI would want get_S while MCNP
-    //       would want get_m, so maybe both or maybe neither?
     // The metastable index doesn't apply to elementals, so it is assumed that elementals are in
     // the ground state.
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const

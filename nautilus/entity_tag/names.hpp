@@ -439,11 +439,6 @@ public:
     static constexpr std::size_t count = 32;
     static constexpr std::size_t not_found = count;
     // It's assumed that Standard(0) will be the default value.
-    // TODO: I don't really care for the name "alternate", because it's not descriptive of what
-    //       this format actually is.  Perhaps something like "A15" because it's the standard used
-    //       in Claude Amsler's 2015 "Nuclear and Particle Physics"?  But that doesn't mean Amsler
-    //       _invented_ the standard.  (Bonus: the same Amsler was the lead author of the official
-    //       document defining the PDG standard.)
     enum class Standard : std::size_t { PDG, alternate };
 
 private:

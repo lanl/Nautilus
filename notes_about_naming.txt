@@ -1,0 +1,27 @@
+entity_tag ________________________________________________________________________________________
+-- get_metastable_index:
+   -- metastable or excitation/excited?
+   -- index or state?
+   -- shorthands?  NDI would want get_S while MCNP would want get_m
+
+names _____________________________________________________________________________________________
+-- particle standards
+   -- Currently "PDG" and "alternate"
+   -- The name "alternate" says nothing about what it is, and makes it unclear what to do if we add
+      another format (e.g., MCNP has a muddled mixture between PDG and alternate, so that could
+      potentially define a third format, and LHCb has proposed a format that extends PDG)
+   -- The "alternate" format is used in, for example, Claude Amsler's 2015 "Nuclear and Particle
+      Physics".  Ironically, Claude Amsler is also the lead author on the official document
+      outlining the PDG format.
+   -- The difference is mostly related to the sign of antiparticles: PDG uses the sign of the
+      particle in question, while the "alternate" format says that antiparticles take the sign of
+      their corresponding non-anti particle.  For example, the antiparticle of the positive sigma
+      baryon would be either the negative sigma antibaryon (PDG) or the positive sigma antibaryon
+      (alternate), and the symbol would be either Σ- or Σ+ (with the appropriate overbar).
+
+NDI _______________________________________________________________________________________________
+-- FPID
+   -- Currently denoted as FPID, short for floating-point ID
+   -- This is not an official NDI thing, but a simplified format used by LAP (and others?)
+   -- There's already a lot of confusion about what a "zaid" is, so I don't want this to be
+      something like "truncated zaid"

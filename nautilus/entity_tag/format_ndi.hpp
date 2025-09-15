@@ -220,7 +220,6 @@ inline EntityTag from_NDI_SZA(const int sza)
 
 // ================================================================================================
 // NDI FPID
-// TODO: Still not sure about the name, but it's better than "the as-yet-unnamed format"
 
 constexpr double invalid_ndi_fpid = std::numeric_limits<double>::max();
 
