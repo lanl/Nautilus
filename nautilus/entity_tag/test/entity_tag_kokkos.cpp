@@ -12,13 +12,10 @@
 TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 {
     using nautilus::entity_tag::EntityTag;
-    using HostSpace = Kokkos::HostSpace;
-    using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
-    constexpr size_t N{6};
 
     SECTION("particle tag")
     {
-        GPU_CHECK_INIT();
+        GPU_CHECK_INIT(6);
 
         EntityTag my_tag(nautilus::entity_tag::names::electron);
 
@@ -44,7 +41,7 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
     SECTION("nuclide tag (elemental)")
     {
-        GPU_CHECK_INIT();
+        GPU_CHECK_INIT(6);
 
         constexpr EntityTag my_tag(1, EntityTag::elemental);
 
@@ -62,7 +59,7 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
     SECTION("nuclide tag (default index)")
     {
-        GPU_CHECK_INIT();
+        GPU_CHECK_INIT(6);
 
         constexpr EntityTag my_tag(28, 56);
 
@@ -84,7 +81,7 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
     SECTION("nuclide tag (metastable index)")
     {
-        GPU_CHECK_INIT();
+        GPU_CHECK_INIT(6);
 
         constexpr EntityTag my_tag(6, 12, 1);
 
@@ -106,7 +103,7 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
     SECTION("user tag")
     {
-        GPU_CHECK_INIT();
+        GPU_CHECK_INIT(6);
 
         constexpr EntityTag my_tag(EntityTag::user, 100);
 

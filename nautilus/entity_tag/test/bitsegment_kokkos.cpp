@@ -10,10 +10,7 @@
 TEST_CASE("BitSegment on GPUs", "[entity_tag][bitsegment][GPU]")
 {
     // The main tests are run on CPU.  These tests only demonstrate that the code runs on GPU.
-    using HostSpace = Kokkos::HostSpace;
-    using ExecSpace = Kokkos::DefaultExecutionSpace::memory_space;
-    constexpr size_t N{6};
-    GPU_CHECK_INIT();
+    GPU_CHECK_INIT(6);
     using T = int32_t;
     using nautilus::entity_tag::BitSegment;
     T num = 0x0000FFFF;
