@@ -212,7 +212,6 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
     // m > 4 is not allowed
     // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
     //    m > 4 is not permitted
-    // TODO: This seems wrong???
     CHECK(to_MCNP_full_zaid(EntityTag(6,12,5), "abx") == invalid_mcnp_full_zaid);
     CHECK((from_MCNP_full_zaid("6812.abx") == EntityTag(EntityTag::unknown)));
     CHECK(to_MCNP_full_zaid(EntityTag(6,12,9), "nnc") == invalid_mcnp_full_zaid);
