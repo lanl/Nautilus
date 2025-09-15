@@ -13,8 +13,6 @@ namespace nautilus::entity_tag {
 
 // ================================================================================================
 
-// TODO: How to indicate this is not part of the user interface?
-
 template <std::size_t N>
 class Identifiers
 {

@@ -65,3 +65,10 @@ In the documentation, explain that floating-point formats are not recommended, b
 supported for customers already using such formats.  This includes specifying the library by a
 floating-point suffix (e.g., 0.654) and the entire FPID format.
 
+___________________________________________________________________________________________________
+from nautilus/entity_tag/identifiers.hpp
+
+TODO: How to indicate this is not part of the user interface?
+
+
+
