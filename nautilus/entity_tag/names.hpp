@@ -189,6 +189,7 @@ public:
 #define ELEMENT_INDEX(x)                                                                          \
     static constexpr inline std::size_t x = Nuclides::find_index(#x);                             \
     static_assert(x != Nuclides::not_found);
+
 ELEMENT_INDEX(H);
 ELEMENT_INDEX(hydrogen);
 ELEMENT_INDEX(He);
@@ -429,6 +430,8 @@ ELEMENT_INDEX(tennessine);
 ELEMENT_INDEX(Og);
 ELEMENT_INDEX(oganesson);
 
+#undef ELEMENT_INDEX
+
 // ================================================================================================
 
 struct Particles {
@@ -546,6 +549,7 @@ public:
 #define PARTICLE_INDEX(var, str)                                                                  \
     static constexpr inline std::size_t var = Particles::find_index(str);                         \
     static_assert(var != Particles::not_found);
+
 PARTICLE_INDEX(photon, "photon");
 PARTICLE_INDEX(electron, "electron");
 PARTICLE_INDEX(positron, "positron");
@@ -578,6 +582,8 @@ PARTICLE_INDEX(negative_xi_baryon, "negative xi baryon");
 PARTICLE_INDEX(positive_xi_antibaryon, "positive xi antibaryon");
 PARTICLE_INDEX(negative_omega_baryon, "negative omega baryon");
 PARTICLE_INDEX(positive_omega_antibaryon, "positive omega antibaryon");
+
+#undef PARTICLE_INDEX
 
 // ================================================================================================
 
