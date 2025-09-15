@@ -72,10 +72,16 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
             return -0.0000711325 * Z3 + 0.0147356 * Z2 + 1.75397 * Z + 2.04063;
         };
         m = std::round(0.01 * (A - 300 - f(Z)));
-        assert(m > 0);        // sanity check: if A > 400 then we must have an excited state
-        assert(m < 5);        // MCNP format only supports up to m == 4
+        // This format does not support m < 0 or m > 4, and if A > 400 then we must have an excited
+        // state (m != 0)
+        if ((m < 1) || (m > 4)) { // this format does not support m < 0 or m > 4
+            return EntityTag(EntityTag::unknown);
+        }
         A -= (300 + m * 100); // remove the metastable correction from the atomic mass number
-        assert(A >= Z);       // sanity check: cannot have negative neutrons
+        // This is not an elemental, so A = Z + N, where Z and N are non-negative
+        if (A < Z) {
+            return EntityTag(EntityTag::unknown);
+        }
     }
     // -- special cases: Am-242g and Am-242m1 are swapped
     if ((Z == 95) && (A == 242)) {

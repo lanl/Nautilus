@@ -119,7 +119,7 @@ public:
         : tag_{unknown_tag()}
     {}
 
-    PORTABLE_FUNCTION constexpr EntityTag(const Storage particle)
+    PORTABLE_FUNCTION constexpr explicit EntityTag(const Storage particle)
         : tag_{unknown_tag()}
     {
         set(particle);

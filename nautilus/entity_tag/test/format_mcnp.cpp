@@ -121,9 +121,12 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
     // m > 4 is not allowed
     // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
     //    m > 4 is not permitted
-    CHECK(to_MCNP_partial_zaid(6812) == invalid_mcnp_partial_zaid);
-    CHECK(to_MCNP_partial_zaid(6912) == invalid_mcnp_partial_zaid);
-    CHECK(to_MCNP_partial_zaid(47907) == invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(EntityTag(6,12,5)) == invalid_mcnp_partial_zaid);
+    CHECK((from_MCNP_partial_zaid(6812) == EntityTag(EntityTag::unknown)));
+    CHECK(to_MCNP_partial_zaid(EntityTag(6,12,9)) == invalid_mcnp_partial_zaid);
+    CHECK((from_MCNP_partial_zaid(6912) == EntityTag(EntityTag::unknown)));
+    CHECK(to_MCNP_partial_zaid(EntityTag(47,107,5)) == invalid_mcnp_partial_zaid);
+    CHECK((from_MCNP_partial_zaid(47907) == EntityTag(EntityTag::unknown)));
 
     // elementals
     CHECK((from_MCNP_partial_zaid(6000) == EntityTag(6, EntityTag::elemental)));
@@ -210,9 +213,12 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
     // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
     //    m > 4 is not permitted
     // TODO: This seems wrong???
-    CHECK(to_MCNP_full_zaid(6812, "abx") == invalid_mcnp_full_zaid);
-    CHECK(to_MCNP_full_zaid(6912, "abx") == invalid_mcnp_full_zaid);
-    CHECK(to_MCNP_full_zaid(47907, "abx") == invalid_mcnp_full_zaid);
+    CHECK(to_MCNP_full_zaid(EntityTag(6,12,5), "abx") == invalid_mcnp_full_zaid);
+    CHECK((from_MCNP_full_zaid("6812.abx") == EntityTag(EntityTag::unknown)));
+    CHECK(to_MCNP_full_zaid(EntityTag(6,12,9), "nnc") == invalid_mcnp_full_zaid);
+    CHECK((from_MCNP_full_zaid("6912.nnc") == EntityTag(EntityTag::unknown)));
+    CHECK(to_MCNP_full_zaid(EntityTag(47,107,5), "zzz") == invalid_mcnp_full_zaid);
+    CHECK((from_MCNP_full_zaid("47907.zzz") == EntityTag(EntityTag::unknown)));
 
     // elementals
     CHECK((from_MCNP_full_zaid("6000.nnc") == EntityTag(6, EntityTag::elemental)));
@@ -269,69 +275,69 @@ TEST_CASE("format: MCNP particle symbol", "[entity_tag][format][MCNP]")
 
     // Particles
     CHECK((from_MCNP_particle_symbol('N') == EntityTag(neutron)));
-    CHECK(to_MCNP_particle_symbol(neutron) == 'N');
+    CHECK(to_MCNP_particle_symbol(EntityTag(neutron)) == 'N');
     CHECK((from_MCNP_particle_symbol('P') == EntityTag(photon)));
-    CHECK(to_MCNP_particle_symbol(photon) == 'P');
+    CHECK(to_MCNP_particle_symbol(EntityTag(photon)) == 'P');
     CHECK((from_MCNP_particle_symbol('E') == EntityTag(electron)));
-    CHECK(to_MCNP_particle_symbol(electron) == 'E');
+    CHECK(to_MCNP_particle_symbol(EntityTag(electron)) == 'E');
     CHECK((from_MCNP_particle_symbol('|') == EntityTag(muon)));
-    CHECK(to_MCNP_particle_symbol(muon) == '|');
+    CHECK(to_MCNP_particle_symbol(EntityTag(muon)) == '|');
     CHECK((from_MCNP_particle_symbol('Q') == EntityTag(antineutron)));
-    CHECK(to_MCNP_particle_symbol(antineutron) == 'Q');
+    CHECK(to_MCNP_particle_symbol(EntityTag(antineutron)) == 'Q');
     CHECK((from_MCNP_particle_symbol('U') == EntityTag(electron_neutrino)));
-    CHECK(to_MCNP_particle_symbol(electron_neutrino) == 'U');
+    CHECK(to_MCNP_particle_symbol(EntityTag(electron_neutrino)) == 'U');
     CHECK((from_MCNP_particle_symbol('V') == EntityTag(muon_neutrino)));
-    CHECK(to_MCNP_particle_symbol(muon_neutrino) == 'V');
+    CHECK(to_MCNP_particle_symbol(EntityTag(muon_neutrino)) == 'V');
     CHECK((from_MCNP_particle_symbol('F') == EntityTag(positron)));
-    CHECK(to_MCNP_particle_symbol(positron) == 'F');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positron)) == 'F');
     CHECK((from_MCNP_particle_symbol('H') == EntityTag(proton)));
-    CHECK(to_MCNP_particle_symbol(proton) == 'H');
+    CHECK(to_MCNP_particle_symbol(EntityTag(proton)) == 'H');
     CHECK((from_MCNP_particle_symbol('L') == EntityTag(neutral_lambda_baryon)));
-    CHECK(to_MCNP_particle_symbol(neutral_lambda_baryon) == 'L');
+    CHECK(to_MCNP_particle_symbol(EntityTag(neutral_lambda_baryon)) == 'L');
     CHECK((from_MCNP_particle_symbol('+') == EntityTag(positive_sigma_baryon)));
-    CHECK(to_MCNP_particle_symbol(positive_sigma_baryon) == '+');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positive_sigma_baryon)) == '+');
     CHECK((from_MCNP_particle_symbol('-') == EntityTag(negative_sigma_baryon)));
-    CHECK(to_MCNP_particle_symbol(negative_sigma_baryon) == '-');
+    CHECK(to_MCNP_particle_symbol(EntityTag(negative_sigma_baryon)) == '-');
     CHECK((from_MCNP_particle_symbol('X') == EntityTag(neutral_xi_baryon)));
-    CHECK(to_MCNP_particle_symbol(neutral_xi_baryon) == 'X');
+    CHECK(to_MCNP_particle_symbol(EntityTag(neutral_xi_baryon)) == 'X');
     CHECK((from_MCNP_particle_symbol('Y') == EntityTag(negative_xi_baryon)));
-    CHECK(to_MCNP_particle_symbol(negative_xi_baryon) == 'Y');
+    CHECK(to_MCNP_particle_symbol(EntityTag(negative_xi_baryon)) == 'Y');
     CHECK((from_MCNP_particle_symbol('O') == EntityTag(negative_omega_baryon)));
-    CHECK(to_MCNP_particle_symbol(negative_omega_baryon) == 'O');
+    CHECK(to_MCNP_particle_symbol(EntityTag(negative_omega_baryon)) == 'O');
     CHECK((from_MCNP_particle_symbol('!') == EntityTag(antimuon)));
-    CHECK(to_MCNP_particle_symbol(antimuon) == '!');
+    CHECK(to_MCNP_particle_symbol(EntityTag(antimuon)) == '!');
     CHECK((from_MCNP_particle_symbol('<') == EntityTag(electron_antineutrino)));
-    CHECK(to_MCNP_particle_symbol(electron_antineutrino) == '<');
+    CHECK(to_MCNP_particle_symbol(EntityTag(electron_antineutrino)) == '<');
     CHECK((from_MCNP_particle_symbol('>') == EntityTag(muon_antineutrino)));
-    CHECK(to_MCNP_particle_symbol(muon_antineutrino) == '>');
+    CHECK(to_MCNP_particle_symbol(EntityTag(muon_antineutrino)) == '>');
     CHECK((from_MCNP_particle_symbol('G') == EntityTag(antiproton)));
-    CHECK(to_MCNP_particle_symbol(antiproton) == 'G');
+    CHECK(to_MCNP_particle_symbol(EntityTag(antiproton)) == 'G');
     CHECK((from_MCNP_particle_symbol('/') == EntityTag(positive_pion)));
-    CHECK(to_MCNP_particle_symbol(positive_pion) == '/');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positive_pion)) == '/');
     CHECK((from_MCNP_particle_symbol('Z') == EntityTag(neutral_pion)));
-    CHECK(to_MCNP_particle_symbol(neutral_pion) == 'Z');
+    CHECK(to_MCNP_particle_symbol(EntityTag(neutral_pion)) == 'Z');
     CHECK((from_MCNP_particle_symbol('K') == EntityTag(positive_kaon)));
-    CHECK(to_MCNP_particle_symbol(positive_kaon) == 'K');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positive_kaon)) == 'K');
     CHECK((from_MCNP_particle_symbol('%') == EntityTag(short_kaon)));
-    CHECK(to_MCNP_particle_symbol(short_kaon) == '%');
+    CHECK(to_MCNP_particle_symbol(EntityTag(short_kaon)) == '%');
     CHECK((from_MCNP_particle_symbol('^') == EntityTag(long_kaon)));
-    CHECK(to_MCNP_particle_symbol(long_kaon) == '^');
+    CHECK(to_MCNP_particle_symbol(EntityTag(long_kaon)) == '^');
     CHECK((from_MCNP_particle_symbol('B') == EntityTag(neutral_lambda_antibaryon)));
-    CHECK(to_MCNP_particle_symbol(neutral_lambda_antibaryon) == 'B');
+    CHECK(to_MCNP_particle_symbol(EntityTag(neutral_lambda_antibaryon)) == 'B');
     CHECK((from_MCNP_particle_symbol('_') == EntityTag(negative_sigma_antibaryon)));
-    CHECK(to_MCNP_particle_symbol(negative_sigma_antibaryon) == '_');
+    CHECK(to_MCNP_particle_symbol(EntityTag(negative_sigma_antibaryon)) == '_');
     CHECK((from_MCNP_particle_symbol('~') == EntityTag(positive_sigma_antibaryon)));
-    CHECK(to_MCNP_particle_symbol(positive_sigma_antibaryon) == '~');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positive_sigma_antibaryon)) == '~');
     CHECK((from_MCNP_particle_symbol('C') == EntityTag(neutral_xi_antibaryon)));
-    CHECK(to_MCNP_particle_symbol(neutral_xi_antibaryon) == 'C');
+    CHECK(to_MCNP_particle_symbol(EntityTag(neutral_xi_antibaryon)) == 'C');
     CHECK((from_MCNP_particle_symbol('W') == EntityTag(positive_xi_antibaryon)));
-    CHECK(to_MCNP_particle_symbol(positive_xi_antibaryon) == 'W');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positive_xi_antibaryon)) == 'W');
     CHECK((from_MCNP_particle_symbol('@') == EntityTag(positive_omega_antibaryon)));
-    CHECK(to_MCNP_particle_symbol(positive_omega_antibaryon) == '@');
+    CHECK(to_MCNP_particle_symbol(EntityTag(positive_omega_antibaryon)) == '@');
     CHECK((from_MCNP_particle_symbol('*') == EntityTag(negative_pion)));
-    CHECK(to_MCNP_particle_symbol(negative_pion) == '*');
+    CHECK(to_MCNP_particle_symbol(EntityTag(negative_pion)) == '*');
     CHECK((from_MCNP_particle_symbol('?') == EntityTag(negative_kaon)));
-    CHECK(to_MCNP_particle_symbol(negative_kaon) == '?');
+    CHECK(to_MCNP_particle_symbol(EntityTag(negative_kaon)) == '?');
 }
 
 // ================================================================================================
