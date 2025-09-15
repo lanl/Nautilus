@@ -233,218 +233,106 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
 
 // ================================================================================================
 
-// TODO: MCNP particle symbol
-
-/*TEST_CASE("format: NDI zaid", "[entity_tag][format][NDI]")
+TEST_CASE("format: MCNP particle symbol", "[entity_tag][format][MCNP]")
 {
-    using nautilus::entity_tag::from_NDI_zaid;
     using nautilus::entity_tag::EntityTag;
-    using nautilus::entity_tag::to_NDI_zaid;
+    using nautilus::entity_tag::from_MCNP_particle_symbol;
+    using nautilus::entity_tag::to_MCNP_particle_symbol;
+    using nautilus::entity_tag::invalid_mcnp_particle_symbol;
+
+    using namespace nautilus::entity_tag::names;
+
+    // Nuclides
+    // -- H-1 (EntityTag(1,1) -> 'H', but 'H' -> proton)
+    CHECK((from_MCNP_particle_symbol('H') == EntityTag(proton)));
+    CHECK(to_MCNP_particle_symbol(EntityTag(1, 1)) == 'H');
+    // -- H-2
+    CHECK((from_MCNP_particle_symbol('D') == EntityTag(1, 2)));
+    CHECK(to_MCNP_particle_symbol(EntityTag(1, 2)) == 'D');
+    // -- H-3
+    CHECK((from_MCNP_particle_symbol('T') == EntityTag(1, 3)));
+    CHECK(to_MCNP_particle_symbol(EntityTag(1, 3)) == 'T');
+    // -- He-3
+    CHECK((from_MCNP_particle_symbol('S') == EntityTag(2, 3)));
+    CHECK(to_MCNP_particle_symbol(EntityTag(2, 3)) == 'S');
+    // -- He-3
+    CHECK((from_MCNP_particle_symbol('A') == EntityTag(2, 4)));
+    CHECK(to_MCNP_particle_symbol(EntityTag(2, 4)) == 'A');
+    // -- all other nuclides
+    CHECK((from_MCNP_particle_symbol('#') == EntityTag(EntityTag::unknown)));
+    CHECK(to_MCNP_particle_symbol(EntityTag(3, 7)) == '#');
+    CHECK(to_MCNP_particle_symbol(EntityTag(4, 9)) == '#');
+    CHECK(to_MCNP_particle_symbol(EntityTag(5, 11)) == '#');
+    CHECK(to_MCNP_particle_symbol(EntityTag(Og, 294)) == '#');
+    CHECK(to_MCNP_particle_symbol(EntityTag(1, 4)) == '#');
+    CHECK(to_MCNP_particle_symbol(EntityTag(2, 5)) == '#');
 
     // Particles
-    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
-    CHECK((from_NDI_zaid("1.999nm") == neutron));
-    CHECK(to_NDI_zaid(neutron, 0.999) == "1.999nm");
-    CHECK(to_NDI_zaid(neutron, 999) == "1.999nm");
-    CHECK(to_NDI_zaid(neutron, "999") == "1.999nm");
-    CHECK(to_NDI_zaid(neutron, "999nm") == "1.999nm");
-
-    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
-    CHECK((from_NDI_zaid("0.000nm") == photon));
-    CHECK(to_NDI_zaid(photon, 0.456) == "0.456nm");
-    CHECK(to_NDI_zaid(photon, 789) == "0.789nm");
-    CHECK(to_NDI_zaid(photon, "123") == "0.123nm");
-    CHECK(to_NDI_zaid(photon, "369nm") == "0.369nm");
-
-    // Normal nuclides
-    constexpr EntityTag co59g(27, 59);
-    CHECK((from_NDI_zaid("27059.123nm") == co59g));
-    CHECK(to_NDI_zaid(co59g, 0.234) == "27059.234nm");
-    CHECK(to_NDI_zaid(co59g, 345) == "27059.345nm");
-    CHECK(to_NDI_zaid(co59g, "456") == "27059.456nm");
-    CHECK(to_NDI_zaid(co59g, "567nm") == "27059.567nm");
-
-    constexpr EntityTag ta180m1(73, 180, 1);
-    CHECK((from_NDI_zaid("1073180.987nm") == ta180m1));
-    CHECK(to_NDI_zaid(ta180m1, 0.876) == "1073180.876nm");
-    CHECK(to_NDI_zaid(ta180m1, 765) == "1073180.765nm");
-    CHECK(to_NDI_zaid(ta180m1, "654") == "1073180.654nm");
-    CHECK(to_NDI_zaid(ta180m1, "543nm") == "1073180.543nm");
-
-    constexpr EntityTag k38m2(19, 38, 2);
-    CHECK((from_NDI_zaid("2019038.123nm") == k38m2));
-    CHECK(to_NDI_zaid(k38m2, 0.000) == "2019038.000nm");
-    CHECK(to_NDI_zaid(k38m2, 5) == "2019038.005nm");
-    CHECK(to_NDI_zaid(k38m2, "050") == "2019038.050nm");
-    CHECK(to_NDI_zaid(k38m2, "500nm") == "2019038.500nm");
-
-    // Special cases
-
-    // Am-242g
-    // -- Am-242g and Am-242m1 are swapped in NDI zaid
-    // -- Am-242g can take different values
-    //    -- 1095242 (most cases)
-    //    -- 95042 (specific cases)
-    //       -- mendf70x / 701nm
-    //       -- mtmg01 / 121nm - 135nm
-    //       -- mtmg01ex / 121nm - 135nm
-    constexpr EntityTag am242g(95, 242);
-    CHECK((from_NDI_zaid("1095242.120nm") == am242g)); // suffix that should be 1095242
-    CHECK((from_NDI_zaid("1095242.123nm") == am242g)); // suffix that should be 95042 if writing
-    CHECK((from_NDI_zaid("95042.120nm") == am242g));   // suffix that should be 1095242 if writing
-    CHECK((from_NDI_zaid("95042.123nm") == am242g));   // suffix that should be 95042
-    CHECK(to_NDI_zaid(am242g, "083") == "1095242.083nm");
-    CHECK(to_NDI_zaid(am242g, "083nm") == "1095242.083nm");
-    CHECK(to_NDI_zaid(am242g, 83) == "1095242.083nm");
-    CHECK(to_NDI_zaid(am242g, 0.083) == "1095242.083nm");
-    CHECK(to_NDI_zaid(am242g, "701") == "95042.701nm");
-    CHECK(to_NDI_zaid(am242g, "701nm") == "95042.701nm");
-    CHECK(to_NDI_zaid(am242g, 701) == "95042.701nm");
-    CHECK(to_NDI_zaid(am242g, 0.701) == "95042.701nm");
-    CHECK(to_NDI_zaid(am242g, "121") == "95042.121nm");
-    CHECK(to_NDI_zaid(am242g, "128") == "95042.128nm");
-    CHECK(to_NDI_zaid(am242g, "135") == "95042.135nm");
-    CHECK(to_NDI_zaid(am242g, "121nm") == "95042.121nm");
-    CHECK(to_NDI_zaid(am242g, "128nm") == "95042.128nm");
-    CHECK(to_NDI_zaid(am242g, "135nm") == "95042.135nm");
-    CHECK(to_NDI_zaid(am242g, 121) == "95042.121nm");
-    CHECK(to_NDI_zaid(am242g, 128) == "95042.128nm");
-    CHECK(to_NDI_zaid(am242g, 135) == "95042.135nm");
-    CHECK(to_NDI_zaid(am242g, 0.121) == "95042.121nm");
-    CHECK(to_NDI_zaid(am242g, 0.128) == "95042.128nm");
-    CHECK(to_NDI_zaid(am242g, 0.135) == "95042.135nm");
-
-    // Am-242m1
-    // -- Am-242g and Am-242m1 are swapped in NDI zaid
-    constexpr EntityTag am242m1(95, 242, 1);
-    CHECK((from_NDI_zaid("95242.133nm") == am242m1));
-    CHECK(to_NDI_zaid(am242m1, 0.134) == "95242.134nm");
-    CHECK(to_NDI_zaid(am242m1, 135) == "95242.135nm");
-    CHECK(to_NDI_zaid(am242m1, "136") == "95242.136nm");
-    CHECK(to_NDI_zaid(am242m1, "137nm") == "95242.137nm");
-
-    // Am-242m2
-    // -- should be normal
-    constexpr EntityTag am242m2(95, 242, 2);
-    CHECK((from_NDI_zaid("2095242.111nm") == am242m2));
-    CHECK(to_NDI_zaid(am242m2, 0.333) == "2095242.333nm");
-    CHECK(to_NDI_zaid(am242m2, 555) == "2095242.555nm");
-    CHECK(to_NDI_zaid(am242m2, "777") == "2095242.777nm");
-    CHECK(to_NDI_zaid(am242m2, "999nm") == "2095242.999nm");
-
-    // Am-243g
-    // -- should be normal
-    constexpr EntityTag am243g(95, 243);
-    CHECK((from_NDI_zaid("95243.867nm") == am243g));
-    CHECK(to_NDI_zaid(am243g, 0.675) == "95243.675nm");
-    CHECK(to_NDI_zaid(am243g, 753) == "95243.753nm");
-    CHECK(to_NDI_zaid(am243g, "530") == "95243.530nm");
-    CHECK(to_NDI_zaid(am243g, "309nm") == "95243.309nm");
-
-    // Am-243m1
-    // -- should be normal
-    constexpr EntityTag am243m1(95, 243, 1);
-    CHECK((from_NDI_zaid("1095243.555nm") == am243m1));
-    CHECK(to_NDI_zaid(am243m1, 0.555) == "1095243.555nm");
-    CHECK(to_NDI_zaid(am243m1, 555) == "1095243.555nm");
-    CHECK(to_NDI_zaid(am243m1, "555") == "1095243.555nm");
-    CHECK(to_NDI_zaid(am243m1, "555nm") == "1095243.555nm");
-
-    // Am-243m2
-    // -- should be normal
-    constexpr EntityTag am243m2(95, 243, 2);
-    CHECK((from_NDI_zaid("2095243.135nm") == am243m2));
-    CHECK(to_NDI_zaid(am243m2, 0.135) == "2095243.135nm");
-    CHECK(to_NDI_zaid(am243m2, 135) == "2095243.135nm");
-    CHECK(to_NDI_zaid(am243m2, "135") == "2095243.135nm");
-    CHECK(to_NDI_zaid(am243m2, "135nm") == "2095243.135nm");
-
-    // Am-244g
-    // -- should be normal
-    constexpr EntityTag am244g(95, 244);
-    CHECK((from_NDI_zaid("95244.951nm") == am244g));
-    CHECK(to_NDI_zaid(am244g, 0.951) == "95244.951nm");
-    CHECK(to_NDI_zaid(am244g, 951) == "95244.951nm");
-    CHECK(to_NDI_zaid(am244g, "951") == "95244.951nm");
-    CHECK(to_NDI_zaid(am244g, "951nm") == "95244.951nm");
-
-    // Am-244m1
-    // -- Am-244m1 can take different values
-    //    -- 1095244 (most cases)
-    //    -- 95044 (specific cases)
-    //       -- endf7act / 660nm
-    constexpr EntityTag am244m1(95, 244, 1);
-    CHECK((from_NDI_zaid("1095244.600nm") == am244m1)); // suffix that should be 1095244
-    CHECK((from_NDI_zaid("1095244.700nm") == am244m1)); // suffix that should be 95044 if writing
-    CHECK((from_NDI_zaid("95044.600nm") == am244m1));   // suffix that should be 1095244 if writing
-    CHECK((from_NDI_zaid("95044.700nm") == am244m1));   // suffix that should be 95044
-    CHECK(to_NDI_zaid(am244m1, "060nm") == "1095244.060nm");
-    CHECK(to_NDI_zaid(am244m1, "060") == "1095244.060nm");
-    CHECK(to_NDI_zaid(am244m1, 60) == "1095244.060nm");
-    CHECK(to_NDI_zaid(am244m1, 0.060) == "1095244.060nm");
-    CHECK(to_NDI_zaid(am244m1, "700nm") == "95044.700nm");
-    CHECK(to_NDI_zaid(am244m1, "700") == "95044.700nm");
-    CHECK(to_NDI_zaid(am244m1, 700) == "95044.700nm");
-    CHECK(to_NDI_zaid(am244m1, 0.700) == "95044.700nm");
-
-    // Am-244m2
-    // -- should be normal
-    constexpr EntityTag am244m2(95, 244, 2);
-    CHECK((from_NDI_zaid("2095244.700nm") == am244m2));
-    CHECK(to_NDI_zaid(am244m2, 0.701) == "2095244.701nm");
-    CHECK(to_NDI_zaid(am244m2, 702) == "2095244.702nm");
-    CHECK(to_NDI_zaid(am244m2, "703") == "2095244.703nm");
-    CHECK(to_NDI_zaid(am244m2, "704nm") == "2095244.704nm");
+    CHECK((from_MCNP_particle_symbol('N') == EntityTag(neutron)));
+    CHECK(to_MCNP_particle_symbol(neutron) == 'N');
+    CHECK((from_MCNP_particle_symbol('P') == EntityTag(photon)));
+    CHECK(to_MCNP_particle_symbol(photon) == 'P');
+    CHECK((from_MCNP_particle_symbol('E') == EntityTag(electron)));
+    CHECK(to_MCNP_particle_symbol(electron) == 'E');
+    CHECK((from_MCNP_particle_symbol('|') == EntityTag(muon)));
+    CHECK(to_MCNP_particle_symbol(muon) == '|');
+    CHECK((from_MCNP_particle_symbol('Q') == EntityTag(antineutron)));
+    CHECK(to_MCNP_particle_symbol(antineutron) == 'Q');
+    CHECK((from_MCNP_particle_symbol('U') == EntityTag(electron_neutrino)));
+    CHECK(to_MCNP_particle_symbol(electron_neutrino) == 'U');
+    CHECK((from_MCNP_particle_symbol('V') == EntityTag(muon_neutrino)));
+    CHECK(to_MCNP_particle_symbol(muon_neutrino) == 'V');
+    CHECK((from_MCNP_particle_symbol('F') == EntityTag(positron)));
+    CHECK(to_MCNP_particle_symbol(positron) == 'F');
+    CHECK((from_MCNP_particle_symbol('H') == EntityTag(proton)));
+    CHECK(to_MCNP_particle_symbol(proton) == 'H');
+    CHECK((from_MCNP_particle_symbol('L') == EntityTag(neutral_lambda_baryon)));
+    CHECK(to_MCNP_particle_symbol(neutral_lambda_baryon) == 'L');
+    CHECK((from_MCNP_particle_symbol('+') == EntityTag(positive_sigma_baryon)));
+    CHECK(to_MCNP_particle_symbol(positive_sigma_baryon) == '+');
+    CHECK((from_MCNP_particle_symbol('-') == EntityTag(negative_sigma_baryon)));
+    CHECK(to_MCNP_particle_symbol(negative_sigma_baryon) == '-');
+    CHECK((from_MCNP_particle_symbol('X') == EntityTag(neutral_xi_baryon)));
+    CHECK(to_MCNP_particle_symbol(neutral_xi_baryon) == 'X');
+    CHECK((from_MCNP_particle_symbol('Y') == EntityTag(negative_xi_baryon)));
+    CHECK(to_MCNP_particle_symbol(negative_xi_baryon) == 'Y');
+    CHECK((from_MCNP_particle_symbol('O') == EntityTag(negative_omega_baryon)));
+    CHECK(to_MCNP_particle_symbol(negative_omega_baryon) == 'O');
+    CHECK((from_MCNP_particle_symbol('!') == EntityTag(antimuon)));
+    CHECK(to_MCNP_particle_symbol(antimuon) == '!');
+    CHECK((from_MCNP_particle_symbol('<') == EntityTag(electron_antineutrino)));
+    CHECK(to_MCNP_particle_symbol(electron_antineutrino) == '<');
+    CHECK((from_MCNP_particle_symbol('>') == EntityTag(muon_antineutrino)));
+    CHECK(to_MCNP_particle_symbol(muon_antineutrino) == '>');
+    CHECK((from_MCNP_particle_symbol('G') == EntityTag(antiproton)));
+    CHECK(to_MCNP_particle_symbol(antiproton) == 'G');
+    CHECK((from_MCNP_particle_symbol('/') == EntityTag(positive_pion)));
+    CHECK(to_MCNP_particle_symbol(positive_pion) == '/');
+    CHECK((from_MCNP_particle_symbol('Z') == EntityTag(neutral_pion)));
+    CHECK(to_MCNP_particle_symbol(neutral_pion) == 'Z');
+    CHECK((from_MCNP_particle_symbol('K') == EntityTag(positive_kaon)));
+    CHECK(to_MCNP_particle_symbol(positive_kaon) == 'K');
+    CHECK((from_MCNP_particle_symbol('%') == EntityTag(short_kaon)));
+    CHECK(to_MCNP_particle_symbol(short_kaon) == '%');
+    CHECK((from_MCNP_particle_symbol('^') == EntityTag(long_kaon)));
+    CHECK(to_MCNP_particle_symbol(long_kaon) == '^');
+    CHECK((from_MCNP_particle_symbol('B') == EntityTag(neutral_lambda_antibaryon)));
+    CHECK(to_MCNP_particle_symbol(neutral_lambda_antibaryon) == 'B');
+    CHECK((from_MCNP_particle_symbol('_') == EntityTag(negative_sigma_antibaryon)));
+    CHECK(to_MCNP_particle_symbol(negative_sigma_antibaryon) == '_');
+    CHECK((from_MCNP_particle_symbol('~') == EntityTag(positive_sigma_antibaryon)));
+    CHECK(to_MCNP_particle_symbol(positive_sigma_antibaryon) == '~');
+    CHECK((from_MCNP_particle_symbol('C') == EntityTag(neutral_xi_antibaryon)));
+    CHECK(to_MCNP_particle_symbol(neutral_xi_antibaryon) == 'C');
+    CHECK((from_MCNP_particle_symbol('W') == EntityTag(positive_xi_antibaryon)));
+    CHECK(to_MCNP_particle_symbol(positive_xi_antibaryon) == 'W');
+    CHECK((from_MCNP_particle_symbol('@') == EntityTag(positive_omega_antibaryon)));
+    CHECK(to_MCNP_particle_symbol(positive_omega_antibaryon) == '@');
+    CHECK((from_MCNP_particle_symbol('*') == EntityTag(negative_pion)));
+    CHECK(to_MCNP_particle_symbol(negative_pion) == '*');
+    CHECK((from_MCNP_particle_symbol('?') == EntityTag(negative_kaon)));
+    CHECK(to_MCNP_particle_symbol(negative_kaon) == '?');
 }
 
 // ================================================================================================
 
-TEST_CASE("format: NDI short string", "[entity_tag][format][NDI]")
-{
-    using nautilus::entity_tag::from_NDI_short_string;
-    using nautilus::entity_tag::EntityTag;
-    using nautilus::entity_tag::to_NDI_short_string;
-
-    // Particles
-    constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
-    CHECK((from_NDI_short_string("n") == neutron));
-    CHECK(to_NDI_short_string(neutron) == "n");
-
-    constexpr EntityTag photon(nautilus::entity_tag::names::photon);
-    CHECK((from_NDI_short_string("g") == photon));
-    CHECK((from_NDI_short_string("g0") == photon));
-    CHECK(to_NDI_short_string(photon) == "g");
-
-    // Normal nuclides
-    constexpr EntityTag co59g(27, 59);
-    CHECK((from_NDI_short_string("co59") == co59g));
-    CHECK(to_NDI_short_string(co59g) == "co59");
-
-    constexpr EntityTag ta180(73, 180);
-    CHECK((from_NDI_short_string("ta180") == ta180));
-    CHECK(to_NDI_short_string(ta180) == "ta180");
-
-    constexpr EntityTag k38(19, 38);
-    CHECK((from_NDI_short_string("k38") == k38));
-    CHECK(to_NDI_short_string(k38) == "k38");
-
-    // Special cases
-
-    // Am-242m1
-    // -- Am-242g and Am-242m1 are swapped: "am242" -> Am-242m1; Am-242g not representable
-    constexpr EntityTag am242m1(95, 242, 1);
-    CHECK((from_NDI_short_string("am242") == am242m1));
-    CHECK(to_NDI_short_string(am242m1) == "am242");
-
-    // Am-243g
-    // -- should be normal
-    constexpr EntityTag am243g(95, 243);
-    CHECK((from_NDI_short_string("am243") == am243g));
-    CHECK(to_NDI_short_string(am243g) == "am243");
-
-    // Am-244g
-    // -- should be normal
-    constexpr EntityTag am244g(95, 244);
-    CHECK((from_NDI_short_string("am244") == am244g));
-    CHECK(to_NDI_short_string(am244g) == "am244");
-}*/
