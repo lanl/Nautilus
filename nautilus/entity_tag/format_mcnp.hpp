@@ -105,7 +105,11 @@ std::string to_MCNP_full_zaid(EntityTag tag, const std::string_view library)
     if (tag.is_unknown()) {
         return invalid_mcnp_full_zaid;
     }
-    std::string zaid = std::to_string(to_MCNP_partial_zaid(tag));
+    const auto partial_zaid = to_MCNP_partial_zaid(tag);
+    if (partial_zaid == invalid_mcnp_partial_zaid) {
+        return invalid_mcnp_full_zaid;
+    }
+    std::string zaid = std::to_string(partial_zaid);
     zaid.append(".");
     zaid.append(library);
     return zaid;
