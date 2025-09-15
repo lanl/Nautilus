@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "nautilus/entity_tag/entity_tag.hpp"
-#include "nautilus/entity_tag/string_processing.hpp"
+#include "nautilus/util/string_processing.hpp"
 
 namespace nautilus::entity_tag {
 

@@ -1,6 +1,6 @@
 #include "names.hpp"
 
-#include "nautilus/entity_tag/string_processing.hpp"
+#include "nautilus/util/string_processing.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
