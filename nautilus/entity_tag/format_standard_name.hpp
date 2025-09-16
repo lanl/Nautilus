@@ -1,6 +1,8 @@
 #ifndef NAUTILUS_FORMAT_STANDARD_HPP
 #define NAUTILUS_FORMAT_STANDARD_HPP
 
+// TODO: user-defined: "U:XXXXXX" and "user entity 0xXXXXXX"
+
 #include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/names.hpp"
 #include "nautilus/util/string_processing.hpp"
@@ -19,6 +21,9 @@ namespace nautilus::entity_tag {
 
 namespace detail {
 
+// TODO: This should be defined more like in the other formats.
+//       -- invalid_long_standard_name
+//       -- invalid_short_standard_name
 const std::string invalid = "unknown";
 
 inline EntityTag parse_nuclide(const std::string_view name, const std::size_t hyphen_index)
