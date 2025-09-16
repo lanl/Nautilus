@@ -237,4 +237,3 @@ TEST_CASE("my_strcmp", "[string_processing]")
     CHECK(my_strcmp(sv, "string"));
     CHECK(!my_strcmp(sv, "STRING"));
 }
-

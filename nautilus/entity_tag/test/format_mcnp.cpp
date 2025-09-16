@@ -3,9 +3,9 @@
 #include <fstream>
 #include <string>
 
+#include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/format_mcnp.hpp"
 #include "nautilus/entity_tag/names.hpp"
-#include "nautilus/entity_tag/entity_tag.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -61,8 +61,8 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
 {
     using nautilus::entity_tag::EntityTag;
     using nautilus::entity_tag::from_MCNP_partial_zaid;
-    using nautilus::entity_tag::to_MCNP_partial_zaid;
     using nautilus::entity_tag::invalid_mcnp_partial_zaid;
+    using nautilus::entity_tag::to_MCNP_partial_zaid;
 
     // Normal nuclides
     const auto elements = detail::load_isotopes();
@@ -121,11 +121,11 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
     // m > 4 is not allowed
     // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
     //    m > 4 is not permitted
-    CHECK(to_MCNP_partial_zaid(EntityTag(6,12,5)) == invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(EntityTag(6, 12, 5)) == invalid_mcnp_partial_zaid);
     CHECK((from_MCNP_partial_zaid(6812) == EntityTag(EntityTag::unknown)));
-    CHECK(to_MCNP_partial_zaid(EntityTag(6,12,9)) == invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(EntityTag(6, 12, 9)) == invalid_mcnp_partial_zaid);
     CHECK((from_MCNP_partial_zaid(6912) == EntityTag(EntityTag::unknown)));
-    CHECK(to_MCNP_partial_zaid(EntityTag(47,107,5)) == invalid_mcnp_partial_zaid);
+    CHECK(to_MCNP_partial_zaid(EntityTag(47, 107, 5)) == invalid_mcnp_partial_zaid);
     CHECK((from_MCNP_partial_zaid(47907) == EntityTag(EntityTag::unknown)));
 
     // elementals
@@ -133,10 +133,12 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
     CHECK(to_MCNP_partial_zaid(EntityTag(13, EntityTag::elemental)) == 13000);
 
     // particles
-    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::proton)) ==
-            invalid_mcnp_partial_zaid);
-    CHECK(to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::muon)) ==
-            invalid_mcnp_partial_zaid);
+    CHECK(
+        to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::proton)) ==
+        invalid_mcnp_partial_zaid);
+    CHECK(
+        to_MCNP_partial_zaid(EntityTag(nautilus::entity_tag::names::muon)) ==
+        invalid_mcnp_partial_zaid);
 
     // user
     CHECK(to_MCNP_partial_zaid(EntityTag(EntityTag::user, 0)) == invalid_mcnp_partial_zaid);
@@ -151,8 +153,8 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
 {
     using nautilus::entity_tag::EntityTag;
     using nautilus::entity_tag::from_MCNP_full_zaid;
-    using nautilus::entity_tag::to_MCNP_full_zaid;
     using nautilus::entity_tag::invalid_mcnp_full_zaid;
+    using nautilus::entity_tag::to_MCNP_full_zaid;
 
     // Normal nuclides
     const auto elements = detail::load_isotopes();
@@ -212,11 +214,11 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
     // m > 4 is not allowed
     // -- 200 <= A < 300 with m = 5 would lead to overflow that changes the Z value, so in general
     //    m > 4 is not permitted
-    CHECK(to_MCNP_full_zaid(EntityTag(6,12,5), "abx") == invalid_mcnp_full_zaid);
+    CHECK(to_MCNP_full_zaid(EntityTag(6, 12, 5), "abx") == invalid_mcnp_full_zaid);
     CHECK((from_MCNP_full_zaid("6812.abx") == EntityTag(EntityTag::unknown)));
-    CHECK(to_MCNP_full_zaid(EntityTag(6,12,9), "nnc") == invalid_mcnp_full_zaid);
+    CHECK(to_MCNP_full_zaid(EntityTag(6, 12, 9), "nnc") == invalid_mcnp_full_zaid);
     CHECK((from_MCNP_full_zaid("6912.nnc") == EntityTag(EntityTag::unknown)));
-    CHECK(to_MCNP_full_zaid(EntityTag(47,107,5), "zzz") == invalid_mcnp_full_zaid);
+    CHECK(to_MCNP_full_zaid(EntityTag(47, 107, 5), "zzz") == invalid_mcnp_full_zaid);
     CHECK((from_MCNP_full_zaid("47907.zzz") == EntityTag(EntityTag::unknown)));
 
     // elementals
@@ -224,10 +226,12 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
     CHECK(to_MCNP_full_zaid(EntityTag(13, EntityTag::elemental), "99j") == "13000.99j");
 
     // particles
-    CHECK(to_MCNP_full_zaid(EntityTag(nautilus::entity_tag::names::proton), "00z") ==
-            invalid_mcnp_full_zaid);
-    CHECK(to_MCNP_full_zaid(EntityTag(nautilus::entity_tag::names::muon), "00z") ==
-            invalid_mcnp_full_zaid);
+    CHECK(
+        to_MCNP_full_zaid(EntityTag(nautilus::entity_tag::names::proton), "00z") ==
+        invalid_mcnp_full_zaid);
+    CHECK(
+        to_MCNP_full_zaid(EntityTag(nautilus::entity_tag::names::muon), "00z") ==
+        invalid_mcnp_full_zaid);
 
     // user
     CHECK(to_MCNP_full_zaid(EntityTag(EntityTag::user, 0), "abx") == invalid_mcnp_full_zaid);
@@ -242,8 +246,8 @@ TEST_CASE("format: MCNP particle symbol", "[entity_tag][format][MCNP]")
 {
     using nautilus::entity_tag::EntityTag;
     using nautilus::entity_tag::from_MCNP_particle_symbol;
-    using nautilus::entity_tag::to_MCNP_particle_symbol;
     using nautilus::entity_tag::invalid_mcnp_particle_symbol;
+    using nautilus::entity_tag::to_MCNP_particle_symbol;
 
     using namespace nautilus::entity_tag::names;
 
@@ -340,4 +344,3 @@ TEST_CASE("format: MCNP particle symbol", "[entity_tag][format][MCNP]")
 }
 
 // ================================================================================================
-

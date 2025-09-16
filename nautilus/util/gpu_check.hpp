@@ -28,16 +28,18 @@ constexpr uint64_t error_code(const uint64_t num_tests)
     if (condition) {                                                                              \
         rg(n) += ectr + 1;                                                                        \
     } else {                                                                                      \
-        printf("[%s|%d] GPU check failed on line %d\n",                                           \
-            ES::name(), n, __LINE__);                                                             \
+        printf("[%s|%d] GPU check failed on line %d\n", ES::name(), n, __LINE__);                 \
     }                                                                                             \
     ectr = ectr * 2 + 1;
 #define GPU_CHECK_FINAL(Ntest)                                                                    \
-            printf("[%s|%d] end, diff = %" PRIu64 " (ectr = %" PRIu64 ", code = %" PRIu64 ")\n",  \
-                ES::name(), n, ectr - rg(n),                                                      \
-                ectr,                                                                             \
-                error_code(Ntest));                                                               \
-        }                                                                                         \
+    printf(                                                                                       \
+        "[%s|%d] end, diff = %" PRIu64 " (ectr = %" PRIu64 ", code = %" PRIu64 ")\n",             \
+        ES::name(),                                                                               \
+        n,                                                                                        \
+        ectr - rg(n),                                                                             \
+        ectr,                                                                                     \
+        error_code(Ntest));                                                                       \
+    }                                                                                             \
     );                                                                                            \
     auto rc = Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), rg);                       \
     for (size_t n{0}; n < rc.size(); ++n) {                                                       \

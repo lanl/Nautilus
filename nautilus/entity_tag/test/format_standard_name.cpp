@@ -1,6 +1,6 @@
 #include "nautilus/entity_tag/format_standard_name.hpp"
-#include "nautilus/entity_tag/names.hpp"
 #include "nautilus/entity_tag/entity_tag.hpp"
+#include "nautilus/entity_tag/names.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -11,8 +11,8 @@
 
 TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
 {
-    using nautilus::entity_tag::from_standard_name;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_standard_name;
     using nautilus::entity_tag::to_long_standard_name;
     using nautilus::entity_tag::names::Nuclides;
     using nautilus::entity_tag::names::Particles;
@@ -148,8 +148,8 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
 
 TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
 {
-    using nautilus::entity_tag::from_standard_name;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_standard_name;
     using nautilus::entity_tag::to_short_standard_name;
     using nautilus::entity_tag::names::Nuclides;
     using nautilus::entity_tag::names::Particles;

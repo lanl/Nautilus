@@ -268,10 +268,22 @@ public:
     // ____________________________________________________________________________________________
     // Comparison operators
 
-    PORTABLE_FUNCTION constexpr bool operator==(const EntityTag other) { return tag_ == other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator!=(const EntityTag other) { return tag_ != other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator<=(const EntityTag other) { return tag_ <= other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator>=(const EntityTag other) { return tag_ >= other.tag_; }
+    PORTABLE_FUNCTION constexpr bool operator==(const EntityTag other)
+    {
+        return tag_ == other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator!=(const EntityTag other)
+    {
+        return tag_ != other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator<=(const EntityTag other)
+    {
+        return tag_ <= other.tag_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator>=(const EntityTag other)
+    {
+        return tag_ >= other.tag_;
+    }
     PORTABLE_FUNCTION constexpr bool operator<(const EntityTag other) { return tag_ < other.tag_; }
     PORTABLE_FUNCTION constexpr bool operator>(const EntityTag other) { return tag_ > other.tag_; }
 };

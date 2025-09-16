@@ -1,6 +1,6 @@
 #include "nautilus/entity_tag/format_ic_chemsym.hpp"
-#include "nautilus/entity_tag/names.hpp"
 #include "nautilus/entity_tag/entity_tag.hpp"
+#include "nautilus/entity_tag/names.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -11,8 +11,8 @@
 
 TEST_CASE("format: IC chemsym", "[entity_tag][format][IC]")
 {
-    using nautilus::entity_tag::from_IC_chemsym;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_IC_chemsym;
     using nautilus::entity_tag::to_IC_chemsym;
 
     // Particles

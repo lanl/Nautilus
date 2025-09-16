@@ -1,6 +1,6 @@
 #include "nautilus/entity_tag/format_ndi.hpp"
-#include "nautilus/entity_tag/names.hpp"
 #include "nautilus/entity_tag/entity_tag.hpp"
+#include "nautilus/entity_tag/names.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -11,8 +11,8 @@
 
 TEST_CASE("format: NDI SZA", "[entity_tag][format][NDI]")
 {
-    using nautilus::entity_tag::from_NDI_SZA;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_NDI_SZA;
     using nautilus::entity_tag::to_NDI_SZA;
 
     // Particles
@@ -147,8 +147,8 @@ TEST_CASE("format: NDI SZA", "[entity_tag][format][NDI]")
 
 TEST_CASE("format: NDI FPID", "[entity_tag][format][NDI]")
 {
-    using nautilus::entity_tag::from_NDI_FPID;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_NDI_FPID;
     using nautilus::entity_tag::to_NDI_FPID;
 
     // Particles
@@ -311,8 +311,8 @@ TEST_CASE("format: NDI FPID", "[entity_tag][format][NDI]")
 
 TEST_CASE("format: NDI zaid", "[entity_tag][format][NDI]")
 {
-    using nautilus::entity_tag::from_NDI_zaid;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_NDI_zaid;
     using nautilus::entity_tag::to_NDI_zaid;
 
     // Particles
@@ -475,8 +475,8 @@ TEST_CASE("format: NDI zaid", "[entity_tag][format][NDI]")
 
 TEST_CASE("format: NDI short string", "[entity_tag][format][NDI]")
 {
-    using nautilus::entity_tag::from_NDI_short_string;
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_NDI_short_string;
     using nautilus::entity_tag::to_NDI_short_string;
 
     // Particles
