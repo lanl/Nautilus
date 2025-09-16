@@ -272,7 +272,7 @@ TEST_CASE("format: MCNP particle symbol", "[entity_tag][format][MCNP]")
     CHECK(to_MCNP_particle_symbol(EntityTag(3, 7)) == '#');
     CHECK(to_MCNP_particle_symbol(EntityTag(4, 9)) == '#');
     CHECK(to_MCNP_particle_symbol(EntityTag(5, 11)) == '#');
-    CHECK(to_MCNP_particle_symbol(EntityTag(Og, 294)) == '#');
+    CHECK(to_MCNP_particle_symbol(EntityTag(118, 294)) == '#');
     CHECK(to_MCNP_particle_symbol(EntityTag(1, 4)) == '#');
     CHECK(to_MCNP_particle_symbol(EntityTag(2, 5)) == '#');
 
