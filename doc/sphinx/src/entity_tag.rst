@@ -74,6 +74,9 @@ building Nautilus in debug mode.
 
 A few notes regarding the metastable / excited state:
 
+- The metastable state index does not have a recognized shorthand like :math:`Z`, :math:`N`, or
+  :math:`A`.  For example, NDI formats use the symbol :math:`S` while MCNP formats use the symbol
+  :math:`m`.  For this reason, no shorthand accessor is provided in Nautilus.
 - The metastable state doesn't make sense for elementals, so Nautilus will default elementals to
   the ground state.
 - Because the metastable state is not well-defined, Nautilus cannot convert between different
