@@ -5,8 +5,8 @@ Welcome to Nautilus's Documentation!
    :maxdepth: 1
    :caption: Contents
 
-   src/overview
    src/concepts
+   src/shared_components
 
 .. toctree::
    :hidden:
