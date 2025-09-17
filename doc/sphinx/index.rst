@@ -7,6 +7,7 @@ Welcome to Nautilus's Documentation!
 
    src/overview
    src/nuclei
+   src/concepts
 
 .. toctree::
    :hidden:
