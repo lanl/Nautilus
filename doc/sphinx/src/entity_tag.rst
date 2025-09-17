@@ -58,7 +58,7 @@ An "unknown" entity indicates that the ``EntityTag`` was not initialized or that
 routine was unable to correctly map from another format into the ``EntityTag`` format.
 
 To build an unknown entity, either call the default constructor (``EntityTag()``) or the
-specifical "unknown" constructor (``EntityTag(EntityTag::unknown)``).
+explicit "unknown" constructor (``EntityTag(EntityTag::unknown)``).
 
 Standard Entities
 ---------------------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ that the entity is a particle and then return an index for the particle.  The pa
 intended to encode a specific meaning.  Instead, Nautilus defines a number of compile-time
 constants in ``nautilus/entity_tag/names.hpp`` for the various particles known to Nautilus.  For
 example, to see if a particle is a muon would be ``entity.get_particle_index() == names::muon``.
-Be aware that the specific values for these compiled-time constants is not meaningful and could
+Be aware that the specific values for these compile-time constants is not meaningful and could
 change.
 
 To construct a particle tag use the constructor ``EntityTag(particle_index)``, where the particle
