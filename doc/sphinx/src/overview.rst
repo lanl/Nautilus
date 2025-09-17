@@ -1,23 +1,32 @@
-Overview
+Shared Components
 ===================================================================================================
 
-Currently Nautilus provides only a very minimal set of shared utilities, essentially pieces that
-were originally written for `Singe`_ but were identified as being potentially useful to `SuNRe`_.
-The goal is to further develop the capabilities of Nautilus and provide new features that will be
-more widely useful, while also supporting its shared code goal for atomic and nuclear applications.
+Nautilus provides a set of shared components, essentially pieces that were originally written for
+`Singe`_ but were identified as being potentially useful to `SuNRe`_.  These components provide a
+place to share code instead of reimplementing features, but they may be superseded as newer tools
+are developed within Nautilus.
 
 .. _Singe: https://xcap.re-pages.lanl.gov/ec/singe
 .. _SuNRe: https://xcap.re-pages.lanl.gov/ec/sunre
 
 Nautilus makes use of common terms and symbols for atomic nuclei, which are summarized `here`_.
 
-.. _`here`: nuclei.html
+.. _`here`: concepts.html
+
+Be aware that the components described on this page were developed before certain terminology was
+clarified, and so it may not match the terminology as used in the discussion of the `EntityTag`
+class, which was designed to address the confusion of terminology and standards more carefully.
 
 SZA
 ---------------------------------------------------------------------------------------------------
 
 An SZA is a way to denote a particular nuclide.  Due to its use in various data libraries, such as
 the Nuclear Data Interface (NDI), the SZA is common in many codes.
+
+Depending on your specific use-cases, you may want to consider the newer `EntityTag` instead of an
+`SZA`, as it addresses some corner cases and better supports conversions between different formats.
+However, the `SZA` class is still supported as the more minimal design may be more appropriate for
+some applications.
 
 An SZA is an integer value, defined as
 
@@ -75,11 +84,13 @@ Zaid Tools
 ---------------------------------------------------------------------------------------------------
 
 The ``zaid_tools.hpp`` header file provides some useful tools for parsing zaids, which are
-identifiers used by NDI.  This header is likely to be superceded by a more extensive family of
-tools in future versions of Nautilus.  Additionally, the names in this header are not always
-consistent and correct, as names were in some cases chosen for compatibility with legacy codes
-rather than based on a detailed understanding of the naming conventions and motivations behind
-certain formats.
+identifiers used by NDI.  Some of the functionality provided by ``zaid_tools.hpp`` has been more
+accurately and thoroughly implemented through the ``EntityTag`` framework.  ``EntityTag`` should be
+preferred when possible, as the tools in ``zaid_tools.hpp`` are likely to be deprecated.
+
+This header is particularly prone to inconsistent and/or incorrect naming, as it was designed for
+compatibilty with legacy codes rather than based on a detailed understanding of the naming
+conventions and motivations behind certain formats.
 
 The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
 because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
