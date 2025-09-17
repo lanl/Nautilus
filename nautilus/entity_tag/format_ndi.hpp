@@ -275,6 +275,7 @@ inline EntityTag from_NDI_zaid(const std::string_view sv)
 // ================================================================================================
 // NDI short string
 
+// TODO: This format is intended to be very concise.  Should I change the invalid value to "?"?
 const std::string invalid_ndi_short_string = "unknown";
 
 inline std::string to_NDI_short_string(EntityTag tag)
