@@ -3,7 +3,7 @@ Welcome to Nautilus's Documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Contents
 
    src/overview
    src/nuclei
@@ -12,6 +12,16 @@ Welcome to Nautilus's Documentation!
    :hidden:
 
    src/versioning
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Entity Tag
+
+   src/entity_tag
+   src/format_standard
+   src/format_ic
+   src/format_mcnp
+   src/format_ndi
 
 Nautilus: Nuclear Application UTILities Under the Sea
 
