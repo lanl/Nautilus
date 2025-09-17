@@ -10,10 +10,8 @@ Atomic Nuclei
 ---------------------------------------------------------------------------------------------------
 
 An atomic nucleus consists of protons and neutrons, which are generically referred to as nucleons.
-The identity of the nucleus is determined by the numbers of protons and neutrons.
 
 - The number of protons (:math:`Z`) is called the *atomic number*.
-  elements.
 - The number of neutrons (:math:`N`) is called the *neutron number*.
 - The number of nucleons (:math:`A = Z + N`) is called the *atomic mass number*.
 
@@ -74,20 +72,18 @@ The official names and symbols for elements are defined by the `International Un
 Applied Chemistry`_ (IUPAC).  However, because many elements have been known since ancient times,
 there are regional and linguistic variations in the names of some elements.  Nautilus focuses only
 on the English names, but that still leaves four distinct variants:
-
-.. _`International Union of Pure and Applied Chemistry`: https://iupac.org
-
 - IUPAC standard
 - American English
 - British English
 - Canadian English
-
 Some references use "Commonwealth English" instead of "British English", to indicate the wide
 geographic usage of that particular variety of English.  Nautilus has opted for "British English"
 because the spelling variations discussed here differ between England and Canada, despite Canada
 being part of the Commonwealth of Nations.  For nations in the Commonwealth but outside of North
 America, either "British English" or the IUPAC standard is likely to be the correct regional
 spelling.
+
+.. _`International Union of Pure and Applied Chemistry`: https://iupac.org
 
 Fortunately, the distinctions between these regional variations is only in the spelling of a few
 elements.  By default, Nautilus will use the IUPAC standard spelling.  Some features of Nautilus do
