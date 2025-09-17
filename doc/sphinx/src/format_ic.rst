@@ -1,15 +1,15 @@
 Format: IC Chemsym
 ===================================================================================================
 
-Nautilus provides bidirectional conversion between `EntityTag` and the IC chemsym format.  This
+Nautilus provides bidirectional conversion between ``EntityTag`` and the IC chemsym format.  This
 format comes from several codes in LANL's ASC-IC (Advanced Simulation and Computing - Integrated
 Codes) program, and is related to IUPAC's chemical symbol (see the short standard name).  Nautilus
-uses `std::string` as the type for the IC chemsym format.
+uses ``std::string`` as the type for the IC chemsym format.
 
-To convert between `EntityTag` and IC chemsym, Nautilus provides the following functions
+To convert between ``EntityTag`` and IC chemsym, Nautilus provides the following functions
 
-- `to_IC_chemsym` accepts an `EntityTag` and returns a string with the IC chemsym
-- `from_IC_chemsym` accepts a string with the IC chemsym and returns an `EntityTag`
+- ``to_IC_chemsym`` accepts an ``EntityTag`` and returns a string with the IC chemsym
+- ``from_IC_chemsym`` accepts a string with the IC chemsym and returns an ``EntityTag``
 
 Nuclides largely follow a variation of the standard IUPAC notation.  The default case is to encode
 nuclides with the atomic symbol in all lowercase, no hyphen (which is used in the short standard
@@ -46,4 +46,4 @@ The IC chemsym format is primarily for nuclides, but does include a few particle
 - Neutrons are encoded as "nt1" to avoid possible ambiguity with elemental nitrogen ("n").
 
 The IC chemsym format does not have provisions for user-defined entities, so it will generate the
-same value as unknown entities: "unknown" (available as the variable `invalid_ic_chemsym`).
+same value as unknown entities: "unknown" (available as the variable ``invalid_ic_chemsym``).

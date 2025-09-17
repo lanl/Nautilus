@@ -14,7 +14,7 @@ Nautilus makes use of common terms and symbols for atomic nuclei, which are summ
 .. _`here`: concepts.html
 
 Be aware that the components described on this page were developed before certain terminology was
-clarified, and so it may not match the terminology as used in the discussion of the `EntityTag`
+clarified, and so it may not match the terminology as used in the discussion of the ``EntityTag``
 class, which was designed to address the confusion of terminology and standards more carefully.
 
 SZA
@@ -23,10 +23,10 @@ SZA
 An SZA is a way to denote a particular nuclide.  Due to its use in various data libraries, such as
 the Nuclear Data Interface (NDI), the SZA is common in many codes.
 
-Depending on your specific use-cases, you may want to consider the newer `EntityTag` instead of an
-`SZA`, as it addresses some corner cases and better supports conversions between different formats.
-However, the `SZA` class is still supported as the more minimal design may be more appropriate for
-some applications.
+Depending on your specific use-cases, you may want to consider the newer ``EntityTag`` instead of
+an ``SZA``, as it addresses some corner cases and better supports conversions between different
+formats.  However, the ``SZA`` class is still supported as the more minimal design may be more
+appropriate for some applications.
 
 An SZA is an integer value, defined as
 
