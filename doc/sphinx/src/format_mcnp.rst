@@ -89,8 +89,8 @@ muon neutrino               V
 positron                    F
 proton                      H
 neutral lambda baryon       L
-positive sigma baryon       +
-negative sigma baryon       -
+positive sigma baryon       \+
+negative sigma baryon       \-
 neutral xi baryon           X
 negative xi baryon          Y
 negative omega baryon       O
@@ -109,7 +109,7 @@ positive sigma antibaryon   ~
 neutral xi antibaryon       C
 positive xi antibaryon      W
 positive omega antibaryon   @
-negative pion               *
+negative pion               \*
 negative kaon               ?
 =========================   ===============
 
