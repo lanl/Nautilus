@@ -88,7 +88,7 @@ spelling.
 .. _`International Union of Pure and Applied Chemistry`: https://iupac.org
 
 Fortunately, the distinctions between these regional variations is only in the spelling of a few
-elements.  By default, Nautilus will use the IUPAC standard spelling.  Some features of Nautilus do
+elements.  By default, Nautilus will use the IUPAC standard spelling.  Some features of Nautilus
 provide the option to specifically request the spelling according to one of the regional standards.
 
 IUPAC also defines the "systematic name" for elements that do not yet have an official IUPAC name.
@@ -102,56 +102,8 @@ out by IUPAC with no regional variations.
 Particles
 ---------------------------------------------------------------------------------------------------
 
-In addition to atomic nuclei, Nautilus can also indicate particles.  The list of particles that
-Nautilus currently supports is:
-
-- photon (also known as a gamma particle)
-- electron (also known as a negative beta particle)
-- positron (also known as a positive beta particle)
-- electron neutrino
-- electron anti-neutrino
-- muon
-- antimuon
-- muon neutrino
-- muon antineutrino
-- neutral pion
-- positive pion
-- negative pion
-- short kaon
-- long kaon
-- positive kaon
-- negative kaon
-- neutron
-- antineutron
-- proton
-- antiproton
-- neutral lambda baryon
-- neutral lambda antibaryon
-- positive sigma baryon
-- negative sigma antibaryon
-- negative sigma baryon
-- positive sigma antibaryon
-- neutral xi baryon
-- neutral xi antibaryon
-- negative xi baryon
-- positive xi antibaryon
-- negative omega baryon
-- positive omega antibaryon
-
-An ionized hydrogen-1 nucleus is just a bare proton, so there is some ambiguity between a proton
-(particle) and hydrogen-1 (isotope) in Nautilus.  Nautilus addresses this in different ways
-depending on the context, so this will be discussed in more detail in each context.
-
-In some contexts, a few light atomic nuclei are treated as particles and given special names for
-this usage.  While Nautilus does not encode them as particles (other than the hydrogen-1 vs proton
-question as noted above), it is worth being aware of the "particle" names that are sometimes used
-for these light nuclei:
-
-- hydrogen-1 is also known as protium, and as a particle is called a proton
-- hydrogen-2 is also known as deuterium, and as a particle is called a deuteron
-- hydrogen-3 is also known as tritium, and as a particle is called a triton
-- helium-3 as a particle is called a helion
-- helium-4 as a particle is called an alpha
+In addition to atomic nuclei, Nautilus can also indicate particles.  Before presenting the list of
+available particles, we first present some basic particle physics terminology.
 
 Classes of Particles
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,10 +121,103 @@ The standard model identifies four classes of *elementary particles*:
 Each of these particles also has an *antiparticle* with the same mass and opposite charge, with the
 exception of the neutral bosons, which are their own antiparticle.
 
+The quarks and leptons are organized into *generations* (first, second, and third) and *subtypes*
+(down-type or up-type for quarks, charged or neutral for leptons).  Nautilus does not include
+third-generation leptons or any quarks.
+
 *Hadrons* are composite particles, described as a combination of two or more "valence" quarks.  If
 the particle has two valence quarks, it is called a *meson*.  If the particle has three valence
 quarks, it is called a *baryon*.  Further combinations (*tetraquarks*, *pentaquarks*, and so on)
-are sometimes referred to as "exotic" hadrons, and are currently not supported by Nautilus.
+are sometimes referred to as "exotic" hadrons, and are currently not included in Nautilus.
+
+Particles Available in Nautilus
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The particles that Nautilus currently supports are listed below, along with some annotations
+regarding the classification and standard symbol for each particle.
+
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| particle                         | class       | generation / subtype or valence quarks              | PDG symbol                   |
++==================================+=============+=====================================================+==============================+
+| photon                           | gauge boson                                                       | :math:`\gamma`               |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| electron (a.k.a., negative beta) | lepton      | first generation / charged                          | :math:`e^-`                  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positron (a.k.a., positive beta) | lepton      | first generation / charged                          | :math:`e^+`                  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| electron neutrino                | lepton      | first generation / neutral                          | :math:`\nu_e`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| electron antineutrino            | lepton      | first generation / neutral                          | :math:`\overline{\nu}_e`     |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| muon                             | lepton      | second generation / charged                         | :math:`\mu^-`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| antimuon                         | lepton      | second generation / charged                         | :math:`\mu^+`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| muon neutrino                    | lepton      | second generation / neutral                         | :math:`\nu_\mu`              |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| muon antineutrino                | lepton      | second generation / neutral                         | :math:`\overline{\nu}_\mu`   |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| neutral pion                     | meson       | :math:`\frac{u\overline{u}-d\overline{d}}{\sqrt{2}` | :math:`\pi^0`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positive pion                    | meson       | :math:`u\overline{d}`                               | :math:`\pi^+`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| negative pion                    | meson       | :math:`d\overline{u}`                               | :math:`\pi^-`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| short kaon                       | meson       | :math:`\frac{d\overline{s}-s\overline{d}}{\sqrt{2}` | :math:`K^0_S`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| long kaon                        | meson       | :math:`\frac{d\overline{s}+s\overline{d}}{\sqrt{2}` | :math:`K^0_L`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positive kaon                    | meson       | :math:`u\overline{s}`                               | :math:`K^+`                  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| negative kaon                    | meson       | :math:`s\overline{u}`                               | :math:`K^-`                  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| neutron                          | baryon      | :math:`udd`                                         | :math:`n`                    |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| antineutron                      | baryon      | :math:`\overline{u}\overline{d}\overline{d}`        | :math:`\overline{n}`         |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| proton                           | baryon      | :math:`uud`                                         | :math:`p`                    |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| antiproton                       | baryon      | :math:`\overline{u}\overline{u}\overline{d}`        | :math:`\overline{p}`         |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| neutral lambda baryon            | baryon      | :math:`uds`                                         | :math:`\Lambda^0`            |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| neutral lambda antibaryon        | baryon      | :math:`\overline{u}\overline{d}\overline{s}`        | :math:`\overline{\Lambda}^0` |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positive sigma baryon            | baryon      | :math:`uus`                                         | :math:`\Sigma^+`             |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| negative sigma antibaryon        | baryon      | :math:`\overline{u}\overline{u}\overline{s}`        | :math:`\overline{\Sigma}^-`  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| negative sigma baryon            | baryon      | :math:`dds`                                         | :math:`\Sigma^-`             |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positive sigma antibaryon        | baryon      | :math:`\overline{d}\overline{d}\overline{s}`        | :math:`\overline{\Sigma}^+`  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| neutral xi baryon                | baryon      | :math:`uss`                                         | :math:`\Xi^0`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| neutral xi antibaryon            | baryon      | :math:`\overline{u}\overline{s}\overline{s}`        | :math:`\overline{\Xi}^0`     |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| negative xi baryon               | baryon      | :math:`dss`                                         | :math:`\Xi^-`                |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positive xi antibaryon           | baryon      | :math:`\overline{d}\overline{s}\overline{s}`        | :math:`\overline{\Xi}^+`     |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| negative omega baryon            | baryon      | :math:`sss`                                         | :math:`\Omega^-`             |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+| positive omega antibaryon        | baryon      | :math:`\overline{s}\overline{s}\overline{s}`        | :math:`\overline{\Omega}^+`  |
++----------------------------------+-------------+-----------------------------------------------------+------------------------------+
+
+An ionized hydrogen-1 nucleus is just a bare proton, so there is some ambiguity between a proton
+(particle) and hydrogen-1 (isotope) in Nautilus.  Nautilus addresses this in different ways
+depending on the context, so this will be discussed in more detail in each context.
+
+In some contexts, a few light atomic nuclei are treated as particles and given special names for
+this usage.  While Nautilus does not encode them as particles (other than the hydrogen-1 vs proton
+question as noted above), it is worth being aware of the "particle" names that are sometimes used
+for these light nuclei:
+
+- hydrogen-1 is also known as protium, and as a particle is called a proton
+- hydrogen-2 is also known as deuterium, and as a particle is called a deuteron
+- hydrogen-3 is also known as tritium, and as a particle is called a triton
+- helium-3 as a particle is called a helion
+- helium-4 as a particle is called an alpha
 
 Names and Symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
