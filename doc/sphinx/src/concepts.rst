@@ -72,10 +72,12 @@ The official names and symbols for elements are defined by the `International Un
 Applied Chemistry`_ (IUPAC).  However, because many elements have been known since ancient times,
 there are regional and linguistic variations in the names of some elements.  Nautilus focuses only
 on the English names, but that still leaves four distinct variants:
+
 - IUPAC standard
 - American English
 - British English
 - Canadian English
+
 Some references use "Commonwealth English" instead of "British English", to indicate the wide
 geographic usage of that particular variety of English.  Nautilus has opted for "British English"
 because the spelling variations discussed here differ between England and Canada, despite Canada
