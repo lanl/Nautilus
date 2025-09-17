@@ -230,20 +230,16 @@ standards.
 
 .. _`Particle Data Group`: https://pdg.lbl.gov
 
-.. |antiu| unicode:: U+203Eu :trim:
-.. |antid| unicode:: U+203Ed :trim:
-.. |antis| unicode:: U+203Es :trim:
-
 The difference between the two standards is the naming of antibaryons.  In the PDG standard, the
 name of a particle includes its own charge, regardless of whether that particle is ordinary matter
 or antimatter.  However, in the alternate standard, antibaryons are named for the charge of their
 corresponding ordinary matter particle.  Consider, for example, the positive sigma baryon (valence
-quarks: :math:`uus` / |antiu| |antiu| |antis|), which is paired with an antiparticle of the same mass but opposite charge
+quarks: :math:`uus`), which is paired with an antiparticle of the same mass but opposite charge
 (valence quarks: :math:`\overline{u}\overline{u}\overline{s}`).  In the PDG standard, that
 antiparticle is called the negative sigma antibaryon because it has a negative charge.  However, in
 the alternate standard, that antiparticle is called the antiparticle of the positive sigma baryon
 or the positive sigma antibaryon.  The confusion gets worse if you consider that there is a
-negative sigma baryon (valence quarks: :math:`dds`) and it's corresponding antiparticle, which is
+negative sigma baryon (valence quarks: :math:`dds`) and its corresponding antiparticle, which is
 called either the positive sigma antibaryon (PDG standard) or the antiparticle of the negative
 sigma baryon or the negative sigma antibaryon (alternate standard).
 
