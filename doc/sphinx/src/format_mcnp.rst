@@ -13,13 +13,14 @@ nuclides.  The conversion routines available for this format are
 - ``from_MCNP_partial_zaid`` that takes a partial zaid and returns an ``EntityTag``
 - ``to_MCNP_partial_zaid`` that takes an ``EntityTag`` and returns a partial zaid
 
-Nuclides, by default, encoded as :math:`Z \times 1{,}000 + A`.  If the nuclide is not in the ground
-state, add to that :math:`300 + m \times 100`, where :math:`m` is the metastable state index.
-Because of this choice for how to encode the metastable state index, the partial zaid format does
-not support :math:`m > 4`.
+Nuclides, by default, are encoded as :math:`Z \times 1{,}000 + A`.  If the nuclide is not in the
+ground state, add to that :math:`300 + m \times 100`, where :math:`m` is the metastable state
+index.  Because of this choice for how to encode the metastable state index, the partial zaid
+format does not support :math:`m > 4`.
 
 Similarly to other long-lived LANL formats, the partial zaid has issues with americium-242.  The
 ground state (Am-242g) and the first metastable state (Am-242m1) are swapped, so:
+
 - 95242 should be Am-242g but is actually Am-242m1
 - 95642 should be Am-242m1 but is actually Am-242g
 
@@ -81,7 +82,7 @@ particle                    particle symbol
 neutron                     N
 photon                      P
 electron                    E
-muon                        |
+muon                        \|
 antineutron                 Q
 electron neutrino           U
 muon neutrino               V
