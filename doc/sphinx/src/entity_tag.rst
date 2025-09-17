@@ -43,9 +43,11 @@ ordering implied by the inequality operators is
 - particles (ordering between particles unspecified, but will be consistent for a given
   version of ``EntityTag``)
 - nuclides
+
   - elementals before non-elementals
   - otherwise sorted by atomic number (most-significant), then by atomic mass number, then by
     metastable state index (least-significant)
+
 - user-defined entities (ordering depends on user data)
 - unknown entities last
 

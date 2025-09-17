@@ -27,9 +27,12 @@ For historical reasons, the IC chemsym format (like many formats used at LANL) h
 the americium-242 isotope:
 
 - The ground state and first metastable state are reversed.
+
   - "am242" would normally be the ground state, but is actually the first metastable state
   - "am242m1" would normally be the first metastable state, but is actually the ground state
+
 - Due to the confusion between the two, each state has multiple notations
+
   - The ground state can be indicated by "am242m1", "am042", and "am42".  When generating the IC
     chemsym format, Nautilus will use "am242m1".  When reading the IC chemsym format, Nautilus
     accepts all three.

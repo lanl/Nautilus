@@ -38,6 +38,7 @@ routines available for this format are
 
 - ``from_MCNP_full_zaid`` that takes a full zaid and returns an ``EntityTag``
 - ``to_MCNP_full_zaid`` that takes an ``EntityTag`` and a suffix, and returns a full zaid
+
   - The suffix is a string that is appended to the end of the full zaid with no additional
     processing.
 
