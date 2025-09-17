@@ -26,7 +26,8 @@ library or table you are using, Nautilus will accept the following inputs:
 
 - Table ID as a ``std::string``, either with or without the letter(s) at the end of the suffix
 
-  - In the string format, the table ID must be a three-digit value, padded with leading zeroes.
+  - In the string format, the numerical part of the table ID must be a three-digit value, padded
+    with leading zeroes.
 
 If no library or table ID is specified, Nautilus defaults to some preferred variant (usually the
 most-common and/or most-modern variant).
@@ -45,8 +46,11 @@ The conversion routines available for this format are
 
   - The possible ways to indicate a library or table ID are listed at the top of this page
 
-Nuclides, by default, are encoded as integers according to :math:`SZA = S \times 1{,}000{,}000 + Z
-\times 1{,}000 + A`, where :math:`S` is the metastable state index, :math:`Z` is the atomic number,
+Nuclides, by default, are encoded as integers according to
+
+.. math:: \text{SZA} = S \times 1{,}000{,}000 + Z \times 1{,}000 + A,
+
+where :math:`S` is the metastable state index, :math:`Z` is the atomic number,
 and :math:`A` is the atomic mass number.  This arrangement of :math:`S`, :math:`Z`, and :math:`A`
 gives rise to the name "SZA".
 
@@ -103,7 +107,7 @@ The NDI SZA supports two particles:
 - neutrons are encoded as 1
 
 An ``EntityTag`` for a proton will be automatically translated to H-1 (SZA = 1001).  That makes
-this format slightly lossy: ``EntityTag(proton)`` becomes SZA 1001, and the converting back to
+this format slightly lossy: ``EntityTag(proton)`` becomes SZA 1001, and then converting back to
 ``EntityTag`` gives the H-1 nuclide.
 
 User-defined entities are not supported by the NDI SZA format, so when translating from
@@ -206,7 +210,7 @@ Only two particles are supported by the NDI short string format
     neutron and a nitrogen elemental
 
 An ``EntityTag`` for a proton will be automatically translated to H-1 (short string = "p").  That
-makes this format slightly lossy: ``EntityTag(proton)`` becomes short string "p", and the
+makes this format slightly lossy: ``EntityTag(proton)`` becomes short string "p", and then
 converting back to ``EntityTag`` gives the H-1 nuclide.
 
 User-defined entities are not supported by the NDI short string format, so they will generate the
