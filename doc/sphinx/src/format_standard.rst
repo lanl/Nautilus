@@ -31,6 +31,7 @@ The ``from_standard_name`` function also accepts variant suffixes:
 Elementals are just the atomic symbol by itself.
 
 Examples:
+
 - "Ni-56g" (ground state of nickel-56)
 - "C-12" (ground state of carbon-12)
 - "Ta-180m1" (first metastable state of tantalum-180)
@@ -81,6 +82,7 @@ The rules for nuclides is the same as for the short standard name, except
 - elementals are written out as "elemental <name>"
 
 Examples:
+
 - "nickel-56g" (ground state of nickel-56)
 - "carbon-12" (ground state of carbon-12)
 - "tantalum-180m1" (first metastable state of tantalum-180)
