@@ -6,7 +6,6 @@ Welcome to Nautilus's Documentation!
    :caption: Contents
 
    src/overview
-   src/nuclei
    src/concepts
 
 .. toctree::
