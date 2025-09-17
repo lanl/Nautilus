@@ -1,6 +1,14 @@
 Entity Tag
 ===================================================================================================
 
+TODO: Add somewhere something along the lines of, "The objective for Nautilus's `EntityTag` is not
+to provide a new super-format that supports every possible use-case and replaces all similar
+formats in all codes.  The primary value of `EntityTag` will initially be in the ability to
+translate between multiple formats in a consistent way, and to parse existing formats in a way that
+automatically handles all of their historical quirks.  If customers choose to use `EntityTag` as
+their new internal representation, the Nautilus team will be pleased to continue supporting them."
+Then add a copy of https://xkcd.com/927/.
+
 The `EntityTag` class provides an identifier for atomic nuclei and particles.  Nautilus provides a
 number of translators to bidirectionally convert between `EntityTag` and other formats commonly in
 use.  The primary advantage that `EntityTag` provides beyond what can be found in other formats is
