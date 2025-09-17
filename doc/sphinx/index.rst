@@ -55,10 +55,3 @@ The `current version`_ of Nautilus is 1.0.1.3.
 Nautilus has been approved for open source release and has been assigned O4852 by the Feynman
 Center for Innovation at Los Alamos National Laboratory.  Please see the LICENSE file included in
 the repository for copyright information.
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
