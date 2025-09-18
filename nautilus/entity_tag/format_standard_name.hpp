@@ -1,3 +1,6 @@
+// TODO: Rename this file to format_ic.hpp.  Update include guards, documentation files,
+//       documentation section name.
+
 #ifndef NAUTILUS_FORMAT_STANDARD_HPP
 #define NAUTILUS_FORMAT_STANDARD_HPP
 
@@ -27,7 +30,11 @@ const std::string invalid_short_standard_name = "unknown";
 //    you always get the PDG symbol
 inline std::string to_short_standard_name(const EntityTag tag)
 {
-    if (tag.is_nuclide()) {
+    if (tag.is_user()) {
+        std::string name(9, ' ');
+        sprintf(name.data(), "U:%07X", static_cast<unsigned int>(tag.get_user_data()));
+        return name;
+    } else if (tag.is_nuclide()) {
         std::string name;
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
@@ -65,7 +72,11 @@ inline std::string to_long_standard_name(
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
 {
-    if (tag.is_nuclide()) {
+    if (tag.is_user()) {
+        std::string name(21, ' ');
+        sprintf(name.data(), "user entity 0x%07X", static_cast<unsigned int>(tag.get_user_data()));
+        return name;
+    } else if (tag.is_nuclide()) {
         std::string name;
         if (tag.is_elemental()) {
             name.append("elemental ");
@@ -110,6 +121,14 @@ inline std::string to_long_standard_name(
 // for both short and long names.
 inline EntityTag from_standard_name(const std::string_view name)
 {
+    // CHeck if we have user data
+    if ((name.substr(0, 2) == "U:") || (name.substr(0, 14) == "user entity 0x")) {
+        assert((name.size() == 9) || (name.size() == 21));
+        const std::string s(name.substr(name.size() - 7));
+        const unsigned int data = std::stoi(s, nullptr, 16);
+        assert(data != 0x1FFFFFF);
+        return EntityTag(EntityTag::user, data);
+    }
     // Check if we have a known particle
     const auto pindex = names::Particles::find_index(name);
     if (pindex != names::Particles::not_found) {

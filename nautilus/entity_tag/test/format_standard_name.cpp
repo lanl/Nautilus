@@ -12,6 +12,7 @@
 TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
 {
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_long_standard_name;
     using nautilus::entity_tag::from_standard_name;
     using nautilus::entity_tag::to_long_standard_name;
     using nautilus::entity_tag::names::Nuclides;
@@ -128,6 +129,17 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
         to_long_standard_name(aOm_plus, Particles::Standard::alternate) ==
         "antiparticle of the negative omega baryon");
 
+    // User tag
+    constexpr EntityTag user1(EntityTag::user, 15790320);
+    CHECK((from_long_standard_name("user entity 0x0F0F0F0") == user1));
+    CHECK(to_long_standard_name(user1) == "user entity 0x0F0F0F0");
+    constexpr EntityTag user2(EntityTag::user, 0x1FFFFFE);
+    CHECK((from_long_standard_name("user entity 0x1FFFFFE") == user2));
+    CHECK(to_long_standard_name(user2) == "user entity 0x1FFFFFE");
+
+    // Unknown tag
+    CHECK(to_long_standard_name(EntityTag(EntityTag::unknown)) == "unknown");
+
     // Bad input
     constexpr EntityTag unknown(EntityTag::unknown);
     CHECK((from_standard_name("BadInput") == unknown));         // garbage
@@ -141,7 +153,7 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
     // "Bad" tag
     CHECK(to_long_standard_name(EntityTag(0, 0)) == "unknown");               // Z = 0
     CHECK(to_long_standard_name(EntityTag(127, 0)) == "unknown");             // Z > Oganesson
-    CHECK(to_long_standard_name(EntityTag(EntityTag::user, 0)) == "unknown"); // user tag
+    CHECK(to_long_standard_name(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
 
 // ================================================================================================
@@ -149,6 +161,7 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
 TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
 {
     using nautilus::entity_tag::EntityTag;
+    using nautilus::entity_tag::from_short_standard_name;
     using nautilus::entity_tag::from_standard_name;
     using nautilus::entity_tag::to_short_standard_name;
     using nautilus::entity_tag::names::Nuclides;
@@ -223,15 +236,23 @@ TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
     CHECK((from_standard_name("\u03A9\u0304\u207A") == aOm_plus));
     CHECK(to_short_standard_name(aOm_plus) == "\u03A9\u0304\u207A");
 
+    // User tag
+    constexpr EntityTag user1(EntityTag::user, 15790320);
+    CHECK((from_short_standard_name("U:0F0F0F0") == user1));
+    CHECK(to_short_standard_name(user1) == "U:0F0F0F0");
+    constexpr EntityTag user2(EntityTag::user, 0x1FFFFFE);
+    CHECK((from_short_standard_name("U:1FFFFFE") == user2));
+    CHECK(to_short_standard_name(user2) == "U:1FFFFFE");
+
     // Bad input
     constexpr EntityTag unknown(EntityTag::unknown);
-    CHECK((from_standard_name("BadInput") == unknown)); // garbage
+    CHECK((from_short_standard_name("BadInput") == unknown)); // garbage
     CHECK((from_standard_name("Xx-") == unknown));      // Xx isn't a nuclide
     CHECK((from_standard_name("Ni-") == unknown));      // incomplete
     CHECK((from_standard_name("Au-197q1") == unknown)); // invalid metastable state indicator
 
     // "Bad" tag
-    CHECK(to_long_standard_name(EntityTag(0, 0)) == "unknown");               // Z = 0
-    CHECK(to_long_standard_name(EntityTag(127, 0)) == "unknown");             // Z > Oganesson
-    CHECK(to_long_standard_name(EntityTag(EntityTag::user, 0)) == "unknown"); // user tag
+    CHECK(to_short_standard_name(EntityTag(0, 0)) == "unknown");               // Z = 0
+    CHECK(to_short_standard_name(EntityTag(127, 0)) == "unknown");             // Z > Oganesson
+    CHECK(to_short_standard_name(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
