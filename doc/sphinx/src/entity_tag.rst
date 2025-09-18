@@ -10,7 +10,13 @@ have been in use for an extended period of time suffer from a number of "quirks"
 accumulated over time for various reasons and cannot be completely eliminated due to the need to
 preserve consistency and compatibility.
 
-.. image:: xkcd927standards.png
+.. figure:: xkcd927standards.png
+   :alt: XKCD comic number 927, "Standards"
+
+   XKCD comic number 927, `https://xkcd.com/927`_, Creative Commons Attribution-NonCommerical 2.5
+   License
+
+.. _`https://xkcd.com/927`: https://xkcd.com/927
 
 The objective for Nautilus's ``EntityTag`` is not to provide a new "super-format" that supports
 every possible use-case and replaces all similar formats in all codes.  The primary value of
