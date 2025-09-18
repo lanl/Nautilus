@@ -122,13 +122,14 @@ Each of these particles also has an *antiparticle* with the same mass and opposi
 exception of the neutral bosons, which are their own antiparticle.
 
 The quarks and leptons are organized into *generations* (first, second, and third) and *subtypes*
-(down-type or up-type for quarks, charged or neutral for leptons).  Nautilus does not include
-third-generation leptons or any quarks.
+(down-type or up-type for quarks, charged or neutral for leptons).  Nautilus does not include any
+quarks, but they are useful for classifying composite particles.
 
-*Hadrons* are composite particles, described as a combination of two or more "valence" quarks.  If
-the particle has two valence quarks, it is called a *meson*.  If the particle has three valence
-quarks, it is called a *baryon*.  Further combinations (*tetraquarks*, *pentaquarks*, and so on)
-are sometimes referred to as "exotic" hadrons, and are currently not included in Nautilus.
+Composite particles are called *hadrons* and are described as a combination of two or more
+"valence" quarks.  If the particle has two valence quarks, it is called a *meson*.  If the particle
+has three valence quarks, it is called a *baryon*.  Further combinations (*tetraquarks*,
+*pentaquarks*, and so on) are sometimes referred to as "exotic" hadrons, and are currently not
+included in Nautilus.
 
 Particles Available in Nautilus
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
