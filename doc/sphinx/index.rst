@@ -12,6 +12,7 @@ Welcome to Nautilus's Documentation!
 .. toctree::
    :maxdepth: 1
    :caption: Shared Components
+
    src/shared_components
 
 .. toctree::
