@@ -202,6 +202,10 @@ public:
         }
     }
 
+    // TODO: Writing the documentation re-raised the question: Should elementals be considered to
+    //       be a subset of nuclide?  Or should they be considered to be on the same level as
+    //       particle and nuclide?  This doesn't impact encoding within the EntityTag (as that's an
+    //       internal detail not visible to users), but impacts the user interface.
     // subsets of standard tags
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
