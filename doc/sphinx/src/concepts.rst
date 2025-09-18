@@ -56,7 +56,7 @@ To summarize some terminology, when comparing two nuclei:
 Nautilus is focused primarily on nuclear applications, and thus does not provide any indication of
 the ionization state of an atomic nucleus.
 
-Elementals
+Elementals vs. Nuclides
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For a given element, we can speak of specific nuclides or we can speak of distributions with a

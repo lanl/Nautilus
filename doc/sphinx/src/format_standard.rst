@@ -27,18 +27,17 @@ Nuclides follow the standard IUPAC notation and take the form "Xx-AAAmM", where
 The ``from_standard_name`` function also accepts variant suffixes:
 
 - no suffix implies the ground state
+- a suffix of "g" explicitly indicates the ground state
 - a suffix of "m" without any value for "<M>" implies the first metastable state, equivalent to
   "m1"
-- a suffix of "g" explicitly indicates the ground state
-
-Elementals are just the atomic symbol by itself.
 
 Examples:
 
 - "Ni-56g" (ground state of nickel-56)
 - "C-12" (ground state of carbon-12)
 - "Ta-180m1" (first metastable state of tantalum-180)
-- "N" (elemental nitrogen)
+
+Elementals are just the atomic symbol by itself, for example "c" for elemental carbon.
 
 Particles return a symbol using Unicode to represent the particle symbol.  These symbols use glyphs
 not normally represented by ``std::string``, so there are a few important caveats
@@ -55,7 +54,7 @@ not normally represented by ``std::string``, so there are a few important caveat
 - The standard symbols stack superscripts above subscripts, but this is not possible in Unicode.
   Nautilus places the subscript first and then the superscript.
 
-User-defined entities return the string "U:XXXXXX", where "XXXXXX" is the user data in
+User-defined entities return the string "U:XXXXXXX", where "XXXXXXX" is the user data in
 hexadecimal.
 
 Unknown entities return ``invalid_short_standard_name``, which has the value "unknown".
@@ -85,18 +84,18 @@ The rules for nuclides is the same as for the short standard name, except
 
 - the full name (all lowercase) is used instead of the atomic symbol, spelled according to the
   specified format (default: IUPAC)
-- elementals are written out as "elemental <name>"
 
 Examples:
 
 - "nickel-56g" (ground state of nickel-56)
 - "carbon-12" (ground state of carbon-12)
 - "tantalum-180m1" (first metastable state of tantalum-180)
-- "elemental nitrogen" (elemental nitrogen)
+
+Elementals are written out as "elemental <name>", for example "elemental nitrogen".
 
 Particles return a name based on the format specified (default: PDG).
 
-User-defined entities return the string "user entity 0xXXXXXX", where "XXXXXX" is the user data in
-hexadecimal.
+User-defined entities return the string "user entity 0xXXXXXXX", where "XXXXXXX" is the user data
+in hexadecimal.
 
 Unknown entities return ``invalid_long_standard_name``, which has the value "unknown".

@@ -42,7 +42,7 @@ the americium-242 isotope:
 
 Elementals are encoded as just the atomic symbol in all lowercase.
 
-The IC chemsym format is primarily for nuclides, but does include a few particles:
+The IC chemsym format is primarily for elementals and nuclides, but does include a few particles:
 
 - Photons (a.k.a., gamma particles) are encoded as either "g" or "g0".  Nautilus accepts both, but
   will generate "g0".
