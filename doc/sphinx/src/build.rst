@@ -14,4 +14,4 @@ Nautilus depends on the following libraries:
 
 .. _`Ports-of-Call`: https://github.com/lanl/ports-of-call
 .. _`Kokkos`: https://github.com/kokkos/kokkos
-.. _`Catch`: https://github.com/catchorg/Catch2
+.. _`Catch2`: https://github.com/catchorg/Catch2
