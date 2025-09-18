@@ -206,6 +206,10 @@ public:
     //       be a subset of nuclide?  Or should they be considered to be on the same level as
     //       particle and nuclide?  This doesn't impact encoding within the EntityTag (as that's an
     //       internal detail not visible to users), but impacts the user interface.
+    //       -- If elementals are a subtype of nuclide, then maybe "atomic nuclei" or similar is a
+    //          better name?
+    //       -- If elementals are not a subtype of nuclide, then I should check the documentation
+    //          and clarify usage of "atomic nuclei" vs "nuclide".
     // subsets of standard tags
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
