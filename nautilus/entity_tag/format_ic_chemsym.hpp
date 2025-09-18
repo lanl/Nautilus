@@ -1,3 +1,6 @@
+// TODO: Rename this file to format_ic.hpp.  Update include guards, documentation files,
+//       documentation section name.
+
 #ifndef NAUTILUS_FORMAT_IC_CHEMSYM_HPP
 #define NAUTILUS_FORMAT_IC_CHEMSYM_HPP
 
