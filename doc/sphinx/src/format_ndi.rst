@@ -216,4 +216,4 @@ converting back to ``EntityTag`` gives the H-1 nuclide.
 User-defined entities are not supported by the NDI short string format, so they will generate the
 invalid value.
 
-The invalid short string is given by ``invalid_ndi_short_string``, which has the value "unknown".
+The invalid short string is given by ``invalid_ndi_short_string``, which has the value "?".
