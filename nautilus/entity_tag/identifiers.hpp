@@ -11,7 +11,7 @@
 
 namespace nautilus::entity_tag {
 
-// ================================================================================================
+// WARNING: This file is not part of the public user interface, and may change without warning.
 
 template <std::size_t N>
 class Identifiers
