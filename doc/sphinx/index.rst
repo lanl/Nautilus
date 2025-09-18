@@ -3,15 +3,16 @@ Welcome to Nautilus's Documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents
+   :caption: Overview
 
+   src/build
+   src/versioning
    src/concepts
-   src/shared_components
 
 .. toctree::
-   :hidden:
-
-   src/versioning
+   :maxdepth: 1
+   :caption: Shared Components
+   src/shared_components
 
 .. toctree::
    :maxdepth: 1
