@@ -65,6 +65,8 @@ also can indicate *elementals*, which are distributions of different isotopes of
 The distribution is defined by the data library, but is typically the natural abundance
 distribution of that element.
 
+.. _nuclide_names_and_sybmols:
+
 Names and Symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -219,6 +221,8 @@ for these light nuclei:
 - hydrogen-3 is also known as tritium, and as a particle is called a triton
 - helium-3 as a particle is called a helion
 - helium-4 as a particle is called an alpha
+
+.. _particle_names_and_sybmols:
 
 Names and Symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
