@@ -1,4 +1,4 @@
-#include "nautilus/entity_tag/format_ic_chemsym.hpp"
+#include "nautilus/entity_tag/format_ic.hpp"
 #include "nautilus/entity_tag/entity_tag.hpp"
 #include "nautilus/entity_tag/names.hpp"
 
