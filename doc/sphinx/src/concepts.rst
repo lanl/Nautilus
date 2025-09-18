@@ -65,9 +65,7 @@ also can indicate *elementals*, which are distributions of different isotopes of
 The distribution is defined by the data library, but is typically the natural abundance
 distribution of that element.
 
-.. _nuclide_names_and_sybmols:
-
-Names and Symbols
+Element Names and Symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The official names and symbols for elements are defined by the `International Union of Pure and
@@ -222,9 +220,7 @@ for these light nuclei:
 - helium-3 as a particle is called a helion
 - helium-4 as a particle is called an alpha
 
-.. _particle_names_and_sybmols:
-
-Names and Symbols
+Particle Names and Symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The standard name for particles is defined by the `Particle Data Group`_ (PDG).  Unlike with

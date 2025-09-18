@@ -75,7 +75,7 @@ available:
 - ``is_particle()`` will return true for particles, false for nuclides or non-standard instances
 - ``is_nuclide()`` will return true for nuclides, false for particles or non-standard instances
 
-Nuclides
+Nuclide Entities
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In order to query the properties of nuclei, the following accessors are available.  All of them
@@ -111,7 +111,7 @@ To construct a nuclide tag there are two possible constructors:
   the specified values.  The metastable index can be left off, in which case it will default to the
   ground state (metastable index of zero).
 
-Particles
+Particle Entities
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The only additional accessor available for particles is ``get_particle_index()``, which will assert
