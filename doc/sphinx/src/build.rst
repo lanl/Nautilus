@@ -1,7 +1,7 @@
 Building Nautilus
 ===================================================================================================
 
-Nautilus source code can be downloaded from `GitHub <https://github.com/lanl/nautilus>`.
+Nautilus source code can be downloaded from `GitHub <https://github.com/lanl/nautilus>`_.
 Development primarily occurs on a LANL internal server, with releases mirrored to GitHub.  If you
 have access to LANL internal systems, you can find the development repository at
 https://re-git.lanl.gov/xcap/oss/nautilus.
