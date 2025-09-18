@@ -1,4 +1,4 @@
-Format: IC Chemsym
+Format: IC
 ===================================================================================================
 
 Nautilus provides bidirectional conversion between ``EntityTag`` and the IC chemsym format.  This
