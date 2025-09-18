@@ -191,6 +191,16 @@ inline EntityTag from_standard_name(const std::string_view name)
     return EntityTag(Z, EntityTag::elemental);
 }
 
+// Aliases for consistency
+inline EntityTag from_long_standard_name(const std::string_view name)
+{
+    return from_standard_name(name);
+}
+inline EntityTag from_short_standard_name(const std::string_view name)
+{
+    return from_standard_name(name);
+}
+
 // ================================================================================================
 
 } // end namespace nautilus::entity_tag

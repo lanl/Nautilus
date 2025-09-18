@@ -12,6 +12,9 @@ the form of a ``std::string``.  The conversion functions are
 
 - ``from_standard_name(string)`` accepts a string in either short-standard format or long-standard
   format and returns an ``EntityTag``
+
+  - For consistency, Nautilus also provides the alias ``from_short_standard_name``.
+
 - ``to_short_standard_format(entity)`` accepts an ``EntityTag`` and returns the short-standard
   format string
 
@@ -65,6 +68,9 @@ the form of a ``std::string``.  The conversion functions are
 
 - ``from_standard_name(string)`` accepts a string in either short-standard format or long-standard
   format and returns an ``EntityTag``
+
+  - For consistency, Nautilus also provides the alias ``from_long_standard_name``.
+
 - ``to_long_standard_format(entity)`` accepts an ``EntityTag`` and returns the long-standard format
   string
 
