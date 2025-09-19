@@ -4,6 +4,7 @@
 #include "nautilus/entity_tag/identifiers.hpp"
 
 #include <array>
+#include <cstdint>
 #include <string_view>
 
 #include "ports-of-call/portability.hpp"
