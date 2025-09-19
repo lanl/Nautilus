@@ -48,42 +48,30 @@ private:
     // Ensure we don't have an empty segment
     static_assert(COUNT > 0);
 
-    PORTABLE_FUNCTION static constexpr Storage max_value()
-    {
-        // We can't just do 1 << COUNT - 1 because what if the bitsegment runs the full range of
-        // the Storage datatype?
-        Storage max_value = 0;
-        for (int n = 0; n < COUNT; ++n) {
-            max_value += 1 << n;
-        }
-        return max_value;
-    }
-
-    // Generate the mask for the bits in the segment
+    // Generate the right-shifted mask: Correct width, but shifted all the way to the right
     // -- Generates the mask as the unsigned Storage type instead of the input T type in order to
     //    get logical shift-right (shift-right of signed values is implementation-defined, but
     //    often arithmetic shift-right).
-    PORTABLE_FUNCTION static constexpr Storage unsigned_mask()
+    PORTABLE_FUNCTION static constexpr Storage rmask()
     {
         // Pick an arbitrary initial value because we first force every bit to true
         Storage mask = 0;
         mask = mask | ~mask;
         mask >>= (Nb - COUNT);
-        mask <<= RSKIP;
         return mask;
     }
 
 public:
     // Generate a mask for the bits in the segment
-    PORTABLE_FUNCTION static constexpr T mask() { return static_cast<T>(unsigned_mask()); }
+    PORTABLE_FUNCTION static constexpr T mask() { return static_cast<T>(rmask() << RSKIP); }
     // Extract the value in the segment
     PORTABLE_FUNCTION static constexpr T get(const T t)
     {
         // Work in Storage instead of T because Storage is unsigned and that gets us logical
         // shift-right (fill with zero) instead of arithmetic shift-right (fill with high bit).
         Storage value = static_cast<Storage>(t);
-        value &= unsigned_mask();
         value >>= RSKIP;
+        value &= rmask();
         return static_cast<T>(value);
     }
     // Insert the value in the segment
@@ -91,13 +79,15 @@ public:
     PORTABLE_FUNCTION static constexpr void set(const V value, T & t)
     {
         static_assert(sizeof(V) == sizeof(Storage));
-        assert(PortsOfCall::Robust::check_nonnegative(value));
-        assert(value <= max_value());
-        const T masked_t = t & ~mask();
-        const T shifted_value = value << RSKIP;
-        const T masked_value = shifted_value & mask();
-        assert(masked_value == shifted_value);
-        t = masked_t | masked_value;
+        // Prepare value (mask and shift, with sanity checks)
+        const Storage value_s = static_cast<Storage>(value);
+        const Storage masked_value = value_s & rmask();
+        assert(masked_value == value_s);
+        const Storage shifted_value = masked_value << RSKIP;
+        // Prepare target (clear segment within target)
+        const Storage masked_target = t & ~mask();
+        // Combine value and storage
+        t = masked_target | shifted_value;
     }
 };
 

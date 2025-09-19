@@ -255,7 +255,6 @@ const std::string invalid_ndi_zaid = "unknown";
 template <typename T>
 std::string to_NDI_zaid(EntityTag tag, const T & library)
 {
-    assert(detail::match_table_suffix(library));
     const auto SZA = to_NDI_SZA(tag, library);
     if (SZA == invalid_ndi_sza) {
         return invalid_ndi_zaid;

@@ -156,13 +156,13 @@ public:
     // nuclide
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S = 0)
     {
+        assert(A >= Z); // no negative neutron counts
         tag_ = null_tag();
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(STANDARD, tag_);
         bs_nuclide.set(NUCLIDE, tag_);
         bs_Z.set(Z, tag_);
         bs_A.set(A, tag_);
-        assert(A >= Z); // no negative neutron counts
         bs_S.set(S, tag_);
     }
     // elemental

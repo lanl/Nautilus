@@ -151,8 +151,8 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
     CHECK((from_standard_name("carbon-12z1") == unknown));      // invalid metastable indicator
 
     // "Bad" tag
-    CHECK(to_long_standard_name(EntityTag(0, 0)) == "unknown");   // Z = 0
-    CHECK(to_long_standard_name(EntityTag(127, 0)) == "unknown"); // Z > Oganesson
+    CHECK(to_long_standard_name(EntityTag(0, 0)) == "unknown"); // Z = 0
+    CHECK(to_long_standard_name(EntityTag(127)) == "unknown");  // Z > Oganesson
     CHECK(to_long_standard_name(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
 
@@ -252,7 +252,7 @@ TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
     CHECK((from_standard_name("Au-197q1") == unknown));       // invalid metastable state indicator
 
     // "Bad" tag
-    CHECK(to_short_standard_name(EntityTag(0, 0)) == "unknown");   // Z = 0
-    CHECK(to_short_standard_name(EntityTag(127, 0)) == "unknown"); // Z > Oganesson
+    CHECK(to_short_standard_name(EntityTag(0, 0)) == "unknown"); // Z = 0
+    CHECK(to_short_standard_name(EntityTag(127)) == "unknown");  // Z > Oganesson
     CHECK(to_short_standard_name(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
