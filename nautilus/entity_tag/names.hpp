@@ -183,20 +183,22 @@ public:
 
 // ================================================================================================
 
-class particle_index_t {
+class particle_index_t
+{
 private:
     uint32_t id_;
+
 public:
     PORTABLE_FUNCTION constexpr particle_index_t(const uint32_t id)
-    : id_{id}
+        : id_{id}
     {}
-    PORTABLE_FUNCTION constexpr operator uint32_t() const {
-        return id_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator==(const particle_index_t other) const {
+    PORTABLE_FUNCTION constexpr operator uint32_t() const { return id_; }
+    PORTABLE_FUNCTION constexpr bool operator==(const particle_index_t other) const
+    {
         return id_ == other.id_;
     }
-    PORTABLE_FUNCTION constexpr bool operator!=(const particle_index_t other) const {
+    PORTABLE_FUNCTION constexpr bool operator!=(const particle_index_t other) const
+    {
         return id_ != other.id_;
     }
 };
