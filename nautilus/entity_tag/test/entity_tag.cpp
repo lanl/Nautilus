@@ -50,7 +50,6 @@ TEST_CASE("EntityTag", "[entity_tag]")
 
         CHECK(my_tag.get_atomic_number() == 1);
         CHECK(my_tag.get_Z() == 1);
-
     }
 
     SECTION("nuclide tag (default index)")
