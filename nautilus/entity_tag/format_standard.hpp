@@ -134,33 +134,32 @@ inline EntityTag from_standard_name(const std::string_view name)
     if (pindex != names::Particles::not_found) {
         return EntityTag(pindex);
     }
-    // Not a particle, so assume a nuclide or elemental
-    // TODO: This can be written better, especially with tokenize_nuclide now available
-    for (std::size_t n = 0; n < name.size(); ++n) {
-        if (name[n] == '-') {
-            // A hyphen means we have a specific nuclide and not an elemental
-            auto tokens = tokenize_nuclide(name);
-            // Remove the hyphen
-            assert(tokens[0].size() == n + 1);
-            tokens[0] = tokens[0].substr(0, n);
-            // Valid name or symbol?
-            const auto Z = names::Nuclides::find_index(tokens[0]);
-            if (Z == names::Nuclides::not_found) {
-                return EntityTag(EntityTag::unknown);
-            }
-            // Atomic mass number (elementals are handled separately)
-            if (tokens[1].size() == 0) {
-                return EntityTag(EntityTag::unknown);
-            }
-            const auto A = std::stoi(tokens[1]);
-            // Excited state annotation ("m" alone defaults to "m1")
-            const auto S = (tokens[2].size() > 1 ? std::stoi(tokens[2].substr(1)) : 1);
-            switch (tokens[2][0]) {
-            case '\0': [[fallthrough]];
-            case 'g': return EntityTag(Z, A); break;
-            case 'm': return EntityTag(Z, A, S); break;
-            default: return EntityTag(EntityTag::unknown);
-            }
+    // Not a particle: try nuclide next
+    // -- nuclides will have a hyphen, while elementals won't
+    const auto n = name.find_first_of('-');
+    if (n != std::string_view::npos) {
+        // A hyphen means we have a specific nuclide and not an elemental
+        auto tokens = tokenize_nuclide(name);
+        // Remove the hyphen
+        assert(tokens[0].size() == n + 1);
+        tokens[0] = tokens[0].substr(0, n);
+        // Valid name or symbol?
+        const auto Z = names::Nuclides::find_index(tokens[0]);
+        if (Z == names::Nuclides::not_found) {
+            return EntityTag(EntityTag::unknown);
+        }
+        // Atomic mass number (elementals are handled separately)
+        if (tokens[1].size() == 0) {
+            return EntityTag(EntityTag::unknown);
+        }
+        const auto A = std::stoi(tokens[1]);
+        // Excited state annotation ("m" alone defaults to "m1")
+        const auto S = (tokens[2].size() > 1 ? std::stoi(tokens[2].substr(1)) : 1);
+        switch (tokens[2][0]) {
+        case '\0': [[fallthrough]];
+        case 'g': return EntityTag(Z, A); break;
+        case 'm': return EntityTag(Z, A, S); break;
+        default: return EntityTag(EntityTag::unknown);
         }
     }
     // Did not find '-', so assume an elemental
