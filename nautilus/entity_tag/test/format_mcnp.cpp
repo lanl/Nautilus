@@ -129,8 +129,8 @@ TEST_CASE("format: MCNP partial zaid", "[entity_tag][format][MCNP]")
     CHECK((from_MCNP_partial_zaid(47907) == EntityTag(EntityTag::unknown)));
 
     // elementals
-    CHECK((from_MCNP_partial_zaid(6000) == EntityTag(6, EntityTag::elemental)));
-    CHECK(to_MCNP_partial_zaid(EntityTag(13, EntityTag::elemental)) == 13000);
+    CHECK((from_MCNP_partial_zaid(6000) == EntityTag(6)));
+    CHECK(to_MCNP_partial_zaid(EntityTag(13)) == 13000);
 
     // particles
     CHECK(
@@ -222,8 +222,8 @@ TEST_CASE("format: MCNP full zaid", "[entity_tag][format][MCNP]")
     CHECK((from_MCNP_full_zaid("47907.zzz") == EntityTag(EntityTag::unknown)));
 
     // elementals
-    CHECK((from_MCNP_full_zaid("6000.nnc") == EntityTag(6, EntityTag::elemental)));
-    CHECK(to_MCNP_full_zaid(EntityTag(13, EntityTag::elemental), "99j") == "13000.99j");
+    CHECK((from_MCNP_full_zaid("6000.nnc") == EntityTag(6)));
+    CHECK(to_MCNP_full_zaid(EntityTag(13), "99j") == "13000.99j");
 
     // particles
     CHECK(

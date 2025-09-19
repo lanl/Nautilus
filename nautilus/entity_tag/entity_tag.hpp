@@ -111,8 +111,6 @@ public:
 
     static constexpr User user{};
 
-    static constexpr Elemental elemental{};
-
     // ____________________________________________________________________________________________
     // Constructors
 
@@ -120,7 +118,7 @@ public:
         : tag_{unknown_tag()}
     {}
 
-    PORTABLE_FUNCTION constexpr explicit EntityTag(const Storage particle)
+    PORTABLE_FUNCTION constexpr explicit EntityTag(const names::particle_index_t particle)
         : tag_{unknown_tag()}
     {
         set(particle);
@@ -130,10 +128,10 @@ public:
     {
         set(Z, A, S);
     }
-    PORTABLE_FUNCTION constexpr EntityTag(const Storage Z, const Elemental)
+    PORTABLE_FUNCTION constexpr EntityTag(const Storage Z)
         : tag_{unknown_tag()}
     {
-        set(Z, elemental);
+        set(Z);
     }
     PORTABLE_FUNCTION constexpr EntityTag(const User, const Storage data)
         : tag_{unknown_tag()}
@@ -144,16 +142,18 @@ public:
     // ____________________________________________________________________________________________
     // Build an EntityTag
 
+    // unknown
     PORTABLE_FUNCTION constexpr void set(const Unknown) { tag_ = unknown_tag(); }
-    // TODO: For consistency, should this be set(particle, particle_index) like elemental and user?
-    PORTABLE_FUNCTION constexpr void set(const Storage particle)
+    // particle
+    PORTABLE_FUNCTION constexpr void set(const names::particle_index_t particle)
     {
         tag_ = null_tag();
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(STANDARD, tag_);
         bs_nuclide.set(PARTICLE, tag_);
-        bs_pindex.set(particle, tag_);
+        bs_pindex.set(static_cast<Storage>(particle), tag_);
     }
+    // nuclide
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S = 0)
     {
         tag_ = null_tag();
@@ -165,8 +165,8 @@ public:
         assert(A >= Z); // no negative neutron counts
         bs_S.set(S, tag_);
     }
-    // TODO: For consistency with set(user), swap the arguments here and in the constructor
-    PORTABLE_FUNCTION constexpr void set(const Storage Z, const Elemental)
+    // elemental
+    PORTABLE_FUNCTION constexpr void set(const Storage Z)
     {
         tag_ = null_tag();
         bs_version.set(CURRENT_VERSION, tag_);
@@ -176,6 +176,7 @@ public:
         bs_A.set(elemental_A, tag_);
         bs_S.set(0, tag_); // S is meaningless with elementals, so set to ground state
     }
+    // user
     PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
     {
         tag_ = null_tag();
@@ -270,7 +271,7 @@ public:
     PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         assert(is_particle());
-        return bs_pindex.get(tag_);
+        return names::particle_index_t(bs_pindex.get(tag_));
     }
 
     // ____________________________________________________________________________________________

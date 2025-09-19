@@ -100,7 +100,7 @@ inline EntityTag from_IC_chemsym(const std::string_view sv0)
     }
     // Check if elemental, else get the atomic mass number
     if (tokens[1].size() == 0) {
-        return EntityTag(Z, EntityTag::elemental);
+        return EntityTag(Z);
     }
     const auto A = std::stoi(tokens[1]);
     // Get the excitation index

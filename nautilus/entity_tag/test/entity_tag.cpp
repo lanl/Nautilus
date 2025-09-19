@@ -38,7 +38,7 @@ TEST_CASE("EntityTag", "[entity_tag]")
 
     SECTION("elemental tag")
     {
-        EntityTag my_tag(1, EntityTag::elemental);
+        EntityTag my_tag(1);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 

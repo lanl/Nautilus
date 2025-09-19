@@ -83,10 +83,10 @@ TEST_CASE("format: IC chemsym", "[entity_tag][format][IC]")
     CHECK(to_IC_chemsym(lr266) == "lw266");
 
     // Elementals
-    constexpr EntityTag n_elemental(7, EntityTag::elemental);
+    constexpr EntityTag n_elemental(7);
     CHECK((from_IC_chemsym("n") == n_elemental));
     CHECK(to_IC_chemsym(n_elemental) == "n");
-    constexpr EntityTag ca_elemental(20, EntityTag::elemental);
+    constexpr EntityTag ca_elemental(20);
     CHECK((from_IC_chemsym("ca") == ca_elemental));
     CHECK(to_IC_chemsym(ca_elemental) == "ca");
 

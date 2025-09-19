@@ -54,7 +54,7 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
         return EntityTag(EntityTag::unknown);
     }
     if (A == 0) {
-        return EntityTag(Z, EntityTag::elemental);
+        return EntityTag(Z);
     }
     // Check for metastable states
     int m = 0;

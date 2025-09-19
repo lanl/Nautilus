@@ -215,7 +215,7 @@ inline EntityTag from_NDI_SZA(const int sza)
         return EntityTag(EntityTag::unknown);
     }
     if (A == 0) { // NDI encodes elementals by setting A to zero
-        return EntityTag(Z, EntityTag::elemental);
+        return EntityTag(Z);
     } else {
         return EntityTag(Z, A, remainder / 1000);
     }

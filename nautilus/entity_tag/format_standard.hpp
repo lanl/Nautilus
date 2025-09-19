@@ -169,7 +169,7 @@ inline EntityTag from_standard_name(const std::string_view name)
     if (Z == names::Nuclides::not_found) {
         return EntityTag(EntityTag::unknown);
     }
-    return EntityTag(Z, EntityTag::elemental);
+    return EntityTag(Z);
 }
 
 // Aliases for consistency

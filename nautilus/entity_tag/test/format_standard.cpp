@@ -77,10 +77,10 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
     CHECK(to_long_standard_name(cs55, Nuclides::Standard::Canadian) == default_caesium);
 
     // Elementals
-    constexpr EntityTag c_elemental(6, EntityTag::elemental);
+    constexpr EntityTag c_elemental(6);
     CHECK((from_standard_name("elemental carbon") == c_elemental));
     CHECK(to_long_standard_name(c_elemental) == "elemental carbon");
-    constexpr EntityTag cs_elemental(55, EntityTag::elemental);
+    constexpr EntityTag cs_elemental(55);
     CHECK((from_standard_name("elemental caesium") == cs_elemental));
     CHECK(to_long_standard_name(cs_elemental, Nuclides::Standard::IUPAC) == "elemental caesium");
     CHECK(to_long_standard_name(cs_elemental, Nuclides::Standard::American) == "elemental cesium");
@@ -185,10 +185,10 @@ TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
     // "short" standard name does not have alternate spellings
 
     // Elementals
-    constexpr EntityTag c_elemental(6, EntityTag::elemental);
+    constexpr EntityTag c_elemental(6);
     CHECK((from_standard_name("C") == c_elemental));
     CHECK(to_short_standard_name(c_elemental) == "C");
-    constexpr EntityTag cs_elemental(55, EntityTag::elemental);
+    constexpr EntityTag cs_elemental(55);
     CHECK((from_standard_name("Cs") == cs_elemental));
     CHECK(to_short_standard_name(cs_elemental) == "Cs");
 
@@ -213,12 +213,12 @@ TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
 
     // Distinction between similar:
     // -- p (proton) and P (phosphorus elemental); proton already checked above
-    constexpr EntityTag p_elemental(15, EntityTag::elemental);
+    constexpr EntityTag p_elemental(15);
     CHECK((from_standard_name("P") == p_elemental));
     CHECK(to_short_standard_name(p_elemental) == "P");
     // -- n (neutron) and N (nitrogen elemental)
     constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
-    constexpr EntityTag n_elemental(7, EntityTag::elemental);
+    constexpr EntityTag n_elemental(7);
     CHECK((from_standard_name("n") == neutron));
     CHECK(to_short_standard_name(neutron) == "n");
     CHECK((from_standard_name("N") == n_elemental));

@@ -183,13 +183,33 @@ public:
 
 // ================================================================================================
 
+class particle_index_t {
+private:
+    uint32_t id_;
+public:
+    PORTABLE_FUNCTION constexpr particle_index_t(const uint32_t id)
+    : id_{id}
+    {}
+    PORTABLE_FUNCTION constexpr operator uint32_t() const {
+        return id_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator==(const particle_index_t other) const {
+        return id_ == other.id_;
+    }
+    PORTABLE_FUNCTION constexpr bool operator!=(const particle_index_t other) const {
+        return id_ != other.id_;
+    }
+};
+
+// ================================================================================================
+
 struct Particles {
 private:
     using Particle = Identifiers<2>;
 
 public:
     static constexpr std::size_t count = 32;
-    static constexpr std::size_t not_found = count;
+    static constexpr particle_index_t not_found = count;
     // It's assumed that Standard(0) will be the default value.
     enum class Standard : std::size_t { PDG, alternate };
 
@@ -264,7 +284,7 @@ private:
     }
 
 public:
-    PORTABLE_FUNCTION static constexpr std::size_t find_index(const std::string_view query)
+    PORTABLE_FUNCTION static constexpr particle_index_t find_index(const std::string_view query)
     {
         for (std::size_t index = 0; index < count; ++index) {
             const auto ids = get_identifiers(index);
@@ -276,13 +296,13 @@ public:
     }
     // The "alternate" convention cannot be represented in Unicode, so there is no flag to select
     // different versions of the symbol.  You always get the PDG format.
-    PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const std::size_t index)
+    PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const particle_index_t index)
     {
         return get_identifiers(index).get_symbol();
     }
 
     PORTABLE_FUNCTION static constexpr std::string_view get_name(
-        const std::size_t index, const Standard standard = Standard::PDG)
+        const particle_index_t index, const Standard standard = Standard::PDG)
     {
         return get_identifiers(index).get_name(standard);
     }
@@ -296,7 +316,7 @@ public:
 // guarantee is that the names are contiguous and start at zero, as they are the indices within a
 // std::array.
 #define PARTICLE_INDEX(var, str)                                                                  \
-    static constexpr inline std::size_t var = Particles::find_index(str);                         \
+    static constexpr inline particle_index_t var(Particles::find_index(str));                     \
     static_assert(var != Particles::not_found);
 
 PARTICLE_INDEX(photon, "photon");

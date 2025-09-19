@@ -45,7 +45,7 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
     {
         GPU_CHECK_INIT(6);
 
-        constexpr EntityTag my_tag(1, EntityTag::elemental);
+        constexpr EntityTag my_tag(1);
 
         GPU_CHECK(my_tag.is_standard());
         GPU_CHECK(!my_tag.is_user());
