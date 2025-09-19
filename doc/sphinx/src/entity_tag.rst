@@ -104,7 +104,7 @@ Elemental Entities
 
 Elementals only have a single property: the atomic number.  This can be queried by either
 ``get_atomic_number()`` or ``get_Z()``.  To construct an elemental tag, use the constructor
-``EntityTag(atomic_number, EntityTag::elemental)``.
+``EntityTag(atomic_number)``.
 
 Nuclide Entities
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
