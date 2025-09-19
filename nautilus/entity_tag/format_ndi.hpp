@@ -177,6 +177,8 @@ int to_NDI_SZA(const EntityTag tag, T && library)
         }
         // standard cases fall through to here
         return (S * 1000 + Z) * 1000 + A;
+    } else if (tag.is_elemental()) {
+        return tag.get_atomic_number() * 1000;
     } else {
         return invalid_ndi_sza;
     }
@@ -282,8 +284,6 @@ inline std::string to_NDI_short_string(EntityTag tag)
     if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
-        // Elementals not supported by short string
-        assert(!tag.is_elemental());
         // Short string doesn't support excited states
         if ((Z == 95) && (A == 242)) {
             // Am-242g and Am-242m1 are reversed in NDI, so Am-242m1 is allowed but Am-242g is not

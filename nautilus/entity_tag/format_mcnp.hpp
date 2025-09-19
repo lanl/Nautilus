@@ -16,14 +16,9 @@ constexpr int invalid_mcnp_partial_zaid = -1;
 
 inline int to_MCNP_partial_zaid(const EntityTag tag)
 {
-    if (!tag.is_nuclide()) {
-        return invalid_mcnp_partial_zaid;
-    } else {
+    if (tag.is_nuclide()) {
         // Get the values needed to assemble the partial zaid
         const auto Z = tag.get_atomic_number();
-        if (tag.is_elemental()) {
-            return Z * 1000; // A = 0 for elementals
-        }
         const auto A = tag.get_atomic_mass_number();
         auto m = tag.get_metastable_index();
         if ((Z == 95) && (A == 242)) {
@@ -43,6 +38,10 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
             partial_zaid += 300 + m * 100;
         }
         return partial_zaid;
+    } else if (tag.is_elemental()) {
+        return tag.get_atomic_number() * 1000; // A = 0, m = 0 for elementals
+    } else {
+        return invalid_mcnp_partial_zaid;
     }
 }
 
@@ -53,6 +52,9 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
     const auto Z = partial_zaid / 1000;
     if (Z == 0) {
         return EntityTag(EntityTag::unknown);
+    }
+    if (A == 0) {
+        return EntityTag(Z, EntityTag::elemental);
     }
     // Check for metastable states
     int m = 0;
@@ -77,7 +79,7 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
             return EntityTag(EntityTag::unknown);
         }
         A -= (300 + m * 100); // remove the metastable correction from the atomic mass number
-        // This is not an elemental, so A = Z + N, where Z and N are non-negative
+        // A = Z + N, where Z and N are non-negative
         if (A < Z) {
             return EntityTag(EntityTag::unknown);
         }
@@ -91,13 +93,7 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
         }
     }
     // construct the EntityTag
-    if /* elemental */ (A == 0) {
-        return EntityTag(Z, EntityTag::elemental);
-    } else if /* ground state */ (m == 0) {
-        return EntityTag(Z, A);
-    } else /* excited state */ {
-        return EntityTag(Z, A, m);
-    }
+    return EntityTag(Z, A, m);
 }
 
 // ================================================================================================
@@ -139,10 +135,6 @@ const char invalid_mcnp_particle_symbol = ' ';
 inline char to_MCNP_particle_symbol(EntityTag tag)
 {
     if (tag.is_nuclide()) {
-        // This format doens't support elementals
-        if (tag.is_elemental()) {
-            return invalid_mcnp_particle_symbol;
-        }
         // This format doesn't support excited states
         // -- EntityTag fixes the Am-242g and Am-242m1 "swap", so ignore that special case here
         if (!tag.is_ground()) {

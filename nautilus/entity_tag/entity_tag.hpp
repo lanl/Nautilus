@@ -53,7 +53,8 @@ private:
 
     static constexpr Storage CURRENT_VERSION = 0b000000;
 
-    // More detailed breakdown for standard nuclides
+    // More detailed breakdown for standard nuclides and elementals
+    // - elementals are coded as nuclides with A and S equal to zero
     //      01ZZZZZZZAAAAAAAAASSSSSSSSVVVVVV
     //      |||      |        |       |      rskip   bits   description
     //      |||      |        |       \_____  0       6     version
@@ -144,6 +145,7 @@ public:
     // Build an EntityTag
 
     PORTABLE_FUNCTION constexpr void set(const Unknown) { tag_ = unknown_tag(); }
+    // TODO: For consistency, should this be set(particle, particle_index) like elemental and user?
     PORTABLE_FUNCTION constexpr void set(const Storage particle)
     {
         tag_ = null_tag();
@@ -163,6 +165,7 @@ public:
         assert(A >= Z); // no negative neutron counts
         bs_S.set(S, tag_);
     }
+    // TODO: For consistency with set(user), swap the arguments here and in the constructor
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Elemental)
     {
         tag_ = null_tag();
@@ -202,14 +205,6 @@ public:
         }
     }
 
-    // TODO: Writing the documentation re-raised the question: Should elementals be considered to
-    //       be a subset of nuclide?  Or should they be considered to be on the same level as
-    //       particle and nuclide?  This doesn't impact encoding within the EntityTag (as that's an
-    //       internal detail not visible to users), but impacts the user interface.
-    //       -- If elementals are a subtype of nuclide, then maybe "atomic nuclei" or similar is a
-    //          better name?
-    //       -- If elementals are not a subtype of nuclide, then I should check the documentation
-    //          and clarify usage of "atomic nuclei" vs "nuclide".
     // subsets of standard tags
     PORTABLE_FUNCTION constexpr bool is_particle() const
     {
@@ -217,7 +212,17 @@ public:
     }
     PORTABLE_FUNCTION constexpr bool is_nuclide() const
     {
-        return (is_standard() ? bs_nuclide.get(tag_) == NUCLIDE : false);
+        if (is_standard()) {
+            return (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) != elemental_A);
+        }
+        return false;
+    }
+    PORTABLE_FUNCTION constexpr bool is_elemental() const
+    {
+        if (is_standard()) {
+            return (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) == elemental_A);
+        }
+        return false;
     }
 
     // ____________________________________________________________________________________________
@@ -237,7 +242,7 @@ public:
 
     PORTABLE_FUNCTION constexpr auto get_Z() const
     {
-        assert(is_nuclide());
+        assert(is_nuclide() || is_elemental());
         return bs_Z.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
@@ -245,22 +250,17 @@ public:
     PORTABLE_FUNCTION constexpr auto get_A() const
     {
         assert(is_nuclide());
-        assert(!is_elemental());
         return bs_A.get(tag_);
     }
     PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
 
-    PORTABLE_FUNCTION constexpr bool is_elemental() const { return get_A() == elemental_A; }
-
     PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
     PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
 
-    // The metastable index doesn't apply to elementals, so it is assumed that elementals are in
-    // the ground state.
     PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
         assert(is_nuclide());
-        return (is_elemental() ? 0 : bs_S.get(tag_));
+        return bs_S.get(tag_);
     }
     PORTABLE_FUNCTION constexpr bool is_ground() const { return get_metastable_index() == 0; }
 

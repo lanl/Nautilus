@@ -30,21 +30,24 @@ inline std::string to_short_standard_name(const EntityTag tag)
         sprintf(name.data(), "U:%07X", static_cast<unsigned int>(tag.get_user_data()));
         return name;
     } else if (tag.is_nuclide()) {
-        std::string name;
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_short_standard_name;
         }
-        name.append(names::Nuclides::get_symbol(Z));
-        if (!tag.is_elemental()) {
-            name.append("-");
-            name.append(std::to_string(tag.get_atomic_mass_number()));
-            if (!tag.is_ground()) {
-                name.append(1, 'm');
-                name.append(std::to_string(tag.get_metastable_index()));
-            }
+        std::string name(names::Nuclides::get_symbol(Z));
+        name.append("-");
+        name.append(std::to_string(tag.get_atomic_mass_number()));
+        if (!tag.is_ground()) {
+            name.append(1, 'm');
+            name.append(std::to_string(tag.get_metastable_index()));
         }
         return name;
+    } else if (tag.is_elemental()) {
+        const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_short_standard_name;
+        }
+        return std::string(names::Nuclides::get_symbol(Z));
     } else if (tag.is_particle()) {
         const auto index = tag.get_particle_index();
         if (index >= names::Particles::count) {
@@ -72,23 +75,25 @@ inline std::string to_long_standard_name(
         sprintf(name.data(), "user entity 0x%07X", static_cast<unsigned int>(tag.get_user_data()));
         return name;
     } else if (tag.is_nuclide()) {
-        std::string name;
-        if (tag.is_elemental()) {
-            name.append("elemental ");
+        const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_long_standard_name;
         }
+        std::string name(names::Nuclides::get_name(Z, nuclide_standard));
+        name.append("-");
+        name.append(std::to_string(tag.get_atomic_mass_number()));
+        if (!tag.is_ground()) {
+            name.append(1, 'm');
+            name.append(std::to_string(tag.get_metastable_index()));
+        }
+        return name;
+    } else if (tag.is_elemental()) {
+        std::string name = "elemental ";
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_long_standard_name;
         }
         name.append(names::Nuclides::get_name(Z, nuclide_standard));
-        if (!tag.is_elemental()) {
-            name.append("-");
-            name.append(std::to_string(tag.get_atomic_mass_number()));
-            if (!tag.is_ground()) {
-                name.append(1, 'm');
-                name.append(std::to_string(tag.get_metastable_index()));
-            }
-        }
         return name;
     } else if (tag.is_particle()) {
         const auto index = tag.get_particle_index();
@@ -129,7 +134,8 @@ inline EntityTag from_standard_name(const std::string_view name)
     if (pindex != names::Particles::not_found) {
         return EntityTag(pindex);
     }
-    // Not a particle, so assume a nuclide
+    // Not a particle, so assume a nuclide or elemental
+    // TODO: This can be written better, especially with tokenize_nuclide now available
     for (std::size_t n = 0; n < name.size(); ++n) {
         if (name[n] == '-') {
             // A hyphen means we have a specific nuclide and not an elemental

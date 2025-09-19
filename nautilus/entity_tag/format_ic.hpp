@@ -16,23 +16,23 @@ const std::string invalid_ic_chemsym = "unknown";
 
 inline std::string to_IC_chemsym(EntityTag tag)
 {
+    auto get_atomic_symbol = [](const auto Z) {
+        std::string atomic_symbol(names::Nuclides::get_symbol(Z));
+        atomic_symbol[0] = to_lower(atomic_symbol[0]);
+        if (atomic_symbol == "lr") { // lawrencium uses a pre-standard symbol and was never fixed
+            atomic_symbol = "lw";
+        }
+        return atomic_symbol;
+    };
     if (tag.is_nuclide()) {
-        // start with the atomic symbol, all lowercase
         const auto Z = tag.get_atomic_number();
         if ((Z < 1) || (Z > names::Nuclides::count)) {
             return invalid_ic_chemsym;
         }
-        std::string result(names::Nuclides::get_symbol(Z));
-        result[0] = to_lower(result[0]);
-        if (result == "lr") { // lawrencium uses a pre-standard symbol and was never fixed
-            result = "lw";
-        }
-        if (tag.is_elemental()) {
-            // elementals are just the atomic symbol
-            return result;
-        }
-        // append the atomic mass number
         const auto A = tag.get_atomic_mass_number();
+        // start with the atomic symbol
+        std::string result = get_atomic_symbol(Z);
+        // append the atomic mass number
         result.append(std::to_string(A));
         // append the metastable state if not in the ground state
         // -- can't just check tag.is_ground() because Am-242g and Am-242m1 are swapped
@@ -49,6 +49,12 @@ inline std::string to_IC_chemsym(EntityTag tag)
             result.append(std::to_string(S));
         }
         return result;
+    } else if (tag.is_elemental()) {
+        const auto Z = tag.get_atomic_number();
+        if ((Z < 1) || (Z > names::Nuclides::count)) {
+            return invalid_ic_chemsym;
+        }
+        return get_atomic_symbol(Z);
     } else if (tag.is_particle()) {
         const auto pidx = tag.get_particle_index();
         switch (pidx) {
@@ -80,7 +86,7 @@ inline EntityTag from_IC_chemsym(const std::string_view sv0)
         // Am-242g and Am-242m1 are swapped in NDI
         return EntityTag(95, 242);
     }
-    // If we fall through to here, we assume this is a nuclide
+    // If we fall through to here, this is not a particle, so a nuclide or elemental
     const auto tokens = tokenize_nuclide(sv);
     // Get the atomic number
     auto symbol = tokens[0];
@@ -92,7 +98,7 @@ inline EntityTag from_IC_chemsym(const std::string_view sv0)
     if (Z == names::Nuclides::not_found) {
         return EntityTag(EntityTag::unknown);
     }
-    // Get the atomic mass number
+    // Check if elemental, else get the atomic mass number
     if (tokens[1].size() == 0) {
         return EntityTag(Z, EntityTag::elemental);
     }

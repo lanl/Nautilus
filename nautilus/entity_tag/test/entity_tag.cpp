@@ -15,6 +15,7 @@ TEST_CASE("EntityTag", "[entity_tag]")
         CHECK(!my_tag.is_user());
 
         CHECK(!my_tag.is_nuclide());
+        CHECK(!my_tag.is_elemental());
         CHECK(my_tag.is_particle());
 
         CHECK(my_tag.get_version() == 0b00000);
@@ -35,13 +36,14 @@ TEST_CASE("EntityTag", "[entity_tag]")
         CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::electron);
     }
 
-    SECTION("nuclide tag (elemental)")
+    SECTION("elemental tag")
     {
         EntityTag my_tag(1, EntityTag::elemental);
         CHECK(my_tag.is_standard());
         CHECK(!my_tag.is_user());
 
-        CHECK(my_tag.is_nuclide());
+        CHECK(!my_tag.is_nuclide());
+        CHECK(my_tag.is_elemental());
         CHECK(!my_tag.is_particle());
 
         CHECK(my_tag.get_version() == 0b00000);
@@ -49,7 +51,6 @@ TEST_CASE("EntityTag", "[entity_tag]")
         CHECK(my_tag.get_atomic_number() == 1);
         CHECK(my_tag.get_Z() == 1);
 
-        CHECK(my_tag.is_elemental());
     }
 
     SECTION("nuclide tag (default index)")
@@ -59,6 +60,7 @@ TEST_CASE("EntityTag", "[entity_tag]")
         CHECK(!my_tag.is_user());
 
         CHECK(my_tag.is_nuclide());
+        CHECK(!my_tag.is_elemental());
         CHECK(!my_tag.is_particle());
 
         CHECK(my_tag.get_version() == 0b00000);
@@ -80,6 +82,7 @@ TEST_CASE("EntityTag", "[entity_tag]")
         CHECK(!my_tag.is_user());
 
         CHECK(my_tag.is_nuclide());
+        CHECK(!my_tag.is_elemental());
         CHECK(!my_tag.is_particle());
 
         CHECK(my_tag.get_version() == 0b00000);
