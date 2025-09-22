@@ -11,75 +11,25 @@ EntityTag.
 #ifndef NAUTILUS_ZAIDTOOLS_HPP
 #define NAUTILUS_ZAIDTOOLS_HPP
 
+#include "nautilus/entity_tag/format_ndi.hpp"
+
 #include <cassert>
 #include <string>
 #include <vector>
 
 namespace nautilus {
 
-// The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
-// because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
-// handles a subset of the full chemsym format.  Given a chemsym, it will return an integer with
-// the corresponding SZA value.  The names "zaid" and "SZA" were incorrectly used interchangeably
-// when this function was initially written.
-//    There should be a corresponding zaid-to-chemsym conversion routine.  However, this will
-// probably be superseded by the new format and its associated translation routines.
-inline int chemsym_to_zaid(std::string const & chemsym)
+// This function is deprecated.  If you use the EntityTag machinery, you can construct many such
+// conversion routines.  This is left here for compatibility, but will be removed in the future.
+inline int chemsym_to_zaid(const std::string & s)
 {
-    if (chemsym == "g") {
-        // special case: gammas / photons
-        return 0;
-    } else if (chemsym == "n") {
-        // special case: neutrons
-        return 1;
-    } else if (chemsym == "p") {
-        // special case: protons / H-1
-        return 1001;
-    } else if (chemsym == "d") {
-        // special case: deuterons / H-2
-        return 1002;
-    } else if (chemsym == "t") {
-        // special case: tritons / H-3
-        return 1003;
-    } else if (chemsym == "a") {
-        // special case: alpha / He-4
-        return 2004;
-    } else {
-        // split into element symbol and atomic mass number
-        auto const pos = chemsym.find_first_of("0123456789");
-        auto element_symbol = chemsym.substr(0, pos);
-        auto atomic_mass_number = chemsym.substr(pos);
-        // look-up table to convert element symbol to atomic number
-        std::vector<std::string> const elements{
-            "h",  "he", "li", "be", "b",  "c",  "n",  "o",  "f",  "ne", "na", "mg", "al", "si",
-            "p",  "s",  "cl", "ar", "k",  "ca", "sc", "ti", "v",  "cr", "mn", "fe", "co", "ni",
-            "cu", "zn", "ga", "ge", "as", "se", "br", "kr", "rb", "sr", "y",  "zr", "nb", "mo",
-            "tc", "ru", "rh", "pd", "ag", "cd", "in", "sn", "sb", "te", "i",  "xe", "cs", "ba",
-            "la", "ce", "pr", "nd", "pm", "sm", "eu", "gd", "tb", "dy", "ho", "er", "tm", "yb",
-            "lu", "hf", "ta", "w",  "te", "os", "ir", "pt", "au", "hg", "tl", "pb", "bi", "po",
-            "at", "rn", "fr", "ra", "ac", "th", "pa", "u",  "np", "pu", "am", "cm", "bk", "cf",
-            "es", "fm", "md", "no", "lr", "rf", "db", "sg", "bh", "hs", "mt", "ds", "rg", "cn",
-            "nh", "fl", "mc", "lv", "ts", "og"};
-        int Z = -1;
-        for (std::size_t n{0}; n < elements.size(); ++n) {
-            if (elements[n] == element_symbol) {
-                Z = static_cast<int>(n) + 1;
-                break;
-            }
-        }
-        // -- Z < 0 is an error: didn't find the result
-        // -- all Z == 0 cases are special cases handled previously
-        assert(Z > 0);
-        // For historical reasons, Americium has special rules in the NDI format.  We don't yet
-        // handle those rules correctly, so we simply forbid Americium at this time.  This will be
-        // addressed in the future, but is low priority since we have no reactions that involve
-        // Americium as either reactant or product.
-        assert(Z != 95);
-        // convert string to integer for atomic mass number
-        int N = std::stoi(atomic_mass_number);
-        // return zaid
-        return 1000 * Z + N;
-    }
+    // The name of this function was chosen before we clarified various related formats.
+    // - The input is not the IC chemsym, but actually the closely-related-but-still-distinct NDI
+    //   short string.
+    // - The output is not the NDI zaid (nor even the MCNP zaid), but actually the truncated format
+    //   of NDI SZA.
+    using namespace nautilus::entity_tag;
+    return to_NDI_SZA(from_NDI_short_string(s));
 }
 
 // The ``half_reaction_zaid_to_chemsym_list`` function accepts a string consisting of either the
@@ -131,7 +81,8 @@ inline void append_zaids(std::vector<int> & zaid_list, std::string const & half_
         }
     };
     for (auto & chemsym : chemsym_list) {
-        append_if_unique(chemsym_to_zaid(chemsym));
+        using namespace nautilus::entity_tag;
+        append_if_unique(to_NDI_SZA(from_NDI_short_string(chemsym)));
     }
 }
 
