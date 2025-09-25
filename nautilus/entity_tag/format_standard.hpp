@@ -119,12 +119,13 @@ inline std::string to_standard_name(
 // and Particles::find_index are implemented, having from_standard_symbol and
 // from_standard_name would be redundant because they would be identical and both would work
 // for both short and long names.
-inline EntityTag from_standard_name_or_symbol(const std::string_view name)
+inline EntityTag from_standard_name_or_symbol(
+        const std::string_view name, const std::string_view user_prefix)
 {
-    // CHeck if we have user data
-    if ((name.substr(0, 2) == "U:") || (name.substr(0, 14) == "user entity 0x")) {
-        assert((name.size() == 9) || (name.size() == 21));
-        const std::string s(name.substr(name.size() - 7));
+    // Check if we have user data
+    if (name.substr(0, user_prefix.size()) == user_prefix) {
+        assert(name.size() == user_prefix.size() + 7);
+        const std::string s(name.substr(user_prefix.size()));
         const unsigned int data = std::stoi(s, nullptr, 16);
         assert(data != 0x1FFFFFF);
         return EntityTag(EntityTag::user, data);
@@ -175,11 +176,11 @@ inline EntityTag from_standard_name_or_symbol(const std::string_view name)
 // Aliases for consistency
 inline EntityTag from_standard_name(const std::string_view name)
 {
-    return from_standard_name_or_symbol(name);
+    return from_standard_name_or_symbol(name, "user entity 0x");
 }
 inline EntityTag from_standard_symbol(const std::string_view name)
 {
-    return from_standard_name_or_symbol(name);
+    return from_standard_name_or_symbol(name, "U:");
 }
 
 // ================================================================================================
