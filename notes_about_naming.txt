@@ -1,9 +1,3 @@
-entity_tag ________________________________________________________________________________________
--- get_metastable_index:
-   -- metastable or excitation/excited?
-   -- index or state?
-   -- shorthands?  NDI would want get_S while MCNP would want get_m
-
 names _____________________________________________________________________________________________
 -- particle standards
    -- Currently "PDG" and "alternate"
