@@ -61,11 +61,11 @@ inline std::string to_standard_symbol(const EntityTag tag)
 
 // ================================================================================================
 
-const std::string invalid_long_standard_name = "unknown";
+const std::string invalid_standard_name = "unknown";
 
 // Variations of the same thing so that the user can specify a nuclide standard and/or a particle
 // standard, and if they specify both then the order is irrelevant.
-inline std::string to_long_standard_name(
+inline std::string to_standard_name(
     const EntityTag tag,
     const names::Nuclides::Standard nuclide_standard,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0))
@@ -77,7 +77,7 @@ inline std::string to_long_standard_name(
     } else if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_long_standard_name;
+            return invalid_standard_name;
         }
         std::string name(names::Nuclides::get_name(Z, nuclide_standard));
         name.append("-");
@@ -91,33 +91,33 @@ inline std::string to_long_standard_name(
         std::string name = "elemental ";
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_long_standard_name;
+            return invalid_standard_name;
         }
         name.append(names::Nuclides::get_name(Z, nuclide_standard));
         return name;
     } else if (tag.is_particle()) {
         const auto index = tag.get_particle_index();
         if (index >= names::Particles::count) {
-            return invalid_long_standard_name;
+            return invalid_standard_name;
         }
         return std::string(names::Particles::get_name(index, particle_standard));
     } else {
-        return invalid_long_standard_name;
+        return invalid_standard_name;
     }
 }
-inline std::string to_long_standard_name(
+inline std::string to_standard_name(
     const EntityTag tag,
     const names::Particles::Standard particle_standard = names::Particles::Standard(0),
     const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
 {
-    return to_long_standard_name(tag, nuclide_standard, particle_standard);
+    return to_standard_name(tag, nuclide_standard, particle_standard);
 }
 
 // ================================================================================================
 
 // Because the long and short names are so closely related, and because of how Nuclides::find_index
 // and Particles::find_index are implemented, having from_standard_symbol and
-// from_long_standard_name would be redundant because they would be identical and both would work
+// from_standard_name would be redundant because they would be identical and both would work
 // for both short and long names.
 inline EntityTag from_standard_name_or_symbol(const std::string_view name)
 {
@@ -173,7 +173,7 @@ inline EntityTag from_standard_name_or_symbol(const std::string_view name)
 }
 
 // Aliases for consistency
-inline EntityTag from_long_standard_name(const std::string_view name)
+inline EntityTag from_standard_name(const std::string_view name)
 {
     return from_standard_name_or_symbol(name);
 }
