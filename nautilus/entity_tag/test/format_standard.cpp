@@ -9,7 +9,7 @@
 
 // ================================================================================================
 
-TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
+TEST_CASE("format: standard name", "[entity_tag][format][standard name]")
 {
     using nautilus::entity_tag::EntityTag;
     using nautilus::entity_tag::from_standard_name;
