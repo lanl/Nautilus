@@ -4,19 +4,13 @@ Format: Standard
 The standard format provides bidirectional conversion between ``EntityTag`` and the accepted
 standard names and symbols.
 
-Short Standard Name
+Standard Symbol
 ---------------------------------------------------------------------------------------------------
 
-The "short standard" name is what is normally recognized as the standard symbol for each entity, in
-the form of a ``std::string``.  The conversion functions are
+The standard symbol is represented by a ``std::string``.  The conversion functions are
 
-- ``from_standard_name(string)`` accepts a string in either short-standard format or long-standard
-  format and returns an ``EntityTag``
-
-  - For consistency, Nautilus also provides the alias ``from_short_standard_name``.
-
-- ``to_short_standard_format(entity)`` accepts an ``EntityTag`` and returns the short-standard
-  format string
+- ``from_standard_symbol`` accepts a string and returns an ``EntityTag``
+- ``to_standard_symbol`` accepts an ``EntityTag`` and returns the standard symbol as a string
 
 Nuclides follow the standard IUPAC notation and take the form "Xx-AAAmM", where
 
@@ -24,7 +18,7 @@ Nuclides follow the standard IUPAC notation and take the form "Xx-AAAmM", where
 - "AAA" is the atomic mass number
 - "M" is the metastable state index ("mM" is left off for the ground state)
 
-The ``from_standard_name`` function also accepts variant suffixes:
+The ``from_standard_symbol`` function also accepts variant suffixes:
 
 - no suffix implies the ground state
 - a suffix of "g" explicitly indicates the ground state
@@ -37,7 +31,7 @@ Examples:
 - "C-12" (ground state of carbon-12)
 - "Ta-180m1" (first metastable state of tantalum-180)
 
-Elementals are just the atomic symbol by itself, for example "c" for elemental carbon.
+Elementals are just the atomic symbol by itself, for example "C" for elemental carbon.
 
 Particles return a symbol using Unicode to represent the particle symbol.  These symbols use glyphs
 not normally represented by ``std::string``, so there are a few important caveats
@@ -57,33 +51,26 @@ not normally represented by ``std::string``, so there are a few important caveat
 User-defined entities return the string "U:XXXXXXX", where "XXXXXXX" is the user data in
 hexadecimal.
 
-Unknown entities return ``invalid_short_standard_name``, which has the value "unknown".
+Unknown entities return ``invalid_standard_symbol``, which has the value "unknown".
 
-Long Standard Name
+Standard Name
 ---------------------------------------------------------------------------------------------------
 
-The "long standard" name is what is normally recognized as the standard name for each entity, in
-the form of a ``std::string``.  The conversion functions are
+The standard name is what is represented by a ``std::string``.  The conversion functions are
 
-- ``from_standard_name(string)`` accepts a string in either short-standard format or long-standard
-  format and returns an ``EntityTag``
+- ``from_standard_name`` accepts a string and returns an ``EntityTag``
+- ``to_standard_name`` accepts an ``EntityTag`` and returns the standard name as a string
 
-  - For consistency, Nautilus also provides the alias ``from_long_standard_name``.
+Unlike with the standard symbol, the standard name has several variants.  Therefore the
+``to_standard_name`` accepts optional argments to specify the nuclide and/or particle variants.
 
-- ``to_long_standard_format(entity)`` accepts an ``EntityTag`` and returns the long-standard format
-  string
+- allowed nuclide formats are "IUPAC", "American", "British", and "Canadian"; default is IUPAC
+- allowed particle formats are "PDG" and "alternate"; default is PDG
 
-Unlike with the short standard name, the long standard name can handle a variety of formats.
-Therefore the ``to_long_standard_format`` accepts optional argments of the nuclide and/or particle
-format to use
-
-- allowed nuclide formats are "IUPAC", "American", "British", and "Canadian"
-- allowed particle formats are "PDG" and "alternate"
-
-The rules for nuclides is the same as for the short standard name, except
+The rules for nuclides is the same as for the standard symbol, except
 
 - the full name (all lowercase) is used instead of the atomic symbol, spelled according to the
-  specified format (default: IUPAC)
+  specified format
 
 Examples:
 
@@ -93,9 +80,9 @@ Examples:
 
 Elementals are written out as "elemental <name>", for example "elemental nitrogen".
 
-Particles return a name based on the format specified (default: PDG).
+Particles return a name based on the format specified.
 
 User-defined entities return the string "user entity 0xXXXXXXX", where "XXXXXXX" is the user data
 in hexadecimal.
 
-Unknown entities return ``invalid_long_standard_name``, which has the value "unknown".
+Unknown entities return ``invalid_standard_name``, which has the value "unknown".

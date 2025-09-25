@@ -19,10 +19,6 @@ names __________________________________________________________________________
       baryon would be either the negative sigma antibaryon (PDG) or the positive sigma antibaryon
       (alternate), and the symbol would be either Σ- or Σ+ (with the appropriate overbar).
 
-standard names ____________________________________________________________________________________
--- Currently the names are "long standard name" and "short standard name".  Should they instead by
-   "standard name" and "standard symbol"?
-
 NDI _______________________________________________________________________________________________
 -- FPID
    -- Currently denoted as FPID, short for floating-point ID
