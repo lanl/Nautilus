@@ -17,13 +17,13 @@ namespace nautilus::entity_tag {
 
 // ================================================================================================
 
-const std::string invalid_short_standard_name = "unknown";
+const std::string invalid_standard_symbol = "unknown";
 
 // For symbols:
 // -- nuclides only have a single standard
 // -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
 //    you always get the PDG symbol
-inline std::string to_short_standard_name(const EntityTag tag)
+inline std::string to_standard_symbol(const EntityTag tag)
 {
     if (tag.is_user()) {
         std::string name(9, ' ');
@@ -32,7 +32,7 @@ inline std::string to_short_standard_name(const EntityTag tag)
     } else if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_short_standard_name;
+            return invalid_standard_symbol;
         }
         std::string name(names::Nuclides::get_symbol(Z));
         name.append("-");
@@ -45,17 +45,17 @@ inline std::string to_short_standard_name(const EntityTag tag)
     } else if (tag.is_elemental()) {
         const auto Z = tag.get_atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_short_standard_name;
+            return invalid_standard_symbol;
         }
         return std::string(names::Nuclides::get_symbol(Z));
     } else if (tag.is_particle()) {
         const auto index = tag.get_particle_index();
         if (index >= names::Particles::count) {
-            return invalid_short_standard_name;
+            return invalid_standard_symbol;
         }
         return std::string(names::Particles::get_symbol(index));
     } else {
-        return invalid_short_standard_name;
+        return invalid_standard_symbol;
     }
 }
 
@@ -116,7 +116,7 @@ inline std::string to_long_standard_name(
 // ================================================================================================
 
 // Because the long and short names are so closely related, and because of how Nuclides::find_index
-// and Particles::find_index are implemented, having from_short_standard_name and
+// and Particles::find_index are implemented, having from_standard_symbol and
 // from_long_standard_name would be redundant because they would be identical and both would work
 // for both short and long names.
 inline EntityTag from_standard_name(const std::string_view name)
@@ -177,7 +177,7 @@ inline EntityTag from_long_standard_name(const std::string_view name)
 {
     return from_standard_name(name);
 }
-inline EntityTag from_short_standard_name(const std::string_view name)
+inline EntityTag from_standard_symbol(const std::string_view name)
 {
     return from_standard_name(name);
 }

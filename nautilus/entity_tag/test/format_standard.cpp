@@ -158,12 +158,12 @@ TEST_CASE("format: long standard name", "[entity_tag][format][standard name]")
 
 // ================================================================================================
 
-TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
+TEST_CASE("format: standard symbol", "[entity_tag][format][standard name]")
 {
     using nautilus::entity_tag::EntityTag;
-    using nautilus::entity_tag::from_short_standard_name;
+    using nautilus::entity_tag::from_standard_symbol;
     using nautilus::entity_tag::from_standard_name;
-    using nautilus::entity_tag::to_short_standard_name;
+    using nautilus::entity_tag::to_standard_symbol;
     using nautilus::entity_tag::names::Nuclides;
     using nautilus::entity_tag::names::Particles;
 
@@ -171,88 +171,88 @@ TEST_CASE("format: short standard name", "[entity_tag][format][standard name]")
     constexpr EntityTag co59g(27, 59);
     CHECK((from_standard_name("Co-59") == co59g));
     CHECK((from_standard_name("Co-59g") == co59g));
-    CHECK(to_short_standard_name(co59g) == "Co-59");
+    CHECK(to_standard_symbol(co59g) == "Co-59");
 
     constexpr EntityTag ta180m1(73, 180, 1);
     CHECK((from_standard_name("Ta-180m") == ta180m1));
     CHECK((from_standard_name("Ta-180m1") == ta180m1));
-    CHECK(to_short_standard_name(ta180m1) == "Ta-180m1");
+    CHECK(to_standard_symbol(ta180m1) == "Ta-180m1");
 
     constexpr EntityTag k38m2(19, 38, 2);
     CHECK((from_standard_name("K-38m2") == k38m2));
-    CHECK(to_short_standard_name(k38m2) == "K-38m2");
+    CHECK(to_standard_symbol(k38m2) == "K-38m2");
 
-    // "short" standard name does not have alternate spellings
+    // standard symbol does not have alternate spellings
 
     // Elementals
     constexpr EntityTag c_elemental(6);
     CHECK((from_standard_name("C") == c_elemental));
-    CHECK(to_short_standard_name(c_elemental) == "C");
+    CHECK(to_standard_symbol(c_elemental) == "C");
     constexpr EntityTag cs_elemental(55);
     CHECK((from_standard_name("Cs") == cs_elemental));
-    CHECK(to_short_standard_name(cs_elemental) == "Cs");
+    CHECK(to_standard_symbol(cs_elemental) == "Cs");
 
     // Particles
     constexpr EntityTag nu_e(nautilus::entity_tag::names::electron_neutrino);
     const std::string default_nu_e = "\u03BD\u2091";
     CHECK((from_standard_name(default_nu_e) == nu_e));
-    CHECK(to_short_standard_name(nu_e) == default_nu_e);
+    CHECK(to_standard_symbol(nu_e) == default_nu_e);
 
     constexpr EntityTag aL0(nautilus::entity_tag::names::neutral_lambda_antibaryon);
     const std::string default_aL0 = "\u039B\u0304\u2070";
     CHECK((from_standard_name(default_aL0) == aL0));
-    CHECK(to_short_standard_name(aL0) == default_aL0);
+    CHECK(to_standard_symbol(aL0) == default_aL0);
 
     // Distinction between hydrogen-1 (nuclide) and proton (particle)
     constexpr EntityTag proton(nautilus::entity_tag::names::proton);
     CHECK((from_standard_name("p") == proton));
-    CHECK(to_short_standard_name(proton) == "p");
+    CHECK(to_standard_symbol(proton) == "p");
     constexpr EntityTag h1(1, 1);
     CHECK((from_standard_name("H-1") == h1));
-    CHECK(to_short_standard_name(h1) == "H-1");
+    CHECK(to_standard_symbol(h1) == "H-1");
 
     // Distinction between similar:
     // -- p (proton) and P (phosphorus elemental); proton already checked above
     constexpr EntityTag p_elemental(15);
     CHECK((from_standard_name("P") == p_elemental));
-    CHECK(to_short_standard_name(p_elemental) == "P");
+    CHECK(to_standard_symbol(p_elemental) == "P");
     // -- n (neutron) and N (nitrogen elemental)
     constexpr EntityTag neutron(nautilus::entity_tag::names::neutron);
     constexpr EntityTag n_elemental(7);
     CHECK((from_standard_name("n") == neutron));
-    CHECK(to_short_standard_name(neutron) == "n");
+    CHECK(to_standard_symbol(neutron) == "n");
     CHECK((from_standard_name("N") == n_elemental));
-    CHECK(to_short_standard_name(n_elemental) == "N");
+    CHECK(to_standard_symbol(n_elemental) == "N");
 
     // First and last (verify bounds of indexing)
     // H-1 already done above
     constexpr EntityTag og294(118, 294);
     CHECK((from_standard_name("Og-294") == og294));
-    CHECK(to_short_standard_name(og294) == "Og-294");
+    CHECK(to_standard_symbol(og294) == "Og-294");
     constexpr EntityTag g(nautilus::entity_tag::names::photon);
     CHECK((from_standard_name("\u03B3") == g));
-    CHECK(to_short_standard_name(g) == "\u03B3");
+    CHECK(to_standard_symbol(g) == "\u03B3");
     constexpr EntityTag aOm_plus(nautilus::entity_tag::names::positive_omega_antibaryon);
     CHECK((from_standard_name("\u03A9\u0304\u207A") == aOm_plus));
-    CHECK(to_short_standard_name(aOm_plus) == "\u03A9\u0304\u207A");
+    CHECK(to_standard_symbol(aOm_plus) == "\u03A9\u0304\u207A");
 
     // User tag
     constexpr EntityTag user1(EntityTag::user, 15790320);
-    CHECK((from_short_standard_name("U:0F0F0F0") == user1));
-    CHECK(to_short_standard_name(user1) == "U:0F0F0F0");
+    CHECK((from_standard_symbol("U:0F0F0F0") == user1));
+    CHECK(to_standard_symbol(user1) == "U:0F0F0F0");
     constexpr EntityTag user2(EntityTag::user, 0x1FFFFFE);
-    CHECK((from_short_standard_name("U:1FFFFFE") == user2));
-    CHECK(to_short_standard_name(user2) == "U:1FFFFFE");
+    CHECK((from_standard_symbol("U:1FFFFFE") == user2));
+    CHECK(to_standard_symbol(user2) == "U:1FFFFFE");
 
     // Bad input
     constexpr EntityTag unknown(EntityTag::unknown);
-    CHECK((from_short_standard_name("BadInput") == unknown)); // garbage
+    CHECK((from_standard_symbol("BadInput") == unknown)); // garbage
     CHECK((from_standard_name("Xx-") == unknown));            // Xx isn't a nuclide
     CHECK((from_standard_name("Ni-") == unknown));            // incomplete
     CHECK((from_standard_name("Au-197q1") == unknown));       // invalid metastable state indicator
 
     // "Bad" tag
-    CHECK(to_short_standard_name(EntityTag(0, 0)) == "unknown"); // Z = 0
-    CHECK(to_short_standard_name(EntityTag(127)) == "unknown");  // Z > Oganesson
-    CHECK(to_short_standard_name(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
+    CHECK(to_standard_symbol(EntityTag(0, 0)) == "unknown"); // Z = 0
+    CHECK(to_standard_symbol(EntityTag(127)) == "unknown");  // Z > Oganesson
+    CHECK(to_standard_symbol(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
