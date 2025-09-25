@@ -20,13 +20,13 @@ namespace nautilus::entity_tag {
 namespace detail {
 
 inline EntityTag from_standard_name_or_symbol(
-        const std::string_view name,
-        const std::string_view user_prefix,
-        const std::string_view elemental_prefix)
+    const std::string_view name,
+    const std::string_view user_prefix,
+    const std::string_view elemental_prefix)
 {
     // Check if we have user data
     if ((name.size() == user_prefix.size() + 7) &&
-            (name.substr(0, user_prefix.size()) == user_prefix)) {
+        (name.substr(0, user_prefix.size()) == user_prefix)) {
         const std::string s(name.substr(user_prefix.size()));
         const unsigned int data = std::stoi(s, nullptr, 16);
         assert(data != 0x1FFFFFF);
@@ -67,7 +67,7 @@ inline EntityTag from_standard_name_or_symbol(
     }
     // Did not find '-', so assume an elemental
     if ((name.size() > elemental_prefix.size()) &&
-            (name.substr(0, elemental_prefix.size()) == elemental_prefix)) {
+        (name.substr(0, elemental_prefix.size()) == elemental_prefix)) {
         const std::string_view name0 = name.substr(elemental_prefix.size());
         const auto Z = names::Nuclides::find_index(name0);
         if (Z == names::Nuclides::not_found) {

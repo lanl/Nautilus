@@ -122,8 +122,7 @@ TEST_CASE("format: standard name", "[entity_tag][format][standard name]")
     CHECK((from_standard_name("positive omega antibaryon") == aOm_plus));
     CHECK((from_standard_name("antiparticle of the negative omega baryon") == aOm_plus));
     CHECK(to_standard_name(aOm_plus) == "positive omega antibaryon");
-    CHECK(
-        to_standard_name(aOm_plus, Particles::Standard::PDG) == "positive omega antibaryon");
+    CHECK(to_standard_name(aOm_plus, Particles::Standard::PDG) == "positive omega antibaryon");
     CHECK(
         to_standard_name(aOm_plus, Particles::Standard::alternate) ==
         "antiparticle of the negative omega baryon");
@@ -245,9 +244,9 @@ TEST_CASE("format: standard symbol", "[entity_tag][format][standard name]")
     // Bad input
     constexpr EntityTag unknown(EntityTag::unknown);
     CHECK((from_standard_symbol("BadInput") == unknown)); // garbage
-    CHECK((from_standard_symbol("Xx-") == unknown));            // Xx isn't a nuclide
-    CHECK((from_standard_symbol("Ni-") == unknown));            // incomplete
-    CHECK((from_standard_symbol("Au-197q1") == unknown));       // invalid metastable state indicator
+    CHECK((from_standard_symbol("Xx-") == unknown));      // Xx isn't a nuclide
+    CHECK((from_standard_symbol("Ni-") == unknown));      // incomplete
+    CHECK((from_standard_symbol("Au-197q1") == unknown)); // invalid metastable state indicator
 
     // "Bad" tag
     CHECK(to_standard_symbol(EntityTag(0, 0)) == "unknown"); // Z = 0
