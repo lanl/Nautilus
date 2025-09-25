@@ -17,103 +17,7 @@ namespace nautilus::entity_tag {
 
 // ================================================================================================
 
-const std::string invalid_standard_symbol = "unknown";
-
-// For symbols:
-// -- nuclides only have a single standard
-// -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
-//    you always get the PDG symbol
-inline std::string to_standard_symbol(const EntityTag tag)
-{
-    if (tag.is_user()) {
-        std::string name(9, ' ');
-        sprintf(name.data(), "U:%07X", static_cast<unsigned int>(tag.get_user_data()));
-        return name;
-    } else if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
-        if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_standard_symbol;
-        }
-        std::string name(names::Nuclides::get_symbol(Z));
-        name.append("-");
-        name.append(std::to_string(tag.get_atomic_mass_number()));
-        if (!tag.is_ground()) {
-            name.append(1, 'm');
-            name.append(std::to_string(tag.get_metastable_index()));
-        }
-        return name;
-    } else if (tag.is_elemental()) {
-        const auto Z = tag.get_atomic_number();
-        if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_standard_symbol;
-        }
-        return std::string(names::Nuclides::get_symbol(Z));
-    } else if (tag.is_particle()) {
-        const auto index = tag.get_particle_index();
-        if (index >= names::Particles::count) {
-            return invalid_standard_symbol;
-        }
-        return std::string(names::Particles::get_symbol(index));
-    } else {
-        return invalid_standard_symbol;
-    }
-}
-
-// ================================================================================================
-
-const std::string invalid_standard_name = "unknown";
-
-// Variations of the same thing so that the user can specify a nuclide standard and/or a particle
-// standard, and if they specify both then the order is irrelevant.
-inline std::string to_standard_name(
-    const EntityTag tag,
-    const names::Nuclides::Standard nuclide_standard,
-    const names::Particles::Standard particle_standard = names::Particles::Standard(0))
-{
-    if (tag.is_user()) {
-        std::string name(21, ' ');
-        sprintf(name.data(), "user entity 0x%07X", static_cast<unsigned int>(tag.get_user_data()));
-        return name;
-    } else if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
-        if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_standard_name;
-        }
-        std::string name(names::Nuclides::get_name(Z, nuclide_standard));
-        name.append("-");
-        name.append(std::to_string(tag.get_atomic_mass_number()));
-        if (!tag.is_ground()) {
-            name.append(1, 'm');
-            name.append(std::to_string(tag.get_metastable_index()));
-        }
-        return name;
-    } else if (tag.is_elemental()) {
-        std::string name = "elemental ";
-        const auto Z = tag.get_atomic_number();
-        if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_standard_name;
-        }
-        name.append(names::Nuclides::get_name(Z, nuclide_standard));
-        return name;
-    } else if (tag.is_particle()) {
-        const auto index = tag.get_particle_index();
-        if (index >= names::Particles::count) {
-            return invalid_standard_name;
-        }
-        return std::string(names::Particles::get_name(index, particle_standard));
-    } else {
-        return invalid_standard_name;
-    }
-}
-inline std::string to_standard_name(
-    const EntityTag tag,
-    const names::Particles::Standard particle_standard = names::Particles::Standard(0),
-    const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
-{
-    return to_standard_name(tag, nuclide_standard, particle_standard);
-}
-
-// ================================================================================================
+namespace detail {
 
 inline EntityTag from_standard_name_or_symbol(
         const std::string_view name,
@@ -175,14 +79,114 @@ inline EntityTag from_standard_name_or_symbol(
     return EntityTag(EntityTag::unknown);
 }
 
-// Aliases for consistency
-inline EntityTag from_standard_name(const std::string_view name)
+} // end namespace detail
+
+// ================================================================================================
+
+const std::string invalid_standard_symbol = "unknown";
+
+// For symbols:
+// -- nuclides only have a single standard
+// -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
+//    you always get the PDG symbol
+inline std::string to_standard_symbol(const EntityTag tag)
 {
-    return from_standard_name_or_symbol(name, "user entity 0x", "elemental ");
+    if (tag.is_user()) {
+        std::string name(9, ' ');
+        sprintf(name.data(), "U:%07X", static_cast<unsigned int>(tag.get_user_data()));
+        return name;
+    } else if (tag.is_nuclide()) {
+        const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_standard_symbol;
+        }
+        std::string name(names::Nuclides::get_symbol(Z));
+        name.append("-");
+        name.append(std::to_string(tag.get_atomic_mass_number()));
+        if (!tag.is_ground()) {
+            name.append(1, 'm');
+            name.append(std::to_string(tag.get_metastable_index()));
+        }
+        return name;
+    } else if (tag.is_elemental()) {
+        const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_standard_symbol;
+        }
+        return std::string(names::Nuclides::get_symbol(Z));
+    } else if (tag.is_particle()) {
+        const auto index = tag.get_particle_index();
+        if (index >= names::Particles::count) {
+            return invalid_standard_symbol;
+        }
+        return std::string(names::Particles::get_symbol(index));
+    } else {
+        return invalid_standard_symbol;
+    }
 }
+
 inline EntityTag from_standard_symbol(const std::string_view name)
 {
-    return from_standard_name_or_symbol(name, "U:", "");
+    return detail::from_standard_name_or_symbol(name, "U:", "");
+}
+
+// ================================================================================================
+
+const std::string invalid_standard_name = "unknown";
+
+// Variations of the same thing so that the user can specify a nuclide standard and/or a particle
+// standard, and if they specify both then the order is irrelevant.
+inline std::string to_standard_name(
+    const EntityTag tag,
+    const names::Nuclides::Standard nuclide_standard,
+    const names::Particles::Standard particle_standard = names::Particles::Standard(0))
+{
+    if (tag.is_user()) {
+        std::string name(21, ' ');
+        sprintf(name.data(), "user entity 0x%07X", static_cast<unsigned int>(tag.get_user_data()));
+        return name;
+    } else if (tag.is_nuclide()) {
+        const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_standard_name;
+        }
+        std::string name(names::Nuclides::get_name(Z, nuclide_standard));
+        name.append("-");
+        name.append(std::to_string(tag.get_atomic_mass_number()));
+        if (!tag.is_ground()) {
+            name.append(1, 'm');
+            name.append(std::to_string(tag.get_metastable_index()));
+        }
+        return name;
+    } else if (tag.is_elemental()) {
+        std::string name = "elemental ";
+        const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_standard_name;
+        }
+        name.append(names::Nuclides::get_name(Z, nuclide_standard));
+        return name;
+    } else if (tag.is_particle()) {
+        const auto index = tag.get_particle_index();
+        if (index >= names::Particles::count) {
+            return invalid_standard_name;
+        }
+        return std::string(names::Particles::get_name(index, particle_standard));
+    } else {
+        return invalid_standard_name;
+    }
+}
+inline std::string to_standard_name(
+    const EntityTag tag,
+    const names::Particles::Standard particle_standard = names::Particles::Standard(0),
+    const names::Nuclides::Standard nuclide_standard = names::Nuclides::Standard(0))
+{
+    return to_standard_name(tag, nuclide_standard, particle_standard);
+}
+
+inline EntityTag from_standard_name(const std::string_view name)
+{
+    return detail::from_standard_name_or_symbol(name, "user entity 0x", "elemental ");
 }
 
 // ================================================================================================
