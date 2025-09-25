@@ -115,16 +115,14 @@ inline std::string to_standard_name(
 
 // ================================================================================================
 
-// Because the long and short names are so closely related, and because of how Nuclides::find_index
-// and Particles::find_index are implemented, having from_standard_symbol and
-// from_standard_name would be redundant because they would be identical and both would work
-// for both short and long names.
 inline EntityTag from_standard_name_or_symbol(
-        const std::string_view name, const std::string_view user_prefix)
+        const std::string_view name,
+        const std::string_view user_prefix,
+        const std::string_view elemental_prefix)
 {
     // Check if we have user data
-    if (name.substr(0, user_prefix.size()) == user_prefix) {
-        assert(name.size() == user_prefix.size() + 7);
+    if ((name.size() == user_prefix.size() + 7) &&
+            (name.substr(0, user_prefix.size()) == user_prefix)) {
         const std::string s(name.substr(user_prefix.size()));
         const unsigned int data = std::stoi(s, nullptr, 16);
         assert(data != 0x1FFFFFF);
@@ -164,23 +162,27 @@ inline EntityTag from_standard_name_or_symbol(
         }
     }
     // Did not find '-', so assume an elemental
-    const auto pos = name.find_last_of(' ');
-    const std::string_view name0 = (pos == std::string_view::npos ? name : name.substr(pos + 1));
-    const auto Z = names::Nuclides::find_index(name0);
-    if (Z == names::Nuclides::not_found) {
-        return EntityTag(EntityTag::unknown);
+    if ((name.size() > elemental_prefix.size()) &&
+            (name.substr(0, elemental_prefix.size()) == elemental_prefix)) {
+        const std::string_view name0 = name.substr(elemental_prefix.size());
+        const auto Z = names::Nuclides::find_index(name0);
+        if (Z == names::Nuclides::not_found) {
+            return EntityTag(EntityTag::unknown);
+        }
+        return EntityTag(Z);
     }
-    return EntityTag(Z);
+    // Not an elemental, so no idea what we have
+    return EntityTag(EntityTag::unknown);
 }
 
 // Aliases for consistency
 inline EntityTag from_standard_name(const std::string_view name)
 {
-    return from_standard_name_or_symbol(name, "user entity 0x");
+    return from_standard_name_or_symbol(name, "user entity 0x", "elemental ");
 }
 inline EntityTag from_standard_symbol(const std::string_view name)
 {
-    return from_standard_name_or_symbol(name, "U:");
+    return from_standard_name_or_symbol(name, "U:", "");
 }
 
 // ================================================================================================
