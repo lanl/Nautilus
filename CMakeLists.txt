@@ -69,6 +69,8 @@ if(NAUTILUS_ENABLE_LIBRARY)
 
     target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
+    include(GNUInstallDirs)
+
     target_include_directories(${PROJECT_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
@@ -93,7 +95,6 @@ endif()
 ###################################################################################################
 
 if(NAUTILUS_ENABLE_LIBRARY)
-    include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
 
     install(DIRECTORY ${PROJECT_NAME}
