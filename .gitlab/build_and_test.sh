@@ -4,6 +4,7 @@ export PROJECT_NAME=nautilus
 export PROJECT_DEFAULT_BRANCH=main
 export PROJECT_TYPE=oss
 export PROJECT_GROUP=oss
+export PROJECT_SPACK_ENV_VERSION_DEFAULT="2025-01-18"
 ###############################################################################
 
 export BUILD_DIR=${BUILD_DIR:-build}
@@ -29,7 +30,7 @@ if ${SUBMIT_ON_ERROR}; then
 else
   REPORT_ERRORS=""
 fi
-PROJECT_SPACK_ENV_VERSION=${PROJECT_SPACK_ENV_VERSION:-current}
+PROJECT_SPACK_ENV_VERSION=${PROJECT_SPACK_ENV_VERSION:-${PROJECT_SPACK_ENV_VERSION_DEFAULT}}
 
 # colors
 COLOR_BLUE='\033[1;34m'
