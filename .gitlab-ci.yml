@@ -7,8 +7,7 @@ variables:
   ENABLE_CDASH: true
   # Use this variable if there is a xcap/deployment MR you want to use instead
   # Note: only change the MR number, the date is effectively the "Spack version"
-  #PROJECT_SPACK_ENV_VERSION: "mr/68/2024-10-15"
-  PROJECT_SPACK_ENV_VERSION: "2025-01-18"
+  #PROJECT_SPACK_ENV_VERSION: "mr/118/2025-01-18"
 
 include:
  - .gitlab/common.yml
@@ -80,12 +79,28 @@ darwin_openmpi_gcc:
     SPACK_ENV_NAME: openmpi-gcc
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
+darwin_openmpi_gcc_debug:
+  extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
+  needs:
+    - prereq_offline_deps
+  variables:
+    SPACK_ENV_NAME: openmpi-gcc-debug
+    SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
+
 darwin_openmpi_gcc_nokokkos:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
   needs:
     - prereq_offline_deps
   variables:
     SPACK_ENV_NAME: openmpi-gcc-nokokkos
+    SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
+
+darwin_openmpi_gcc_nokokkos_debug:
+  extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
+  needs:
+    - prereq_offline_deps
+  variables:
+    SPACK_ENV_NAME: openmpi-gcc-nokokkos-debug
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
 darwin_mpich_cuda_volta_gcc:
