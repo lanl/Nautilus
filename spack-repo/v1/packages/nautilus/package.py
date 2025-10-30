@@ -14,10 +14,15 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
 
     # Versions
     version("main", branch="main")
-    version("1.0.1.3", tag="v1.0.1.3", commit="02c447b3febe5f7bd62690a883fdbd717af35700")
-    version("1.0.1.2", tag="v1.0.1.2", commit="0dd80be1fc620d8400a3e9cfa5cc28e54ee15fea")
-    version("1.0.1.1", tag="v1.0.1.1", commit="2bbf18757291b165b34d30773dd50105b998db8d")
-    version("1.0.1.0", tag="v1.0.1.0", commit="19857081d7fb49a39f4fda0b000ff84b69fd20fa")
+    # versions prior to 1.0.1.4 have a known bug and should not be used
+    version("1.0.1.3", deprecated=True, tag="v1.0.1.3",
+            commit="02c447b3febe5f7bd62690a883fdbd717af35700")
+    version("1.0.1.2", deprecated=True, tag="v1.0.1.2",
+            commit="0dd80be1fc620d8400a3e9cfa5cc28e54ee15fea")
+    version("1.0.1.1", deprecated=True, tag="v1.0.1.1",
+            commit="2bbf18757291b165b34d30773dd50105b998db8d")
+    version("1.0.1.0", deprecated=True, tag="v1.0.1.0",
+            commit="19857081d7fb49a39f4fda0b000ff84b69fd20fa")
 
     # Variants
     variant("coverage", default=False, description="Code Coverage Support")
