@@ -14,7 +14,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
 
     # Versions
     version("main", branch="main")
-    version("1.0.1.4", tag="v1.0.1.4")
+    version("1.0.1.4", tag="v1.0.1.4", commit="7be5f6df1bd957fefb75ee9f7a2b0f6a2cf0512b")
     # versions prior to 1.0.1.4 have a known bug and should not be used
     version("1.0.1.3", deprecated=True, tag="v1.0.1.3",
             commit="02c447b3febe5f7bd62690a883fdbd717af35700")
@@ -33,8 +33,6 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     variant("test",     default=False, description="Build tests")
     variant("warnings", default="silent", description="Control compiler warnings",
             values=("silent", "nonfatal", "fatal"), multi=False)
-
-    depends_on("cxx", type="build")
 
     # Documentation
     depends_on("py-sphinx", when="+doc")

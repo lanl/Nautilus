@@ -17,7 +17,7 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
 
     # Versions
     version("main", branch="main")
-    version("1.0.1.4", tag="v1.0.1.4")
+    version("1.0.1.4", tag="v1.0.1.4", commit="7be5f6df1bd957fefb75ee9f7a2b0f6a2cf0512b")
     # versions prior to 1.0.1.4 have a known bug and should not be used
     with default_args(deprecated=True):
         version("1.0.1.3", tag="v1.0.1.3", commit="02c447b3febe5f7bd62690a883fdbd717af35700")
