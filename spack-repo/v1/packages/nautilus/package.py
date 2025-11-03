@@ -34,8 +34,6 @@ class Nautilus(CMakePackage, CudaPackage, ROCmPackage):
     variant("warnings", default="silent", description="Control compiler warnings",
             values=("silent", "nonfatal", "fatal"), multi=False)
 
-    depends_on("cxx", type="build")
-
     # Documentation
     depends_on("py-sphinx", when="+doc")
     depends_on("py-sphinx-multiversion", when="+doc")
