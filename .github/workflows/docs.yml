@@ -23,9 +23,9 @@ jobs:
           run: export DEBIAN_FRONTEND=noninteractive
         - name: install dependencies
           run: |
-            pip install sphinx
+            pip install "sphinx<8.2"
             pip install sphinx-rtd-theme
-            pip install sphinx-multiversion
+            pip install "sphinx-multiversion @ git+https://github.com/sphinx-contrib/multiversion.git"
             pip install sphinx-rtd-dark-mode
         - name: build docs
           run: |
