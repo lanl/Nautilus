@@ -9,8 +9,9 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-// Note that the Catch2 magic doesn't always play well with Nautilus.  See
-// https://stackoverflow.com/q/59770581/1791919 for a discussion of a related problem.
+// Note that the Catch2 magic doesn't always play well with Nautilus, because of the overloaded
+// equality operator.  See https://stackoverflow.com/q/59770581/1791919 for a discussion of a
+// related problem.
 
 // ================================================================================================
 
