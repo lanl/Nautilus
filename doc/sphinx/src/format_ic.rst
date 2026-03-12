@@ -1,10 +1,10 @@
 Format: IC
 ===================================================================================================
 
-Nautilus provides bidirectional conversion between ``EntityTag`` and the IC chemsym format.  This
-format comes from several codes in LANL's ASC-IC (Advanced Simulation and Computing - Integrated
-Codes) program, and is related to IUPAC's chemical symbol (see the short standard name).  Nautilus
-uses ``std::string`` as the type for the IC chemsym format.
+Nautilus provides bidirectional conversion between ``EntityTag`` and the IC chemsym format[1].
+This format comes from several codes in LANL's ASC-IC (Advanced Simulation and Computing -
+Integrated Codes) program, and is related to IUPAC's chemical symbol (see the short standard name).
+Nautilus uses ``std::string`` as the type for the IC chemsym format.
 
 To convert between ``EntityTag`` and IC chemsym, Nautilus provides the following functions
 
@@ -50,3 +50,12 @@ The IC chemsym format is primarily for elementals and nuclides, but does include
 
 The IC chemsym format does not have provisions for user-defined entities, so it will generate the
 same value as unknown entities: "unknown" (available as the variable ``invalid_ic_chemsym``).
+
+Notes and References
+---------------------------------------------------------------------------------------------------
+
+[1]: The chemsym format is an unofficial format, but has become implicitly standardized based on
+usage in various code projects.  See, for example, the xRAGE Users Manual (Code Version 1.251103;
+Revised November 3, 2025; LA-CP-11-00643), particularly Chapter 24 "Isotopics" to see usage of the
+chemsym format.  Additional details of the format used in this document are derived from studying
+the source code for various software packages that use this format.
