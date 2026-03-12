@@ -1,7 +1,7 @@
 Format: MCNP
 ===================================================================================================
 
-Nautilus provides bidirectional conversion between ``EntityTag`` and several formats defined by
+Nautilus provides bidirectional conversion between ``EntityTag`` and several formats [1] defined by
 MCNP: partial zaid, full zaid, and particle symbol.
 
 MCNP Partial Zaid
@@ -122,3 +122,10 @@ This format does not support user-defined entities.
 
 The "invalid" value for particle symbols is ``invalid_mcnp_particle_symbol``, which has the value
 " " (a space).
+
+Notes and References
+---------------------------------------------------------------------------------------------------
+
+[1]: The MCNP manual (version 6.2,
+https://mcnp.lanl.gov/pdf_files/TechReport_2017_LANL_LA-UR-17-29981_WernerArmstrongEtAl.pdf) is the
+primary reference for the MCNP notations discussed here.
