@@ -16,6 +16,11 @@
 
 namespace detail {
 
+// The MCNP conversion routines have to estimate the range of A values for a given Z value (see
+// from_MCNP_partial_zaid and the cubic fit therein).  In order to test that the MCNP conversion
+// routines work for a reasonable set of isotopes, isotopes.dat provides a representative sample of
+// isotopes but not every known isotope.  The data in isotopes.dat is not necessarily exactly the
+// same data that was used to generate the cubic fit in from_MCNP_partial_zaid.
 auto load_isotopes()
 {
     // Open the file
