@@ -2,7 +2,7 @@ Format: MCNP
 ===================================================================================================
 
 Nautilus provides bidirectional conversion between ``EntityTag`` and several formats [1] defined by
-MCNP: partial zaid, full zaid, and particle symbol.
+MCNP (the Monte Carlo N-Particle code): partial zaid, full zaid, and particle symbol.
 
 MCNP Partial Zaid
 ---------------------------------------------------------------------------------------------------
