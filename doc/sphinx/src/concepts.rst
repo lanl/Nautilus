@@ -131,6 +131,41 @@ has three valence quarks, it is called a *baryon*.  Further combinations (*tetra
 *pentaquarks*, and so on) are sometimes referred to as "exotic" hadrons, and are currently not
 included in Nautilus.
 
+Particle Names and Symbols
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The standard name for particles is defined by the `Particle Data Group`_ (PDG).  Unlike with
+elements, there are no regional variations of the particle names.  However, there is an alternate
+standard used by some authors (see, for example, Claude Amsler's 2015 book "Nuclear and Particle
+Physics"), which can cause some confusion due to the sometimes subtle differences between the two
+standards.
+
+.. _`Particle Data Group`: https://pdg.lbl.gov
+
+The difference between the two standards is the naming of antibaryons.  In the PDG standard, the
+name of a particle includes its own charge, regardless of whether that particle is ordinary matter
+or antimatter.  However, in the alternate standard, antibaryons are named for the charge of their
+corresponding ordinary matter particle.  Consider, for example, the positive sigma baryon (valence
+quarks: :math:`uus`), which is paired with an antiparticle of the same mass but opposite charge
+(valence quarks: :math:`\overline{u}\overline{u}\overline{s}`).  In the PDG standard, that
+antiparticle is called the negative sigma antibaryon because it has a negative charge.  However, in
+the alternate standard, that antiparticle is called the antiparticle of the positive sigma baryon
+or the positive sigma antibaryon.  The confusion gets worse if you consider that there is a
+negative sigma baryon (valence quarks: :math:`dds`) and its corresponding antiparticle, which is
+called either the positive sigma antibaryon (PDG standard) or the antiparticle of the negative
+sigma baryon or the negative sigma antibaryon (alternate standard).
+
+The symbols, if drawn carefully, can help to disambiguate.  Using our example above with the sigma
+(anti)baryons, the PDG standard gives :math:`\Sigma^+` and its antiparticle
+:math:`\overline{\Sigma}^-`, along with :math:`\Sigma^-` and its antiparticle
+:math:`\overline{\Sigma}^+`.  The alternate standard gives :math:`\Sigma^+` and its antiparticle
+:math:`\overline{\Sigma^+}` along with :math:`\Sigma^-` and its antiparticle
+:math:`\overline{\Sigma^-}`.  However, the distinction is subtle, being simply whether or not the
+overline continues over the sign.
+
+Nautilus defaults to the PDG standard, but some parts of Nautilus provide the option to work with
+the alternate standard.
+
 Particles Available in Nautilus
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -219,38 +254,3 @@ for these light nuclei:
 - hydrogen-3 is also known as tritium, and as a particle is called a triton
 - helium-3 as a particle is called a helion
 - helium-4 as a particle is called an alpha
-
-Particle Names and Symbols
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The standard name for particles is defined by the `Particle Data Group`_ (PDG).  Unlike with
-elements, there are no regional variations of the particle names.  However, there is an alternate
-standard used by some authors (see, for example, Claude Amsler's 2015 book "Nuclear and Particle
-Physics"), which can cause some confusion due to the sometimes subtle differences between the two
-standards.
-
-.. _`Particle Data Group`: https://pdg.lbl.gov
-
-The difference between the two standards is the naming of antibaryons.  In the PDG standard, the
-name of a particle includes its own charge, regardless of whether that particle is ordinary matter
-or antimatter.  However, in the alternate standard, antibaryons are named for the charge of their
-corresponding ordinary matter particle.  Consider, for example, the positive sigma baryon (valence
-quarks: :math:`uus`), which is paired with an antiparticle of the same mass but opposite charge
-(valence quarks: :math:`\overline{u}\overline{u}\overline{s}`).  In the PDG standard, that
-antiparticle is called the negative sigma antibaryon because it has a negative charge.  However, in
-the alternate standard, that antiparticle is called the antiparticle of the positive sigma baryon
-or the positive sigma antibaryon.  The confusion gets worse if you consider that there is a
-negative sigma baryon (valence quarks: :math:`dds`) and its corresponding antiparticle, which is
-called either the positive sigma antibaryon (PDG standard) or the antiparticle of the negative
-sigma baryon or the negative sigma antibaryon (alternate standard).
-
-The symbols, if drawn carefully, can help to disambiguate.  Using our example above with the sigma
-(anti)baryons, the PDG standard gives :math:`\Sigma^+` and its antiparticle
-:math:`\overline{\Sigma}^-`, along with :math:`\Sigma^-` and its antiparticle
-:math:`\overline{\Sigma}^+`.  The alternate standard gives :math:`\Sigma^+` and its antiparticle
-:math:`\overline{\Sigma^+}` along with :math:`\Sigma^-` and its antiparticle
-:math:`\overline{\Sigma^-}`.  However, the distinction is subtle, being simply whether or not the
-overline continues over the sign.
-
-Nautilus defaults to the PDG standard, but some parts of Nautilus provide the option to work with
-the alternate standard.
