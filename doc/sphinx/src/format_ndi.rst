@@ -1,8 +1,8 @@
 Format: NDI
 ===================================================================================================
 
-Nautilus provides bidirectional conversion between ``EntityTag`` and several formats defined by NDI
-(the Nuclear Data Interface library): SZA, FPID, zaid, and short string.
+Nautilus provides bidirectional conversion between ``EntityTag`` and several formats [1-6] defined
+by NDI (the Nuclear Data Interface library): SZA, FPID, zaid, and short string.
 
 NDI maintains a suite of "libraries" as the data sets they maintain evolve over time.  Each library
 consists of a number of "tables".  The mapping from library to table is not unique: some libraries
@@ -217,3 +217,26 @@ User-defined entities are not supported by the NDI short string format, so they 
 invalid value.
 
 The invalid short string is given by ``invalid_ndi_short_string``, which has the value "?".
+
+Notes and References
+---------------------------------------------------------------------------------------------------
+
+TODO: I still need to verify where/how to cite which documents.
+
+[1]: "NDI Reference Manual 2.0.11"
+(https://xweb.lanl.gov/projects/data/nuclear/ndi/pdfs/NDIrefman2.0.11.pdf)
+
+[2]: "Production-Depletion Chain Data Sets for MENDF71X"; Lee; Los Alamos National Laboratory
+memorandum XCP-5:12-033.
+
+[3]: "Production-Depletion Chain Data Sets for ENDF7ACT"; Lee; Los Alamos National Laboratory
+memorandum XCP-5:11-020.
+
+[4]: "Production-Depletion Chain Data Sets for MENDF70X"; Lee; Los Alamos National Laboratory
+memorandum XCP-5:11-037.
+
+[5]: "ENDF70: A Continuous-Energy MCNP Neutron Data Library Based on ENDF/B-VII.0"; Trellue,
+Little, White, MacFarlane, Kahler; Los Alamos National Laboratory technical report LA-UR-08-2000.
+
+[6]: "Release of ENDF/B-VIII.0-Based ACE Data Files"; Conlin, Haeck, Neudecker, Parsons, White;
+Los Alamos National Laboratory technical report LA-UR-18-24034.
