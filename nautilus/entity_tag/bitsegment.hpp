@@ -16,7 +16,7 @@ namespace nautilus::entity_tag {
 
 // WARNING: This file is not part of the public user interface, and may change without warning.
 
-// A utility class to help operate on a subset of bits in a a larger number.  A BigSegment does not
+// A utility class to help operate on a subset of bits in a larger number.  A BigSegment does not
 // own the larger number, but only provides operations that can be applied to numbers of a
 // particular type.
 // -- T: The underlying storage type (the type of the "larger number")
