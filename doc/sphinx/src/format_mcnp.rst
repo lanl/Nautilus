@@ -46,7 +46,7 @@ routines available for this format are
 Because the full zaid is an extension of the partial zaid, it follows the same rules as the partial
 zaid.
 
-Invalid full zaids are given the valud ``invalid_mcnp_full_zaid``, which is equal to "unknown".
+Invalid full zaids are given the valid ``invalid_mcnp_full_zaid``, which is equal to "unknown".
 
 MCNP Particle Symbol
 ---------------------------------------------------------------------------------------------------
