@@ -40,9 +40,9 @@ but have special cases for a few particles.
 
 The conversion routines available for this format are
 
-- ``from_NDI_SZA(sza)`` takes an SZA and returns an ``EntityTag``
-- ``to_NDI_SZA(entity_tag, library_or_table_id)`` takes an ``EntityTag`` and optionally a library
-  or table ID, then returns an SZA
+- ``from_NDI_SZA`` that takes an SZA and returns an ``EntityTag``
+- ``to_NDI_SZA`` that takes an ``EntityTag`` and optionally a library or table ID, then returns an
+  SZA
 
   - The possible ways to indicate a library or table ID are listed at the top of this page
 
@@ -124,8 +124,8 @@ customers who already use this format.
 
 The conversion routines available for this format are
 
-- ``from_NDI_FPID(sza)`` takes an FPID and returns an ``EntityTag``
-- ``to_NDI_FPID(entity_tag, table_id)`` takes an ``EntityTag`` and a table ID, then returns an FPID
+- ``from_NDI_FPID`` that takes an FPID and returns an ``EntityTag``
+- ``to_NDI_FPID)`` that takes an ``EntityTag`` and a table ID, then returns an FPID
 
   - Unlike the SZA, this format explicitly includes a table ID, so the ``table_id`` argument is
     required.
@@ -150,8 +150,8 @@ is the full five-character format.  Otherwise, all details of the SZA apply to t
 
 The conversion routines available for this format are
 
-- ``from_NDI_zaid(sza)`` takes an FPID and returns an ``EntityTag``
-- ``to_NDI_zaid(entity_tag, table_id)`` takes an ``EntityTag`` and a table ID, then returns a zaid
+- ``from_NDI_zaid`` that takes an FPID and returns an ``EntityTag``
+- ``to_NDI_zaid`` that takes an ``EntityTag`` and a table ID, then returns a zaid
 
   - Unlike the SZA, this format explicitly includes a table ID, so the ``table_id`` argument is
     required.
@@ -172,8 +172,8 @@ the short standard name and the IC chemsym formats.
 
 The conversion routines available for this format are
 
-- ``from_NDI_short_string(sza)`` takes a short string and returns an ``EntityTag``
-- ``to_NDI_short_string(entity_tag)`` takes an ``EntityTag`` and returns a zaid
+- ``from_NDI_short_string`` that takes a short string and returns an ``EntityTag``
+- ``to_NDI_short_string`` that takes an ``EntityTag`` and returns a short string
 
   - Unlike the SZA, FPID, and zaid formats, the short string does not depend on the library or
     table, so it does not accept a library or table ID argument
