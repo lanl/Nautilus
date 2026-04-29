@@ -28,7 +28,7 @@ constexpr uint64_t error_code(const uint64_t num_tests)
     assert(num_tests <= 64);
     uint64_t code = 0;
     for (uint64_t i = 0; i < num_tests; ++i) {
-        code += 1 << i;
+        code += 1ULL << i;
     }
     return code;
 }
