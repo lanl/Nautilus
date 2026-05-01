@@ -8,7 +8,7 @@ TEST_CASE("particle names", "[names]")
 {
     using namespace nautilus::entity_tag::names;
 
-    auto f_pdg = [](const std::size_t index, const std::string_view name) {
+    auto f_pdg = [](const particle_index_t index, const std::string_view name) {
         return Particles::get_name(index) == name;
     };
     CHECK(f_pdg(photon, "photon"));
@@ -44,7 +44,7 @@ TEST_CASE("particle names", "[names]")
     CHECK(f_pdg(negative_omega_baryon, "negative omega baryon"));
     CHECK(f_pdg(positive_omega_antibaryon, "positive omega antibaryon"));
 
-    auto f_alt = [](const std::size_t index, const std::string_view name) {
+    auto f_alt = [](const particle_index_t index, const std::string_view name) {
         return Particles::get_name(index, Particles::Standard::alternate) == name;
     };
     CHECK(f_alt(photon, "photon"));
@@ -88,7 +88,7 @@ TEST_CASE("particle symbols", "[names]")
     using namespace nautilus::entity_tag::names;
 
     // Symbols are not available for the "alternate" format.
-    auto f_pdg = [](const std::size_t index, const std::string_view name) {
+    auto f_pdg = [](const particle_index_t index, const std::string_view name) {
         return Particles::get_symbol(index) == name;
     };
     CHECK(f_pdg(photon, "\u03B3"));
