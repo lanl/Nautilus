@@ -130,7 +130,7 @@ TEST_CASE("particle symbols", "[names]")
     for (std::size_t n = 0; n < Particles::count; ++n) {
         const auto name = Particles::get_name(n);
         const auto size = name.size();
-        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, &*name.begin());
+        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, name.data());
         max_size = std::max(size, max_size);
     }
     printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
@@ -139,7 +139,7 @@ TEST_CASE("particle symbols", "[names]")
     for (std::size_t n = 0; n < Particles::count; ++n) {
         const auto name = Particles::get_name(n, Particles::Standard::alternate);
         const auto size = name.size();
-        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, &*name.begin());
+        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, name.data());
         max_size = std::max(size, max_size);
     }
     printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
@@ -148,7 +148,7 @@ TEST_CASE("particle symbols", "[names]")
     for (std::size_t n = 0; n < Particles::count; ++n) {
         const auto symbol = Particles::get_symbol(n);
         const auto size = symbol.size();
-        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, &*symbol.begin());
+        printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, symbol.data());
         max_size = std::max(size, max_size);
     }
     printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
