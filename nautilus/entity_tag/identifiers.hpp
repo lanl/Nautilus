@@ -39,7 +39,7 @@ private:
     }
 
 public:
-    // Constructor
+    // Constructors
     PORTABLE_FUNCTION constexpr Identifiers(
         const std::string_view symbol, const std::string_view standard_name)
         : symbol_{symbol}
