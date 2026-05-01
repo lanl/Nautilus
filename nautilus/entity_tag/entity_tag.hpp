@@ -179,6 +179,10 @@ public:
     // user
     PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
     {
+        // BitSegment will catch any data value outside of what fits in the availble storage, but
+        // because unknown tags are encoded in a way that overlaps user tags, we need to explicitly
+        // check that case.
+        assert(data != UNKNOWN);
         tag_ = null_tag();
         bs_version.set(CURRENT_VERSION, tag_);
         bs_user.set(USER, tag_);

@@ -158,7 +158,6 @@ user chose to encode into the ``EntityTag``.
 
 To construct a user-defined entity use the constructor ``EntityTag(EntityTag::user, user_data)``,
 which builds a user-defined entity with the specified user data.  ``EntityTag`` encodes user data
-into 25 bits, so data outside the valid range will generate an error or silently do the wrong
-thing.  The value where all 25 bits are set to one is a special value that is reserved for
-Nautilus, so users should not attempt to set that value or the tag will default to an "unknown"
-entity.
+into 25 bits.  The value where all 25 bits are set to one is a special value that is reserved for
+Nautilus, so users should not attempt to set that value.  Invalid values will generate an error (if
+debugging is turned on) or silently do the wrong thing (if assertions are compiled out).
