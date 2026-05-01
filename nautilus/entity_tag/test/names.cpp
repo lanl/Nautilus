@@ -160,8 +160,9 @@ TEST_CASE("nuclide names and symbols", "[names]")
 {
     using namespace nautilus::entity_tag::names;
 
-    CHECK(Nuclides::get_name(1) == "hydrogen");
-    CHECK(Nuclides::get_symbol(1) == "H");
+    constexpr std::size_t H_Z = 1;
+    CHECK(Nuclides::get_name(H_Z) == "hydrogen");
+    CHECK(Nuclides::get_symbol(H_Z) == "H");
 
     constexpr std::size_t He_Z = 2;
     CHECK(Nuclides::find_index("He") == He_Z);
@@ -205,9 +206,11 @@ TEST_CASE("nuclide names and symbols", "[names]")
     CHECK(Nuclides::get_name(Cs_Z, Nuclides::Standard::Canadian) == "caesium");
     CHECK(Nuclides::get_symbol(Cs_Z) == "Cs");
 
-    CHECK(Nuclides::get_name(59) == "praseodymium");
-    CHECK(Nuclides::get_symbol(59) == "Pr");
+    constexpr std::size_t Pr_Z = 59;
+    CHECK(Nuclides::get_name(Pr_Z) == "praseodymium");
+    CHECK(Nuclides::get_symbol(Pr_Z) == "Pr");
 
-    CHECK(Nuclides::get_name(118) == "oganesson");
-    CHECK(Nuclides::get_symbol(118) == "Og");
+    constexpr std::size_t Og_Z = 118;
+    CHECK(Nuclides::get_name(Og_Z) == "oganesson");
+    CHECK(Nuclides::get_symbol(Og_Z) == "Og");
 }
