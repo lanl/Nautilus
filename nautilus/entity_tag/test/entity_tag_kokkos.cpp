@@ -24,6 +24,7 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
         GPU_CHECK(!my_tag.is_nuclide());
         GPU_CHECK(!my_tag.is_elemental());
         GPU_CHECK(my_tag.is_particle());
+        GPU_CHECK(my_tag.get_version() == 0b00000);
         GPU_CHECK(my_tag.get_particle_index() == nautilus::entity_tag::names::electron);
         GPU_CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::positron);
 
@@ -31,14 +32,14 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
         GPU_CHECK(my_tag.is_standard());
         GPU_CHECK(!my_tag.is_user());
-        GPU_CHECK(my_tag.is_particle());
         GPU_CHECK(!my_tag.is_nuclide());
         GPU_CHECK(!my_tag.is_elemental());
+        GPU_CHECK(my_tag.is_particle());
         GPU_CHECK(my_tag.get_version() == 0b00000);
         GPU_CHECK(my_tag.get_particle_index() == nautilus::entity_tag::names::positron);
         GPU_CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::electron);
 
-        GPU_CHECK_FINAL(15);
+        GPU_CHECK_FINAL(16);
     }
 
     SECTION("nuclide tag (elemental)")
@@ -49,8 +50,8 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
         GPU_CHECK(my_tag.is_standard());
         GPU_CHECK(!my_tag.is_user());
-        GPU_CHECK(my_tag.is_elemental());
         GPU_CHECK(!my_tag.is_nuclide());
+        GPU_CHECK(my_tag.is_elemental());
         GPU_CHECK(!my_tag.is_particle());
         GPU_CHECK(my_tag.get_version() == 0b00000);
         GPU_CHECK(my_tag.get_atomic_number() == 1);
