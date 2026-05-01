@@ -125,7 +125,7 @@ customers who already use this format.
 The conversion routines available for this format are
 
 - ``from_NDI_FPID`` that takes an FPID and returns an ``EntityTag``
-- ``to_NDI_FPID)`` that takes an ``EntityTag`` and a table ID, then returns an FPID
+- ``to_NDI_FPID`` that takes an ``EntityTag`` and a table ID, then returns an FPID
 
   - Unlike the SZA, this format explicitly includes a table ID, so the ``table_id`` argument is
     required.
