@@ -28,6 +28,7 @@ TEST_CASE("EntityTag", "[entity_tag]")
         CHECK(!my_tag.is_user());
 
         CHECK(!my_tag.is_nuclide());
+        CHECK(!my_tag.is_elemental());
         CHECK(my_tag.is_particle());
 
         CHECK(my_tag.get_version() == 0b00000);
