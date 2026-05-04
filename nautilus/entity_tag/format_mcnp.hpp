@@ -69,9 +69,10 @@ inline EntityTag from_MCNP_partial_zaid(const int partial_zaid)
     //    we know A will be greater than 400 (300 + m * 100 + A, with m >= 1 and A >= 1)
     if (A > 400) {
         // Approximate A = f(Z)
+        // -- Only used to derive a value for m.  f(Z) must be within +/-50 to compute the correct
+        //    value of m (and therefore the correct value of A that users will see).
         // -- Based on fitting hundreds of isotopes (across elements 1 - 118) found on Wikipedia.
-        // -- Accurate to within +/- 10 for all isotopes tested.  The rounding strategy below
-        //    requires that it be strictly within +/- 50 for all isotopes.
+        //    Accurate to within +/- 10 for all isotopes tested.
         // -- Conveniently, the cubic fit always gives non-negative values for A and for N = A - Z
         //    (not sure if that's important, but it's nice to have).
         auto f = [](const int Z) {
