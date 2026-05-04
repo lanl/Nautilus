@@ -25,9 +25,12 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
 {
     if (tag.is_nuclide()) {
         // Get the values needed to assemble the partial zaid
+        auto m = tag.get_metastable_index();
+        if (m > 4) { // MCNP partial zaid does not support m > 4
+            return invalid_mcnp_partial_zaid;
+        }
         const auto Z = tag.get_atomic_number();
         const auto A = tag.get_atomic_mass_number();
-        auto m = tag.get_metastable_index();
         if ((Z == 95) && (A == 242)) {
             // Am-242 swaps the m values for the ground state and the first metastable state
             if (m == 0) {
@@ -38,9 +41,6 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
         }
         // assemble the value
         auto partial_zaid = Z * 1000 + A;
-        if (m > 4) { // MCNP partial zaid does not support m > 4
-            return invalid_mcnp_partial_zaid;
-        }
         if (m != 0) {
             partial_zaid += 300 + m * 100;
         }
