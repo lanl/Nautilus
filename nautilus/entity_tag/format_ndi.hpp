@@ -289,6 +289,9 @@ inline std::string to_NDI_short_string(EntityTag tag)
 {
     if (tag.is_nuclide()) {
         const auto Z = tag.get_atomic_number();
+        if ((Z == 0) || (Z > names::Nuclides::count)) {
+            return invalid_ndi_short_string;
+        }
         const auto A = tag.get_atomic_mass_number();
         // Short string doesn't support excited states
         if ((Z == 95) && (A == 242)) {
@@ -312,9 +315,6 @@ inline std::string to_NDI_short_string(EntityTag tag)
             return "a";
         }
         // fallthrough to "standard" case
-        if ((Z == 0) || (Z > names::Nuclides::count)) {
-            return invalid_ndi_short_string;
-        }
         std::string result(names::Nuclides::get_symbol(Z));
         result[0] = to_lower(result[0]);
         result.append(std::to_string(A));
