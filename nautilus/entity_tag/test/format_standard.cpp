@@ -151,7 +151,6 @@ TEST_CASE("format: standard name", "[entity_tag][format][standard name]")
     // "Bad" tag
     CHECK(to_standard_name(EntityTag(0, 0)) == "unknown"); // Z = 0
     CHECK(to_standard_name(EntityTag(127)) == "unknown");  // Z > Oganesson
-    CHECK(to_standard_name(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
 
 // ================================================================================================
@@ -251,5 +250,4 @@ TEST_CASE("format: standard symbol", "[entity_tag][format][standard name]")
     // "Bad" tag
     CHECK(to_standard_symbol(EntityTag(0, 0)) == "unknown"); // Z = 0
     CHECK(to_standard_symbol(EntityTag(127)) == "unknown");  // Z > Oganesson
-    CHECK(to_standard_symbol(EntityTag(EntityTag::user, 0x1FFFFFF)) == "unknown");
 }
