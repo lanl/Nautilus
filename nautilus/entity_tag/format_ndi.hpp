@@ -1,3 +1,10 @@
+/* conversions between EntityTag and NDI formats
+
+LANL's NDI code uses multiple formats to represent nuclides and particles.  This file contains
+routines to bidirectionally convert between each format and Entity Tag.  The supported formats are
+SZA, FPID, zaid, and short string.
+*/
+
 #ifndef NAUTILUS_FORMAT_NDI_HPP
 #define NAUTILUS_FORMAT_NDI_HPP
 

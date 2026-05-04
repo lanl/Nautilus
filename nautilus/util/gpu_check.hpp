@@ -1,3 +1,11 @@
+/* framework for testing on GPUs
+
+The Catch2 macros (as of spring 2026) don't work correctly on GPUs.  This provides a framework
+where a single GPU kernel can run up to 64 checks, and then a comparison after the kernel completes
+verifies whether or not all tests passes.  The limit of 64 checks is so that the final state can
+indicate which tests failed by representing them as binary flags within a 64-bit integer.
+*/
+
 #include <catch2/catch_test_macros.hpp>
 
 #include <Kokkos_Core.hpp>

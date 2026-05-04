@@ -1,3 +1,10 @@
+/* conversions between EntityTag and the IC chemsym format
+
+LANL's ASC IC codes tend to use a format called the "chemsym", which is closely related to the
+standard atomic symbol but with historical quirks.  These routines can convert bidirectionally
+between IC chemsym and EntityTag.
+*/
+
 #ifndef NAUTILUS_FORMAT_IC_HPP
 #define NAUTILUS_FORMAT_IC_HPP
 

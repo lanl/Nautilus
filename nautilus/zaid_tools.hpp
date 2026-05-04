@@ -1,3 +1,13 @@
+/* zaid tools
+
+A set of operations to process zaids, both nuclide/particle zaids and reaction zaids.
+
+**WARNING**
+This code was written before the work of clarifying all the different identifier formats was
+complete, and so the names used here are not always consistent with the detailed documentation for
+EntityTag.
+*/
+
 #ifndef NAUTILUS_ZAIDTOOLS_HPP
 #define NAUTILUS_ZAIDTOOLS_HPP
 

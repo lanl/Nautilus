@@ -1,3 +1,9 @@
+/* tools for string processing
+
+Some routines for processing strings.  Some are custom applications needed by Nautilus, others are
+GPU-portable variations of standard routines.
+*/
+
 #ifndef NAUTILUS_STRINGPROCESSING_HPP
 #define NAUTILUS_STRINGPROCESSING_HPP
 

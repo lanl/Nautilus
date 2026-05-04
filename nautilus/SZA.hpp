@@ -1,3 +1,8 @@
+/* the SZA class
+
+A simple class to track the identity of a nuclide by it's SZA value.
+*/
+
 #ifndef NAUTILUS_SZA_HPP
 #define NAUTILUS_SZA_HPP
 

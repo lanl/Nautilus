@@ -1,3 +1,10 @@
+/* collections of identifiers for a given nuclide or particle
+
+Used to store multiple variants of a name (e.g., regional spellings, etc).  Not part of the public
+interface, but an internal detail of Nautilus.  No backwards compatibility is promised for this
+class.
+*/
+
 #ifndef NAUTILUS_IDENTIFIERS_HPP
 #define NAUTILUS_IDENTIFIERS_HPP
 

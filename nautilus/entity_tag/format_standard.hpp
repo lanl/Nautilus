@@ -1,3 +1,10 @@
+/* conversions between EntityTag and standard formats
+
+Nuclides and particles have "standard" names and symbols, and this file contains routines to
+bidirectionally convert between each format and EntityTag.  Supports variations on each standard
+(e.g., regional spellings of element names, etc).
+*/
+
 #ifndef NAUTILUS_FORMAT_STANDARD_HPP
 #define NAUTILUS_FORMAT_STANDARD_HPP
 

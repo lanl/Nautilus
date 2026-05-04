@@ -1,3 +1,9 @@
+/* the BitSegment class
+
+A utility class to manage a range of bits within a larger data type.  This is used by EntityTag to
+pack multiple data values into a single integer.
+*/
+
 #ifndef NAUTILUS_BITSEGMENT_HPP
 #define NAUTILUS_BITSEGMENT_HPP
 

@@ -1,3 +1,9 @@
+/* dictionaries of standard symbols and names for nuclides and particles
+
+Provides a way to look up symbols and names, so that nothing gets hard-coded in other parts of
+Nautilus.
+*/
+
 #ifndef NAUTILUS_NAMES_HPP
 #define NAUTILUS_NAMES_HPP
 

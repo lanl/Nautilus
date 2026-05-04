@@ -1,3 +1,10 @@
+/* conversions between EntityTag and MCNP formats
+
+LANL's MCNP code uses multiple formats to represent nuclides and particles.  This file contains
+routines to bidirectionally convert between each format and Entity Tag.  The supported formats are
+partial zaid, full zaid, and particle symbol.
+*/
+
 #ifndef NAUTILUS_FORMAT_MCNP_HPP
 #define NAUTILUS_FORMAT_MCNP_HPP
 
