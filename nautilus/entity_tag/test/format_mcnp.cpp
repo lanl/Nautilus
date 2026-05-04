@@ -347,6 +347,7 @@ TEST_CASE("format: MCNP particle symbol", "[entity_tag][format][MCNP]")
     CHECK(to_MCNP_particle_symbol(EntityTag(negative_pion)) == '*');
     CHECK((from_MCNP_particle_symbol('?') == EntityTag(negative_kaon)));
     CHECK(to_MCNP_particle_symbol(EntityTag(negative_kaon)) == '?');
+    CHECK((from_MCNP_particle_symbol('R') == EntityTag(EntityTag::unknown)));
 }
 
 // ================================================================================================
