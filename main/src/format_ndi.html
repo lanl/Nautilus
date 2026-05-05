@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Format: NDI &mdash; Nautilus  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Format: MCNP" href="format_mcnp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Nautilus
+              <img src="../_static/Logo_Color_512x512_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building Nautilus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Basic Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Shared Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared_components.html">Shared Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Entity Tag</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="entity_tag.html">Entity Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_standard.html">Format: Standard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ic.html">Format: IC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_mcnp.html">Format: MCNP</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Format: NDI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ndi-sza">NDI SZA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ndi-fpid">NDI FPID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ndi-zaid">NDI Zaid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ndi-short-string">NDI Short String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-and-references">Notes and References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nautilus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Format: NDI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/format_ndi.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+
+  <section id="format-ndi">
+<h1>Format: NDI<a class="headerlink" href="#format-ndi" title="Link to this heading"></a></h1>
+<p>Nautilus provides bidirectional conversion between <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and several formats [1-6] defined
+by NDI (the Nuclear Data Interface library): SZA, FPID, zaid, and short string.</p>
+<p>NDI maintains a suite of “libraries” as the data sets they maintain evolve over time.  Each library
+consists of a number of “tables”.  The mapping from library to table is not unique: some libraries
+use multiple tables, and some tables appear in multiple libraries.  Some details of some NDI
+formats depend on which library/table is being used, so Nautilus allows the user to specify the
+library or table in order to control how the SZA, FPID, and zaid are generated.  The library name
+is a string with no standard format.  The table ID is a string of three digits followed by the
+letters “nm”; because the letters are always the same in this context, Nautilus can use the full
+table ID or simply the three-digit number part of the table ID.  In order to tell Nautilus which
+library or table you are using, Nautilus will accept the following inputs:</p>
+<ul class="simple">
+<li><p>Library name as a <code class="docutils literal notranslate"><span class="pre">std::string</span></code></p></li>
+<li><p>Table ID without the trailing letters as an <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
+<li><p>Table ID without the trailing letters as a <code class="docutils literal notranslate"><span class="pre">double</span></code></p>
+<ul>
+<li><p>The table ID often appears as a suffix following a period.  For that reason, some users have
+taken to identifying the table as a decimal equal to the integer form of the table ID divided
+by 1,000.</p></li>
+<li><p>Due to floating-point truncation issues, <em>this method is not recommended</em>.  It is provided to
+support customers already using such a convention.</p></li>
+</ul>
+</li>
+<li><p>Table ID as a <code class="docutils literal notranslate"><span class="pre">std::string</span></code>, either with or without the letter(s) at the end of the suffix</p>
+<ul>
+<li><p>In the string format, the numerical part of the table ID must be a three-digit value, padded
+with leading zeroes.</p></li>
+</ul>
+</li>
+</ul>
+<p>If no library or table ID is specified, Nautilus defaults to some preferred variant (usually the
+most-common and/or most-modern variant).</p>
+<section id="ndi-sza">
+<h2>NDI SZA<a class="headerlink" href="#ndi-sza" title="Link to this heading"></a></h2>
+<p>The NDI SZA is an integer format (datatype <code class="docutils literal notranslate"><span class="pre">int</span></code> in Nautilus) that primarily represents nuclides,
+but have special cases for a few particles.</p>
+<p>The conversion routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_NDI_SZA</span></code> that takes an SZA and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_NDI_SZA</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and optionally a library or table ID, then returns an
+SZA</p>
+<ul>
+<li><p>The possible ways to indicate a library or table ID are listed at the top of this page</p></li>
+</ul>
+</li>
+</ul>
+<p>Nuclides, by default, are encoded as integers according to</p>
+<div class="math notranslate nohighlight">
+\[\text{SZA} = S \times 1{,}000{,}000 + Z \times 1{,}000 + A,\]</div>
+<p>where <span class="math notranslate nohighlight">\(S\)</span> is the metastable state index, <span class="math notranslate nohighlight">\(Z\)</span> is the atomic number,
+and <span class="math notranslate nohighlight">\(A\)</span> is the atomic mass number.  This arrangement of <span class="math notranslate nohighlight">\(S\)</span>, <span class="math notranslate nohighlight">\(Z\)</span>, and <span class="math notranslate nohighlight">\(A\)</span>
+gives rise to the name “SZA”.</p>
+<p>As with many formats used at LANL, americium-242 has issues for historical reasons.</p>
+<ul class="simple">
+<li><p>The ground state and first metastable state are reversed, so:</p>
+<ul>
+<li><p>95242 should be the ground state but is actually the first metastable state.</p></li>
+<li><p>1095242 should be the first metastable state but is actually the ground state.</p></li>
+</ul>
+</li>
+<li><p>Certain libraries / tables used an older notation, where 95042 means the ground state</p>
+<ul>
+<li><p>When reading the NDI SZA, Nautilus will accept either 95042 or 1095242 to mean the ground state
+of americium-242.</p></li>
+<li><p>When generating the NDI SZA, Nautilus allows an optional argument to specify the library or
+table ID (see the top of this page for details).  Nautilus maintains a list of which libraries
+and table use the outdated 95042, and will generate the appropriate value (95042 or 1095242)
+depending on the specified library or table.  If no argument is provided, Nautilus will default
+to 1095242.</p></li>
+</ul>
+</li>
+</ul>
+<p>Additionally, the NDI SZA has issues with americium-244.  The ground and first metastable states
+are not reversed for americium-244, but it does have two different values for the first metastable
+state: 1095244 and 95044.  Similarly to americium-242, Nautilus maintains a list of the libraries
+and tables that use the outdated 95044 in order to translate an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> into an SZA, but will
+default to 1095244 if no library or table identifier is provided.  When translating from an SZA to
+an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code>, Nautilus will accept either 1095244 or 95044.</p>
+<p>The libraries and tables that use the outdated values (95042 and 95044) are listed in the table
+below.  Some libraries and tables have both the outdated value and the new value for one or both of
+the nuclides in question.  Nautilus only generates the outdated value if that is the <em>only</em> value
+available in the library or table.  Any libraries or tables not listed here are assumed to use the
+values 1095242 and 1095244.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NDI library</p></th>
+<th class="head"><p>table ID</p></th>
+<th class="head"><p>Am-242g SZA
+in NDI</p></th>
+<th class="head"><p>Am-242g SZA
+from Nautilus</p></th>
+<th class="head"><p>Am-244m1 SZA
+in NDI</p></th>
+<th class="head"><p>Am-244m1 SZA
+from Nautilus</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>endf7act</p></td>
+<td><p>700nm</p></td>
+<td><p>95042 and
+1095242</p></td>
+<td><p>1095242</p></td>
+<td><p>95044</p></td>
+<td><p>95044</p></td>
+</tr>
+<tr class="row-odd"><td><p>mendf70x</p></td>
+<td><p>701nm</p></td>
+<td><p>95042</p></td>
+<td><p>95042</p></td>
+<td><p>1095244</p></td>
+<td><p>1095244</p></td>
+</tr>
+<tr class="row-even"><td><p>mtmg01</p></td>
+<td><p>121nm - 135nm</p></td>
+<td><p>95042</p></td>
+<td><p>95042</p></td>
+<td><p>not present</p></td>
+<td><p>1095244</p></td>
+</tr>
+<tr class="row-odd"><td><p>mtmg01ex</p></td>
+<td><p>121nm - 135nm</p></td>
+<td><p>95042</p></td>
+<td><p>95042</p></td>
+<td><p>not present</p></td>
+<td><p>1095244</p></td>
+</tr>
+</tbody>
+</table>
+<p>The NDI SZA supports elementals by setting <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(A\)</span> both to zero.  For example,
+26000 is the iron elemental.</p>
+<p>The NDI SZA supports two particles:</p>
+<ul class="simple">
+<li><p>photons are encoded as 0</p></li>
+<li><p>neutrons are encoded as 1</p></li>
+</ul>
+<p>An <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> for a proton will be automatically translated to H-1 (SZA = 1001).  That makes
+this format slightly lossy: <code class="docutils literal notranslate"><span class="pre">EntityTag(proton)</span></code> becomes SZA 1001, and then converting back to
+<code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> gives the H-1 nuclide.</p>
+<p>User-defined entities are not supported by the NDI SZA format, so when translating from
+<code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> to SZA you get the same result as an unknown tag: <code class="docutils literal notranslate"><span class="pre">invalid_ndi_sza</span></code>, which has a
+value of -1.</p>
+</section>
+<section id="ndi-fpid">
+<h2>NDI FPID<a class="headerlink" href="#ndi-fpid" title="Link to this heading"></a></h2>
+<p>The FPID is the “floating-point identifier” format (datatype <code class="docutils literal notranslate"><span class="pre">double</span></code> in Nautilus).  This is not
+a “standard” NDI format, but is a variation that is used in some projects.  Due to floating-point
+truncation issues, <em>this format is not recommended</em>.  It is only provided in order to support
+customers who already use this format.</p>
+<p>The conversion routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_NDI_FPID</span></code> that takes an FPID and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_NDI_FPID</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and a table ID, then returns an FPID</p>
+<ul>
+<li><p>Unlike the SZA, this format explicitly includes a table ID, so the <code class="docutils literal notranslate"><span class="pre">table_id</span></code> argument is
+required.</p></li>
+<li><p>Because the mapping between libraries and table IDs is not unique, this format specifically
+requires a table ID and will not accept a library name.</p></li>
+<li><p>The table ID can be provided using the various formats described at the top of this page.</p></li>
+</ul>
+</li>
+</ul>
+<p>The NDI FPID is simply an extension of the SZA value with the numerical part of the table ID
+appended as a suffix.  So the format looks like SZA.###, and then this is translated into a
+floating-point value.  Otherwise, all details of the SZA apply to the FPID.</p>
+<p>Unknown or unsupported values will be translated to the special value <code class="docutils literal notranslate"><span class="pre">invalid_ndi_fpid</span></code>, which
+has the value of <code class="docutils literal notranslate"><span class="pre">std::numeric_limits&lt;double&gt;::max()</span></code>.</p>
+</section>
+<section id="ndi-zaid">
+<h2>NDI Zaid<a class="headerlink" href="#ndi-zaid" title="Link to this heading"></a></h2>
+<p>The zaid is the “most complete” identifier for NDI.  The name originally derives from <span class="math notranslate nohighlight">\(Z\)</span>,
+<span class="math notranslate nohighlight">\(A\)</span>, and table ID.  It is a string-based format (datatype <code class="docutils literal notranslate"><span class="pre">std::string</span></code> in Nautilus).  As
+with the FPID format, it is an extension of the SZA.  The zaid is “SZA.tableID”, where the table ID
+is the full five-character format.  Otherwise, all details of the SZA apply to the zaid.</p>
+<p>The conversion routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_NDI_zaid</span></code> that takes an FPID and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_NDI_zaid</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and a table ID, then returns a zaid</p>
+<ul>
+<li><p>Unlike the SZA, this format explicitly includes a table ID, so the <code class="docutils literal notranslate"><span class="pre">table_id</span></code> argument is
+required.</p></li>
+<li><p>Because the mapping between libraries and table IDs is not unique, this format specifically
+requires a table ID and will not accept a library name.</p></li>
+<li><p>The table ID can be provided using the various formats described at the top of this page.
+Nautilus can infer the trailing characters if a numerical format is used.</p></li>
+</ul>
+</li>
+</ul>
+<p>Unknown or unsupported values will be translated to the special value <code class="docutils literal notranslate"><span class="pre">invalid_ndi_zaid</span></code>, which
+has the value of “unknown”.</p>
+</section>
+<section id="ndi-short-string">
+<h2>NDI Short String<a class="headerlink" href="#ndi-short-string" title="Link to this heading"></a></h2>
+<p>The NDI short string is a compact string-based notation used in NDI, especially for things like the
+names of reactions.  In Nautilus, it uses the datatype <code class="docutils literal notranslate"><span class="pre">std::string</span></code>.  It is closely related to
+the short standard name and the IC chemsym formats.</p>
+<p>The conversion routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_NDI_short_string</span></code> that takes a short string and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_NDI_short_string</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and returns a short string</p>
+<ul>
+<li><p>Unlike the SZA, FPID, and zaid formats, the short string does not depend on the library or
+table, so it does not accept a library or table ID argument</p></li>
+</ul>
+</li>
+</ul>
+<p>Nuclides mostly are the IUPAC atomic symbol (in all lowercase letters) followed by the atomic mass
+number.  So, for example: “w184” or “si28”.</p>
+<p>This format does not permit any metastable state notation, so an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> with a
+non-ground-state nuclide will return the invalid value.  The exception is Am-242.  As with other
+NDI formats, Am-242g and Am-242m1 are swapped.  Therefore an NDI short string of “am242” refers to
+Am-242m1, and Am-242g cannot be represented as an NDI short string.</p>
+<p>A few nuclides have special symbols:</p>
+<ul class="simple">
+<li><p>H-1 is represented as “p”</p></li>
+<li><p>H-2 is represented as “d”</p></li>
+<li><p>H-3 is represented as “t”</p></li>
+<li><p>He-4 is represented as “a”</p></li>
+</ul>
+<p>Nautilus will accept “h1”, “h2”, “h3”, and “he4” on input, but generates the special symbols listed
+here.</p>
+<p>The NDI short string format does not support elementals, so those will map to the invalid value.</p>
+<p>Only two particles are supported by the NDI short string format</p>
+<ul class="simple">
+<li><p>photons are represented as either “g” or “g0”</p>
+<ul>
+<li><p>Nautilus will generate “g” but will also accept “g0”</p></li>
+</ul>
+</li>
+<li><p>neutrons are represented as “n”</p>
+<ul>
+<li><p>because the NDI short string does not support elementals, there is no ambiguity between a
+neutron and a nitrogen elemental</p></li>
+</ul>
+</li>
+</ul>
+<p>An <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> for a proton will be automatically translated to H-1 (short string = “p”).  That
+makes this format slightly lossy: <code class="docutils literal notranslate"><span class="pre">EntityTag(proton)</span></code> becomes short string “p”, and then
+converting back to <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> gives the H-1 nuclide.</p>
+<p>User-defined entities are not supported by the NDI short string format, so they will generate the
+invalid value.</p>
+<p>The invalid short string is given by <code class="docutils literal notranslate"><span class="pre">invalid_ndi_short_string</span></code>, which has the value “?”.</p>
+</section>
+<section id="notes-and-references">
+<h2>Notes and References<a class="headerlink" href="#notes-and-references" title="Link to this heading"></a></h2>
+<p>TODO: I still need to verify where/how to cite which documents.</p>
+<p>[1]: “NDI Reference Manual 2.0.11”
+(<a class="reference external" href="https://xweb.lanl.gov/projects/data/nuclear/ndi/pdfs/NDIrefman2.0.11.pdf">https://xweb.lanl.gov/projects/data/nuclear/ndi/pdfs/NDIrefman2.0.11.pdf</a>)</p>
+<p>[2]: “Production-Depletion Chain Data Sets for MENDF71X”; Lee; Los Alamos National Laboratory
+memorandum XCP-5:12-033.</p>
+<p>[3]: “Production-Depletion Chain Data Sets for ENDF7ACT”; Lee; Los Alamos National Laboratory
+memorandum XCP-5:11-020.</p>
+<p>[4]: “Production-Depletion Chain Data Sets for MENDF70X”; Lee; Los Alamos National Laboratory
+memorandum XCP-5:11-037.</p>
+<p>[5]: “ENDF70: A Continuous-Energy MCNP Neutron Data Library Based on ENDF/B-VII.0”; Trellue,
+Little, White, MacFarlane, Kahler; Los Alamos National Laboratory technical report LA-UR-08-2000.</p>
+<p>[6]: “Release of ENDF/B-VIII.0-Based ACE Data Files”; Conlin, Haeck, Neudecker, Parsons, White;
+Los Alamos National Laboratory technical report LA-UR-18-24034.</p>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="format_mcnp.html" class="btn btn-neutral float-left" title="Format: MCNP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Triad National Security, LLC. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v1.0.1.0/index.html">v1.0.1.0</a></dd>
+      <dd><a href="../../v1.0.1.1/index.html">v1.0.1.1</a></dd>
+      <dd><a href="../../v1.0.1.2/index.html">v1.0.1.2</a></dd>
+      <dd><a href="../../v1.0.1.3/index.html">v1.0.1.3</a></dd>
+      <dd><a href="../../v1.0.1.4/index.html">v1.0.1.4</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="format_ndi.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

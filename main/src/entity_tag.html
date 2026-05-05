@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entity Tag &mdash; Nautilus  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Format: Standard" href="format_standard.html" />
+    <link rel="prev" title="Shared Components" href="shared_components.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Nautilus
+              <img src="../_static/Logo_Color_512x512_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building Nautilus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Basic Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Shared Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared_components.html">Shared Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Entity Tag</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Entity Tag</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-features">Core Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unknown-entities">Unknown Entities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standard-entities">Standard Entities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#particle-entities">Particle Entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#elemental-entities">Elemental Entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nuclide-entities">Nuclide Entities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#user-defined-entities">User-Defined Entities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="format_standard.html">Format: Standard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ic.html">Format: IC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_mcnp.html">Format: MCNP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ndi.html">Format: NDI</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nautilus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Entity Tag</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/entity_tag.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+
+  <section id="entity-tag">
+<h1>Entity Tag<a class="headerlink" href="#entity-tag" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> class provides an identifier for atomic nuclei and particles.  Nautilus provides
+a number of translators to bidirectionally convert between <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and other formats commonly
+in use.  The primary advantage that <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> provides beyond what can be found in other
+formats is a versioning code attached to the identifier, allowing the <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> format to
+evolve to correct mistakes and to expand or change the features available.  Most identifiers that
+have been in use for an extended period of time suffer from a number of “quirks” that have
+accumulated over time for various reasons and cannot be completely eliminated due to the need to
+preserve consistency and compatibility.</p>
+<figure class="align-default" id="id1">
+<img alt="XKCD comic number 927, &quot;Standards&quot;" src="../_images/xkcd927standards.png" />
+<figcaption>
+<p><span class="caption-text">XKCD comic number 927, <a class="reference external" href="https://xkcd.com/927">https://xkcd.com/927</a>, Creative Commons Attribution-NonCommerical 2.5
+License</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The objective for Nautilus’s <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> is not to provide a new “super-format” that supports
+every possible use-case and replaces all similar formats in all codes.  The primary value of
+<code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> will be in its ability to translate between multiple formats in a consistent way, and
+to parse existing formats in a way that automatically corrects for all of their historical quirks.
+If customers are interested in using <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> as their new internal representation, the
+Nautilus team will be pleased to continue supporting them.</p>
+<section id="core-features">
+<h2>Core Features<a class="headerlink" href="#core-features" title="Link to this heading"></a></h2>
+<p>An <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> can encode three different kinds of entities:</p>
+<ul class="simple">
+<li><p>an unknown entity</p></li>
+<li><p>a standard entity</p></li>
+<li><p>a user-defined entity</p></li>
+</ul>
+<p>Standard entities further break down into three categories:</p>
+<ul class="simple">
+<li><p>particles</p></li>
+<li><p>elementals</p></li>
+<li><p>nuclides</p></li>
+</ul>
+<p>All instances of <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> have the following accessors:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">current_version()</span></code> is a static function that returns the most-recent version of <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code>
+available (currently 0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_version()</span></code> returns the version of this instance of <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_unknown()</span></code> returns true for unknown entities and false otherwise</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_standard()</span></code> returns true for standard entities and false otherwise</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_user()</span></code> returns true for user-defined entities and false otherwise</p></li>
+</ul>
+<p>All instances of <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> also have a family of <code class="docutils literal notranslate"><span class="pre">set()</span></code> methods with the same arguments and
+behavior as the various constructors discussed below.</p>
+<p>Comparison operators are also available: <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>.  The
+ordering implied by the inequality operators is</p>
+<ul class="simple">
+<li><p>particles (ordering between particles unspecified, but will be consistent for a given
+version of <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code>)</p></li>
+<li><p>elementals</p></li>
+<li><p>nuclides, sorted by atomic number (most-significant), then atomic mass number, then metastable
+state index (least-significant)</p></li>
+<li><p>user-defined entities (ordering depends on user data)</p></li>
+<li><p>unknown entities last</p></li>
+</ul>
+</section>
+<section id="unknown-entities">
+<h2>Unknown Entities<a class="headerlink" href="#unknown-entities" title="Link to this heading"></a></h2>
+<p>An “unknown” entity indicates that the <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> was not initialized or that the translation
+routine was unable to correctly map from another format into the <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> format.</p>
+<p>To build an unknown entity, either call the default constructor (<code class="docutils literal notranslate"><span class="pre">EntityTag()</span></code>) or the
+explicit “unknown” constructor (<code class="docutils literal notranslate"><span class="pre">EntityTag(EntityTag::unknown)</span></code>).</p>
+</section>
+<section id="standard-entities">
+<h2>Standard Entities<a class="headerlink" href="#standard-entities" title="Link to this heading"></a></h2>
+<p>Standard entities include particles, elementals, and nuclides.  To differentiate, the following
+accessors are available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_particle()</span></code> will return true for particles; false for elementals, nuclides, and
+non-standard instances</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_elemental()</span></code> will return true for elementals; false for particles, nuclides, and
+non-standard instances</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_nuclide()</span></code> will return true for nuclides; false for particles, elementals, and
+non-standard instances</p></li>
+</ul>
+<section id="particle-entities">
+<h3>Particle Entities<a class="headerlink" href="#particle-entities" title="Link to this heading"></a></h3>
+<p>The only additional accessor available for particles is <code class="docutils literal notranslate"><span class="pre">get_particle_index()</span></code>, which will assert
+that the entity is a particle and then return an index for the particle.  The particle index is not
+intended to encode a specific meaning.  Instead, Nautilus defines a number of compile-time
+constants in <code class="docutils literal notranslate"><span class="pre">nautilus/entity_tag/names.hpp</span></code> for the various particles known to Nautilus.  For
+example, to see if a particle is a muon would be <code class="docutils literal notranslate"><span class="pre">entity.get_particle_index()</span> <span class="pre">==</span> <span class="pre">names::muon</span></code>.
+Be aware that the specific values for these compile-time constants are not meaningful and could
+change.</p>
+<p>To construct a particle tag use the constructor <code class="docutils literal notranslate"><span class="pre">EntityTag(particle_index)</span></code>, where the particle
+index should be one of the compile-time constants from <code class="docutils literal notranslate"><span class="pre">nautilus/entity_tag/names.hpp</span></code>.</p>
+</section>
+<section id="elemental-entities">
+<h3>Elemental Entities<a class="headerlink" href="#elemental-entities" title="Link to this heading"></a></h3>
+<p>Elementals only have a single property: the atomic number.  This can be queried by either
+<code class="docutils literal notranslate"><span class="pre">get_atomic_number()</span></code> or <code class="docutils literal notranslate"><span class="pre">get_Z()</span></code>.  To construct an elemental tag, use the constructor
+<code class="docutils literal notranslate"><span class="pre">EntityTag(atomic_number)</span></code>.</p>
+</section>
+<section id="nuclide-entities">
+<h3>Nuclide Entities<a class="headerlink" href="#nuclide-entities" title="Link to this heading"></a></h3>
+<p>In order to query the properties of nuclei, the following accessors are available.  All of them
+assert that the accessor is a valid query, providing a sanity check when building Nautilus in debug
+mode.  For example, <code class="docutils literal notranslate"><span class="pre">get_atomic_number()</span></code> is valid for both nuclides and elementals, while
+<code class="docutils literal notranslate"><span class="pre">get_atomic_mass_number()</span></code> is only valid for nuclides.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_atomic_number()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_Z()</span></code> return the atomic number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_atomic_mass_number()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_A()</span></code> return the atomic mass number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_neutron_number()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_N()</span></code> return the neutron number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_metastable_state()</span></code> returns the index of the excited state, with zero being the ground
+state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_ground()</span></code> indicates if the entity is in the ground state (true) or an excited state (false)</p></li>
+</ul>
+<p>A few notes regarding the metastable / excited state:</p>
+<ul class="simple">
+<li><p>The metastable state index does not have a recognized shorthand like <span class="math notranslate nohighlight">\(Z\)</span>, <span class="math notranslate nohighlight">\(N\)</span>, or
+<span class="math notranslate nohighlight">\(A\)</span>.  For example, NDI formats use the symbol <span class="math notranslate nohighlight">\(S\)</span> while MCNP formats use the symbol
+<span class="math notranslate nohighlight">\(m\)</span>.  For this reason, no shorthand accessor is provided in Nautilus.</p></li>
+<li><p>Because the metastable state is not well-defined, Nautilus cannot convert between different
+definitions of “metastable” or between metastable and excited state indices.  If the user sets a
+metastable state index, Nautilus will simply report back that same index, assuming that the user
+is ensuring that the definition of “metastable” is consistent between the formats.  If the user
+wants to use an excited state index it is up to the user to recall that they have defined the
+list of metastable states to be “all excited states”.</p></li>
+</ul>
+<p>To construct a nuclide tag, use the constructor <code class="docutils literal notranslate"><span class="pre">EntityTag(atomic_number,</span> <span class="pre">atomic_mass_number,</span>
+<span class="pre">metastable_index)</span></code>.  The metastable index can be left off, in which case it will default to the
+ground state (metastable index of zero).</p>
+</section>
+</section>
+<section id="user-defined-entities">
+<h2>User-Defined Entities<a class="headerlink" href="#user-defined-entities" title="Link to this heading"></a></h2>
+<p>A user-defined entity is simply space for users to add their own custom entities, defined according
+to their own needs.  Examples of this could be</p>
+<ul class="simple">
+<li><p>Some astrophysics codes define simplified thermonuclear reaction networks with “pseudo-materials”
+that are some useful distribution of elements and isotopes that provide a “good enough”
+approximation intermediate to a calculation.</p></li>
+<li><p>Some transport codes may need particles that Nautilus has not yet defined, including known
+particles that didn’t make the list or theoretical particles that have not yet been observed
+experimentally.</p></li>
+<li><p>The user may wish to duplicate one of the standard formats but also pack some “extra” information
+into a Nautilus <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> for bookkeeping purposes (such as “this is a proton, and we use the
+data from such-and-such source”).</p></li>
+</ul>
+<p>The only accessor for user-defined entities is <code class="docutils literal notranslate"><span class="pre">get_user_data()</span></code>, which returns the data that the
+user chose to encode into the <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code>.</p>
+<p>To construct a user-defined entity use the constructor <code class="docutils literal notranslate"><span class="pre">EntityTag(EntityTag::user,</span> <span class="pre">user_data)</span></code>,
+which builds a user-defined entity with the specified user data.  <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> encodes user data
+into 25 bits.  The value where all 25 bits are set to one is a special value that is reserved for
+Nautilus, so users should not attempt to set that value.  Invalid values will generate an error (if
+debugging is turned on) or silently do the wrong thing (if assertions are compiled out).</p>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="shared_components.html" class="btn btn-neutral float-left" title="Shared Components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="format_standard.html" class="btn btn-neutral float-right" title="Format: Standard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Triad National Security, LLC. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v1.0.1.0/index.html">v1.0.1.0</a></dd>
+      <dd><a href="../../v1.0.1.1/index.html">v1.0.1.1</a></dd>
+      <dd><a href="../../v1.0.1.2/index.html">v1.0.1.2</a></dd>
+      <dd><a href="../../v1.0.1.3/index.html">v1.0.1.3</a></dd>
+      <dd><a href="../../v1.0.1.4/index.html">v1.0.1.4</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="entity_tag.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
