@@ -135,8 +135,8 @@ inline EntityTag from_MCNP_full_zaid(const std::string_view sv)
 // ================================================================================================
 // MCNP particle symbol
 // -- Be aware that MCNP sometimes muddles the notation for particles relative to the PDG and
-//    "alternate" standards, so the names used here won't necessary align with the names in the
-//    MCNP manual.
+//    textook standards, so the names used here won't necessary align with the names in the MCNP
+//    manual.
 
 const char invalid_mcnp_particle_symbol = ' ';
 

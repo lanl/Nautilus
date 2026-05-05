@@ -36,8 +36,8 @@ Elementals are just the atomic symbol by itself, for example "C" for elemental c
 Particles return a symbol using Unicode to represent the particle symbol.  These symbols use glyphs
 not normally represented by ``std::string``, so there are a few important caveats
 
-- The "alternate" particle format [2] symbols cannot all be represented using Unicode, so the
-  symbol is always the PDG format [3] symbol.
+- The textbook particle format [2] symbols cannot all be represented using Unicode, so the symbol
+  is always the PDG format [3] symbol.
 - Because Unicode combining characters are necessary to represent some symbols, the length returned
   by ``std::string`` may not be the same as the number of characters printed by the string
 - Not all subscripts are available in Unicode, so there are some substitutions.  For example, the
@@ -65,7 +65,7 @@ Unlike with the standard symbol, the standard name has several variants[1][4].  
 ``to_standard_name`` accepts optional argments to specify the nuclide and/or particle variants.
 
 - allowed nuclide formats are "IUPAC", "American", "British", and "Canadian"; default is IUPAC
-- allowed particle formats are "PDG" and "alternate"; default is PDG
+- allowed particle formats are "PDG" and "textbook"; default is PDG
 
 The rules for nuclides is the same as for the standard symbol, except
 
@@ -93,10 +93,10 @@ Notes and References
 [1]: The official IUPAC names and symbols are recorded in various IUPAC documents, but a convenient
 summary table can be found at https://en.wikipedia.org/wiki/List_of_chemical_elements.
 
-[2]: The "alternate" format is used in a variety of sources.  One source that explains the notation
-is Claude Amsler's "Nuclear and Particle Physics" (2015); see especially page 10-9 and note the
-quark structures of the various particles and antiparticles.  Compare this to the Particle Data
-Group format [3], especially item 7 in section 8.4 of "Naming Scheme for Hadrons".
+[2]: The textbook format is used in a variety of sources.  One source that explains the notation is
+Claude Amsler's "Nuclear and Particle Physics" (2015); see especially page 10-9 and note the quark
+structures of the various particles and antiparticles.  Compare this to the Particle Data Group
+format [3], especially item 7 in section 8.4 of "Naming Scheme for Hadrons".
 
 [3]: The Particle Data Group defines the official standard names and symbols for  particles.  More
 information can be found at https://pdg.lbl.gov/2023/listings/contents_listings.html.  A document

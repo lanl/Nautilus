@@ -94,8 +94,8 @@ const std::string invalid_standard_symbol = "unknown";
 
 // For symbols:
 // -- nuclides only have a single standard
-// -- the symbols for the "alternate" particle convention cannot all be represented in Unicode, so
-//    you always get the PDG symbol
+// -- the symbols for the textbook particle convention cannot all be represented in Unicode, so you
+//    always get the PDG symbol
 inline std::string to_standard_symbol(const EntityTag tag)
 {
     if (tag.is_user()) {

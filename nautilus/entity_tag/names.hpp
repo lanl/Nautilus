@@ -220,7 +220,7 @@ public:
     static constexpr std::size_t count = 32;
     static constexpr particle_index_t not_found = count;
     // It's assumed that Standard(0) will be the default value.
-    enum class Standard : std::size_t { PDG, alternate };
+    enum class Standard : std::size_t { PDG, textbook };
 
 private:
     // This structure was chosen because global constexpr variables are not, in general, available
@@ -265,27 +265,27 @@ private:
             Particle("\u039B\u2070",        "neutral lambda baryon"),
             Particle("\u039B\u0304\u2070",  "neutral lambda antibaryon",
                                             "antiparticle of the neutral lambda baryon",
-                                            Standard::alternate),
+                                            Standard::textbook),
             Particle("\u03A3\u207A",        "positive sigma baryon"),
             Particle("\u03A3\u0304\u207B",  "negative sigma antibaryon",
                                             "antiparticle of the positive sigma baryon",
-                                            Standard::alternate),
+                                            Standard::textbook),
             Particle("\u03A3\u207B",        "negative sigma baryon"),
             Particle("\u03A3\u0304\u207A",  "positive sigma antibaryon",
                                             "antiparticle of the negative sigma baryon",
-                                            Standard::alternate),
+                                            Standard::textbook),
             Particle("\u039E\u2070",        "neutral xi baryon"),
             Particle("\u039E\u0304\u2070",  "neutral xi antibaryon",
                                             "antiparticle of the neutral xi baryon",
-                                            Standard::alternate),
+                                            Standard::textbook),
             Particle("\u039E\u207B",        "negative xi baryon"),
             Particle("\u039E\u0304\u207A",  "positive xi antibaryon",
                                             "antiparticle of the negative xi baryon",
-                                            Standard::alternate),
+                                            Standard::textbook),
             Particle("\u03A9\u207B",        "negative omega baryon"),
             Particle("\u03A9\u0304\u207A",  "positive omega antibaryon",
                                             "antiparticle of the negative omega baryon",
-                                            Standard::alternate),
+                                            Standard::textbook),
         };
         // clang-format on
         assert(index < particles.size());
@@ -303,7 +303,7 @@ public:
         }
         return not_found;
     }
-    // The "alternate" convention cannot be represented in Unicode, so there is no flag to select
+    // The textbook convention cannot be represented in Unicode, so there is no flag to select
     // different versions of the symbol.  You always get the PDG format.
     PORTABLE_FUNCTION static constexpr std::string_view get_symbol(const particle_index_t index)
     {

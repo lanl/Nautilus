@@ -44,41 +44,41 @@ TEST_CASE("particle names", "[names]")
     CHECK(f_pdg(negative_omega_baryon, "negative omega baryon"));
     CHECK(f_pdg(positive_omega_antibaryon, "positive omega antibaryon"));
 
-    auto f_alt = [](const particle_index_t index, const std::string_view name) {
-        return Particles::get_name(index, Particles::Standard::alternate) == name;
+    auto f_txt = [](const particle_index_t index, const std::string_view name) {
+        return Particles::get_name(index, Particles::Standard::textbook) == name;
     };
-    CHECK(f_alt(photon, "photon"));
-    CHECK(f_alt(electron, "electron"));
-    CHECK(f_alt(positron, "positron"));
-    CHECK(f_alt(electron_neutrino, "electron neutrino"));
-    CHECK(f_alt(electron_antineutrino, "electron antineutrino"));
-    CHECK(f_alt(muon, "muon"));
-    CHECK(f_alt(antimuon, "antimuon"));
-    CHECK(f_alt(muon_neutrino, "muon neutrino"));
-    CHECK(f_alt(muon_antineutrino, "muon antineutrino"));
-    CHECK(f_alt(neutral_pion, "neutral pion"));
-    CHECK(f_alt(positive_pion, "positive pion"));
-    CHECK(f_alt(negative_pion, "negative pion"));
-    CHECK(f_alt(short_kaon, "short kaon"));
-    CHECK(f_alt(long_kaon, "long kaon"));
-    CHECK(f_alt(positive_kaon, "positive kaon"));
-    CHECK(f_alt(negative_kaon, "negative kaon"));
-    CHECK(f_alt(neutron, "neutron"));
-    CHECK(f_alt(antineutron, "antineutron"));
-    CHECK(f_alt(proton, "proton"));
-    CHECK(f_alt(antiproton, "antiproton"));
-    CHECK(f_alt(neutral_lambda_baryon, "neutral lambda baryon"));
-    CHECK(f_alt(neutral_lambda_antibaryon, "antiparticle of the neutral lambda baryon"));
-    CHECK(f_alt(positive_sigma_baryon, "positive sigma baryon"));
-    CHECK(f_alt(negative_sigma_antibaryon, "antiparticle of the positive sigma baryon"));
-    CHECK(f_alt(negative_sigma_baryon, "negative sigma baryon"));
-    CHECK(f_alt(positive_sigma_antibaryon, "antiparticle of the negative sigma baryon"));
-    CHECK(f_alt(neutral_xi_baryon, "neutral xi baryon"));
-    CHECK(f_alt(neutral_xi_antibaryon, "antiparticle of the neutral xi baryon"));
-    CHECK(f_alt(negative_xi_baryon, "negative xi baryon"));
-    CHECK(f_alt(positive_xi_antibaryon, "antiparticle of the negative xi baryon"));
-    CHECK(f_alt(negative_omega_baryon, "negative omega baryon"));
-    CHECK(f_alt(positive_omega_antibaryon, "antiparticle of the negative omega baryon"));
+    CHECK(f_txt(photon, "photon"));
+    CHECK(f_txt(electron, "electron"));
+    CHECK(f_txt(positron, "positron"));
+    CHECK(f_txt(electron_neutrino, "electron neutrino"));
+    CHECK(f_txt(electron_antineutrino, "electron antineutrino"));
+    CHECK(f_txt(muon, "muon"));
+    CHECK(f_txt(antimuon, "antimuon"));
+    CHECK(f_txt(muon_neutrino, "muon neutrino"));
+    CHECK(f_txt(muon_antineutrino, "muon antineutrino"));
+    CHECK(f_txt(neutral_pion, "neutral pion"));
+    CHECK(f_txt(positive_pion, "positive pion"));
+    CHECK(f_txt(negative_pion, "negative pion"));
+    CHECK(f_txt(short_kaon, "short kaon"));
+    CHECK(f_txt(long_kaon, "long kaon"));
+    CHECK(f_txt(positive_kaon, "positive kaon"));
+    CHECK(f_txt(negative_kaon, "negative kaon"));
+    CHECK(f_txt(neutron, "neutron"));
+    CHECK(f_txt(antineutron, "antineutron"));
+    CHECK(f_txt(proton, "proton"));
+    CHECK(f_txt(antiproton, "antiproton"));
+    CHECK(f_txt(neutral_lambda_baryon, "neutral lambda baryon"));
+    CHECK(f_txt(neutral_lambda_antibaryon, "antiparticle of the neutral lambda baryon"));
+    CHECK(f_txt(positive_sigma_baryon, "positive sigma baryon"));
+    CHECK(f_txt(negative_sigma_antibaryon, "antiparticle of the positive sigma baryon"));
+    CHECK(f_txt(negative_sigma_baryon, "negative sigma baryon"));
+    CHECK(f_txt(positive_sigma_antibaryon, "antiparticle of the negative sigma baryon"));
+    CHECK(f_txt(neutral_xi_baryon, "neutral xi baryon"));
+    CHECK(f_txt(neutral_xi_antibaryon, "antiparticle of the neutral xi baryon"));
+    CHECK(f_txt(negative_xi_baryon, "negative xi baryon"));
+    CHECK(f_txt(positive_xi_antibaryon, "antiparticle of the negative xi baryon"));
+    CHECK(f_txt(negative_omega_baryon, "negative omega baryon"));
+    CHECK(f_txt(positive_omega_antibaryon, "antiparticle of the negative omega baryon"));
 }
 
 // ================================================================================================
@@ -87,7 +87,7 @@ TEST_CASE("particle symbols", "[names]")
 {
     using namespace nautilus::entity_tag::names;
 
-    // Symbols are not available for the "alternate" format.
+    // Symbols are not available for the textbook format.
     auto f_pdg = [](const particle_index_t index, const std::string_view name) {
         return Particles::get_symbol(index) == name;
     };
@@ -134,10 +134,10 @@ TEST_CASE("particle symbols", "[names]")
         max_size = std::max(size, max_size);
     }
     printf("length of longest string (byte count, not glyph count) = %zu\n", max_size);
-    printf("particle names (alternate):\n");
+    printf("particle names (textbook):\n");
     max_size = 0;
     for (std::size_t n = 0; n < Particles::count; ++n) {
-        const auto name = Particles::get_name(n, Particles::Standard::alternate);
+        const auto name = Particles::get_name(n, Particles::Standard::textbook);
         const auto size = name.size();
         printf("[%2zu]  (%2zu)  \"%s\"\n", n, size, name.data());
         max_size = std::max(size, max_size);

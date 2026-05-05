@@ -90,16 +90,16 @@ TEST_CASE("format: standard name", "[entity_tag][format][standard name]")
     CHECK((from_standard_name(default_nu_e) == nu_e));
     CHECK(to_standard_name(nu_e) == default_nu_e);
     CHECK(to_standard_name(nu_e, Particles::Standard::PDG) == default_nu_e);
-    CHECK(to_standard_name(nu_e, Particles::Standard::alternate) == default_nu_e);
+    CHECK(to_standard_name(nu_e, Particles::Standard::textbook) == default_nu_e);
 
     constexpr EntityTag aL0(nautilus::entity_tag::names::neutral_lambda_antibaryon);
     const std::string default_aL0 = "neutral lambda antibaryon";
-    const std::string alternate_aL0 = "antiparticle of the neutral lambda baryon";
+    const std::string textbook_aL0 = "antiparticle of the neutral lambda baryon";
     CHECK((from_standard_name(default_aL0) == aL0));
-    CHECK((from_standard_name(alternate_aL0) == aL0));
+    CHECK((from_standard_name(textbook_aL0) == aL0));
     CHECK(to_standard_name(aL0) == default_aL0);
     CHECK(to_standard_name(aL0, Particles::Standard::PDG) == default_aL0);
-    CHECK(to_standard_name(aL0, Particles::Standard::alternate) == alternate_aL0);
+    CHECK(to_standard_name(aL0, Particles::Standard::textbook) == textbook_aL0);
 
     // Distinction between hydrogen-1 (nuclide) and proton (particle)
     constexpr EntityTag proton(nautilus::entity_tag::names::proton);
@@ -124,7 +124,7 @@ TEST_CASE("format: standard name", "[entity_tag][format][standard name]")
     CHECK(to_standard_name(aOm_plus) == "positive omega antibaryon");
     CHECK(to_standard_name(aOm_plus, Particles::Standard::PDG) == "positive omega antibaryon");
     CHECK(
-        to_standard_name(aOm_plus, Particles::Standard::alternate) ==
+        to_standard_name(aOm_plus, Particles::Standard::textbook) ==
         "antiparticle of the negative omega baryon");
 
     // User tag
