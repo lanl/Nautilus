@@ -31,8 +31,7 @@ TEST_CASE("particle names on GPU", "[names][GPU]")
                     results_g(n) += 2;
                 }
                 if (my_strcmp(
-                        Particles::get_name(
-                            positive_xi_antibaryon, Particles::Standard::textbook),
+                        Particles::get_name(positive_xi_antibaryon, Particles::Standard::textbook),
                         "antiparticle of the negative xi baryon")) {
                     results_g(n) += 4;
                 }
