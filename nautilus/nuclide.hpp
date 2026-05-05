@@ -1,3 +1,10 @@
+/* the Nuclide and IndexedNuclide classes
+
+Classes used in multiple XCAP libraries to represent a nuclide.  The Nuclide class is the identity
+(SZA) and mass of the nuclide.  IndexedNuclide is a superset that adds an index for tracking
+nuclides within ordered containers.
+*/
+
 #ifndef NAUTILUS_NUCLIDE_HPP
 #define NAUTILUS_NUCLIDE_HPP
 
