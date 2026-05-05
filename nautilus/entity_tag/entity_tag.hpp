@@ -3,7 +3,7 @@
 An identifier for nuclides and particles.  Multiple fields are packed into a single integer to make
 a compact way of representing nuclides and particles, and appropriate methods are available to set
 or query information about the nuclide/particle represented by the tag.  There are also "user" tags
-available for users to have custom entities not currently represented in Nautlius.
+available for users to have custom entities not currently represented in Nautilus.
 */
 
 #ifndef NAUTILUS_ENTITYTAG_HPP
