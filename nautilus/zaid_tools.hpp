@@ -19,8 +19,7 @@ EntityTag.
 
 namespace nautilus {
 
-// This function is deprecated.  If you use the EntityTag machinery, you can construct many such
-// conversion routines.  This is left here for compatibility, but will be removed in the future.
+[[deprecated("Use to_NDI_SZA(from_NDI_short_string()) instead.")]]
 inline int chemsym_to_zaid(const std::string & s)
 {
     // The name of this function was chosen before we clarified various related formats.
