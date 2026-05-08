@@ -1,4 +1,4 @@
-export DEPLOYMENT_VERSION_CURRENT_DEFAULT="2026-01-07"
+export DEPLOYMENT_VERSION_CURRENT_DEFAULT="2026-03-03"
 export DEPLOYMENT_VERSION_DEFAULT="${DEPLOYMENT_VERSION_DEFAULT:-$DEPLOYMENT_VERSION_CURRENT_DEFAULT}"
 SCRIPT_PATH=${BASH_SOURCE[0]:-${(%):-%x}}
 PARENT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" &>/dev/null && pwd )"
@@ -42,18 +42,15 @@ else
     source "$KESSEL_DEPLOYMENT/activate.sh"
     clone-deployment "$KESSEL_WORKFLOW_DEPLOYMENT"
   fi
-  if [ -z "$_KESSEL_WORKFLOW_DEPLOYMENT" ] && [ -d "$KESSEL_WORKFLOW_DEPLOYMENT" ]; then
-    if [ "$(uname -s)" = "Darwin" ]; then
-      DEPLOY_OWNER=$(stat -f %u "$KESSEL_WORKFLOW_DEPLOYMENT")
-    else
-      DEPLOY_OWNER=$(stat -c %u "$KESSEL_WORKFLOW_DEPLOYMENT")
-    fi
-    if [ "$DEPLOY_OWNER" -ne "$(id -u)" ]; then
-      echo "ERROR: $KESSEL_WORKFLOW_DEPLOYMENT not owned by $USER!" >&2
-      return 1
-    fi
+  if [ ! -d "$KESSEL_WORKFLOW_DEPLOYMENT" ]; then
+    echo "ERROR: $KESSEL_WORKFLOW_DEPLOYMENT does not exist!" >&2
+    return 1
+  elif [ -z "$_KESSEL_WORKFLOW_DEPLOYMENT" ] && [ ! -O "$KESSEL_WORKFLOW_DEPLOYMENT" ]; then
+    echo "ERROR: $KESSEL_WORKFLOW_DEPLOYMENT not owned by $USER!" >&2
+    return 1
+  else
+    source "$KESSEL_WORKFLOW_DEPLOYMENT/activate.sh"
   fi
-  source "$KESSEL_WORKFLOW_DEPLOYMENT/activate.sh"
 fi
 
 unset _KESSEL_WORKFLOW_DEPLOYMENT
