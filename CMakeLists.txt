@@ -14,6 +14,19 @@ project(nautilus
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 ###################################################################################################
+# User-configurable options
+###################################################################################################
+
+option(NAUTILUS_BUILD_DOCUMENTATION "Build documentation"         OFF)
+option(NAUTILUS_BUILD_TESTS         "Build tests and examples"    ON)
+option(NAUTILUS_ENABLE_CLANG_FORMAT "Enable Clang-Format support" OFF)
+option(NAUTILUS_ENABLE_COVERAGE     "Enable Code-Coverage"        OFF)
+option(NAUTILUS_ENABLE_KOKKOS       "Enable Kokkos support"       OFF)
+option(NAUTILUS_ENABLE_LIBRARY      "Enable library build"        ON)
+set(NAUTILUS_WARNINGS "silent" CACHE STRING "Control compiler warnings: silent (no warnings), nonfatal (standard warnings), fatal (warnings promoted to errors)")
+set_property(CACHE NAUTILUS_WARNINGS PROPERTY STRINGS "fatal" "nonfatal" "silent")
+
+###################################################################################################
 # Formatting
 ###################################################################################################
 
@@ -51,15 +64,6 @@ endif()
 ###################################################################################################
 # Library configuration
 ###################################################################################################
-
-option(NAUTILUS_BUILD_DOCUMENTATION "Build documentation"         OFF)
-option(NAUTILUS_BUILD_TESTS         "Build tests and examples"    ON)
-option(NAUTILUS_ENABLE_CLANG_FORMAT "Enable Clang-Format support" OFF)
-option(NAUTILUS_ENABLE_COVERAGE     "Enable Code-Coverage"        OFF)
-option(NAUTILUS_ENABLE_KOKKOS       "Enable Kokkos support"       OFF)
-option(NAUTILUS_ENABLE_LIBRARY      "Enable library build"        ON)
-set(NAUTILUS_WARNINGS "silent" CACHE STRING "Control compiler warnings: silent (no warnings), nonfatal (standard warnings), fatal (warnings promoted to errors)")
-set_property(CACHE NAUTILUS_WARNINGS PROPERTY STRINGS "fatal" "nonfatal" "silent")
 
 if(NAUTILUS_ENABLE_LIBRARY)
     enable_language(CXX)
