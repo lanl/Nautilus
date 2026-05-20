@@ -123,7 +123,7 @@ if(NAUTILUS_ENABLE_LIBRARY)
 
     write_basic_package_version_file(
         "${PROJECT_NAME}-configVersion.cmake"
-        VERSION ${PROJECT_VERSION} COMPATIBILITY ExactVersion
+        VERSION ${PROJECT_VERSION} COMPATIBILITY SameMajorVersion
     )
 
     install(FILES
