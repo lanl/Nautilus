@@ -27,9 +27,7 @@ private:
     std::string_view symbol_;
     std::array<std::string_view, N> names_;
 
-#define ENUMERATION(E) typename E, std::enable_if_t<std::is_enum<E>::value> * = nullptr
-
-    template <ENUMERATION(E)>
+    template <typename E> requires std::is_enum_v<E>
     PORTABLE_FUNCTION constexpr void set(
         const std::string_view alternate_name, const E alt_standard)
     {
@@ -37,7 +35,7 @@ private:
         assert(alt_index < names_.size());
         names_[alt_index] = alternate_name;
     }
-    template <ENUMERATION(E)>
+    template <typename E> requires std::is_enum_v<E>
     PORTABLE_FUNCTION constexpr std::string_view get(const E alt_standard) const
     {
         const std::size_t alt_index = static_cast<std::size_t>(alt_standard);
@@ -55,7 +53,7 @@ public:
             name = standard_name;
         }
     }
-    template <ENUMERATION(E)>
+    template <typename E> requires std::is_enum_v<E>
     PORTABLE_FUNCTION constexpr Identifiers(
         const std::string_view symbol,
         const std::string_view standard_name,
@@ -65,7 +63,7 @@ public:
     {
         set(alternate_name, alt_standard);
     }
-    template <ENUMERATION(E)>
+    template <typename E> requires std::is_enum_v<E>
     PORTABLE_FUNCTION constexpr Identifiers(
         const std::string_view symbol,
         const std::string_view standard_name,
@@ -81,7 +79,7 @@ public:
     // Fetch
     PORTABLE_FUNCTION constexpr std::string_view get_symbol() const { return symbol_; }
     // It's assumed that E(0) will be the default value.
-    template <ENUMERATION(E)>
+    template <typename E> requires std::is_enum_v<E>
     PORTABLE_FUNCTION constexpr std::string_view get_name(const E standard = E(0)) const
     {
         return get(standard);
