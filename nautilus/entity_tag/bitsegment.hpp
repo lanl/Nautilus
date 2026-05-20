@@ -69,9 +69,9 @@ private:
 
 public:
     // Generate a mask for the bits in the segment
-    PORTABLE_FUNCTION static constexpr T mask() { return static_cast<T>(rmask() << RSKIP); }
+    [[nodiscard]] PORTABLE_FUNCTION static constexpr T mask() { return static_cast<T>(rmask() << RSKIP); }
     // Extract the value in the segment
-    PORTABLE_FUNCTION static constexpr T get(const T t)
+    [[nodiscard]] PORTABLE_FUNCTION static constexpr T get(const T t)
     {
         // Work in Storage instead of T because Storage is unsigned and that gets us logical
         // shift-right (fill with zero) instead of arithmetic shift-right (fill with high bit).

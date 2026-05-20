@@ -65,22 +65,22 @@ public:
     {}
 
     // Metastable state
-    PORTABLE_FUNCTION constexpr auto S() const { return sza_.S(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto S() const { return sza_.S(); }
 
     // Number of protons
-    PORTABLE_FUNCTION constexpr auto Z() const { return sza_.Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto Z() const { return sza_.Z(); }
 
     // Number of neutrons
-    PORTABLE_FUNCTION constexpr auto N() const { return A() - Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto N() const { return A() - Z(); }
 
     // Number of nucleons (protons + neutrons)
-    PORTABLE_FUNCTION constexpr auto A() const { return sza_.A(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto A() const { return sza_.A(); }
 
     // SZA
-    PORTABLE_FUNCTION constexpr auto sza() const { return sza_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto sza() const { return sza_; }
 
     // Mass
-    PORTABLE_FUNCTION constexpr auto mass() const { return mass_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto mass() const { return mass_; }
 
     // Equality
     PORTABLE_FUNCTION constexpr bool operator==(Nuclide<DataType> const & other) const
@@ -161,7 +161,7 @@ public:
     }
 
     // Accessor to get the index
-    PORTABLE_FUNCTION constexpr int index() const { return index_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int index() const { return index_; }
 
     // Comparison for the base class, to make comparisons easier for the derived classes
     PORTABLE_FUNCTION constexpr bool operator==(IndexedNuclide<DataType> const & other) const

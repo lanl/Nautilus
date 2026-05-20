@@ -200,14 +200,14 @@ public:
     // ____________________________________________________________________________________________
     // Generic accessors
 
-    PORTABLE_FUNCTION static constexpr auto current_version() { return CURRENT_VERSION; }
-    PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
+    [[nodiscard]] PORTABLE_FUNCTION static constexpr auto current_version() { return CURRENT_VERSION; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_version() const { return bs_version.get(tag_); }
 
     // The user interface exposes a three-state system: standard, user, or unknown, which are
     // mutually exclusive and cover the full range of possible tags.
-    PORTABLE_FUNCTION constexpr bool is_unknown() const { return tag_ == unknown_tag(); }
-    PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
-    PORTABLE_FUNCTION constexpr bool is_user() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_unknown() const { return tag_ == unknown_tag(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_standard() const { return bs_user.get(tag_) == STANDARD; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_user() const
     {
         // an "unknown" tag is encoded as a "user" tag with a special value, but is not itself
         // considered a "user" tag
@@ -219,18 +219,18 @@ public:
     }
 
     // subsets of standard tags
-    PORTABLE_FUNCTION constexpr bool is_particle() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_particle() const
     {
         return (is_standard() ? bs_nuclide.get(tag_) == PARTICLE : false);
     }
-    PORTABLE_FUNCTION constexpr bool is_nuclide() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_nuclide() const
     {
         if (is_standard()) {
             return (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) != elemental_A);
         }
         return false;
     }
-    PORTABLE_FUNCTION constexpr bool is_elemental() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
         if (is_standard()) {
             return (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) == elemental_A);
@@ -244,7 +244,7 @@ public:
     // Only for user tags.  For standard tags, the more-specific accessors are preferred, as there
     // may be translations between values the users sees and values actually stored in memory, or
     // the internal layout of the data block may be changed.
-    PORTABLE_FUNCTION constexpr auto get_user_data() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_user_data() const
     {
         assert(is_user());
         return bs_data.get(tag_);
@@ -253,34 +253,34 @@ public:
     // ____________________________________________________________________________________________
     // standard-nuclide-specific accessors
 
-    PORTABLE_FUNCTION constexpr auto get_Z() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
     {
         assert(is_nuclide() || is_elemental());
         return bs_Z.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
 
-    PORTABLE_FUNCTION constexpr auto get_A() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const
     {
         assert(is_nuclide());
         return bs_A.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return get_A(); }
 
-    PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
-    PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
 
-    PORTABLE_FUNCTION constexpr auto get_metastable_index() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
         assert(is_nuclide());
         return bs_S.get(tag_);
     }
-    PORTABLE_FUNCTION constexpr bool is_ground() const { return get_metastable_index() == 0; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_ground() const { return get_metastable_index() == 0; }
 
     // ____________________________________________________________________________________________
     // standard-particle-specific accessors
 
-    PORTABLE_FUNCTION constexpr auto get_particle_index() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         assert(is_particle());
         return names::particle_index_t(bs_pindex.get(tag_));

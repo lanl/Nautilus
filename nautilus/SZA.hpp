@@ -23,11 +23,11 @@ public:
     {}
 
     // accessors
-    PORTABLE_FUNCTION constexpr int S() const { return sza_ / s_shift; }
-    PORTABLE_FUNCTION constexpr int Z() const { return (sza_ % s_shift) / z_shift; }
-    PORTABLE_FUNCTION constexpr int A() const { return sza_ % z_shift; }
-    PORTABLE_FUNCTION constexpr int N() const { return A() - Z(); }
-    PORTABLE_FUNCTION constexpr explicit operator int() const { return sza_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int S() const { return sza_ / s_shift; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int Z() const { return (sza_ % s_shift) / z_shift; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int A() const { return sza_ % z_shift; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int N() const { return A() - Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr explicit operator int() const { return sza_; }
 
     // comparisons
     PORTABLE_FUNCTION constexpr bool operator==(const SZA & other) const

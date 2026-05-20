@@ -77,20 +77,20 @@ public:
     }
 
     // Fetch
-    PORTABLE_FUNCTION constexpr std::string_view get_symbol() const { return symbol_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr std::string_view get_symbol() const { return symbol_; }
     // It's assumed that E(0) will be the default value.
     template <typename E> requires std::is_enum_v<E>
-    PORTABLE_FUNCTION constexpr std::string_view get_name(const E standard = E(0)) const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr std::string_view get_name(const E standard = E(0)) const
     {
         return get(standard);
     }
 
     // Match
-    PORTABLE_FUNCTION constexpr bool match_symbol(const std::string_view symbol) const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool match_symbol(const std::string_view symbol) const
     {
         return symbol == symbol_;
     }
-    PORTABLE_FUNCTION constexpr bool match_name(const std::string_view name) const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool match_name(const std::string_view name) const
     {
         for (const auto & name0 : names_) {
             if (name0 == name) {
