@@ -34,7 +34,7 @@ Nautilus: Nuclear Application UTILities Under the Sea
 
 Nautilus is part of the Cross-Cutting Applications Project (XCAP) at Los Alamos National Laboratory
 (LANL).  It is a collection of tools to support atomic and nuclear simulation codes, written in
-C++17.  The goal is to provide useful pieces of code that can be shared by a variety of other
+C++20.  The goal is to provide useful pieces of code that can be shared by a variety of other
 codes.
 
 If you need support or have a feature request, the best way to reach out to the team is to `open a
