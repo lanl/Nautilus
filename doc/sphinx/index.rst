@@ -50,7 +50,7 @@ __ `repository issues`_
 .. _`Brendan Krueger`: bkkrueger@lanl.gov
 .. _`Diego Lonardoni`: lonardoni@lanl.gov
 
-The `current version`_ of Nautilus is 1.0.1.3.
+The `current version`_ of Nautilus is 1.1.0.0.
 
 .. _`current version`: src/versioning.html
 
