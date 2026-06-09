@@ -6,45 +6,6 @@
 #include <iostream>
 #include <string>
 
-TEST_CASE("chemsym to zaid", "[zaid_tools]")
-{
-    using nautilus::chemsym_to_zaid;
-    int const zaid_g = chemsym_to_zaid("g");
-    CHECK(zaid_g == 0);
-    int const zaid_n = chemsym_to_zaid("n");
-    CHECK(zaid_n == 1);
-    int const zaid_p = chemsym_to_zaid("p");
-    CHECK(zaid_p == 1001);
-    int const zaid_h1 = chemsym_to_zaid("h1");
-    CHECK(zaid_h1 == 1001);
-    int const zaid_d = chemsym_to_zaid("d");
-    CHECK(zaid_d == 1002);
-    int const zaid_h2 = chemsym_to_zaid("h2");
-    CHECK(zaid_h2 == 1002);
-    int const zaid_t = chemsym_to_zaid("t");
-    CHECK(zaid_t == 1003);
-    int const zaid_h3 = chemsym_to_zaid("h3");
-    CHECK(zaid_h3 == 1003);
-    int const zaid_he3 = chemsym_to_zaid("he3");
-    CHECK(zaid_he3 == 2003);
-    int const zaid_a = chemsym_to_zaid("a");
-    CHECK(zaid_a == 2004);
-    int const zaid_he4 = chemsym_to_zaid("he4");
-    CHECK(zaid_he4 == 2004);
-    int const zaid_li6 = chemsym_to_zaid("li6");
-    CHECK(zaid_li6 == 3006);
-    int const zaid_li7 = chemsym_to_zaid("li7");
-    CHECK(zaid_li7 == 3007);
-    int const zaid_c12 = chemsym_to_zaid("c12");
-    CHECK(zaid_c12 == 6012);
-    int const zaid_ni56 = chemsym_to_zaid("ni56");
-    CHECK(zaid_ni56 == 28056);
-    int const zaid_es253 = chemsym_to_zaid("es253");
-    CHECK(zaid_es253 == 99253);
-    int const zaid_og294 = chemsym_to_zaid("og294");
-    CHECK(zaid_og294 == 118294);
-}
-
 TEST_CASE("nuclide zaids from reaction zaid", "[zaid_tools]")
 {
     using nautilus::get_nuclide_zaids;

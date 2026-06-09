@@ -19,18 +19,6 @@ EntityTag.
 
 namespace nautilus {
 
-[[deprecated("Use to_NDI_SZA(from_NDI_short_string()) instead.")]]
-inline int chemsym_to_zaid(const std::string & s)
-{
-    // The name of this function was chosen before we clarified various related formats.
-    // - The input is not the IC chemsym, but actually the closely-related-but-still-distinct NDI
-    //   short string.
-    // - The output is not the NDI zaid (nor even the MCNP zaid), but actually the truncated format
-    //   of NDI SZA.
-    using namespace nautilus::entity_tag;
-    return to_NDI_SZA(from_NDI_short_string(s));
-}
-
 // The ``half_reaction_zaid_to_chemsym_list`` function accepts a string consisting of either the
 // products or reactants of a reaction, written in the format expected for NDI reaction zaids.  It
 // will parse the string and return a ``std::vector`` of strings in the chemsym format.  In
