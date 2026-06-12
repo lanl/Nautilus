@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Format: IC &mdash; Nautilus  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Format: MCNP" href="format_mcnp.html" />
+    <link rel="prev" title="Format: Standard" href="format_standard.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Nautilus
+              <img src="../_static/Logo_Color_512x512_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building Nautilus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Basic Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Shared Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared_components.html">Shared Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Entity Tag</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="entity_tag.html">Entity Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_standard.html">Format: Standard</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Format: IC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#notes-and-references">Notes and References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="format_mcnp.html">Format: MCNP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ndi.html">Format: NDI</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nautilus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Format: IC</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/format_ic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+
+  <section id="format-ic">
+<h1>Format: IC<a class="headerlink" href="#format-ic" title="Link to this heading"></a></h1>
+<p>Nautilus provides bidirectional conversion between <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and the IC chemsym format[1].
+This format comes from several codes in LANL’s ASC-IC (Advanced Simulation and Computing -
+Integrated Codes) program, and is related to IUPAC’s chemical symbol (see the short standard name).
+Nautilus uses <code class="docutils literal notranslate"><span class="pre">std::string</span></code> as the type for the IC chemsym format.</p>
+<p>To convert between <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and IC chemsym, Nautilus provides the following functions</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">to_IC_chemsym</span></code> accepts an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and returns a string with the IC chemsym</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_IC_chemsym</span></code> accepts a string with the IC chemsym and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+</ul>
+<p>Nuclides largely follow a variation of the standard IUPAC notation.  The default case is to encode
+nuclides with the atomic symbol in all lowercase, no hyphen (which is used in the short standard
+name format), the atomic number, and then a metastable state suffix.  The suffix can be</p>
+<ul class="simple">
+<li><p>no suffix: implies the ground state</p></li>
+<li><p>“g”: explicit indicates the ground state</p></li>
+<li><p>“mS”: indicates metastable state S</p></li>
+<li><p>“m” (without any number): indicates the first metastable state</p></li>
+</ul>
+<p>When generating the IC chemsym format, Nautilus will use no suffix for the ground state and will
+always include a number for the metastable state otherwise.</p>
+<p>For historical reasons, the IC chemsym format (like many formats used at LANL) has an issue with
+the americium-242 isotope:</p>
+<ul class="simple">
+<li><p>The ground state and first metastable state are reversed.</p>
+<ul>
+<li><p>“am242” would normally be the ground state, but is actually the first metastable state</p></li>
+<li><p>“am242m1” would normally be the first metastable state, but is actually the ground state</p></li>
+</ul>
+</li>
+<li><p>Due to the confusion between the two, each state has multiple notations</p>
+<ul>
+<li><p>The ground state can be indicated by “am242m1”, “am042”, and “am42”.  When generating the IC
+chemsym format, Nautilus will use “am242m1”.  When reading the IC chemsym format, Nautilus
+accepts all three.</p></li>
+<li><p>The first metastable state can be indicated by “am242” or “am242g”.  When generating the IC
+chemsym format, Nautilus will use “am242”.  When reading the IC chemsym format, Nautilus
+accepts either.</p></li>
+</ul>
+</li>
+</ul>
+<p>Elementals are encoded as just the atomic symbol in all lowercase.</p>
+<p>The IC chemsym format is primarily for elementals and nuclides, but does include a few particles:</p>
+<ul class="simple">
+<li><p>Photons (a.k.a., gamma particles) are encoded as either “g” or “g0”.  Nautilus accepts both, but
+will generate “g0”.</p></li>
+<li><p>Neutrons are encoded as “nt1” to avoid possible ambiguity with elemental nitrogen (“n”).</p></li>
+</ul>
+<p>The IC chemsym format does not have provisions for user-defined entities, so it will generate the
+same value as unknown entities: “unknown” (available as the variable <code class="docutils literal notranslate"><span class="pre">invalid_ic_chemsym</span></code>).</p>
+<section id="notes-and-references">
+<h2>Notes and References<a class="headerlink" href="#notes-and-references" title="Link to this heading"></a></h2>
+<p>[1]: The chemsym format is an unofficial format, but has become implicitly standardized based on
+usage in various code projects.  See, for example, the xRAGE Users Manual (Code Version 1.251103;
+Revised November 3, 2025; LA-CP-11-00643), particularly Chapter 24 “Isotopics” to see usage of the
+chemsym format.  Additional details of the format used in this document are derived from studying
+the source code for various software packages that use this format.</p>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="format_standard.html" class="btn btn-neutral float-left" title="Format: Standard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="format_mcnp.html" class="btn btn-neutral float-right" title="Format: MCNP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Triad National Security, LLC. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v1.0.1.0/index.html">v1.0.1.0</a></dd>
+      <dd><a href="../../v1.0.1.1/index.html">v1.0.1.1</a></dd>
+      <dd><a href="../../v1.0.1.2/index.html">v1.0.1.2</a></dd>
+      <dd><a href="../../v1.0.1.3/index.html">v1.0.1.3</a></dd>
+      <dd><a href="../../v1.0.1.4/index.html">v1.0.1.4</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="format_ic.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

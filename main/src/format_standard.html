@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Format: Standard &mdash; Nautilus  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Format: IC" href="format_ic.html" />
+    <link rel="prev" title="Entity Tag" href="entity_tag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Nautilus
+              <img src="../_static/Logo_Color_512x512_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building Nautilus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Basic Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Shared Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared_components.html">Shared Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Entity Tag</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="entity_tag.html">Entity Tag</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Format: Standard</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#standard-symbol">Standard Symbol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standard-name">Standard Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-and-references">Notes and References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="format_ic.html">Format: IC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_mcnp.html">Format: MCNP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ndi.html">Format: NDI</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nautilus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Format: Standard</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/format_standard.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+
+  <section id="format-standard">
+<h1>Format: Standard<a class="headerlink" href="#format-standard" title="Link to this heading"></a></h1>
+<p>The standard format provides bidirectional conversion between <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and the accepted
+standard names and symbols.</p>
+<section id="standard-symbol">
+<h2>Standard Symbol<a class="headerlink" href="#standard-symbol" title="Link to this heading"></a></h2>
+<p>The standard symbol is represented by a <code class="docutils literal notranslate"><span class="pre">std::string</span></code>.  The conversion functions are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_standard_symbol</span></code> accepts a string and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_standard_symbol</span></code> accepts an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and returns the standard symbol as a string</p></li>
+</ul>
+<p>Nuclides follow the standard IUPAC notation[1] and take the form “Xx-AAAmM”, where</p>
+<ul class="simple">
+<li><p>“Xx” is the IUPAC symbol (first letter capitalized, second letter lowercase)</p></li>
+<li><p>“AAA” is the atomic mass number</p></li>
+<li><p>“M” is the metastable state index (“mM” is left off for the ground state)</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">from_standard_symbol</span></code> function also accepts variant suffixes:</p>
+<ul class="simple">
+<li><p>no suffix implies the ground state</p></li>
+<li><p>a suffix of “g” explicitly indicates the ground state</p></li>
+<li><p>a suffix of “m” without any value for “&lt;M&gt;” implies the first metastable state, equivalent to
+“m1”</p></li>
+</ul>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>“Ni-56g” (ground state of nickel-56)</p></li>
+<li><p>“C-12” (ground state of carbon-12)</p></li>
+<li><p>“Ta-180m1” (first metastable state of tantalum-180)</p></li>
+</ul>
+<p>Elementals are just the atomic symbol by itself, for example “C” for elemental carbon.</p>
+<p>Particles return a symbol using Unicode to represent the particle symbol.  These symbols use glyphs
+not normally represented by <code class="docutils literal notranslate"><span class="pre">std::string</span></code>, so there are a few important caveats</p>
+<ul class="simple">
+<li><p>The textbook particle format [2] symbols cannot all be represented using Unicode, so the symbol
+is always the PDG format [3] symbol.</p></li>
+<li><p>Because Unicode combining characters are necessary to represent some symbols, the length returned
+by <code class="docutils literal notranslate"><span class="pre">std::string</span></code> may not be the same as the number of characters printed by the string</p></li>
+<li><p>Not all subscripts are available in Unicode, so there are some substitutions.  For example, the
+symbol for a muon neutrino is a nu with a subscript mu, but no subscript mu is available.
+Instead the symbol returned is nu with a subscript m.  Similarly the long and short kaon normally
+use uppercase L and S subscripts respectively, but because of Unicode restrictions Nautilus uses
+lowercase l and s.</p></li>
+<li><p>The standard symbols stack superscripts above subscripts, but this is not possible in Unicode.
+Nautilus places the subscript first and then the superscript.</p></li>
+</ul>
+<p>User-defined entities return the string “U:XXXXXXX”, where “XXXXXXX” is the user data in
+hexadecimal.</p>
+<p>Unknown entities return <code class="docutils literal notranslate"><span class="pre">invalid_standard_symbol</span></code>, which has the value “unknown”.</p>
+</section>
+<section id="standard-name">
+<h2>Standard Name<a class="headerlink" href="#standard-name" title="Link to this heading"></a></h2>
+<p>The standard name is what is represented by a <code class="docutils literal notranslate"><span class="pre">std::string</span></code>.  The conversion functions are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_standard_name</span></code> accepts a string and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_standard_name</span></code> accepts an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and returns the standard name as a string</p></li>
+</ul>
+<p>Unlike with the standard symbol, the standard name has several variants[1][4].  Therefore the
+<code class="docutils literal notranslate"><span class="pre">to_standard_name</span></code> accepts optional argments to specify the nuclide and/or particle variants.</p>
+<ul class="simple">
+<li><p>allowed nuclide formats are “IUPAC”, “American”, “British”, and “Canadian”; default is IUPAC</p></li>
+<li><p>allowed particle formats are “PDG” and “textbook”; default is PDG</p></li>
+</ul>
+<p>The rules for nuclides is the same as for the standard symbol, except</p>
+<ul class="simple">
+<li><p>the full name (all lowercase) is used instead of the atomic symbol, spelled according to the
+specified format</p></li>
+</ul>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>“nickel-56g” (ground state of nickel-56)</p></li>
+<li><p>“carbon-12” (ground state of carbon-12)</p></li>
+<li><p>“tantalum-180m1” (first metastable state of tantalum-180)</p></li>
+</ul>
+<p>Elementals are written out as “elemental &lt;name&gt;”, for example “elemental nitrogen”.</p>
+<p>Particles return a name based on the format specified.</p>
+<p>User-defined entities return the string “user entity 0xXXXXXXX”, where “XXXXXXX” is the user data
+in hexadecimal.</p>
+<p>Unknown entities return <code class="docutils literal notranslate"><span class="pre">invalid_standard_name</span></code>, which has the value “unknown”.</p>
+</section>
+<section id="notes-and-references">
+<h2>Notes and References<a class="headerlink" href="#notes-and-references" title="Link to this heading"></a></h2>
+<p>[1]: The official IUPAC names and symbols are recorded in various IUPAC documents, but a convenient
+summary table can be found at <a class="reference external" href="https://en.wikipedia.org/wiki/List_of_chemical_elements">https://en.wikipedia.org/wiki/List_of_chemical_elements</a>.</p>
+<p>[2]: The textbook format is used in a variety of sources.  One source that explains the notation is
+Claude Amsler’s “Nuclear and Particle Physics” (2015); see especially page 10-9 and note the quark
+structures of the various particles and antiparticles.  Compare this to the Particle Data Group
+format [3], especially item 7 in section 8.4 of “Naming Scheme for Hadrons”.</p>
+<p>[3]: The Particle Data Group defines the official standard names and symbols for  particles.  More
+information can be found at <a class="reference external" href="https://pdg.lbl.gov/2023/listings/contents_listings.html">https://pdg.lbl.gov/2023/listings/contents_listings.html</a>.  A document
+specifically on naming of particles can be found at
+<a class="reference external" href="https://pdg.lbl.gov/2023/reviews/rpp2023-rev-naming-scheme-hadrons.pdf">https://pdg.lbl.gov/2023/reviews/rpp2023-rev-naming-scheme-hadrons.pdf</a>.</p>
+<p>[4]: Alternate spellings can be found in the articles on Wikipedia for individual elements.
+The three with regional spellings in English are aluminium/aluminum
+(<a class="reference external" href="https://en.wikipedia.org/wiki/Aluminium">https://en.wikipedia.org/wiki/Aluminium</a>), sulfur/sulphur (<a class="reference external" href="https://en.wikipedia.org/wiki/Sulfur">https://en.wikipedia.org/wiki/Sulfur</a>),
+and caesium/cesium (<a class="reference external" href="https://en.wikipedia.org/wiki/Caesium">https://en.wikipedia.org/wiki/Caesium</a>).</p>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="entity_tag.html" class="btn btn-neutral float-left" title="Entity Tag" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="format_ic.html" class="btn btn-neutral float-right" title="Format: IC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Triad National Security, LLC. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v1.0.1.0/index.html">v1.0.1.0</a></dd>
+      <dd><a href="../../v1.0.1.1/index.html">v1.0.1.1</a></dd>
+      <dd><a href="../../v1.0.1.2/index.html">v1.0.1.2</a></dd>
+      <dd><a href="../../v1.0.1.3/index.html">v1.0.1.3</a></dd>
+      <dd><a href="../../v1.0.1.4/index.html">v1.0.1.4</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="format_standard.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

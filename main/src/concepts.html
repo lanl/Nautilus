@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic Concepts &mdash; Nautilus  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Shared Components" href="shared_components.html" />
+    <link rel="prev" title="Versioning" href="versioning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Nautilus
+              <img src="../_static/Logo_Color_512x512_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building Nautilus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Versioning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#atomic-nuclei">Atomic Nuclei</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#elementals-vs-nuclides">Elementals vs. Nuclides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#element-names-and-symbols">Element Names and Symbols</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#particles">Particles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes-of-particles">Classes of Particles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#particle-names-and-symbols">Particle Names and Symbols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#particles-available-in-nautilus">Particles Available in Nautilus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Shared Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared_components.html">Shared Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Entity Tag</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="entity_tag.html">Entity Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_standard.html">Format: Standard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ic.html">Format: IC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_mcnp.html">Format: MCNP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ndi.html">Format: NDI</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nautilus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Basic Concepts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/concepts.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+
+  <section id="basic-concepts">
+<h1>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Link to this heading"></a></h1>
+<p>Nautilus provides support for data identifiers that represent a variety of related concepts that
+are useful in nuclear and atomic computational tools.  This page discusses some of these concepts
+and the terminology that Nautilus uses, to help provide clarity in understanding the capabilities
+of Nautilus.</p>
+<section id="atomic-nuclei">
+<h2>Atomic Nuclei<a class="headerlink" href="#atomic-nuclei" title="Link to this heading"></a></h2>
+<p>An atomic nucleus consists of protons and neutrons, which are generically referred to as nucleons.</p>
+<ul class="simple">
+<li><p>The number of protons (<span class="math notranslate nohighlight">\(Z\)</span>) is called the <em>atomic number</em>.</p></li>
+<li><p>The number of neutrons (<span class="math notranslate nohighlight">\(N\)</span>) is called the <em>neutron number</em>.</p></li>
+<li><p>The number of nucleons (<span class="math notranslate nohighlight">\(A = Z + N\)</span>) is called the <em>atomic mass number</em>.</p></li>
+</ul>
+<p>Nuclei with the same atomic number are the same <em>element</em>.  Nuclei with the same atomic number but
+different neutron numbers are different <em>isotopes</em> of the same element.</p>
+<p>However, two nuclei that are the same isotope can still differ in their excitation state.  The
+<em>ground state</em> is the lowest-energy state of a given nuclide, while all other states are called
+<em>excited states</em>.  The ground state is often, but not always, the longest-lived state of a given
+isotope.</p>
+<p>There are special excited states called <em>metastable states</em>.  Unfortunately, there is not a
+standard definition of metastable states, but the various definitions typically focus on the
+“long-lived” states.  For example, <a class="reference external" href="https://en.wikipedia.org/wiki/Nuclear_isomer">Wikipedia</a> presents two different definitions of metastable
+states:</p>
+<ul class="simple">
+<li><p>Metastable states have a half-life of 1ns or longer, “100 to 1000 times longer than the
+half-lives of the excited nuclear states that decay with a ‘prompt’ half-live (ordinarily on the
+order of 1e-12 seconds).</p></li>
+<li><p>Metastable states have a half-life of 5ns or longer, “to distinguish the metastable half-life
+from the normal ‘prompt’ gamma-emission half-life.”</p></li>
+</ul>
+<p>Nuclei of the same isotope but different excited states are referred to as <em>isomers</em> (although
+sometimes this term refers only to the metastable states and not to “short-lived” excited states).</p>
+<p>The term <em>nuclide</em> refers to a specific nucleus: the same atomic number, the same atomic mass
+number, and the same excited state.  If any of these differs, then you are considering different
+nuclides.</p>
+<p>To summarize some terminology, when comparing two nuclei:</p>
+<ul class="simple">
+<li><p>If the atomic number differs, they are different elements.</p></li>
+<li><p>If the atomic number is the same but the neutron number differs, then they are different isotopes
+of the same element.</p></li>
+<li><p>If the atomic number and neutron number are the same but the excitation state differs, then they
+are different isomers of the same isotope of the same element.</p></li>
+<li><p>If the atomic number, neutron number, and excitation state are all the same, then they are the
+same nuclide.</p></li>
+</ul>
+<p>Nautilus is focused primarily on nuclear applications, and thus does not provide any indication of
+the ionization state of an atomic nucleus.</p>
+<section id="elementals-vs-nuclides">
+<h3>Elementals vs. Nuclides<a class="headerlink" href="#elementals-vs-nuclides" title="Link to this heading"></a></h3>
+<p>For a given element, we can speak of specific nuclides or we can speak of distributions with a
+mixture of different isotopes.  Following a convention used in various data libraries, Nautilus
+also can indicate <em>elementals</em>, which are distributions of different isotopes of a single element.
+The distribution is defined by the data library, but is typically the natural abundance
+distribution of that element.</p>
+</section>
+<section id="element-names-and-symbols">
+<h3>Element Names and Symbols<a class="headerlink" href="#element-names-and-symbols" title="Link to this heading"></a></h3>
+<p>The official names and symbols for elements are defined by the <a class="reference external" href="https://iupac.org">International Union of Pure and
+Applied Chemistry</a> (IUPAC).  However, because many elements have been known since ancient times,
+there are regional and linguistic variations in the names of some elements.  Nautilus focuses only
+on the English names, but that still leaves four distinct variants:</p>
+<ul class="simple">
+<li><p>IUPAC standard</p></li>
+<li><p>American English</p></li>
+<li><p>British English</p></li>
+<li><p>Canadian English</p></li>
+</ul>
+<p>Some references use “Commonwealth English” instead of “British English”, to indicate the wide
+geographic usage of that particular variety of English.  Nautilus has opted for “British English”
+because the spelling variations discussed here differ between England and Canada, despite Canada
+being part of the Commonwealth of Nations.  For nations in the Commonwealth but outside of North
+America, either “British English” or the IUPAC standard is likely to be the correct regional
+spelling.</p>
+<p>Fortunately, the distinctions between these regional variations is only in the spelling of a few
+elements.  By default, Nautilus will use the IUPAC standard spelling.  Some features of Nautilus
+provide the option to specifically request the spelling according to one of the regional standards.</p>
+<p>IUPAC also defines the “systematic name” for elements that do not yet have an official IUPAC name.
+As of the time of writing, it appears that all elements that have been observed in nature or
+confirmed in experiment have official names.  Therefore Nautilus does not currently support the
+systematic name.</p>
+<p>The atomic symbol for each element is, thankfully, fully standardized according to the rules set
+out by IUPAC with no regional variations.</p>
+</section>
+</section>
+<section id="particles">
+<h2>Particles<a class="headerlink" href="#particles" title="Link to this heading"></a></h2>
+<p>In addition to atomic nuclei, Nautilus can also indicate particles.  Before presenting the list of
+available particles, we first present some basic particle physics terminology.</p>
+<section id="classes-of-particles">
+<h3>Classes of Particles<a class="headerlink" href="#classes-of-particles" title="Link to this heading"></a></h3>
+<p>This will be a very brief, incomplete, and approximate sketch of the standard model of particle
+physics, with an eye towards defining some terms useful in further discussion of particles.</p>
+<p>The standard model identifies four classes of <em>elementary particles</em>:</p>
+<ul class="simple">
+<li><p><em>quarks</em>: up, down, charm, strange, top, bottom</p></li>
+<li><p><em>leptons</em>: electron, muon, tau; each with its own corresponding neutrino</p></li>
+<li><p><em>gauge bosons</em>: gluons, photon, Z boson, W bosons</p></li>
+<li><p><em>scalar bosons</em>: Higgs boson</p></li>
+</ul>
+<p>Each of these particles also has an <em>antiparticle</em> with the same mass and opposite charge, with the
+exception of the neutral bosons, which are their own antiparticle.</p>
+<p>The quarks and leptons are organized into <em>generations</em> (first, second, and third) and <em>subtypes</em>
+(down-type or up-type for quarks, charged or neutral for leptons).  Nautilus does not include any
+quarks, but they are useful for classifying composite particles.</p>
+<p>Composite particles are called <em>hadrons</em> and are described as a combination of two or more
+“valence” quarks.  If the particle has two valence quarks, it is called a <em>meson</em>.  If the particle
+has three valence quarks, it is called a <em>baryon</em>.  Further combinations (<em>tetraquarks</em>,
+<em>pentaquarks</em>, and so on) are sometimes referred to as “exotic” hadrons, and are currently not
+included in Nautilus.</p>
+</section>
+<section id="particle-names-and-symbols">
+<h3>Particle Names and Symbols<a class="headerlink" href="#particle-names-and-symbols" title="Link to this heading"></a></h3>
+<p>The standard name for particles is defined by the <a class="reference external" href="https://pdg.lbl.gov">Particle Data Group</a> (PDG).  Unlike with
+elements, there are no regional variations of the particle names.  However, there is an alternate
+standard used by some authors (see, for example, Claude Amsler’s 2015 book “Nuclear and Particle
+Physics”), which can cause some confusion due to the sometimes subtle differences between the two
+standards.  We will refer to this alternate standard as the “textbook” standard due to its use in
+several common textbooks.</p>
+<p>The difference between the two standards is the naming of antibaryons.  In the PDG standard, the
+name of a particle includes its own charge, regardless of whether that particle is ordinary matter
+or antimatter.  However, in the textbook standard, antibaryons are named for the charge of their
+corresponding ordinary matter particle.  Consider, for example, the positive sigma baryon (valence
+quarks: <span class="math notranslate nohighlight">\(uus\)</span>), which is paired with an antiparticle of the same mass but opposite charge
+(valence quarks: <span class="math notranslate nohighlight">\(\overline{u}\overline{u}\overline{s}\)</span>).  In the PDG standard, that
+antiparticle is called the negative sigma antibaryon because it has a negative charge.  However, in
+the textbook standard, that antiparticle is called the antiparticle of the positive sigma baryon or
+the positive sigma antibaryon.  The confusion gets worse if you consider that there is a negative
+sigma baryon (valence quarks: <span class="math notranslate nohighlight">\(dds\)</span>) and its corresponding antiparticle, which is called
+either the positive sigma antibaryon (PDG standard) or the antiparticle of the negative sigma
+baryon or the negative sigma antibaryon (textbook standard).</p>
+<p>The symbols, if drawn carefully, can help to disambiguate.  Using our example above with the sigma
+(anti)baryons, the PDG standard gives <span class="math notranslate nohighlight">\(\Sigma^+\)</span> and its antiparticle
+<span class="math notranslate nohighlight">\(\overline{\Sigma}^-\)</span>, along with <span class="math notranslate nohighlight">\(\Sigma^-\)</span> and its antiparticle
+<span class="math notranslate nohighlight">\(\overline{\Sigma}^+\)</span>.  The textbook standard gives <span class="math notranslate nohighlight">\(\Sigma^+\)</span> and its antiparticle
+<span class="math notranslate nohighlight">\(\overline{\Sigma^+}\)</span> along with <span class="math notranslate nohighlight">\(\Sigma^-\)</span> and its antiparticle
+<span class="math notranslate nohighlight">\(\overline{\Sigma^-}\)</span>.  However, the distinction is subtle, being simply whether or not the
+overline continues over the sign.</p>
+<p>Nautilus defaults to the PDG standard, but some parts of Nautilus provide the option to work with
+the textbook standard.</p>
+</section>
+<section id="particles-available-in-nautilus">
+<h3>Particles Available in Nautilus<a class="headerlink" href="#particles-available-in-nautilus" title="Link to this heading"></a></h3>
+<p>The particles that Nautilus currently supports are listed below, along with some annotations
+regarding the classification and standard symbol for each particle.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>particle</p></th>
+<th class="head"><p>class</p></th>
+<th class="head"><p>generation / subtype or valence quarks</p></th>
+<th class="head"><p>PDG symbol</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>photon</p></td>
+<td colspan="2"><p>gauge boson</p></td>
+<td><p><span class="math notranslate nohighlight">\(\gamma\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>electron (a.k.a., negative beta)</p></td>
+<td><p>lepton</p></td>
+<td><p>first generation / charged</p></td>
+<td><p><span class="math notranslate nohighlight">\(e^-\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>positron (a.k.a., positive beta)</p></td>
+<td><p>lepton</p></td>
+<td><p>first generation / charged</p></td>
+<td><p><span class="math notranslate nohighlight">\(e^+\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>electron neutrino</p></td>
+<td><p>lepton</p></td>
+<td><p>first generation / neutral</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu_e\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>electron antineutrino</p></td>
+<td><p>lepton</p></td>
+<td><p>first generation / neutral</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\nu}_e\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>muon</p></td>
+<td><p>lepton</p></td>
+<td><p>second generation / charged</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mu^-\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>antimuon</p></td>
+<td><p>lepton</p></td>
+<td><p>second generation / charged</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mu^+\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>muon neutrino</p></td>
+<td><p>lepton</p></td>
+<td><p>second generation / neutral</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu_\mu\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>muon antineutrino</p></td>
+<td><p>lepton</p></td>
+<td><p>second generation / neutral</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\nu}_\mu\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>neutral pion</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{u\overline{u}-d\overline{d}}{\sqrt{2}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi^0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>positive pion</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(u\overline{d}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi^+\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>negative pion</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(d\overline{u}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\pi^-\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>short kaon</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{d\overline{s}-s\overline{d}}{\sqrt{2}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(K^0_S\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>long kaon</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{d\overline{s}+s\overline{d}}{\sqrt{2}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(K^0_L\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>positive kaon</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(u\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(K^+\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>negative kaon</p></td>
+<td><p>meson</p></td>
+<td><p><span class="math notranslate nohighlight">\(s\overline{u}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(K^-\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>neutron</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(udd\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>antineutron</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{u}\overline{d}\overline{d}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{n}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>proton</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(uud\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(p\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>antiproton</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{u}\overline{u}\overline{d}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{p}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>neutral lambda baryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(uds\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Lambda^0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>neutral lambda antibaryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{u}\overline{d}\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\Lambda}^0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>positive sigma baryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(uus\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Sigma^+\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>negative sigma antibaryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{u}\overline{u}\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\Sigma}^-\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>negative sigma baryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(dds\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Sigma^-\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>positive sigma antibaryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{d}\overline{d}\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\Sigma}^+\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>neutral xi baryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(uss\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Xi^0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>neutral xi antibaryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{u}\overline{s}\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\Xi}^0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>negative xi baryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(dss\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Xi^-\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>positive xi antibaryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{d}\overline{s}\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\Xi}^+\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>negative omega baryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(sss\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Omega^-\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>positive omega antibaryon</p></td>
+<td><p>baryon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{s}\overline{s}\overline{s}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\overline{\Omega}^+\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>An ionized hydrogen-1 nucleus is just a bare proton, so there is some ambiguity between a proton
+(particle) and hydrogen-1 (isotope) in Nautilus.  Nautilus addresses this in different ways
+depending on the context, so this will be discussed in more detail in each context.</p>
+<p>In some contexts, a few light atomic nuclei are treated as particles and given special names for
+this usage.  While Nautilus does not encode them as particles (other than the hydrogen-1 vs proton
+question as noted above), it is worth being aware of the “particle” names that are sometimes used
+for these light nuclei:</p>
+<ul class="simple">
+<li><p>hydrogen-1 is also known as protium, and as a particle is called a proton</p></li>
+<li><p>hydrogen-2 is also known as deuterium, and as a particle is called a deuteron</p></li>
+<li><p>hydrogen-3 is also known as tritium, and as a particle is called a triton</p></li>
+<li><p>helium-3 as a particle is called a helion</p></li>
+<li><p>helium-4 as a particle is called an alpha</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="versioning.html" class="btn btn-neutral float-left" title="Versioning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="shared_components.html" class="btn btn-neutral float-right" title="Shared Components" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Triad National Security, LLC. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v1.0.1.0/index.html">v1.0.1.0</a></dd>
+      <dd><a href="../../v1.0.1.1/index.html">v1.0.1.1</a></dd>
+      <dd><a href="../../v1.0.1.2/index.html">v1.0.1.2</a></dd>
+      <dd><a href="../../v1.0.1.3/index.html">v1.0.1.3</a></dd>
+      <dd><a href="../../v1.0.1.4/index.html">v1.0.1.4</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="concepts.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

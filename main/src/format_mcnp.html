@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Format: MCNP &mdash; Nautilus  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Format: NDI" href="format_ndi.html" />
+    <link rel="prev" title="Format: IC" href="format_ic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Nautilus
+              <img src="../_static/Logo_Color_512x512_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building Nautilus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Basic Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Shared Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared_components.html">Shared Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Entity Tag</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="entity_tag.html">Entity Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_standard.html">Format: Standard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ic.html">Format: IC</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Format: MCNP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mcnp-partial-zaid">MCNP Partial Zaid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mcnp-full-zaid">MCNP Full Zaid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mcnp-particle-symbol">MCNP Particle Symbol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-and-references">Notes and References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="format_ndi.html">Format: NDI</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nautilus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Format: MCNP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/src/format_mcnp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+
+  <section id="format-mcnp">
+<h1>Format: MCNP<a class="headerlink" href="#format-mcnp" title="Link to this heading"></a></h1>
+<p>Nautilus provides bidirectional conversion between <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and several formats [1] defined by
+MCNP (the Monte Carlo N-Particle code): partial zaid, full zaid, and particle symbol.</p>
+<section id="mcnp-partial-zaid">
+<h2>MCNP Partial Zaid<a class="headerlink" href="#mcnp-partial-zaid" title="Link to this heading"></a></h2>
+<p>The MCNP partial zaid is an integer format (datatype <code class="docutils literal notranslate"><span class="pre">int</span></code> in Nautilus) that primarily represents
+nuclides.  The conversion routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_MCNP_partial_zaid</span></code> that takes a partial zaid and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_MCNP_partial_zaid</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and returns a partial zaid</p></li>
+</ul>
+<p>Nuclides, by default, are encoded as <span class="math notranslate nohighlight">\(Z \times 1{,}000 + A\)</span>.  If the nuclide is not in the
+ground state, add to that <span class="math notranslate nohighlight">\(300 + m \times 100\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> is the metastable state
+index.  Because of this choice for how to encode the metastable state index, the partial zaid
+format does not support <span class="math notranslate nohighlight">\(m &gt; 4\)</span>.</p>
+<p>Similarly to other long-lived LANL formats, the partial zaid has issues with americium-242.  The
+ground state (Am-242g) and the first metastable state (Am-242m1) are swapped, so:</p>
+<ul class="simple">
+<li><p>95242 should be Am-242g but is actually Am-242m1</p></li>
+<li><p>95642 should be Am-242m1 but is actually Am-242g</p></li>
+</ul>
+<p>Elementals are encoded as <span class="math notranslate nohighlight">\(Z \times 1{,}000\)</span> (implicitly setting <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(m\)</span> to
+zero).</p>
+<p>Particles and user-defined entities are not supported by this format, so they will generate the
+invalid value <code class="docutils literal notranslate"><span class="pre">invalid_mcnp_partial_zaid</span></code> (equal to -1).</p>
+</section>
+<section id="mcnp-full-zaid">
+<h2>MCNP Full Zaid<a class="headerlink" href="#mcnp-full-zaid" title="Link to this heading"></a></h2>
+<p>The MCNP full zaid is a string format (datatype <code class="docutils literal notranslate"><span class="pre">std::string</span></code> in Nautilus), and is an extension of
+the partial zaid format.  It consists of a partial zaid, a period, and a suffix.  The conversion
+routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_MCNP_full_zaid</span></code> that takes a full zaid and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_MCNP_full_zaid</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and a suffix, and returns a full zaid</p>
+<ul>
+<li><p>The suffix is a string that is appended to the end of the full zaid with no additional
+processing.</p></li>
+</ul>
+</li>
+</ul>
+<p>Because the full zaid is an extension of the partial zaid, it follows the same rules as the partial
+zaid.</p>
+<p>Invalid full zaids are given the valid <code class="docutils literal notranslate"><span class="pre">invalid_mcnp_full_zaid</span></code>, which is equal to “unknown”.</p>
+</section>
+<section id="mcnp-particle-symbol">
+<h2>MCNP Particle Symbol<a class="headerlink" href="#mcnp-particle-symbol" title="Link to this heading"></a></h2>
+<p>The MCNP particle symbol is a character format (datatype <code class="docutils literal notranslate"><span class="pre">char</span></code> in Nautilus) that primarily
+represents particles.  The conversion routines available for this format are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_MCNP_particle_symbol</span></code> that takes a particle symbol and returns an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_MCNP_particle_symbol</span></code> that takes an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> and returns a particle symbol</p></li>
+</ul>
+<p>Only a few nuclides are supported by this format, shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>nuclide</p></th>
+<th class="head"><p>particle symbol</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>H-1</p></td>
+<td><p>H</p></td>
+</tr>
+<tr class="row-odd"><td><p>H-2</p></td>
+<td><p>D</p></td>
+</tr>
+<tr class="row-even"><td><p>H-3</p></td>
+<td><p>T</p></td>
+</tr>
+<tr class="row-odd"><td><p>He-3</p></td>
+<td><p>S</p></td>
+</tr>
+<tr class="row-even"><td><p>He-4</p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-odd"><td><p>all others</p></td>
+<td><p>#</p></td>
+</tr>
+</tbody>
+</table>
+<p>Because “#” is ambiguous, it will generate an unknown <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code>.</p>
+<p>This format does not support elementals or excited states.</p>
+<p>The particles supported by this format are shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>particle</p></th>
+<th class="head"><p>particle symbol</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>neutron</p></td>
+<td><p>N</p></td>
+</tr>
+<tr class="row-odd"><td><p>photon</p></td>
+<td><p>P</p></td>
+</tr>
+<tr class="row-even"><td><p>electron</p></td>
+<td><p>E</p></td>
+</tr>
+<tr class="row-odd"><td><p>muon</p></td>
+<td><p>|</p></td>
+</tr>
+<tr class="row-even"><td><p>antineutron</p></td>
+<td><p>Q</p></td>
+</tr>
+<tr class="row-odd"><td><p>electron neutrino</p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-even"><td><p>muon neutrino</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-odd"><td><p>positron</p></td>
+<td><p>F</p></td>
+</tr>
+<tr class="row-even"><td><p>proton</p></td>
+<td><p>H</p></td>
+</tr>
+<tr class="row-odd"><td><p>neutral lambda baryon</p></td>
+<td><p>L</p></td>
+</tr>
+<tr class="row-even"><td><p>positive sigma baryon</p></td>
+<td><p>+</p></td>
+</tr>
+<tr class="row-odd"><td><p>negative sigma baryon</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>neutral xi baryon</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>negative xi baryon</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>negative omega baryon</p></td>
+<td><p>O</p></td>
+</tr>
+<tr class="row-odd"><td><p>antimuon</p></td>
+<td><p>!</p></td>
+</tr>
+<tr class="row-even"><td><p>electron antineutrino</p></td>
+<td><p>&lt;</p></td>
+</tr>
+<tr class="row-odd"><td><p>muon antineutrino</p></td>
+<td><p>&gt;</p></td>
+</tr>
+<tr class="row-even"><td><p>antiproton</p></td>
+<td><p>G</p></td>
+</tr>
+<tr class="row-odd"><td><p>positive pion</p></td>
+<td><p>/</p></td>
+</tr>
+<tr class="row-even"><td><p>neutral pion</p></td>
+<td><p>Z</p></td>
+</tr>
+<tr class="row-odd"><td><p>positive kaon</p></td>
+<td><p>K</p></td>
+</tr>
+<tr class="row-even"><td><p>short kaon</p></td>
+<td><p>%</p></td>
+</tr>
+<tr class="row-odd"><td><p>long kaon</p></td>
+<td><p>^</p></td>
+</tr>
+<tr class="row-even"><td><p>neutral lambda antibaryon</p></td>
+<td><p>B</p></td>
+</tr>
+<tr class="row-odd"><td><p>negative sigma antibaryon</p></td>
+<td><p>_</p></td>
+</tr>
+<tr class="row-even"><td><p>positive sigma antibaryon</p></td>
+<td><p>~</p></td>
+</tr>
+<tr class="row-odd"><td><p>neutral xi antibaryon</p></td>
+<td><p>C</p></td>
+</tr>
+<tr class="row-even"><td><p>positive xi antibaryon</p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-odd"><td><p>positive omega antibaryon</p></td>
+<td><p>&#64;</p></td>
+</tr>
+<tr class="row-even"><td><p>negative pion</p></td>
+<td><p>*</p></td>
+</tr>
+<tr class="row-odd"><td><p>negative kaon</p></td>
+<td><p>?</p></td>
+</tr>
+</tbody>
+</table>
+<p>This format is slightly lossy, because H-1 and a proton are both represented by “P”.  Because this
+format is mostly particle-focused, Nautilus will translate “P” to a proton, meaning that
+<code class="docutils literal notranslate"><span class="pre">EntityTag(H-1)</span></code> becomes particle symbol “P”, which converts back to an <code class="docutils literal notranslate"><span class="pre">EntityTag</span></code> as a proton
+instead of as H-1.</p>
+<p>This format does not support user-defined entities.</p>
+<p>The “invalid” value for particle symbols is <code class="docutils literal notranslate"><span class="pre">invalid_mcnp_particle_symbol</span></code>, which has the value
+“ “ (a space).</p>
+</section>
+<section id="notes-and-references">
+<h2>Notes and References<a class="headerlink" href="#notes-and-references" title="Link to this heading"></a></h2>
+<p>[1]: The MCNP manual (version 6.2,
+<a class="reference external" href="https://mcnp.lanl.gov/pdf_files/TechReport_2017_LANL_LA-UR-17-29981_WernerArmstrongEtAl.pdf">https://mcnp.lanl.gov/pdf_files/TechReport_2017_LANL_LA-UR-17-29981_WernerArmstrongEtAl.pdf</a>) is the
+primary reference for the MCNP notations discussed here.</p>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="format_ic.html" class="btn btn-neutral float-left" title="Format: IC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="format_ndi.html" class="btn btn-neutral float-right" title="Format: NDI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Triad National Security, LLC. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v1.0.1.0/index.html">v1.0.1.0</a></dd>
+      <dd><a href="../../v1.0.1.1/index.html">v1.0.1.1</a></dd>
+      <dd><a href="../../v1.0.1.2/index.html">v1.0.1.2</a></dd>
+      <dd><a href="../../v1.0.1.3/index.html">v1.0.1.3</a></dd>
+      <dd><a href="../../v1.0.1.4/index.html">v1.0.1.4</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="format_mcnp.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
