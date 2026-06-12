@@ -80,37 +80,3 @@ information related to this nuclide can be accessed from arrays, so long as thos
 ordered consistently.  In addition to the accessors and operators provided by ``Nuclide``, the
 ``IndexedNuclide`` class adds the ``index()`` accessor, which returns the index.
 
-Zaid Tools
----------------------------------------------------------------------------------------------------
-
-The ``zaid_tools.hpp`` header file provides some useful tools for parsing zaids, which are
-identifiers used by NDI.  Some of the functionality provided by ``zaid_tools.hpp`` has been more
-accurately and thoroughly implemented through the ``EntityTag`` framework.  ``EntityTag`` should be
-preferred when possible, as the tools in ``zaid_tools.hpp`` are likely to be deprecated.
-
-This header is particularly prone to inconsistent and/or incorrect naming, as it was designed for
-compatibilty with legacy codes rather than based on a detailed understanding of the naming
-conventions and motivations behind certain formats.
-
-The ``chemsym_to_zaid`` function accepts a string in a format known as the "chemsym" format,
-because it is related to (but not the same as) the IUPAC chemical symbol.  It currently only
-handles a subset of the full chemsym format.  Given a chemsym, it will return an integer with the
-corresponding SZA value.  The names "zaid" and "SZA" were incorrectly used interchangeably when
-this function was initially written.
-
-The ``half_reaction_zaid_to_chemsym_list`` function accepts a string consisting of either the
-products or reactants of a reaction, written in the format expected for NDI reaction zaids.  It
-will parse the string and return a ``std::vector`` of strings in the chemsym format.  In practice,
-this is not fully consistent with the chemsym format, because there was some early confusion about
-the distinction between two related formats.
-
-The ``append_zaids`` function combines the ``half_reaction_zaid_to_chemsym_list`` and
-``chemsym_to_zaid`` functions, taking a string listing the products or reactants of a reaction and
-returning a ``std::vector`` of SZA values, with repeated entries deduplicated.
-
-The ``get_reactant_zaids`` function accepts an NDI reaction zaid as a string, identifies the
-substring with the reactants, then calls ``append_zaids`` and returns the resulting list of integer
-SZA values.  The ``get_product_zaids`` function is the same, but it will extract and parse the list
-of reaction products instead of the reactants.  The ``get_nuclide_zaids`` function is similar, but
-it returns the list of all reactants and reaction products.
-
