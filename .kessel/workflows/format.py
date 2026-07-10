@@ -19,4 +19,16 @@ class Format(Build, CMakeWorkflow):
     def check_format(self, args):
         """Clang-Format"""
         super().build(args, targets=["format"])
+
+        # Generate patch file for CI artifact
+        patch_file = self.source_dir / "formatting.patch"
+        self.exec(f"git -C '{self.source_dir}' diff > '{patch_file}'")
+
+        self.exec(f"""
+            if [ -s {patch_file} ]; then
+               echo "Formatting differences detected. Patch file saved to {patch_file}"
+               echo "Apply with: git apply formatting.patch"
+            fi""")
+
+        # Check if formatting is correct (fail if differences exist)
         self.exec(f"git -C '{self.source_dir}' diff --exit-code --compact-summary")
