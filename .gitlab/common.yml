@@ -223,3 +223,8 @@ default:
     - source .gitlab/kessel.sh
     - kessel activate format
     - kessel run
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - formatting.patch
