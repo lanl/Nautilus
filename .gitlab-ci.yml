@@ -116,12 +116,12 @@ darwin_mpich_cuda_ampere_gcc:
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p shared-gpu-ampere"
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
-darwin_mpich_rocm_mi250_gcc:
+darwin_mpich_rocm_mi250_rocmcc:
   extends: [.ascgit_job, .darwin_job, .darwin_regular_job, .build_and_test]
   needs:
     - prereq_offline_deps
   variables:
-    SPACK_ENV_NAME: mpich-rocm-gfx90a-gcc
+    SPACK_ENV_NAME: mpich-rocm-gfx90a-rocmcc
     SCHEDULER_PARAMETERS: "-N 1 --qos=debug -p shared-gpu-amd-mi250"
     SUBMIT_TO_CDASH: "${ENABLE_CDASH}"
 
@@ -156,8 +156,8 @@ rocinante_craympich_intel:
     SUBMIT_ON_ERROR: false          # nodes don't have network access, don't try to send from compute node
     SUBMIT_AFTER: "${ENABLE_CDASH}" # after_script runs on a network connected system
 
-venado_craympich_cuda_gracehopper_gcc:
-  extends: [.ascgit_job, .venado_job, .venado_regular_job, .build_and_test]
+venadito_craympich_cuda_gracehopper_gcc:
+  extends: [.ascgit_job, .venadito_job, .venadito_regular_job, .build_and_test]
   needs:
     - prereq_offline_deps
   variables:
@@ -167,23 +167,23 @@ venado_craympich_cuda_gracehopper_gcc:
     SUBMIT_ON_ERROR: false          # Venado nodes don't have network access, don't try to send from compute node
     SUBMIT_AFTER: "${ENABLE_CDASH}" # after_script runs on a network connected system
 
-rzvernal_craympich_rocm_mi250_gcc:
+rzvernal_craympich_rocm_mi250_rocmcc:
   extends: [.ascgit_job, .rzvernal_job, .rzvernal_regular_job, .build_and_test]
   needs:
     - prereq_offline_deps
   variables:
-    SPACK_ENV_NAME: craympich-rocm-gfx90a-gcc
+    SPACK_ENV_NAME: craympich-rocm-gfx90a-rocmcc
     SUBMIT_TO_CDASH: false
     BUILD_WITH_CTEST: "${ENABLE_CDASH}"
     SUBMIT_ON_ERROR: false          # nodes don't have network access, don't try to send from compute node
     SUBMIT_AFTER: "${ENABLE_CDASH}" # after_script runs on a network connected system
 
-rzadams_craympich_rocm_mi300_gcc:
+rzadams_craympich_rocm_mi300_rocmcc:
   extends: [.ascgit_job, .rzadams_job, .rzadams_regular_job, .build_and_test]
   needs:
     - prereq_offline_deps
   variables:
-    SPACK_ENV_NAME: craympich-rocm-gfx942-gcc
+    SPACK_ENV_NAME: craympich-rocm-gfx942-rocmcc
     SUBMIT_TO_CDASH: false
     BUILD_WITH_CTEST: "${ENABLE_CDASH}"
     SUBMIT_ON_ERROR: false          # nodes don't have network access, don't try to send from compute node
