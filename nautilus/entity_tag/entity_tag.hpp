@@ -16,6 +16,7 @@ available for users to have custom entities not currently represented in Nautilu
 
 #include <cassert>
 #include <climits>
+#include <compare>
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -289,24 +290,14 @@ public:
     // ____________________________________________________________________________________________
     // Comparison operators
 
-    PORTABLE_FUNCTION constexpr bool operator==(const EntityTag other)
+    PORTABLE_FUNCTION constexpr bool operator==(const EntityTag other) const
     {
         return tag_ == other.tag_;
     }
-    PORTABLE_FUNCTION constexpr bool operator!=(const EntityTag other)
+    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag other) const
     {
-        return tag_ != other.tag_;
+        return tag_ <=> other.tag_;
     }
-    PORTABLE_FUNCTION constexpr bool operator<=(const EntityTag other)
-    {
-        return tag_ <= other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator>=(const EntityTag other)
-    {
-        return tag_ >= other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator<(const EntityTag other) { return tag_ < other.tag_; }
-    PORTABLE_FUNCTION constexpr bool operator>(const EntityTag other) { return tag_ > other.tag_; }
 };
 
 // ================================================================================================
