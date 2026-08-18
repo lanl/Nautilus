@@ -38,7 +38,7 @@ public:
         auto other_za = other.sza_ % s_shift;
         return (this_za == other_za ? S() <=> other.S() : this_za <=> other_za);
     }
-    PORTABLE_FUNCTION constexpr bool operator==(const SZA & other) const = default;
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(const SZA & other) const = default;
 
 private:
     static constexpr int s_shift{1000000};
