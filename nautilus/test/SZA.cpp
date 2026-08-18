@@ -90,8 +90,8 @@ TEST_CASE("SZA less-than comparison")
     CHECK(he4m1 < pa234);
     CHECK(he4m1 < pa234m1);
 
-    CHECK(not(pa234m1 < he4));
-    CHECK(not(pa234m1 < he4m1));
+    CHECK(not(pa234 < he4));
+    CHECK(not(pa234 < he4m1));
     CHECK(pa234 < pa234m1);
 
     CHECK(not(pa234m1 < pa234));
