@@ -308,14 +308,9 @@ public:
     // ____________________________________________________________________________________________
     // Comparison operators
 
-    PORTABLE_FUNCTION constexpr bool operator==(const EntityTag other) const
-    {
-        return tag_ == other.tag_;
-    }
-    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag other) const
-    {
-        return tag_ <=> other.tag_;
-    }
+    // No need to overcomplicate matters, just use the default.  Also, by defaulting operator<=> I
+    // get operator== for free.
+    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag other) const = default;
 };
 
 // ================================================================================================
