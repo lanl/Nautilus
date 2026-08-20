@@ -32,7 +32,8 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr explicit operator int() const { return sza_; }
 
     // comparisons
-    [[nodiscard]] PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const SZA & other) const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(
+        const SZA & other) const
     {
         auto this_za = sza_ % s_shift;
         auto other_za = other.sza_ % s_shift;

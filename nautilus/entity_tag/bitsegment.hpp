@@ -69,7 +69,10 @@ private:
 
 public:
     // Generate a mask for the bits in the segment
-    [[nodiscard]] PORTABLE_FUNCTION static constexpr T mask() { return static_cast<T>(rmask() << RSKIP); }
+    [[nodiscard]] PORTABLE_FUNCTION static constexpr T mask()
+    {
+        return static_cast<T>(rmask() << RSKIP);
+    }
     // Extract the value in the segment
     [[nodiscard]] PORTABLE_FUNCTION static constexpr T get(const T t)
     {

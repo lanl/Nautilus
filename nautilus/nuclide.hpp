@@ -83,8 +83,10 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto mass() const { return mass_; }
 
     // Comparison
-    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(Nuclide<DataType> const & other) const = default;
-    [[nodiscard]] PORTABLE_FUNCTION constexpr std::partial_ordering operator<=>(Nuclide<DataType> const & other) const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(
+        Nuclide<DataType> const & other) const = default;
+    [[nodiscard]] PORTABLE_FUNCTION constexpr std::partial_ordering operator<=>(
+        Nuclide<DataType> const & other) const
     {
         if (this->sza() == other.sza()) {
             return this->mass() <=> other.mass();
@@ -136,7 +138,8 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr int index() const { return index_; }
 
     // Comparison for the base class, to make comparisons easier for the derived classes
-    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(IndexedNuclide<DataType> const & other) const = default;
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(
+        IndexedNuclide<DataType> const & other) const = default;
 };
 
 // Alias for compatibility with original Singe names
