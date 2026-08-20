@@ -18,7 +18,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 ###################################################################################################
 
 if(NAUTILUS_ENABLE_CLANG_FORMAT)
-    find_package(ClangFormat 17.0.6 REQUIRED)
+    find_package(ClangFormat 20.1.8 REQUIRED)
 
     set(GLOBS
         ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/[^\.]*.cpp ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/[^\.]*.hpp
