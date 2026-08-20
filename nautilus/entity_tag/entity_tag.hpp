@@ -234,13 +234,13 @@ public:
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_nuclide() const
     {
-        return is_standard()
-            && (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) != elemental_A);
+        return is_standard() && (bs_nuclide.get(tag_) == NUCLIDE) &&
+               (bs_A.get(tag_) != elemental_A);
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
-        return is_standard()
-            && (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) == elemental_A);
+        return is_standard() && (bs_nuclide.get(tag_) == NUCLIDE) &&
+               (bs_A.get(tag_) == elemental_A);
     }
 
     // ____________________________________________________________________________________________
@@ -302,7 +302,8 @@ public:
 
     // No need to overcomplicate matters, just use the default.  Also, by defaulting operator<=> I
     // get operator== for free.
-    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag other) const = default;
+    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag other) const =
+        default;
 };
 
 // ================================================================================================
