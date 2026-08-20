@@ -224,31 +224,23 @@ public:
     {
         // an "unknown" tag is encoded as a "user" tag with a special value, but is not itself
         // considered a "user" tag
-        if (is_unknown()) {
-            return false;
-        } else {
-            return bs_user.get(tag_) == USER;
-        }
+        return !is_unknown() && bs_user.get(tag_) == USER;
     }
 
     // subsets of standard tags
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_particle() const
     {
-        return (is_standard() ? bs_nuclide.get(tag_) == PARTICLE : false);
+        return is_standard() && bs_nuclide.get(tag_) == PARTICLE;
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_nuclide() const
     {
-        if (is_standard()) {
-            return (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) != elemental_A);
-        }
-        return false;
+        return is_standard()
+            && (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) != elemental_A);
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
-        if (is_standard()) {
-            return (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) == elemental_A);
-        }
-        return false;
+        return is_standard()
+            && (bs_nuclide.get(tag_) == NUCLIDE) && (bs_A.get(tag_) == elemental_A);
     }
 
     // ____________________________________________________________________________________________
