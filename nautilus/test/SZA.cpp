@@ -52,14 +52,28 @@ TEST_CASE("SZA equality comparison")
     using namespace nautilus;
 
     SZA const he4{2004};
-    SZA const helium{he4};
+    SZA const alpha{he4};
     SZA const pa234m1{91, 234, 1};
 
-    CHECK(he4 == helium);
+    CHECK(he4 == alpha);
     CHECK(not(he4 == pa234m1));
 }
 
 TEST_CASE("SZA inequality comparison")
+{
+    using namespace nautilus;
+
+    SZA const he4{2004};
+    SZA const alpha{he4};
+    SZA const pa234m1{91, 234, 1};
+    SZA const he4m1{2, 4, 1};
+
+    CHECK(not(he4 != alpha));
+    CHECK(he4 != pa234m1);
+    CHECK(he4 != he4m1);
+}
+
+TEST_CASE("SZA less-than comparison")
 {
     using namespace nautilus;
 
@@ -72,8 +86,125 @@ TEST_CASE("SZA inequality comparison")
     CHECK(he4 < pa234);
     CHECK(he4 < pa234m1);
 
+    CHECK(not(he4m1 < he4));
     CHECK(he4m1 < pa234);
     CHECK(he4m1 < pa234m1);
 
+    CHECK(not(pa234 < he4));
+    CHECK(not(pa234 < he4m1));
     CHECK(pa234 < pa234m1);
+
+    CHECK(not(pa234m1 < pa234));
+    CHECK(not(pa234m1 < he4m1));
+    CHECK(not(pa234m1 < he4));
+}
+
+TEST_CASE("SZA greater-than comparison")
+{
+    using namespace nautilus;
+
+    SZA const he4{2004};
+    SZA const he4m1{2, 4, 1};
+    SZA const pa234{91, 234};
+    SZA const pa234m1{91, 234, 1};
+
+    CHECK(he4m1 > he4);
+    CHECK(pa234 > he4);
+    CHECK(pa234m1 > he4);
+
+    CHECK(not(he4 > he4m1));
+    CHECK(pa234 > he4m1);
+    CHECK(pa234m1 > he4m1);
+
+    CHECK(not(he4 > pa234));
+    CHECK(not(he4m1 > pa234));
+    CHECK(pa234m1 > pa234);
+
+    CHECK(not(he4 > pa234m1));
+    CHECK(not(he4m1 > pa234m1));
+    CHECK(not(pa234 > pa234m1));
+}
+
+TEST_CASE("SZA less-than-or-equal comparison")
+{
+    using namespace nautilus;
+
+    SZA const he4{2004};
+    SZA const alpha{he4};
+    SZA const he4m1{2, 4, 1};
+    SZA const pa234{91, 234};
+
+    CHECK(he4 <= alpha);
+    CHECK(alpha <= he4);
+
+    CHECK(he4 <= he4m1);
+    CHECK(he4 <= pa234);
+    CHECK(he4m1 <= pa234);
+}
+
+TEST_CASE("SZA greater-than-or-equal comparison")
+{
+    using namespace nautilus;
+
+    SZA const he4{2004};
+    SZA const alpha{he4};
+    SZA const he4m1{2, 4, 1};
+    SZA const pa234{91, 234};
+
+    CHECK(he4 >= alpha);
+    CHECK(alpha >= he4);
+
+    CHECK(he4m1 >= he4);
+    CHECK(pa234 >= he4);
+    CHECK(pa234 >= he4m1);
+}
+
+TEST_CASE("SZA comparison reflexivity and transitivity")
+{
+    using namespace nautilus;
+
+    SZA const he4{2004};
+    SZA const he4m1{2, 4, 1};
+    SZA const pa234{91, 234};
+
+    SECTION("reflexivity")
+    {
+        CHECK(he4 == he4);
+        CHECK(he4 <= he4);
+        CHECK(he4 >= he4);
+        CHECK(not(he4 < he4));
+        CHECK(not(he4 > he4));
+        CHECK(not(he4 != he4));
+    }
+
+    SECTION("transitivity")
+    {
+        CHECK(he4 < he4m1);
+        CHECK(he4m1 < pa234);
+        CHECK(he4 < pa234);
+    }
+}
+
+TEST_CASE("SZA comparison ordering by ZA then S")
+{
+    using namespace nautilus;
+
+    SZA const h1{1, 1, 0};
+    SZA const h1m1{1, 1, 1};
+    SZA const h1m2{1, 1, 2};
+    SZA const h2{1, 2, 0};
+
+    SECTION("same ZA, different S - ordered by S")
+    {
+        CHECK(h1 < h1m1);
+        CHECK(h1m1 < h1m2);
+        CHECK(h1 < h1m2);
+    }
+
+    SECTION("different ZA - S doesn't matter for ordering")
+    {
+        CHECK(h1 < h2);
+        CHECK(h1m1 < h2);
+        CHECK(h1m2 < h2);
+    }
 }

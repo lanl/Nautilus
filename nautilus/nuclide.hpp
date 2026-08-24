@@ -65,60 +65,34 @@ public:
     {}
 
     // Metastable state
-    PORTABLE_FUNCTION constexpr auto S() const { return sza_.S(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto S() const { return sza_.S(); }
 
     // Number of protons
-    PORTABLE_FUNCTION constexpr auto Z() const { return sza_.Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto Z() const { return sza_.Z(); }
 
     // Number of neutrons
-    PORTABLE_FUNCTION constexpr auto N() const { return A() - Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto N() const { return A() - Z(); }
 
     // Number of nucleons (protons + neutrons)
-    PORTABLE_FUNCTION constexpr auto A() const { return sza_.A(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto A() const { return sza_.A(); }
 
     // SZA
-    PORTABLE_FUNCTION constexpr auto sza() const { return sza_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto sza() const { return sza_; }
 
     // Mass
-    PORTABLE_FUNCTION constexpr auto mass() const { return mass_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto mass() const { return mass_; }
 
-    // Equality
-    PORTABLE_FUNCTION constexpr bool operator==(Nuclide<DataType> const & other) const
-    {
-        bool equal = true;
-        equal = equal && (this->sza_ == other.sza_);
-        equal = equal && (this->mass_ == other.mass_);
-        return equal;
-    }
-    PORTABLE_FUNCTION constexpr bool operator!=(Nuclide<DataType> const & other) const
-    {
-        return !(*this == other);
-    }
-
-    // Inequality
-    PORTABLE_FUNCTION constexpr bool operator<(Nuclide<DataType> const & other) const
+    // Comparison
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(
+        Nuclide<DataType> const & other) const = default;
+    [[nodiscard]] PORTABLE_FUNCTION constexpr std::partial_ordering operator<=>(
+        Nuclide<DataType> const & other) const
     {
         if (this->sza() == other.sza()) {
-            return this->mass() < other.mass();
+            return this->mass() <=> other.mass();
         } else {
-            return this->sza() < other.sza();
+            return this->sza() <=> other.sza();
         }
-    }
-    PORTABLE_FUNCTION constexpr bool operator>=(Nuclide<DataType> const & other) const
-    {
-        return !(*this < other);
-    }
-    PORTABLE_FUNCTION constexpr bool operator<=(Nuclide<DataType> const & other) const
-    {
-        if (this->sza() == other.sza()) {
-            return this->mass() <= other.mass();
-        } else {
-            return this->sza() <= other.sza();
-        }
-    }
-    PORTABLE_FUNCTION constexpr bool operator>(Nuclide<DataType> const & other) const
-    {
-        return !(*this <= other);
     }
 };
 
@@ -161,15 +135,11 @@ public:
     }
 
     // Accessor to get the index
-    PORTABLE_FUNCTION constexpr int index() const { return index_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int index() const { return index_; }
 
     // Comparison for the base class, to make comparisons easier for the derived classes
-    PORTABLE_FUNCTION constexpr bool operator==(IndexedNuclide<DataType> const & other) const
-    {
-        bool equal = Nuclide<DataType>::operator==(other);
-        equal = equal && (this->index_ == other.index());
-        return equal;
-    }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(
+        IndexedNuclide<DataType> const & other) const = default;
 };
 
 // Alias for compatibility with original Singe names

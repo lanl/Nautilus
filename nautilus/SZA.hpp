@@ -6,6 +6,8 @@ A simple class to track the identity of a nuclide by it's SZA value.
 #ifndef NAUTILUS_SZA_HPP
 #define NAUTILUS_SZA_HPP
 
+#include <compare>
+
 #include "ports-of-call/portability.hpp"
 
 namespace nautilus {
@@ -23,41 +25,21 @@ public:
     {}
 
     // accessors
-    PORTABLE_FUNCTION constexpr int S() const { return sza_ / s_shift; }
-    PORTABLE_FUNCTION constexpr int Z() const { return (sza_ % s_shift) / z_shift; }
-    PORTABLE_FUNCTION constexpr int A() const { return sza_ % z_shift; }
-    PORTABLE_FUNCTION constexpr int N() const { return A() - Z(); }
-    PORTABLE_FUNCTION constexpr explicit operator int() const { return sza_; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int S() const { return sza_ / s_shift; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int Z() const { return (sza_ % s_shift) / z_shift; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int A() const { return sza_ % z_shift; }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr int N() const { return A() - Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr explicit operator int() const { return sza_; }
 
     // comparisons
-    PORTABLE_FUNCTION constexpr bool operator==(const SZA & other) const
-    {
-        return sza_ == other.sza_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator!=(const SZA & other) const
-    {
-        return sza_ != other.sza_;
-    }
-    PORTABLE_FUNCTION constexpr bool operator<(const SZA & other) const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(
+        const SZA & other) const
     {
         auto this_za = sza_ % s_shift;
         auto other_za = other.sza_ % s_shift;
-        return (this_za == other_za ? S() < other.S() : this_za < other_za);
+        return (this_za == other_za ? S() <=> other.S() : this_za <=> other_za);
     }
-    PORTABLE_FUNCTION constexpr bool operator>=(const SZA & other) const
-    {
-        return !(*this < other);
-    }
-    PORTABLE_FUNCTION constexpr bool operator<=(const SZA & other) const
-    {
-        auto this_za = sza_ % s_shift;
-        auto other_za = other.sza_ % s_shift;
-        return (this_za == other_za ? S() <= other.S() : this_za <= other_za);
-    }
-    PORTABLE_FUNCTION constexpr bool operator>(const SZA & other) const
-    {
-        return !(*this <= other);
-    }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr bool operator==(const SZA & other) const = default;
 
 private:
     static constexpr int s_shift{1000000};
