@@ -36,9 +36,9 @@ private:
     //      ||                        \_____  0       6     version
     //      |\______________________________  6      25     data
     //      \_______________________________ 31       1     user flag
-    static BitSegment<Storage, 31, 1> bs_user;
-    static BitSegment<Storage, 6, 25> bs_data;
-    static BitSegment<Storage, 0, 6> bs_version;
+    using bs_user = BitSegment<Storage, 31, 1>;
+    using bs_data = BitSegment<Storage, 6, 25>;
+    using bs_version = BitSegment<Storage, 0, 6>;
 
     // Breakdown for standard tags
     //      0NDDDDDDDDDDDDDDDDDDDDDDDDVVVVVV
@@ -47,8 +47,8 @@ private:
     //      ||\_____________________________  6      24     standard data
     //      |\______________________________ 30       1     nuclide flag
     //      \_______________________________ 31       1     user flag
-    static BitSegment<Storage, 30, 1> bs_nuclide;
-    static BitSegment<Storage, 6, 24> bs_sdata; // sdata = standard (non-user) tags
+    using bs_nuclide = BitSegment<Storage, 30, 1>;
+    using bs_sdata = BitSegment<Storage, 6, 24>; // sdata = standard (non-user) tags
 
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
@@ -72,9 +72,9 @@ private:
     //      ||\_____________________________ 23       7     atomic number
     //      |\______________________________ 30       1     nuclide flag (nuclide: 1)
     //      \_______________________________ 31       1     user flag (standard: 0)
-    static BitSegment<Storage, 23, 7> bs_Z;
-    static BitSegment<Storage, 14, 9> bs_A;
-    static BitSegment<Storage, 6, 8> bs_S;
+    using bs_Z = BitSegment<Storage, 23, 7>;
+    using bs_A = BitSegment<Storage, 14, 9>;
+    using bs_S = BitSegment<Storage, 6, 8>;
 
     static constexpr Storage elemental_A = 0b000000000;
 
@@ -88,7 +88,7 @@ private:
     // Note that the particle index is a genuine index (see the implementation in names.hpp), so
     // unless we add over 33 million more particles then we know the index is guaranteed to fit
     // within the particle index segment.
-    static BitSegment<Storage, 6, 24> bs_pindex;
+    using bs_pindex = BitSegment<Storage, 6, 24>;
 
     Storage tag_;
 
@@ -109,9 +109,9 @@ private:
     PORTABLE_FUNCTION constexpr auto unknown_tag() const
     {
         Storage unk_tag = null_tag();
-        bs_user.set(USER, unk_tag);
-        bs_data.set(UNKNOWN, unk_tag);
-        bs_version.set(CURRENT_VERSION, unk_tag);
+        bs_user::set(USER, unk_tag);
+        bs_data::set(UNKNOWN, unk_tag);
+        bs_version::set(CURRENT_VERSION, unk_tag);
         return unk_tag;
     }
 
@@ -157,33 +157,33 @@ public:
     PORTABLE_FUNCTION constexpr void set(const names::particle_index_t particle)
     {
         tag_ = null_tag();
-        bs_version.set(CURRENT_VERSION, tag_);
-        bs_user.set(STANDARD, tag_);
-        bs_nuclide.set(PARTICLE, tag_);
-        bs_pindex.set(static_cast<Storage>(particle), tag_);
+        bs_version::set(CURRENT_VERSION, tag_);
+        bs_user::set(STANDARD, tag_);
+        bs_nuclide::set(PARTICLE, tag_);
+        bs_pindex::set(static_cast<Storage>(particle), tag_);
     }
     // nuclide
     PORTABLE_FUNCTION constexpr void set(const Storage Z, const Storage A, const Storage S = 0)
     {
         assert(A >= Z); // no negative neutron counts
         tag_ = null_tag();
-        bs_version.set(CURRENT_VERSION, tag_);
-        bs_user.set(STANDARD, tag_);
-        bs_nuclide.set(NUCLIDE, tag_);
-        bs_Z.set(Z, tag_);
-        bs_A.set(A, tag_);
-        bs_S.set(S, tag_);
+        bs_version::set(CURRENT_VERSION, tag_);
+        bs_user::set(STANDARD, tag_);
+        bs_nuclide::set(NUCLIDE, tag_);
+        bs_Z::set(Z, tag_);
+        bs_A::set(A, tag_);
+        bs_S::set(S, tag_);
     }
     // elemental
     PORTABLE_FUNCTION constexpr void set(const Storage Z)
     {
         tag_ = null_tag();
-        bs_version.set(CURRENT_VERSION, tag_);
-        bs_user.set(STANDARD, tag_);
-        bs_nuclide.set(NUCLIDE, tag_);
-        bs_Z.set(Z, tag_);
-        bs_A.set(elemental_A, tag_);
-        bs_S.set(0, tag_); // S is meaningless with elementals, so set to ground state
+        bs_version::set(CURRENT_VERSION, tag_);
+        bs_user::set(STANDARD, tag_);
+        bs_nuclide::set(NUCLIDE, tag_);
+        bs_Z::set(Z, tag_);
+        bs_A::set(elemental_A, tag_);
+        bs_S::set(0, tag_); // S is meaningless with elementals, so set to ground state
     }
     // user
     PORTABLE_FUNCTION constexpr void set(const User, const Storage data)
@@ -193,9 +193,9 @@ public:
         // check that case.
         assert(data != UNKNOWN);
         tag_ = null_tag();
-        bs_version.set(CURRENT_VERSION, tag_);
-        bs_user.set(USER, tag_);
-        bs_data.set(data, tag_);
+        bs_version::set(CURRENT_VERSION, tag_);
+        bs_user::set(USER, tag_);
+        bs_data::set(data, tag_);
     }
 
     // ____________________________________________________________________________________________
@@ -207,7 +207,7 @@ public:
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_version() const
     {
-        return bs_version.get(tag_);
+        return bs_version::get(tag_);
     }
 
     // The user interface exposes a three-state system: standard, user, or unknown, which are
@@ -218,29 +218,29 @@ public:
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_standard() const
     {
-        return bs_user.get(tag_) == STANDARD;
+        return bs_user::get(tag_) == STANDARD;
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_user() const
     {
         // an "unknown" tag is encoded as a "user" tag with a special value, but is not itself
         // considered a "user" tag
-        return !is_unknown() && bs_user.get(tag_) == USER;
+        return !is_unknown() && bs_user::get(tag_) == USER;
     }
 
     // subsets of standard tags
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_particle() const
     {
-        return is_standard() && bs_nuclide.get(tag_) == PARTICLE;
+        return is_standard() && bs_nuclide::get(tag_) == PARTICLE;
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_nuclide() const
     {
-        return is_standard() && (bs_nuclide.get(tag_) == NUCLIDE) &&
-               (bs_A.get(tag_) != elemental_A);
+        return is_standard() && (bs_nuclide::get(tag_) == NUCLIDE) &&
+               (bs_A::get(tag_) != elemental_A);
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_elemental() const
     {
-        return is_standard() && (bs_nuclide.get(tag_) == NUCLIDE) &&
-               (bs_A.get(tag_) == elemental_A);
+        return is_standard() && (bs_nuclide::get(tag_) == NUCLIDE) &&
+               (bs_A::get(tag_) == elemental_A);
     }
 
     // ____________________________________________________________________________________________
@@ -252,7 +252,7 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_user_data() const
     {
         assert(is_user());
-        return bs_data.get(tag_);
+        return bs_data::get(tag_);
     }
 
     // ____________________________________________________________________________________________
@@ -261,14 +261,14 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
     {
         assert(is_nuclide() || is_elemental());
-        return bs_Z.get(tag_);
+        return bs_Z::get(tag_);
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const
     {
         assert(is_nuclide());
-        return bs_A.get(tag_);
+        return bs_A::get(tag_);
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
     {
@@ -281,7 +281,7 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
         assert(is_nuclide());
-        return bs_S.get(tag_);
+        return bs_S::get(tag_);
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_ground() const
     {
@@ -294,7 +294,7 @@ public:
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         assert(is_particle());
-        return names::particle_index_t(bs_pindex.get(tag_));
+        return names::particle_index_t(bs_pindex::get(tag_));
     }
 
     // ____________________________________________________________________________________________

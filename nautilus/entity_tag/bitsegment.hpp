@@ -68,6 +68,10 @@ private:
     }
 
 public:
+    // BitSegment is just a collection of static methods, so you shouldn't build an actual
+    // instance.  Therefore make the class non-constructible.
+    BitSegment() = delete;
+
     // Generate a mask for the bits in the segment
     [[nodiscard]] PORTABLE_FUNCTION static constexpr T mask()
     {
