@@ -36,9 +36,9 @@ private:
     //      ||                        \_____  0       6     version
     //      |\______________________________  6      25     data
     //      \_______________________________ 31       1     user flag
-    BitSegment<Storage, 31, 1> bs_user;
-    BitSegment<Storage, 6, 25> bs_data;
-    BitSegment<Storage, 0, 6> bs_version;
+    static BitSegment<Storage, 31, 1> bs_user;
+    static BitSegment<Storage, 6, 25> bs_data;
+    static BitSegment<Storage, 0, 6> bs_version;
 
     // Breakdown for standard tags
     //      0NDDDDDDDDDDDDDDDDDDDDDDDDVVVVVV
@@ -47,8 +47,8 @@ private:
     //      ||\_____________________________  6      24     standard data
     //      |\______________________________ 30       1     nuclide flag
     //      \_______________________________ 31       1     user flag
-    BitSegment<Storage, 30, 1> bs_nuclide;
-    BitSegment<Storage, 6, 24> bs_sdata; // sdata = standard (non-user) tags
+    static BitSegment<Storage, 30, 1> bs_nuclide;
+    static BitSegment<Storage, 6, 24> bs_sdata; // sdata = standard (non-user) tags
 
     static constexpr Storage PARTICLE = 0b0;
     static constexpr Storage NUCLIDE = 0b1;
@@ -72,9 +72,9 @@ private:
     //      ||\_____________________________ 23       7     atomic number
     //      |\______________________________ 30       1     nuclide flag (nuclide: 1)
     //      \_______________________________ 31       1     user flag (standard: 0)
-    BitSegment<Storage, 23, 7> bs_Z;
-    BitSegment<Storage, 14, 9> bs_A;
-    BitSegment<Storage, 6, 8> bs_S;
+    static BitSegment<Storage, 23, 7> bs_Z;
+    static BitSegment<Storage, 14, 9> bs_A;
+    static BitSegment<Storage, 6, 8> bs_S;
 
     static constexpr Storage elemental_A = 0b000000000;
 
@@ -88,7 +88,7 @@ private:
     // Note that the particle index is a genuine index (see the implementation in names.hpp), so
     // unless we add over 33 million more particles then we know the index is guaranteed to fit
     // within the particle index segment.
-    BitSegment<Storage, 6, 24> bs_pindex;
+    static BitSegment<Storage, 6, 24> bs_pindex;
 
     Storage tag_;
 
@@ -302,7 +302,7 @@ public:
 
     // No need to overcomplicate matters, just use the default.  Also, by defaulting operator<=> I
     // get operator== for free.
-    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag other) const =
+    PORTABLE_FUNCTION constexpr std::strong_ordering operator<=>(const EntityTag & other) const =
         default;
 };
 
