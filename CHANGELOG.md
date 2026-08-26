@@ -5,7 +5,7 @@ All notable changes to Nautilus will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to a four-part versioning scheme described in the documentation.
 
-## [1.1.0.0] - 2026-08-26
+## [2.0.0] - 2026-08-26
 
 ### Breaking Changes
 
@@ -40,7 +40,8 @@ and this project adheres to a four-part versioning scheme described in the docum
 
 ### Changed
 
-- **CMake version compatibility** relaxed from `ExactVersion` to `SameMajorVersion`, following semantic versioning best practices. This allows different minor/patch versions to work together (e.g., 1.0.1.4 with 1.1.0.0).
+- **Version numbering** has been brought into line with Semantic Versioning.
+- **CMake version compatibility** relaxed from `ExactVersion` to `SameMajorVersion`, following semantic versioning best practices. This allows different minor/patch versions to work together (e.g., 2.0.0 with 2.1.0).
 - **Modernized C++20 features**: Replaced SFINAE with `requires` constraints in `identifiers.hpp`
 - **Code organization**: Moved utility functions to new `nautilus/util/` directory (`gpu_check.hpp`, `string_processing.hpp`)
 - **CI/CD infrastructure**: Updated to use Kessel workflows and newer deployment infrastructure
@@ -66,4 +67,4 @@ Earlier releases are documented in the git history.
 
 ---
 
-[1.1.0.0]: https://github.com/lanl/nautilus/compare/v1.0.1.4...v1.1.0.0
+[2.0.0]: https://github.com/lanl/nautilus/compare/v1.0.1.4...v2.0.0
