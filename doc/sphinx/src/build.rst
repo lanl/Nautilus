@@ -6,7 +6,7 @@ Development primarily occurs on a LANL internal server, with releases mirrored t
 have access to LANL internal systems, you can find the development repository at
 https://re-git.lanl.gov/xcap/oss/nautilus.
 
-Nautilus depends on the following libraries:
+Nautilus requires C++20 and depends on the following libraries:
 
 - `Ports-of-Call`_ is required
 - `Kokkos`_ is optional, but allows Nautilus to run on GPUs

@@ -77,7 +77,8 @@ html_theme_options = {
 # To list values to match, you can use "git branch", "git tag" and "git remote"
 
 # Whitelist pattern for tags (set to None to ignore all tags)
-smv_tag_whitelist = r'^.*$'
+# Exclude v1.0.1.* tags (old versions with buggy CMake)
+smv_tag_whitelist = r'^(?!v1\.0\.1\.).*$'
 
 # Whitelist pattern for branches (set to None to ignore all branches)
 smv_branch_whitelist = r'^(main|master)$'
