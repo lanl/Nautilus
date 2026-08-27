@@ -59,6 +59,7 @@ and this project adheres to a four-part versioning scheme described in the docum
 - Added `entity_tag.rst` with EntityTag overview and core features
 - Added format-specific documentation: `format_standard.rst`, `format_ic.rst`, `format_mcnp.rst`, `format_ndi.rst`
 - Updated build documentation to specify C++20 requirement
+- Deleted versioning.rst now that we use semantic versioning
 - Improved inline documentation with file-level summaries
 
 ## [1.0.1.4] - Previous Release

@@ -49,7 +49,7 @@ __ `repository issues`_
 .. _`Brendan Krueger`: bkkrueger@lanl.gov
 .. _`Diego Lonardoni`: lonardoni@lanl.gov
 
-The current version of Nautilus is 2.0.0.  Nautilus loosely follows Semantic Versioning.
+The current version of Nautilus is 2.0.0.  Nautilus follows Semantic Versioning.
 
 Nautilus has been approved for open source release and has been assigned O4852 by the Feynman
 Center for Innovation at Los Alamos National Laboratory.  Please see the LICENSE file included in
