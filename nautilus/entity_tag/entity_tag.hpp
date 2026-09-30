@@ -205,9 +205,13 @@ public:
     {
         return CURRENT_VERSION;
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_version() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto version() const
     {
         return bs_version::get(tag_);
+    }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_version() const
+    {
+        return version();
     }
 
     // The user interface exposes a three-state system: standard, user, or unknown, which are
@@ -249,40 +253,57 @@ public:
     // Only for user tags.  For standard tags, the more-specific accessors are preferred, as there
     // may be translations between values the users sees and values actually stored in memory, or
     // the internal layout of the data block may be changed.
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_user_data() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto user_data() const
     {
         assert(is_user());
         return bs_data::get(tag_);
+    }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_user_data() const
+    {
+        return user_data();
     }
 
     // ____________________________________________________________________________________________
     // standard-nuclide-specific accessors
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto Z() const
     {
         assert(is_nuclide() || is_elemental());
         return bs_Z::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return get_Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
+    {
+        return Z();
+    }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_number() const { return Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return Z(); }
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto A() const
     {
         assert(is_nuclide());
         return bs_A::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const
     {
-        return get_A();
+        return A();
     }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_mass_number() const { return A(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return A(); }
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_N() const { return get_A() - get_Z(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return get_N(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto N() const { return get_A() - get_Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_N() const { return N(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto neutron_number() const { return N(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return N(); }
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto S() const
     {
         assert(is_nuclide());
         return bs_S::get(tag_);
     }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_S() const { return S(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto metastable_index() const { return S(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const { return S(); }
+
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_ground() const
     {
         return get_metastable_index() == 0;
@@ -291,10 +312,14 @@ public:
     // ____________________________________________________________________________________________
     // standard-particle-specific accessors
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_particle_index() const
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto particle_index() const
     {
         assert(is_particle());
         return names::particle_index_t(bs_pindex::get(tag_));
+    }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_particle_index() const
+    {
+        return particle_index();
     }
 
     // ____________________________________________________________________________________________
