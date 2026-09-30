@@ -209,7 +209,7 @@ public:
     {
         return bs_version::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_version() const
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_version() const
     {
         return version();
     }
@@ -258,7 +258,7 @@ public:
         assert(is_user());
         return bs_data::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_user_data() const
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_user_data() const
     {
         return user_data();
     }
@@ -271,42 +271,39 @@ public:
         assert(is_nuclide() || is_elemental());
         return bs_Z::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
     {
         return Z();
     }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_number() const { return Z(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return Z(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return Z(); }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto A() const
     {
         assert(is_nuclide());
         return bs_A::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const
-    {
-        return A();
-    }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const { return A(); }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_mass_number() const { return A(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return A(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return A(); }
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto N() const { return get_A() - get_Z(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_N() const { return N(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto N() const { return A() - Z(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_N() const { return N(); }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto neutron_number() const { return N(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return N(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return N(); }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto S() const
     {
         assert(is_nuclide());
         return bs_S::get(tag_);
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_S() const { return S(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_S() const { return S(); }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto metastable_index() const { return S(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const { return S(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const { return S(); }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_ground() const
     {
-        return get_metastable_index() == 0;
+        return metastable_index() == 0;
     }
 
     // ____________________________________________________________________________________________
@@ -317,7 +314,7 @@ public:
         assert(is_particle());
         return names::particle_index_t(bs_pindex::get(tag_));
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_particle_index() const
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_particle_index() const
     {
         return particle_index();
     }
