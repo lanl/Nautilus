@@ -271,12 +271,12 @@ public:
         assert(is_nuclide() || is_elemental());
         return bs_Z::get(tag_);
     }
-    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_Z() const { return Z(); }
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_number() const { return Z(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const
     {
         return Z();
     }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_number() const { return Z(); }
-    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_number() const { return Z(); }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto A() const
     {
@@ -285,12 +285,18 @@ public:
     }
     [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_A() const { return A(); }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto atomic_mass_number() const { return A(); }
-    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const { return A(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_atomic_mass_number() const
+    {
+        return A();
+    }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto N() const { return A() - Z(); }
     [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_N() const { return N(); }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto neutron_number() const { return N(); }
-    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const { return N(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_neutron_number() const
+    {
+        return N();
+    }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto S() const
     {
@@ -299,7 +305,10 @@ public:
     }
     [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_S() const { return S(); }
     [[nodiscard]] PORTABLE_FUNCTION constexpr auto metastable_index() const { return S(); }
-    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const { return S(); }
+    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const
+    {
+        return S();
+    }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_ground() const
     {
