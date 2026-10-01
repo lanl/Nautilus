@@ -25,12 +25,12 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
 {
     if (tag.is_nuclide()) {
         // Get the values needed to assemble the partial zaid
-        auto m = tag.get_metastable_index();
+        auto m = tag.metastable_index();
         if (m > 4) { // MCNP partial zaid does not support m > 4
             return invalid_mcnp_partial_zaid;
         }
-        const auto Z = tag.get_atomic_number();
-        const auto A = tag.get_atomic_mass_number();
+        const auto Z = tag.atomic_number();
+        const auto A = tag.atomic_mass_number();
         if ((Z == 95) && (A == 242)) {
             // Am-242 swaps the m values for the ground state and the first metastable state
             if (m == 0) {
@@ -46,7 +46,7 @@ inline int to_MCNP_partial_zaid(const EntityTag tag)
         }
         return partial_zaid;
     } else if (tag.is_elemental()) {
-        return tag.get_atomic_number() * 1000; // A = 0, m = 0 for elementals
+        return tag.atomic_number() * 1000; // A = 0, m = 0 for elementals
     } else {
         return invalid_mcnp_partial_zaid;
     }
@@ -148,8 +148,8 @@ inline char to_MCNP_particle_symbol(EntityTag tag)
         if (!tag.is_ground()) {
             return invalid_mcnp_particle_symbol;
         }
-        const auto Z = tag.get_atomic_number();
-        const auto A = tag.get_atomic_mass_number();
+        const auto Z = tag.atomic_number();
+        const auto A = tag.atomic_mass_number();
         if /*proton*/ ((Z == 1) && (A == 1)) {
             return 'H';
         } else if /*deuteron*/ ((Z == 1) && (A == 2)) {
@@ -164,7 +164,7 @@ inline char to_MCNP_particle_symbol(EntityTag tag)
             return '#';
         }
     } else if (tag.is_particle()) {
-        switch (tag.get_particle_index()) {
+        switch (tag.particle_index()) {
         case names::neutron: return 'N'; break;
         case names::photon: return 'P'; break;
         case names::electron: return 'E'; break;

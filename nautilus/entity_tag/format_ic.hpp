@@ -32,18 +32,18 @@ inline std::string to_IC_chemsym(EntityTag tag)
         return atomic_symbol;
     };
     if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z < 1) || (Z > names::Nuclides::count)) {
             return invalid_ic_chemsym;
         }
-        const auto A = tag.get_atomic_mass_number();
+        const auto A = tag.atomic_mass_number();
         // start with the atomic symbol
         std::string result = get_atomic_symbol(Z);
         // append the atomic mass number
         result.append(std::to_string(A));
         // append the metastable state if not in the ground state
         // -- can't just check tag.is_ground() because Am-242g and Am-242m1 are swapped
-        auto S = tag.get_metastable_index();
+        auto S = tag.metastable_index();
         if ((Z == 95) && (A == 242)) {
             if (S == 0) {
                 S = 1;
@@ -57,13 +57,13 @@ inline std::string to_IC_chemsym(EntityTag tag)
         }
         return result;
     } else if (tag.is_elemental()) {
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z < 1) || (Z > names::Nuclides::count)) {
             return invalid_ic_chemsym;
         }
         return get_atomic_symbol(Z);
     } else if (tag.is_particle()) {
-        const auto pidx = tag.get_particle_index();
+        const auto pidx = tag.particle_index();
         switch (pidx) {
         case names::photon: return "g0"; break;
         case names::neutron: return "nt1"; break;
