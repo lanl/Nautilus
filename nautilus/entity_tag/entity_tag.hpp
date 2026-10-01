@@ -298,16 +298,15 @@ public:
         return N();
     }
 
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto S() const
+    // no shorthand accessor because there's no accepted standard -- see documentation
+    [[nodiscard]] PORTABLE_FUNCTION constexpr auto metastable_index() const
     {
         assert(is_nuclide());
         return bs_S::get(tag_);
     }
-    [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_S() const { return S(); }
-    [[nodiscard]] PORTABLE_FUNCTION constexpr auto metastable_index() const { return S(); }
     [[deprecated]] [[nodiscard]] PORTABLE_FUNCTION constexpr auto get_metastable_index() const
     {
-        return S();
+        return metastable_index();
     }
 
     [[nodiscard]] PORTABLE_FUNCTION constexpr bool is_ground() const
