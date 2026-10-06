@@ -24,9 +24,9 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
         GPU_CHECK(!my_tag.is_nuclide());
         GPU_CHECK(!my_tag.is_elemental());
         GPU_CHECK(my_tag.is_particle());
-        GPU_CHECK(my_tag.get_version() == 0b00000);
-        GPU_CHECK(my_tag.get_particle_index() == nautilus::entity_tag::names::electron);
-        GPU_CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::positron);
+        GPU_CHECK(my_tag.version() == 0b00000);
+        GPU_CHECK(my_tag.particle_index() == nautilus::entity_tag::names::electron);
+        GPU_CHECK(my_tag.particle_index() != nautilus::entity_tag::names::positron);
 
         my_tag.set(nautilus::entity_tag::names::positron);
 
@@ -35,9 +35,9 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
         GPU_CHECK(!my_tag.is_nuclide());
         GPU_CHECK(!my_tag.is_elemental());
         GPU_CHECK(my_tag.is_particle());
-        GPU_CHECK(my_tag.get_version() == 0b00000);
-        GPU_CHECK(my_tag.get_particle_index() == nautilus::entity_tag::names::positron);
-        GPU_CHECK(my_tag.get_particle_index() != nautilus::entity_tag::names::electron);
+        GPU_CHECK(my_tag.version() == 0b00000);
+        GPU_CHECK(my_tag.particle_index() == nautilus::entity_tag::names::positron);
+        GPU_CHECK(my_tag.particle_index() != nautilus::entity_tag::names::electron);
 
         GPU_CHECK_FINAL(16);
     }
@@ -53,9 +53,9 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
         GPU_CHECK(!my_tag.is_nuclide());
         GPU_CHECK(my_tag.is_elemental());
         GPU_CHECK(!my_tag.is_particle());
-        GPU_CHECK(my_tag.get_version() == 0b00000);
-        GPU_CHECK(my_tag.get_atomic_number() == 1);
-        GPU_CHECK(my_tag.get_Z() == 1);
+        GPU_CHECK(my_tag.version() == 0b00000);
+        GPU_CHECK(my_tag.atomic_number() == 1);
+        GPU_CHECK(my_tag.Z() == 1);
 
         GPU_CHECK_FINAL(8);
     }
@@ -71,13 +71,13 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
         GPU_CHECK(my_tag.is_nuclide());
         GPU_CHECK(!my_tag.is_elemental());
         GPU_CHECK(!my_tag.is_particle());
-        GPU_CHECK(my_tag.get_version() == 0b00000);
-        GPU_CHECK(my_tag.get_atomic_number() == 28);
-        GPU_CHECK(my_tag.get_Z() == 28);
-        GPU_CHECK(my_tag.get_atomic_mass_number() == 56);
-        GPU_CHECK(my_tag.get_A() == 56);
+        GPU_CHECK(my_tag.version() == 0b00000);
+        GPU_CHECK(my_tag.atomic_number() == 28);
+        GPU_CHECK(my_tag.Z() == 28);
+        GPU_CHECK(my_tag.atomic_mass_number() == 56);
+        GPU_CHECK(my_tag.A() == 56);
         GPU_CHECK(my_tag.is_ground());
-        GPU_CHECK(my_tag.get_metastable_index() == 0);
+        GPU_CHECK(my_tag.metastable_index() == 0);
 
         GPU_CHECK_FINAL(12);
     }
@@ -93,13 +93,13 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
         GPU_CHECK(my_tag.is_nuclide());
         GPU_CHECK(!my_tag.is_elemental());
         GPU_CHECK(!my_tag.is_particle());
-        GPU_CHECK(my_tag.get_version() == 0b00000);
-        GPU_CHECK(my_tag.get_atomic_number() == 6);
-        GPU_CHECK(my_tag.get_Z() == 6);
-        GPU_CHECK(my_tag.get_atomic_mass_number() == 12);
-        GPU_CHECK(my_tag.get_A() == 12);
+        GPU_CHECK(my_tag.version() == 0b00000);
+        GPU_CHECK(my_tag.atomic_number() == 6);
+        GPU_CHECK(my_tag.Z() == 6);
+        GPU_CHECK(my_tag.atomic_mass_number() == 12);
+        GPU_CHECK(my_tag.A() == 12);
         GPU_CHECK(!my_tag.is_ground());
-        GPU_CHECK(my_tag.get_metastable_index() == 1);
+        GPU_CHECK(my_tag.metastable_index() == 1);
 
         GPU_CHECK_FINAL(12);
     }
@@ -112,8 +112,8 @@ TEST_CASE("EntityTag on GPUs", "[entity_tag][GPU]")
 
         GPU_CHECK(!my_tag.is_standard());
         GPU_CHECK(my_tag.is_user());
-        GPU_CHECK(my_tag.get_version() == 0b00000);
-        GPU_CHECK(my_tag.get_user_data() == 0b00000000000000000001100100);
+        GPU_CHECK(my_tag.version() == 0b00000);
+        GPU_CHECK(my_tag.user_data() == 0b00000000000000000001100100);
 
         GPU_CHECK_FINAL(4);
     }

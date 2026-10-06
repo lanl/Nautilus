@@ -147,16 +147,16 @@ template <typename T>
 int to_NDI_SZA(const EntityTag tag, T && library)
 {
     if (tag.is_particle()) {
-        switch (tag.get_particle_index()) {
+        switch (tag.particle_index()) {
         case names::photon: return 0; break;
         case names::neutron: return 1; break;
         case names::proton: return 1001; break;
         default: return invalid_ndi_sza; break;
         }
     } else if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
-        const auto A = tag.get_atomic_mass_number();
-        const auto S = tag.get_metastable_index();
+        const auto Z = tag.atomic_number();
+        const auto A = tag.atomic_mass_number();
+        const auto S = tag.metastable_index();
         // some americium nuclides are messed up in NDI for historical reasons
         if (Z == 95) {
             if (A == 242) {
@@ -185,7 +185,7 @@ int to_NDI_SZA(const EntityTag tag, T && library)
         // standard cases fall through to here
         return (S * 1000 + Z) * 1000 + A;
     } else if (tag.is_elemental()) {
-        return tag.get_atomic_number() * 1000;
+        return tag.atomic_number() * 1000;
     } else {
         return invalid_ndi_sza;
     }
@@ -288,15 +288,15 @@ const std::string invalid_ndi_short_string = "?";
 inline std::string to_NDI_short_string(EntityTag tag)
 {
     if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_ndi_short_string;
         }
-        const auto A = tag.get_atomic_mass_number();
+        const auto A = tag.atomic_mass_number();
         // Short string doesn't support excited states
         if ((Z == 95) && (A == 242)) {
             // Am-242g and Am-242m1 are reversed in NDI, so Am-242m1 is allowed but Am-242g is not
-            if (tag.get_metastable_index() != 1) {
+            if (tag.metastable_index() != 1) {
                 return invalid_ndi_short_string;
             }
         } else {
@@ -320,7 +320,7 @@ inline std::string to_NDI_short_string(EntityTag tag)
         result.append(std::to_string(A));
         return result;
     } else if (tag.is_particle()) {
-        switch (tag.get_particle_index()) {
+        switch (tag.particle_index()) {
         case names::photon: return "g"; break;
         case names::neutron: return "n"; break;
         case names::proton: return "p"; break;

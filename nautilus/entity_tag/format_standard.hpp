@@ -100,29 +100,29 @@ inline std::string to_standard_symbol(const EntityTag tag)
 {
     if (tag.is_user()) {
         std::string name(9, ' ');
-        sprintf(name.data(), "U:%07X", static_cast<unsigned int>(tag.get_user_data()));
+        sprintf(name.data(), "U:%07X", static_cast<unsigned int>(tag.user_data()));
         return name;
     } else if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_standard_symbol;
         }
         std::string name(names::Nuclides::get_symbol(Z));
         name.append("-");
-        name.append(std::to_string(tag.get_atomic_mass_number()));
+        name.append(std::to_string(tag.atomic_mass_number()));
         if (!tag.is_ground()) {
             name.append(1, 'm');
-            name.append(std::to_string(tag.get_metastable_index()));
+            name.append(std::to_string(tag.metastable_index()));
         }
         return name;
     } else if (tag.is_elemental()) {
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_standard_symbol;
         }
         return std::string(names::Nuclides::get_symbol(Z));
     } else if (tag.is_particle()) {
-        const auto index = tag.get_particle_index();
+        const auto index = tag.particle_index();
         if (index >= names::Particles::count) {
             return invalid_standard_symbol;
         }
@@ -150,31 +150,31 @@ inline std::string to_standard_name(
 {
     if (tag.is_user()) {
         std::string name(21, ' ');
-        sprintf(name.data(), "user entity 0x%07X", static_cast<unsigned int>(tag.get_user_data()));
+        sprintf(name.data(), "user entity 0x%07X", static_cast<unsigned int>(tag.user_data()));
         return name;
     } else if (tag.is_nuclide()) {
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_standard_name;
         }
         std::string name(names::Nuclides::get_name(Z, nuclide_standard));
         name.append("-");
-        name.append(std::to_string(tag.get_atomic_mass_number()));
+        name.append(std::to_string(tag.atomic_mass_number()));
         if (!tag.is_ground()) {
             name.append(1, 'm');
-            name.append(std::to_string(tag.get_metastable_index()));
+            name.append(std::to_string(tag.metastable_index()));
         }
         return name;
     } else if (tag.is_elemental()) {
         std::string name = "elemental ";
-        const auto Z = tag.get_atomic_number();
+        const auto Z = tag.atomic_number();
         if ((Z == 0) || (Z > names::Nuclides::count)) {
             return invalid_standard_name;
         }
         name.append(names::Nuclides::get_name(Z, nuclide_standard));
         return name;
     } else if (tag.is_particle()) {
-        const auto index = tag.get_particle_index();
+        const auto index = tag.particle_index();
         if (index >= names::Particles::count) {
             return invalid_standard_name;
         }
